@@ -13,7 +13,7 @@ import "./assets/plugins/select2/css/select2.min.css";
 import "./assets/plugins/fontawesome/css/fontawesome.min.css";
 import "./assets/plugins/fontawesome/css/all.min.css";
 
-import Approuter from "./approuter";
+import Approuter from "./approuter.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
