@@ -23,6 +23,7 @@
     "@fullcalendar/interaction": "^6.1.7",
     "@fullcalendar/react": "^6.1.7",
     "@fullcalendar/timegrid": "^6.1.7",
+    "@hookform/resolvers": "^3.9.0",
     "@mui/material": "^5.14.18",
     "@react-latest-ui/react-sticky-notes": "^0.2.6",
     "alertifyjs": "^1.13.1",
@@ -63,7 +64,8 @@
     "sweetalert2": "^11.4.8",
     "url-loader": "^4.1.1",
     "weather-icons-react": "^1.2.0",
-    "webpack-bundle-analyzer": "^4.10.1"
+    "webpack-bundle-analyzer": "^4.10.1",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
