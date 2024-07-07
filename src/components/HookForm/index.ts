@@ -9,5 +9,5 @@ export { default as FormProvider } from './FormProvider';
 // export { default as AntDTextField } from './AntDTextField';
 // export { default as RHFRadioGroup } from "./RHFRadioGroup";
 // export { default as RHFPhoneNumber } from "./RHFPhoneNumber";
-// export { default as RHFDatePicker } from "./RHFDatePicker";
+export { default as RHFDatePicker } from './RHFDatePicker';
 // export { default as RHFAutocomplete } from "./RHFAutocomplete";
