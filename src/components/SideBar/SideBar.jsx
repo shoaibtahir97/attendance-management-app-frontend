@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 
-import FeatherIcon from "feather-icons-react";
-import Scrollbars from "react-custom-scrollbars-2";
+import FeatherIcon from 'feather-icons-react';
+import Scrollbars from 'react-custom-scrollbars-2';
+import navConfig from './sideBarConfig';
 // import { LogoImg, LogoSmallImg } from "../_components/imagepath";
 
 const Sidebar = (props) => {
-  const [isSideMenu, setSideMenu] = useState("");
-  const [isSideMenuLevel, setSideMenuLevel] = useState("");
-  const [isSideMenuLevel2, setSideMenuLevel2] = useState("");
+  const [isSideMenu, setSideMenu] = useState('');
+  const [isSideMenuLevel, setSideMenuLevel] = useState('');
+  const [isSideMenuLevel2, setSideMenuLevel2] = useState('');
 
   const toggleSidebar = (value) => {
     console.log(value);
@@ -26,110 +27,148 @@ const Sidebar = (props) => {
   useEffect(() => {
     function handleMouseOver(e) {
       e.stopPropagation();
-      if (document.body.classList.contains('mini-sidebar') && document.querySelector('#toggle_btn').offsetParent !== null) {
+      if (
+        document.body.classList.contains('mini-sidebar') &&
+        document.querySelector('#toggle_btn').offsetParent !== null
+      ) {
         var targ = e.target.closest('.sidebar');
         if (targ) {
           document.body.classList.add('expand-menu');
-          document.querySelectorAll('.subdrop + ul').forEach((ul) => ul.style.display = 'block');
+          document
+            .querySelectorAll('.subdrop + ul')
+            .forEach((ul) => (ul.style.display = 'block'));
         } else {
           document.body.classList.remove('expand-menu');
-          document.querySelectorAll('.subdrop + ul').forEach((ul) => ul.style.display = 'none');
+          document
+            .querySelectorAll('.subdrop + ul')
+            .forEach((ul) => (ul.style.display = 'none'));
         }
         return false;
       }
     }
-  
+
     document.addEventListener('mouseover', handleMouseOver);
-  
+
     return () => {
       document.removeEventListener('mouseover', handleMouseOver);
     };
   }, []);
 
   useEffect(() => {
-    $(document).on('change', '.sidebar-type-four input', function() {
-	    if($(this).is(':checked')) {
-	        $('.sidebar').addClass('sidebar-eight');
-	        $('.sidebar-menu').addClass('sidebar-menu-eight');
-	        $('.menu-title').addClass('menu-title-eight');
-	        $('.header').addClass('header-eight');
-	        $('.header-left-two').addClass('header-left-eight');
-	        $('.user-menu').addClass('user-menu-eight');
-	        $('.dropdown-toggle').addClass('dropdown-toggle-eight');
-	        $('.white-logo').addClass('show-logo');
-	        $('.header-one .header-left-one .logo:not(.logo-small), .header-five .header-left-five .logo:not(.logo-small)').addClass('hide-logo');
-	        $('.header-two .header-left-two .logo:not(.logo-small)').removeClass('hide-logo');
-	        $('.header-two .header-left-two .dark-logo').removeClass('show-logo');
-	    } else {
-	        $('.sidebar').removeClass('sidebar-eight');
-	        $('.sidebar-menu').removeClass('sidebar-menu-eight');
-	        $('.menu-title').removeClass('menu-title-eight');
-	        $('.header').removeClass('header-eight');
-	        $('.header-left-two').removeClass('header-left-eight');
-	        $('.user-menu').removeClass('user-menu-eight');
-	        $('.dropdown-toggle').removeClass('dropdown-toggle-eight');
-	        $('.white-logo').removeClass('show-logo');
-	        $('.header-one .header-left-one .logo:not(.logo-small), .header-five .header-left-five .logo:not(.logo-small)').removeClass('hide-logo');
-	    }
-	});
-  }, [])
-  
-  
+    $(document).on('change', '.sidebar-type-four input', function () {
+      if ($(this).is(':checked')) {
+        $('.sidebar').addClass('sidebar-eight');
+        $('.sidebar-menu').addClass('sidebar-menu-eight');
+        $('.menu-title').addClass('menu-title-eight');
+        $('.header').addClass('header-eight');
+        $('.header-left-two').addClass('header-left-eight');
+        $('.user-menu').addClass('user-menu-eight');
+        $('.dropdown-toggle').addClass('dropdown-toggle-eight');
+        $('.white-logo').addClass('show-logo');
+        $(
+          '.header-one .header-left-one .logo:not(.logo-small), .header-five .header-left-five .logo:not(.logo-small)'
+        ).addClass('hide-logo');
+        $('.header-two .header-left-two .logo:not(.logo-small)').removeClass(
+          'hide-logo'
+        );
+        $('.header-two .header-left-two .dark-logo').removeClass('show-logo');
+      } else {
+        $('.sidebar').removeClass('sidebar-eight');
+        $('.sidebar-menu').removeClass('sidebar-menu-eight');
+        $('.menu-title').removeClass('menu-title-eight');
+        $('.header').removeClass('header-eight');
+        $('.header-left-two').removeClass('header-left-eight');
+        $('.user-menu').removeClass('user-menu-eight');
+        $('.dropdown-toggle').removeClass('dropdown-toggle-eight');
+        $('.white-logo').removeClass('show-logo');
+        $(
+          '.header-one .header-left-one .logo:not(.logo-small), .header-five .header-left-five .logo:not(.logo-small)'
+        ).removeClass('hide-logo');
+      }
+    });
+  }, []);
 
   let pathName = props.location.pathname;
 
-  console.log("Working", pathName);
-
+  console.log('Current Path', pathName);
 
   return (
     <>
-      <div className="sidebar" id="sidebar">
+      <div className='sidebar' id='sidebar'>
         <Scrollbars
           autoHide
           autoHideTimeout={1000}
           autoHideDuration={200}
           autoHeight
           autoHeightMin={0}
-          autoHeightMax="95vh"
+          autoHeightMax='95vh'
           thumbMinSize={30}
           universal={false}
           hideTracksWhenNotNeeded={true}
         >
-          <div className="sidebar-inner slimscroll">
-            <div id="sidebar-menu" className="sidebar-menu">
-              {/* Main Menu */}
+          <div className='sidebar-inner slimscroll'>
+            <div id='sidebar-menu' className='sidebar-menu'>
               <ul>
-                <li className="menu-title">
+                {navConfig?.map((nav, index) => {
+                  if (props.role === nav.role) {
+                    return (
+                      <li
+                        className={`${
+                          nav.path === pathName ? 'active submenu' : 'submenu'
+                        }`}
+                      >
+                        <Link
+                          to={nav.path}
+                          className={`${
+                            nav.path === pathName ? 'active' : ''
+                          } ${isSideMenu == 'index' ? 'subdrop' : ''}`}
+                          onClick={() =>
+                            toggleSidebar(isSideMenu == 'index' ? '' : 'index')
+                          }
+                        >
+                          <FeatherIcon icon={nav.icon} />
+                          <span>{nav.title}</span>
+                          <span className='menu-arrow'></span>
+                        </Link>
+                      </li>
+                    );
+                  }
+                })}
+              </ul>
+              {/* Main Menu */}
+              {/* <ul>
+                <li className='menu-title'>
                   <span>Main Menu</span>
                 </li>
                 <li
                   className={`${
-                    "/admindashboard" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/admindashboard' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "index" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'index' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "index" ? "" : "index")
+                      toggleSidebar(isSideMenu == 'index' ? '' : 'index')
                     }
                   >
-                    <FeatherIcon icon="grid" /> <span>Dashboard</span>{" "}
-                    <span className="menu-arrow"></span>
+                    <FeatherIcon icon='grid' />
+                    <span>Dashboard</span>
+                    <span className='menu-arrow'></span>
                   </Link>
-                  {isSideMenu == "index" ? (
+                  {isSideMenu == 'index' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "index" ? "block" : "none",
+                        display: isSideMenu == 'index' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/admindashboard"
+                          to='/admindashboard'
                           className={`${
-                            "/admindashboard" === pathName ? "active" : ""
+                            '/admindashboard' === pathName ? 'active' : ''
                           }`}
                         >
                           Admin Dashboard
@@ -137,9 +176,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/teacherdashboard"
+                          to='/teacherdashboard'
                           className={`${
-                            "/teacherdashboard" === pathName ? "active" : ""
+                            '/teacherdashboard' === pathName ? 'active' : ''
                           }`}
                         >
                           Teachers Dashboard
@@ -147,9 +186,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/studentdashboard"
+                          to='/studentdashboard'
                           className={`${
-                            "/studentdashboard" === pathName ? "active" : ""
+                            '/studentdashboard' === pathName ? 'active' : ''
                           }`}
                         >
                           Students Dashboard
@@ -157,40 +196,40 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
                 <li
                   className={`${
-                    "/students" === pathName ||
-                    "/studentsview" === pathName ||
-                    "/addstudent" === pathName ||
-                    "/editstudent" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/students' === pathName ||
+                    '/studentsview' === pathName ||
+                    '/addstudent' === pathName ||
+                    '/editstudent' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Students" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Students' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "Students" ? "" : "Students")
+                      toggleSidebar(isSideMenu == 'Students' ? '' : 'Students')
                     }
                   >
-                    <i className="fas fa-graduation-cap" />{" "}
-                    <span> Students</span> <span className="menu-arrow" />
+                    <i className='fas fa-graduation-cap' />{' '}
+                    <span> Students</span> <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Students" ? (
+                  {isSideMenu == 'Students' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Students" ? "block" : "none",
+                        display: isSideMenu == 'Students' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/students"
+                          to='/students'
                           className={`${
-                            "/students" === pathName ? "active" : ""
+                            '/students' === pathName ? 'active' : ''
                           }`}
                         >
                           Student List
@@ -198,9 +237,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/studentsview"
+                          to='/studentsview'
                           className={`${
-                            "/studentsview" === pathName ? "active" : ""
+                            '/studentsview' === pathName ? 'active' : ''
                           }`}
                         >
                           Student View
@@ -208,9 +247,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/addstudent"
+                          to='/addstudent'
                           className={`${
-                            "/addstudent" === pathName ? "active" : ""
+                            '/addstudent' === pathName ? 'active' : ''
                           }`}
                         >
                           Student Add
@@ -218,9 +257,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/editstudent"
+                          to='/editstudent'
                           className={`${
-                            "/editstudent" === pathName ? "active" : ""
+                            '/editstudent' === pathName ? 'active' : ''
                           }`}
                         >
                           Student Edit
@@ -228,40 +267,40 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
                 <li
                   className={`${
-                    "/teacherslist" === pathName ||
-                    "/teachersprofile" === pathName ||
-                    "/addteacher" === pathName ||
-                    "/editteacher" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/teacherslist' === pathName ||
+                    '/teachersprofile' === pathName ||
+                    '/addteacher' === pathName ||
+                    '/editteacher' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Teachers" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Teachers' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "Teachers" ? "" : "Teachers")
+                      toggleSidebar(isSideMenu == 'Teachers' ? '' : 'Teachers')
                     }
                   >
-                    <i className="fas fa-chalkboard-teacher" />{" "}
-                    <span> Teachers</span> <span className="menu-arrow" />
+                    <i className='fas fa-chalkboard-teacher' />{' '}
+                    <span> Teachers</span> <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Teachers" ? (
+                  {isSideMenu == 'Teachers' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Teachers" ? "block" : "none",
+                        display: isSideMenu == 'Teachers' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/teacherslist"
+                          to='/teacherslist'
                           className={`${
-                            "/teacherslist" === pathName ? "active" : ""
+                            '/teacherslist' === pathName ? 'active' : ''
                           }`}
                         >
                           Teacher List
@@ -269,9 +308,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/teachersprofile"
+                          to='/teachersprofile'
                           className={`${
-                            "/teachersprofile" === pathName ? "active" : ""
+                            '/teachersprofile' === pathName ? 'active' : ''
                           }`}
                         >
                           Teacher View
@@ -279,9 +318,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/addteacher"
+                          to='/addteacher'
                           className={`${
-                            "/addteacher" === pathName ? "active" : ""
+                            '/addteacher' === pathName ? 'active' : ''
                           }`}
                         >
                           Teacher Add
@@ -289,9 +328,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/editteacher"
+                          to='/editteacher'
                           className={`${
-                            "/editteacher" === pathName ? "active" : ""
+                            '/editteacher' === pathName ? 'active' : ''
                           }`}
                         >
                           Teacher Edit
@@ -299,41 +338,41 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
                 <li
                   className={`${
-                    "/department" === pathName ||
-                    "/adddepartment" === pathName ||
-                    "/editdepartment" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/department' === pathName ||
+                    '/adddepartment' === pathName ||
+                    '/editdepartment' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Departments" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Departments' ? 'subdrop' : ''}
                     onClick={() =>
                       toggleSidebar(
-                        isSideMenu == "Departments" ? "" : "Departments"
+                        isSideMenu == 'Departments' ? '' : 'Departments'
                       )
                     }
                   >
-                    <i className="fas fa-building" /> <span> Departments</span>{" "}
-                    <span className="menu-arrow" />
+                    <i className='fas fa-building' /> <span> Departments</span>{' '}
+                    <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Departments" ? (
+                  {isSideMenu == 'Departments' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Departments" ? "block" : "none",
+                        display: isSideMenu == 'Departments' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/department"
+                          to='/department'
                           className={`${
-                            "/department" === pathName ? "active" : ""
+                            '/department' === pathName ? 'active' : ''
                           }`}
                         >
                           Department List
@@ -341,9 +380,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/adddepartment"
+                          to='/adddepartment'
                           className={`${
-                            "/adddepartment" === pathName ? "active" : ""
+                            '/adddepartment' === pathName ? 'active' : ''
                           }`}
                         >
                           Department Add
@@ -351,9 +390,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/editdepartment"
+                          to='/editdepartment'
                           className={`${
-                            "/editdepartment" === pathName ? "active" : ""
+                            '/editdepartment' === pathName ? 'active' : ''
                           }`}
                         >
                           Department Edit
@@ -361,39 +400,39 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
                 <li
                   className={`${
-                    "/subject" === pathName ||
-                    "/addsubject" === pathName ||
-                    "/editsubject" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/subject' === pathName ||
+                    '/addsubject' === pathName ||
+                    '/editsubject' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Subjects" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Subjects' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "Subjects" ? "" : "Subjects")
+                      toggleSidebar(isSideMenu == 'Subjects' ? '' : 'Subjects')
                     }
                   >
-                    <i className="fas fa-book-reader" /> <span> Subjects</span>{" "}
-                    <span className="menu-arrow" />
+                    <i className='fas fa-book-reader' /> <span> Subjects</span>{' '}
+                    <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Subjects" ? (
+                  {isSideMenu == 'Subjects' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Subjects" ? "block" : "none",
+                        display: isSideMenu == 'Subjects' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/subject"
+                          to='/subject'
                           className={`${
-                            "/subject" === pathName ? "active" : ""
+                            '/subject' === pathName ? 'active' : ''
                           }`}
                         >
                           Subject List
@@ -401,9 +440,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/addsubject"
+                          to='/addsubject'
                           className={`${
-                            "/addsubject" === pathName ? "active" : ""
+                            '/addsubject' === pathName ? 'active' : ''
                           }`}
                         >
                           Subject Add
@@ -411,9 +450,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/editsubject"
+                          to='/editsubject'
                           className={`${
-                            "/editsubject" === pathName ? "active" : ""
+                            '/editsubject' === pathName ? 'active' : ''
                           }`}
                         >
                           Subject Edit
@@ -421,42 +460,42 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
                 <li
                   className={`${
-                    "/invoicelist" === pathName ||
-                    "/invoicegrid" === pathName ||
-                    "/addinvoice" === pathName ||
-                    "/editinvoice" === pathName ||
-                    "/viewinvoice" === pathName ||
-                    "/invoicesetting" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/invoicelist' === pathName ||
+                    '/invoicegrid' === pathName ||
+                    '/addinvoice' === pathName ||
+                    '/editinvoice' === pathName ||
+                    '/viewinvoice' === pathName ||
+                    '/invoicesetting' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Invoices" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Invoices' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "Invoices" ? "" : "Invoices")
+                      toggleSidebar(isSideMenu == 'Invoices' ? '' : 'Invoices')
                     }
                   >
-                    <i className="fas fa-clipboard" /> <span> Invoices</span>{" "}
-                    <span className="menu-arrow" />
+                    <i className='fas fa-clipboard' /> <span> Invoices</span>{' '}
+                    <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Invoices" ? (
+                  {isSideMenu == 'Invoices' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Invoices" ? "block" : "none",
+                        display: isSideMenu == 'Invoices' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/invoicelist"
+                          to='/invoicelist'
                           className={`${
-                            "/invoicelist" === pathName ? "active" : ""
+                            '/invoicelist' === pathName ? 'active' : ''
                           }`}
                         >
                           Invoices List
@@ -464,9 +503,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/invoicegrid"
+                          to='/invoicegrid'
                           className={`${
-                            "/invoicegrid" === pathName ? "active" : ""
+                            '/invoicegrid' === pathName ? 'active' : ''
                           }`}
                         >
                           Invoices Grid
@@ -474,9 +513,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/addinvoice"
+                          to='/addinvoice'
                           className={`${
-                            "/addinvoice" === pathName ? "active" : ""
+                            '/addinvoice' === pathName ? 'active' : ''
                           }`}
                         >
                           Add Invoices
@@ -484,9 +523,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/editinvoice"
+                          to='/editinvoice'
                           className={`${
-                            "/editinvoice" === pathName ? "active" : ""
+                            '/editinvoice' === pathName ? 'active' : ''
                           }`}
                         >
                           Edit Invoices
@@ -494,9 +533,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/viewinvoice"
+                          to='/viewinvoice'
                           className={`${
-                            "/viewinvoice" === pathName ? "active" : ""
+                            '/viewinvoice' === pathName ? 'active' : ''
                           }`}
                         >
                           Invoices Details
@@ -504,9 +543,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/invoicesetting"
+                          to='/invoicesetting'
                           className={`${
-                            "/invoicesetting" === pathName ? "active" : ""
+                            '/invoicesetting' === pathName ? 'active' : ''
                           }`}
                         >
                           Invoices Settings
@@ -514,13 +553,14 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
-              </ul>
+              </ul> */}
               {/* /Main Menu*/}
+
               {/* Management */}
-              <ul>
+              {/* <ul>
                 <li className="menu-title">
                   <span>Management</span>
                 </li>
@@ -775,10 +815,13 @@ const Sidebar = (props) => {
                     <i className="fas fa-cog" /> <span>Settings</span>
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
+
               {/* /Management */}
+
               {/* Pages */}
-              <ul>
+
+              {/* <ul>
                 <li className="menu-title">
                   <span>Pages</span>
                 </li>
@@ -860,10 +903,10 @@ const Sidebar = (props) => {
                     <i className="fas fa-file" /> <span>Blank Page</span>
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
               {/* /Pages */}
               {/* Others */}
-              <ul>
+              {/* <ul>
                 <li className="menu-title">
                   <span>Others</span>
                 </li>
@@ -906,10 +949,10 @@ const Sidebar = (props) => {
                     <i className="fas fa-bus" /> <span>Transport</span>
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
               {/* /Others */}
               {/* UI Interface */}
-              <ul>
+              {/* <ul>
                 <li className="menu-title">
                   <span>UI Interface</span>
                 </li>
@@ -1916,7 +1959,7 @@ const Sidebar = (props) => {
                     ""
                   )}
                 </li>
-              </ul>
+              </ul> */}
               {/* /UI Interface */}
             </div>
           </div>
