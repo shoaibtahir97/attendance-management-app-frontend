@@ -1,39 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
-    logo, logosmall, headericon01, headericon05, avatar02, avatar11, avatar17,avatar13, 
-    headericon04, avatar01, lr, bl, cn
+  logo,
+  logosmall,
+  headericon01,
+  headericon05,
+  avatar02,
+  avatar11,
+  avatar17,
+  avatar13,
+  headericon04,
+  avatar01,
+  lr,
+  bl,
+  cn,
 } from "../imagepath";
 
 const Header = () => {
+  const handlesidebar = () => {
+    document.body.classList.toggle("mini-sidebar");
+  };
 
-    const handlesidebar = () => {
-        document.body.classList.toggle("mini-sidebar");
-      };
+  const handlesidebarmobilemenu = () => {
+    document.body.classList.toggle("slide-nav");
+  };
 
-      const handlesidebarmobilemenu=()=>{
-        document.body.classList.toggle('slide-nav');
-      }
+  // useEffect(() => {
+  //   const handleClick = () => {
+  //     if (!document.fullscreenElement) {
+  //       document.documentElement.requestFullscreen();
+  //     } else {
+  //       if (document.exitFullscreen) {
+  //         document.exitFullscreen();
+  //       }
+  //     }
+  //   };
 
-    useEffect(() => {
-        const handleClick = () => {
-          if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-          } else {
-            if (document.exitFullscreen) {
-              document.exitFullscreen();
-            }
-          }
-        }
-    
-        const maximizeBtn = document.querySelector('.win-maximize');
-        maximizeBtn.addEventListener('click', handleClick);
-    
-        return () => {
-          maximizeBtn.removeEventListener('click', handleClick);
-        };
-        
-      }, []);
+  //   const maximizeBtn = document.querySelector(".win-maximize");
+  //   maximizeBtn.addEventListener("click", handleClick);
+
+  //   return () => {
+  //     maximizeBtn.removeEventListener("click", handleClick);
+  //   };
+  // }, []);
   return (
     <>
       {/* Header */}
@@ -68,13 +77,19 @@ const Header = () => {
         </div>
         {/* /Search Bar */}
         {/* Mobile Menu Toggle */}
-        <Link to="#" className="mobile_btn" id="mobile_btn" onClick={() => handlesidebarmobilemenu()}>
+        <Link
+          to="#"
+          className="mobile_btn"
+          id="mobile_btn"
+          onClick={() => handlesidebarmobilemenu()}
+        >
           <i className="fas fa-bars" />
         </Link>
         {/* /Mobile Menu Toggle */}
         {/* Header Right Menu */}
         <ul className="nav user-menu">
-          <li className="nav-item dropdown language-drop me-2">
+          {/* Language */}
+          {/* <li className="nav-item dropdown language-drop me-2">
             <Link
               to="#"
               className="dropdown-toggle nav-link header-nav-list"
@@ -96,7 +111,7 @@ const Header = () => {
                 <span className="flagg">Turkce</span>
               </Link>
             </div>
-          </li>
+          </li> */}
           {/* Notifications */}
           <li className="nav-item dropdown noti-dropdown me-2">
             <Link
@@ -231,15 +246,15 @@ const Header = () => {
           </li>
           {/* /Notifications */}
           {/* <li className="nav-item zoom-screen me-2">
-                                <Link to="#" className="nav-link header-nav-list">
-                                    <img src={headericon04} alt="" />
-                                </Link>
-                            </li> */}
-          <li className="nav-item  has-arrow dropdown-heads ">
+            <Link to="#" className="nav-link header-nav-list">
+              <img src={headericon04} alt="" />
+            </Link>
+          </li> */}
+          {/* <li className="nav-item  has-arrow dropdown-heads ">
             <Link to="#" className="win-maximize maximize-icon">
               <img src={headericon04} alt="" />
             </Link>
-          </li>
+          </li> */}
           {/* User Menu */}
           <li className="nav-item dropdown has-arrow new-user-menus">
             <Link
@@ -292,6 +307,6 @@ const Header = () => {
       {/* /Header */}
     </>
   );
-}
+};
 
-export default Header
+export default Header;
