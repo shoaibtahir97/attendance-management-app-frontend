@@ -110,9 +110,10 @@ const Sidebar = (props) => {
             <div id='sidebar-menu' className='sidebar-menu'>
               <ul>
                 {navConfig?.map((nav, index) => {
-                  if (props.role === nav.role) {
+                  if (nav.role.includes(props.role)) {
                     return (
                       <li
+                        key={index}
                         className={`${
                           nav.path === pathName ? 'active submenu' : 'submenu'
                         }`}
@@ -126,7 +127,11 @@ const Sidebar = (props) => {
                             toggleSidebar(isSideMenu == 'index' ? '' : 'index')
                           }
                         >
-                          <FeatherIcon icon={nav.icon} />
+                          {nav.icon.includes('fas') ? (
+                            <i className={nav.icon} />
+                          ) : (
+                            <FeatherIcon icon={nav.icon} />
+                          )}
                           <span>{nav.title}</span>
                           <span className='menu-arrow'></span>
                         </Link>
@@ -136,7 +141,7 @@ const Sidebar = (props) => {
                 })}
               </ul>
               {/* Main Menu */}
-              {/* <ul>
+              <ul>
                 <li className='menu-title'>
                   <span>Main Menu</span>
                 </li>
@@ -556,7 +561,7 @@ const Sidebar = (props) => {
                     ''
                   )}
                 </li>
-              </ul> */}
+              </ul>
               {/* /Main Menu*/}
 
               {/* Management */}
