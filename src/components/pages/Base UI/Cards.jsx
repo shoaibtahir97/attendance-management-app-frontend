@@ -2,7 +2,6 @@ import React from "react";
 import Footer from "../../Footer/Footer";
 import Header from "../../Header/Header";
 import SideBar from "../../SideBar/SideBar";
-import { img01 } from "../../imagepath";
 import { Link } from "react-router-dom";
 
 const Cards = () => {
@@ -39,7 +38,7 @@ const Cards = () => {
               <div className="row">
                 <div className="col-12 col-md-6 col-lg-4 d-flex">
                   <div className="card flex-fill">
-                    <img alt="" src={img01} className="card-img-top" />
+                    <img alt="" src={"'img01'"} className="card-img-top" />
                     <div className="card-header">
                       <h5 className="card-title mb-0">
                         Card with image and links
@@ -61,7 +60,7 @@ const Cards = () => {
                 </div>
                 <div className="col-12 col-md-6 col-lg-4 d-flex">
                   <div className="card flex-fill">
-                    <img alt="" src={img01} className="card-img-top" />
+                    <img alt="" src={"'img01'"} className="card-img-top" />
                     <div className="card-header">
                       <h5 className="card-title mb-0">
                         Card with image and button
@@ -80,7 +79,7 @@ const Cards = () => {
                 </div>
                 <div className="col-12 col-md-6 col-lg-4 d-flex">
                   <div className="card flex-fill">
-                    <img alt="" src={img01} className="card-img-top" />
+                    <img alt="" src={"'img01'"} className="card-img-top" />
                     <div className="card-header">
                       <h5 className="card-title mb-0">
                         Card with image and list
@@ -338,7 +337,6 @@ const Cards = () => {
             </section>
             {/* /Cards */}
           </div>
-        
         </div>
 
         {/* /Page Wrapper */}

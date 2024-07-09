@@ -3,7 +3,6 @@ import Header from "../../Header/Header";
 import SideBar from "../../SideBar/SideBar";
 import Footer from "../../Footer/Footer";
 import { Link } from "react-router-dom";
-import { user5, user6, user7 } from "../../imagepath";
 
 const Media = () => {
   return (
@@ -49,7 +48,7 @@ const Media = () => {
                     <div className="d-flex align-items-start text-muted mb-4">
                       <div className="flex-shrink-0 me-3">
                         <img
-                          src={user5}
+                          src={"user5"}
                           className="avatar-sm rounded"
                           alt="..."
                         />
@@ -68,7 +67,7 @@ const Media = () => {
                       </div>
                       <div className="flex-shrink-0 ms-3">
                         <img
-                          src={user6}
+                          src={"user6"}
                           className="avatar-sm rounded"
                           alt="..."
                         />
@@ -77,7 +76,7 @@ const Media = () => {
                     <div className="d-flex align-items-start text-muted">
                       <div className="flex-shrink-0 me-3">
                         <img
-                          src={user7}
+                          src={"user7"}
                           className="avatar-sm rounded"
                           alt="..."
                         />
@@ -112,7 +111,7 @@ const Media = () => {
                     <div className="d-flex align-items-start text-muted mb-4">
                       <div className="flex-shrink-0 me-3">
                         <img
-                          src={user5}
+                          src={"user5"}
                           className="avatar-sm rounded"
                           alt="..."
                         />
@@ -124,7 +123,7 @@ const Media = () => {
                         <div className="d-flex align-items-start text-muted mt-3">
                           <div className="flex-shrink-0 me-3">
                             <img
-                              src={user6}
+                              src={"user6"}
                               className="avatar-sm rounded"
                               alt="..."
                             />
@@ -141,7 +140,7 @@ const Media = () => {
                     <div className="d-flex align-items-start text-muted">
                       <div className="flex-shrink-0 me-3">
                         <img
-                          src={user7}
+                          src={"user7"}
                           className="avatar-sm rounded"
                           alt="..."
                         />
@@ -177,7 +176,7 @@ const Media = () => {
                     <div className="d-flex align-items-start text-muted mb-4">
                       <div className="flex-shrink-0 me-3">
                         <img
-                          src={user5}
+                          src={"user5"}
                           className="avatar-sm rounded"
                           alt="..."
                         />
@@ -201,7 +200,7 @@ const Media = () => {
                     <div className="d-flex align-items-center text-muted mb-4">
                       <div className="flex-shrink-0 me-3">
                         <img
-                          src={user6}
+                          src={"user6"}
                           className="avatar-sm rounded"
                           alt="..."
                         />
@@ -225,7 +224,7 @@ const Media = () => {
                     <div className="d-flex align-items-end text-muted">
                       <div className="flex-shrink-0 me-3">
                         <img
-                          src={user7}
+                          src={"user7"}
                           className="avatar-sm rounded"
                           alt="..."
                         />

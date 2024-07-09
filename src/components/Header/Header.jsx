@@ -1,20 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  logo,
-  logosmall,
-  headericon01,
-  headericon05,
-  avatar02,
-  avatar11,
-  avatar17,
-  avatar13,
-  headericon04,
-  avatar01,
-  lr,
-  bl,
-  cn,
-} from "../imagepath";
+import { logo, logosmall, headericon05 } from "../imagepath";
 
 const Header = () => {
   const handlesidebar = () => {
@@ -138,7 +124,7 @@ const Header = () => {
                           <img
                             className="avatar-img rounded-circle"
                             alt="User Image"
-                            src={avatar02}
+                            src={"avatar02"}
                           />
                         </span>
                         <div className="media-body flex-grow-1">
@@ -163,7 +149,7 @@ const Header = () => {
                           <img
                             className="avatar-img rounded-circle"
                             alt="User Image"
-                            src={avatar11}
+                            src={"avatar11"}
                           />
                         </span>
                         <div className="media-body flex-grow-1">
@@ -190,7 +176,7 @@ const Header = () => {
                           <img
                             className="avatar-img rounded-circle"
                             alt="User Image"
-                            src={avatar17}
+                            src={"avatar17"}
                           />
                         </span>
                         <div className="media-body flex-grow-1">
@@ -215,7 +201,7 @@ const Header = () => {
                           <img
                             className="avatar-img rounded-circle"
                             alt="User Image"
-                            src={avatar13}
+                            src={"avatar13"}
                           />
                         </span>
                         <div className="media-body flex-grow-1">
@@ -265,7 +251,7 @@ const Header = () => {
               <span className="user-img">
                 <img
                   className="rounded-circle"
-                  src={avatar01}
+                  src={"avatar01"}
                   width={31}
                   alt="Ryan Taylor"
                 />
@@ -279,7 +265,7 @@ const Header = () => {
               <div className="user-header">
                 <div className="avatar avatar-sm">
                   <img
-                    src={avatar01}
+                    src={"avatar01"}
                     alt="User Image"
                     className="avatar-img rounded-circle"
                   />

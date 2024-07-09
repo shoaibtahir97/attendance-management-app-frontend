@@ -4,11 +4,6 @@ import Header from "../../Header/Header";
 import SideBar from "../../SideBar/SideBar";
 import { Link } from "react-router-dom";
 import {
-  avatar01,
-  avatar02,
-  avatar03,
-  avatar04,
-  avatar05,
   awardicon01,
   awardicon02,
   awardicon03,
@@ -63,131 +58,128 @@ const AdminDashboard = () => {
   const [dataBar, object] = useState({
     colors: ["#3D5EE1", "#70C4CF"],
     chart: {
-			type: 'bar',
-			height: 350,
-			width: '100%',
-			stacked: false,
-			toolbar: {
-				show: false
-			},
-		},
-		dataLabels: {
-			enabled: false
-		},
-		plotOptions: {
-			bar: {
+      type: "bar",
+      height: 350,
+      width: "100%",
+      stacked: false,
+      toolbar: {
+        show: false,
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    plotOptions: {
+      bar: {
         horizontal: false,
-				columnWidth: '55%',
-				endingShape: 'rounded',
-        categoryGap: '30%',
-			},
-		},
-		stroke: {
-			show: true,
-			width: 2,
-			colors: ['transparent']
-		},
-		series: [{
-			name: "Boys",
-			color: '#70C4CF',
-			data: [420, 532, 516, 575, 519, 517, 454, 392, 262, 383, 446, 551],
-		}, {
-			name: "Girls",
-			color: '#3D5EE1',
-			data: [336, 612, 344, 647, 345, 563, 256, 344, 323, 300, 455, 456],
-		}],
-		// labels: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
-		// xaxis: {
-		// 	labels: {
-		// 		show: false
-		// 	},
-		// 	axisBorder: {
-		// 		show: false
-		// 	},
-		// 	axisTicks: {
-		// 		show: false
-		// 	},
-		// },
-		// yaxis: {
-		// 	axisBorder: {
-		// 		show: false
-		// 	},
-		// 	axisTicks: {
-		// 		show: false
-		// 	},
-		// 	labels: {
-		// 		style: {
-		// 			colors: '#777'
-		// 		}
-		// 	}
-		// },
-		// title: {
-		// 	text: '',
-		// 	align: 'left',
-		// 	style: {
-		// 		fontSize: '18px'
-		// 	}
-		// },
-
+        columnWidth: "55%",
+        endingShape: "rounded",
+        categoryGap: "30%",
+      },
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ["transparent"],
+    },
+    series: [
+      {
+        name: "Boys",
+        color: "#70C4CF",
+        data: [420, 532, 516, 575, 519, 517, 454, 392, 262, 383, 446, 551],
+      },
+      {
+        name: "Girls",
+        color: "#3D5EE1",
+        data: [336, 612, 344, 647, 345, 563, 256, 344, 323, 300, 455, 456],
+      },
+    ],
+    // labels: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+    // xaxis: {
+    // 	labels: {
+    // 		show: false
+    // 	},
+    // 	axisBorder: {
+    // 		show: false
+    // 	},
+    // 	axisTicks: {
+    // 		show: false
+    // 	},
+    // },
+    // yaxis: {
+    // 	axisBorder: {
+    // 		show: false
+    // 	},
+    // 	axisTicks: {
+    // 		show: false
+    // 	},
+    // 	labels: {
+    // 		style: {
+    // 			colors: '#777'
+    // 		}
+    // 	}
+    // },
+    // title: {
+    // 	text: '',
+    // 	align: 'left',
+    // 	style: {
+    // 		fontSize: '18px'
+    // 	}
+    // },
 
     options: {
       chart: {
-        type: 'bar',
-        height: 350
+        type: "bar",
+        height: 350,
       },
       plotOptions: {
         bar: {
           horizontal: false,
-          columnWidth: '55%',
-          endingShape: 'rounded'
+          columnWidth: "55%",
+          endingShape: "rounded",
         },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       stroke: {
         show: true,
         width: 2,
-        colors: ['transparent']
+        colors: ["transparent"],
       },
       xaxis: {
         labels: {
-          show: false
+          show: false,
         },
         axisBorder: {
-          show: false
+          show: false,
         },
         axisTicks: {
-          show: false
+          show: false,
         },
       },
       yaxis: {
         axisBorder: {
-          show: false
+          show: false,
         },
         axisTicks: {
-          show: false
+          show: false,
         },
         labels: {
           style: {
-            colors: '#777'
-          }
-        }
+            colors: "#777",
+          },
+        },
       },
       title: {
-        text: '',
-        align: 'left',
+        text: "",
+        align: "left",
         style: {
-          fontSize: '18px'
-        }
+          fontSize: "18px",
+        },
       },
     },
-
-
-
-    
   });
-
 
   const [studentchart] = useState([
     {
@@ -411,7 +403,7 @@ const AdminDashboard = () => {
                               <Link to="/profile">
                                 <img
                                   className="rounded-circle"
-                                  src={avatar02}
+                                  src={"avatar01"}
                                   width={25}
                                   alt="Star Students"
                                 />
@@ -432,7 +424,7 @@ const AdminDashboard = () => {
                               <Link to="/profile">
                                 <img
                                   className="rounded-circle"
-                                  src={avatar01}
+                                  src={"avatar01"}
                                   width={25}
                                   alt="Star Students"
                                 />
@@ -453,7 +445,7 @@ const AdminDashboard = () => {
                               <Link to="/profile">
                                 <img
                                   className="rounded-circle"
-                                  src={avatar03}
+                                  src={"avatar03"}
                                   width={25}
                                   alt="Star Students"
                                 />
@@ -474,7 +466,7 @@ const AdminDashboard = () => {
                               <Link to="/profile">
                                 <img
                                   className="rounded-circle"
-                                  src={avatar04}
+                                  src={"avatar04"}
                                   width={25}
                                   alt="Star Students"
                                 />
@@ -495,7 +487,7 @@ const AdminDashboard = () => {
                               <Link to="/profile">
                                 <img
                                   className="rounded-circle"
-                                  src={avatar05}
+                                  src={"avatar05"}
                                   width={25}
                                   alt="Star Students"
                                 />

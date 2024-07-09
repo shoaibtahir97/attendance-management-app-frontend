@@ -6,18 +6,6 @@ import { onShowSizeChange, itemRender } from "../../Pagination";
 import Header from "../../Header/Header";
 import SideBar from "../../SideBar/SideBar";
 import Footer from "../../Footer/Footer";
-import {
-  avatar02,
-  avatar03,
-  avatar04,
-  avatar05,
-  avatar06,
-  avatar07,
-  avatar08,
-  avatar09,
-  avatar10,
-  avatar11,
-} from "../../imagepath";
 
 const TeachersList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);

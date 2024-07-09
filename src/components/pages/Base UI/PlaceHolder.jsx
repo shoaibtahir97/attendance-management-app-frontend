@@ -3,7 +3,6 @@ import Header from "../../Header/Header";
 import SideBar from "../../SideBar/SideBar";
 import Footer from "../../Footer/Footer";
 import { Link } from "react-router-dom";
-import { imgg1, imgg2 } from "../../imagepath";
 
 const PlaceHolder = () => {
   return (
@@ -48,7 +47,7 @@ const PlaceHolder = () => {
                       <div className="col-md-6">
                         <div className="card border shadow-none">
                           <img
-                            src={imgg1}
+                            src={"imgg1"}
                             className="card-img-top"
                             alt="..."
                           />
@@ -73,7 +72,7 @@ const PlaceHolder = () => {
                           aria-hidden="true"
                         >
                           <img
-                            src={imgg2}
+                            src={"imgg2"}
                             className="card-img-top"
                             alt="..."
                           />

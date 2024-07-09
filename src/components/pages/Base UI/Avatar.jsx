@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";import Header from "../../Header/Header";
+import { Link } from "react-router-dom";
+import Header from "../../Header/Header";
 import SideBar from "../../SideBar/SideBar";
-import { avatar02, avatar03, avatar04,} from "../../imagepath";
 
 const Tableavatar = () => {
   return (
@@ -43,42 +43,42 @@ const Tableavatar = () => {
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                     <div className="avatar avatar-xl">
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                     <div className="avatar avatar-lg">
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                     <div className="avatar">
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                     <div className="avatar avatar-sm">
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                     <div className="avatar avatar-xs">
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                   </div>
@@ -94,21 +94,21 @@ const Tableavatar = () => {
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                     <div className="avatar avatar-offline">
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                     <div className="avatar avatar-away">
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                   </div>
@@ -124,14 +124,14 @@ const Tableavatar = () => {
                       <img
                         className="avatar-img rounded"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                     <div className="avatar">
                       <img
                         className="avatar-img rounded-circle"
                         alt="User Image"
-                        src={avatar02}
+                        src={"avatar02"}
                       />
                     </div>
                   </div>
@@ -148,21 +148,21 @@ const Tableavatar = () => {
                         <img
                           className="avatar-img rounded-circle border border-white"
                           alt="User Image"
-                          src={avatar02}
+                          src={"avatar02"}
                         />
                       </div>
                       <div className="avatar">
                         <img
                           className="avatar-img rounded-circle border border-white"
                           alt="User Image"
-                          src={avatar03}
+                          src={"avatar03"}
                         />
                       </div>
                       <div className="avatar">
                         <img
                           className="avatar-img rounded-circle border border-white"
                           alt="User Image"
-                          src={avatar04}
+                          src={"avatar04"}
                         />
                       </div>
                       <div className="avatar">

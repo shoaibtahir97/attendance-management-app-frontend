@@ -2,7 +2,6 @@ import React from "react";
 import Header from "../../Header/Header";
 import SideBar from "../../SideBar/SideBar";
 import Footer from "../../Footer/Footer";
-import { imgg1, imgg2, imgg3, imgg4 } from "../../imagepath";
 import { Link } from "react-router-dom";
 
 const Carousel = () => {
@@ -54,21 +53,21 @@ const Carousel = () => {
                         <div className="carousel-item active">
                           <img
                             className="d-block img-fluid"
-                            src={imgg1}
+                            src={"imgg1"}
                             alt="First slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg3}
+                            src={"imgg3"}
                             alt="Second slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg4}
+                            src={"imgg4"}
                             alt="Third slide"
                           />
                         </div>
@@ -94,21 +93,21 @@ const Carousel = () => {
                         <div className="carousel-item active">
                           <img
                             className="d-block img-fluid"
-                            src={imgg1}
+                            src={"imgg1"}
                             alt="First slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg3}
+                            src={"imgg3"}
                             alt="Second slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg4}
+                            src={"imgg4"}
                             alt="Third slide"
                           />
                         </div>
@@ -177,21 +176,21 @@ const Carousel = () => {
                         <div className="carousel-item active">
                           <img
                             className="d-block img-fluid"
-                            src={imgg1}
+                            src={"imgg1"}
                             alt="First slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg2}
+                            src={"imgg2"}
                             alt="Second slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg4}
+                            src={"imgg4"}
                             alt="Third slide"
                           />
                         </div>
@@ -242,7 +241,7 @@ const Carousel = () => {
                       <div className="carousel-inner" role="listbox">
                         <div className="carousel-item active">
                           <img
-                            src={imgg1}
+                            src={"imgg1"}
                             alt="..."
                             className="d-block img-fluid"
                           />
@@ -256,7 +255,7 @@ const Carousel = () => {
                         </div>
                         <div className="carousel-item">
                           <img
-                            src={imgg2}
+                            src={"imgg2"}
                             alt="..."
                             className="d-block img-fluid"
                           />
@@ -270,7 +269,7 @@ const Carousel = () => {
                         </div>
                         <div className="carousel-item">
                           <img
-                            src={imgg3}
+                            src={"imgg3"}
                             alt="..."
                             className="d-block img-fluid"
                           />
@@ -332,21 +331,21 @@ const Carousel = () => {
                         <div className="carousel-item active">
                           <img
                             className="d-block img-fluid"
-                            src={imgg1}
+                            src={"imgg1"}
                             alt="First slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg2}
+                            src={"imgg2"}
                             alt="Second slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg3}
+                            src={"imgg3"}
                             alt="Third slide"
                           />
                         </div>
@@ -398,21 +397,21 @@ const Carousel = () => {
                         <div className="carousel-item active">
                           <img
                             className="d-block img-fluid"
-                            src={imgg2}
+                            src={"imgg2"}
                             alt="First slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg3}
+                            src={"imgg3"}
                             alt="Second slide"
                           />
                         </div>
                         <div className="carousel-item">
                           <img
                             className="d-block img-fluid"
-                            src={imgg4}
+                            src={"imgg4"}
                             alt="Third slide"
                           />
                         </div>
