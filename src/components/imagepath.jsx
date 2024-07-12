@@ -1,8 +1,10 @@
 export { default as favicon } from "../assets/img/favicon.png";
 export { default as login } from "../assets/img/login.png";
 
-export { default as logo } from "../assets/img/logo.png";
-export { default as logosmall } from "../assets/img/logo-small.png";
+export { default as logo } from "../assets/img/logo-transparent-text.png";
+export { default as logosmall } from "../assets/img/logo-transparent.png";
+// export { default as logo } from "../assets/img/logo.png";
+// export { default as logosmall } from "../assets/img/logo-small.png";
 
 export { default as headericon01 } from "../assets/img/icons/header-icon-01.png";
 export { default as headericon05 } from "../assets/img/icons/header-icon-05.svg";
@@ -20,8 +22,7 @@ export { default as blog5 } from "../assets/img/category/blog-5.jpg";
 export { default as blog6 } from "../assets/img/category/blog-6.jpg";
 export { default as blogdetail } from "../assets/img/category/blog-detail.jpg";
 
-export { default as profilebg } from "../assets/img/profile-bg.jpg";
-export { default as profileuser } from "../assets/img/profile-user.jpg";
+// export { default as profileuser } from "../assets/img/profile-user.jpg";
 
 export { default as img1 } from "../assets/img/profiles/avatar-01.jpg";
 export { default as img2 } from "../assets/img/profiles/avatar-02.jpg";
@@ -54,8 +55,6 @@ export { default as avatar18 } from "../assets/img/profiles/avatar-18.jpg";
 export { default as invoicecircle1 } from "../assets/img/invoice-circle1.png";
 export { default as invoicecircle2 } from "../assets/img/invoice-circle2.png";
 
-export { default as signature } from "../assets/img/signature.png";
-
 export { default as invoicesicon1 } from "../assets/img/icons/invoices-icon1.svg";
 export { default as invoicesicon2 } from "../assets/img/icons/invoices-icon2.svg";
 export { default as invoicesicon3 } from "../assets/img/icons/invoices-icon3.svg";
@@ -85,18 +84,6 @@ export { default as lessonicon04 } from "../assets/img/icons/lesson-icon-04.svg"
 export { default as lessonicon05 } from "../assets/img/icons/lesson-icon-05.svg";
 export { default as lessonicon06 } from "../assets/img/icons/lesson-icon-06.svg";
 export { default as bulidingicon } from "../assets/img/icons/buliding-icon.svg";
-
-export { default as img01 } from "../assets/img/img-01.jpg";
-export { default as img02 } from "../assets/img/img-02.jpg";
-export { default as img03 } from "../assets/img/img-03.jpg";
-export { default as img04 } from "../assets/img/img-04.jpg";
-export { default as img05 } from "../assets/img/img-05.jpg";
-
-export { default as imgg1 } from "../assets/img/img-1.jpg";
-export { default as imgg2 } from "../assets/img/img-2.jpg";
-export { default as imgg3 } from "../assets/img/img-3.jpg";
-export { default as imgg4 } from "../assets/img/img-4.jpg";
-export { default as imgg5 } from "../assets/img/img-5.jpg";
 
 export { default as user5 } from "../assets/img/user-5.jpg";
 export { default as user6 } from "../assets/img/user-6.jpg";

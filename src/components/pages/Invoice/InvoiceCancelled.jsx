@@ -203,15 +203,7 @@ const InvoiceCancelled = () => {
 	]);
     return (
         <>
-            <div className="main-wrapper">
-                {/* Header */}
-                <Header />
-
-                {/* Sidebar */}
-                <SideBar />
-
-                {/* Page Wrapper */}
-                <div className="page-wrapper">
+          
                     <div className="content container-fluid">
                         {/* Page Header */}
                         <div className="page-header">
@@ -578,7 +570,7 @@ const InvoiceCancelled = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                
 
 
                 {/* Delete Paid Modal */}
@@ -617,8 +609,6 @@ const InvoiceCancelled = () => {
                 </div>
 
 
-            </div>
-            {/* /Main Wrapper */}
 
         </>
     )

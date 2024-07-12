@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 const navConfig = [
   {
-    title: 'Teachers Dashboard',
-    path: '/teacherdashboard',
-    icon: 'grid',
-    role: ['teacher'],
+    title: "Teachers Dashboard",
+    path: "/dashboard",
+    icon: "grid",
+    role: ["teacher"],
   },
   {
-    title: 'Attendance',
-    path: '/attendance',
-    icon: 'table',
-    role: ['teacher'],
+    title: "Attendance",
+    path: "/dashboard/attendance",
+    icon: "table",
+    role: ["teacher"],
   },
 ];
 
