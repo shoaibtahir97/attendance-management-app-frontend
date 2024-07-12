@@ -14,7 +14,7 @@
     "preinstall": "npx npm-force-resolutions",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Shoaib Tahir",
   "license": "ISC",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^40.1.0",
