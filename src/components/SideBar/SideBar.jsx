@@ -11,6 +11,7 @@ const Sidebar = (props) => {
   const [isSideMenu, setSideMenu] = useState('');
   const [isSideMenuLevel, setSideMenuLevel] = useState('');
   const [isSideMenuLevel2, setSideMenuLevel2] = useState('');
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const toggleSidebar = (value) => {
     console.log(value);
@@ -108,36 +109,68 @@ const Sidebar = (props) => {
           <div className='sidebar-inner slimscroll'>
             <div id='sidebar-menu' className='sidebar-menu'>
               <ul>
-                {navConfig?.map((nav, index) => (
-                  <li
-                    key={index}
-                    className={`${
-                      nav.path === pathName ? 'active submenu' : 'submenu'
-                    }`}
-                  >
-                    <NavLink
-                      to={nav.path}
-                      className={({ isActive }) => {
-                        isActive ? 'active' : '';
-                        isSideMenu == 'index' ? 'subdrop' : '';
-                      }}
-                      onClick={() =>
-                        toggleSidebar(isSideMenu == 'index' ? '' : 'index')
-                      }
-                    >
-                      {nav.icon.includes('fas') ? (
-                        <i className={nav.icon} />
-                      ) : (
-                        <FeatherIcon icon={nav.icon} />
-                      )}
-                      <span>{nav.title}</span>
-                      <span className='menu-arrow'></span>
-                    </NavLink>
-                  </li>
-                ))}
+                {navConfig?.map((nav, navIndex) => {
+                  if (nav.role.includes(user?.role)) {
+                    return (
+                      <li
+                        key={navIndex}
+                        className={
+                          nav?.path === pathName ? 'active submenu' : 'submenu'
+                        }
+                      >
+                        {/* {nav.title} */}
+                        <Link
+                          to={nav.path}
+                          className={isSideMenu == nav?.title ? 'subdrop' : ''}
+                          onClick={() =>
+                            toggleSidebar(
+                              isSideMenu == nav?.title ? '' : nav?.title
+                            )
+                          }
+                        >
+                          <FeatherIcon icon='grid' />
+                          <span>{nav?.title}</span>
+                          {nav.children && <span className='menu-arrow'></span>}
+                        </Link>
+                        {isSideMenu == nav?.title &&
+                        nav?.children &&
+                        nav.children?.length > 0 ? (
+                          <ul
+                            style={{
+                              display:
+                                isSideMenu == nav?.title ? 'block' : 'none',
+                            }}
+                          >
+                            {nav?.children?.map((navChild, childIndex) => {
+                              if (navChild?.role?.includes(user?.role)) {
+                                return (
+                                  <li>
+                                    <Link
+                                      key={childIndex}
+                                      to={navChild.path}
+                                      className={
+                                        navChild?.path === pathName
+                                          ? 'active'
+                                          : ''
+                                      }
+                                    >
+                                      {navChild?.title}
+                                    </Link>
+                                  </li>
+                                );
+                              }
+                            })}
+                          </ul>
+                        ) : (
+                          ''
+                        )}
+                      </li>
+                    );
+                  }
+                })}
               </ul>
               {/* Main Menu */}
-              <ul>
+              {/* <ul>
                 <li className='menu-title'>
                   <span>Main Menu</span>
                 </li>
@@ -482,41 +515,41 @@ const Sidebar = (props) => {
                     ''
                   )}
                 </li>
-                {/* <li
+                <li
                   className={`${
-                    "/invoicelist" === pathName ||
-                    "/invoicegrid" === pathName ||
-                    "/addinvoice" === pathName ||
-                    "/editinvoice" === pathName ||
-                    "/viewinvoice" === pathName ||
-                    "/invoicesetting" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/invoicelist' === pathName ||
+                    '/invoicegrid' === pathName ||
+                    '/addinvoice' === pathName ||
+                    '/editinvoice' === pathName ||
+                    '/viewinvoice' === pathName ||
+                    '/invoicesetting' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Invoices" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Invoices' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "Invoices" ? "" : "Invoices")
+                      toggleSidebar(isSideMenu == 'Invoices' ? '' : 'Invoices')
                     }
                   >
-                    <i className="fas fa-clipboard" /> <span> Invoices</span>{" "}
-                    <span className="menu-arrow" />
+                    <i className='fas fa-clipboard' /> <span> Invoices</span>{' '}
+                    <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Invoices" ? (
+                  {isSideMenu == 'Invoices' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Invoices" ? "block" : "none",
+                        display: isSideMenu == 'Invoices' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/dashboard/invoicelist"
+                          to='/dashboard/invoicelist'
                           className={`${
-                            "/dashboard/invoicelist" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/invoicelist' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Invoices List
@@ -524,11 +557,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/invoicegrid"
+                          to='/dashboard/invoicegrid'
                           className={`${
-                            "/dashboard/invoicegrid" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/invoicegrid' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Invoices Grid
@@ -536,9 +569,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/addinvoice"
+                          to='/dashboard/addinvoice'
                           className={`${
-                            "/dashboard/addinvoice" === pathName ? "active" : ""
+                            '/dashboard/addinvoice' === pathName ? 'active' : ''
                           }`}
                         >
                           Add Invoices
@@ -546,11 +579,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/editinvoice"
+                          to='/dashboard/editinvoice'
                           className={`${
-                            "/dashboard/editinvoice" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/editinvoice' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Edit Invoices
@@ -558,11 +591,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/viewinvoice"
+                          to='/dashboard/viewinvoice'
                           className={`${
-                            "/dashboard/viewinvoice" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/viewinvoice' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Invoices Details
@@ -570,11 +603,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/invoicesetting"
+                          to='/dashboard/invoicesetting'
                           className={`${
-                            "/dashboard/invoicesetting" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/invoicesetting' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Invoices Settings
@@ -582,10 +615,10 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
-                </li> */}
-              </ul>
+                </li>
+              </ul> */}
               {/* /Main Menu*/}
 
               {/* Management */}
