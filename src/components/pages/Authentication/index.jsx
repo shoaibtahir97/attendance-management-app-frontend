@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 
 const Login = () => {
+  const navigate = useNavigate();
   const { Login } = useAuth();
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -61,6 +62,7 @@ const Login = () => {
 
   const handleLogin = async (data) => {
     await Login(data);
+    navigate('/dashboard', { replace: true });
   };
 
   return (
@@ -75,9 +77,9 @@ const Login = () => {
               <div className='login-right'>
                 <div className='login-right-wrap'>
                   <h1>Welcome to Stratford College London</h1>
-                  <p className='account-subtitle'>
+                  {/* <p className='account-subtitle'>
                     Need an account? <Link to='/register'>Sign Up</Link>
-                  </p>
+                  </p> */}
                   <h2>Sign in</h2>
                   {/* Form */}
                   <FormProvider

@@ -39,6 +39,7 @@ import ViewInvoice from '../components/pages/Invoice/ViewInvoice';
 import EditInvoice from '../components/pages/Invoice/EditInvoice';
 import AddInvoice from '../components/pages/Invoice/AddInvoice';
 import ForgotPassword from '../components/pages/Authentication/ForgotPassword';
+import ProtectedRoute from './ProtectedRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -52,47 +53,50 @@ const router = createBrowserRouter(
         />
         <Route path='/register' element={<Register />} />
       </Route>
+      <Route path='' element={<ProtectedRoute />}>
+        <Route path='/dashboard' element={<DashboardLayout />}>
+          {/* Dashboard */}
+          <Route path='' element={<AdminDashboard />} />
+          <Route
+            path='/dashboard/teacherdashboard'
+            element={<TeacherDashboard />}
+          />
+          <Route
+            path='/dashboard/studentdashboard'
+            element={<StudentsDashboard />}
+          />
+          {/* Students */}
 
-      <Route path='/dashboard' element={<DashboardLayout />}>
-        {/* Dashboard */}
-        <Route path='' element={<AdminDashboard />} />
-        <Route
-          path='/dashboard/teacherdashboard'
-          element={<TeacherDashboard />}
-        />
-        <Route
-          path='/dashboard/studentdashboard'
-          element={<StudentsDashboard />}
-        />
-        {/* Students */}
+          <Route path='/dashboard/students' element={<Students />} />
+          <Route path='/dashboard/studentsview' element={<StudentsView />} />
+          <Route path='/dashboard/addstudent' element={<AddStudent />} />
+          <Route path='/dashboard/editstudent' element={<EditStudent />} />
 
-        <Route path='/dashboard/students' element={<Students />} />
-        <Route path='/dashboard/studentsview' element={<StudentsView />} />
-        <Route path='/dashboard/addstudent' element={<AddStudent />} />
-        <Route path='/dashboard/editstudent' element={<EditStudent />} />
+          {/* Teachers */}
 
-        {/* Teachers */}
+          <Route path='/dashboard/teacherslist' element={<TeachersList />} />
+          <Route
+            path='/dashboard/teachersprofile'
+            element={<TeachersProfile />}
+          />
+          <Route path='/dashboard/addteacher' element={<TeachersAdd />} />
+          <Route path='/dashboard/editteacher' element={<TeachersEdit />} />
 
-        <Route path='/dashboard/teacherslist' element={<TeachersList />} />
-        <Route
-          path='/dashboard/teachersprofile'
-          element={<TeachersProfile />}
-        />
-        <Route path='/dashboard/addteacher' element={<TeachersAdd />} />
-        <Route path='/dashboard/editteacher' element={<TeachersEdit />} />
+          {/* Departments */}
+          <Route path='/dashboard/department' element={<DepartmentList />} />
+          <Route path='/dashboard/adddepartment' element={<AddDepartment />} />
+          <Route
+            path='/dashboard/editdepartment'
+            element={<EditDepartment />}
+          />
 
-        {/* Departments */}
-        <Route path='/dashboard/department' element={<DepartmentList />} />
-        <Route path='/dashboard/adddepartment' element={<AddDepartment />} />
-        <Route path='/dashboard/editdepartment' element={<EditDepartment />} />
+          {/* Subjects */}
+          <Route path='/dashboard/subject' element={<SubjectList />} />
+          <Route path='/dashboard/addsubject' element={<AddSubject />} />
+          <Route path='/dashboard/editsubject' element={<EditSubject />} />
 
-        {/* Subjects */}
-        <Route path='/dashboard/subject' element={<SubjectList />} />
-        <Route path='/dashboard/addsubject' element={<AddSubject />} />
-        <Route path='/dashboard/editsubject' element={<EditSubject />} />
-
-        {/* Invoices */}
-        <Route path='/dashboard/invoicegrid' element={<InvoiceGrid />} />
+          {/* Invoices */}
+          {/* <Route path='/dashboard/invoicegrid' element={<InvoiceGrid />} />
         <Route path='/dashboard/invoicepaid' element={<InvoicePaid />} />
         <Route path='/dashboard/invoiceoverdue' element={<InvoiceOverdue />} />
         <Route path='/dashboard/invoicedraft' element={<InvoiceDraft />} />
@@ -108,10 +112,11 @@ const router = createBrowserRouter(
         <Route path='/dashboard/editinvoice' element={<EditInvoice />} />
         <Route path='/dashboard/viewinvoice' element={<ViewInvoice />} />
         <Route path='/dashboard/invoicesetting' element={<InvoiceSettings />} />
-        <Route path='/dashboard/invoicelist' element={<InvoiceList />} />
+        <Route path='/dashboard/invoicelist' element={<InvoiceList />} /> */}
 
-        {/* Attendance */}
-        <Route path='/dashboard/attendance' element={<AttendancePage />} />
+          {/* Attendance */}
+          <Route path='/dashboard/attendance' element={<AttendancePage />} />
+        </Route>
       </Route>
     </Route>
   )
