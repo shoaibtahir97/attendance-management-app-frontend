@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, withRouter } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, NavLink, useLocation, withRouter } from 'react-router-dom';
 
-import FeatherIcon from "feather-icons-react";
-import Scrollbars from "react-custom-scrollbars-2";
-import navConfig from "./sideBarConfig";
+import FeatherIcon from 'feather-icons-react';
+import Scrollbars from 'react-custom-scrollbars-2';
+import navConfig from './sideBarConfig';
 // import { LogoImg, LogoSmallImg } from "../_components/imagepath";
 
 const Sidebar = (props) => {
   const location = useLocation();
-  const [isSideMenu, setSideMenu] = useState("");
-  const [isSideMenuLevel, setSideMenuLevel] = useState("");
-  const [isSideMenuLevel2, setSideMenuLevel2] = useState("");
+  const [isSideMenu, setSideMenu] = useState('');
+  const [isSideMenuLevel, setSideMenuLevel] = useState('');
+  const [isSideMenuLevel2, setSideMenuLevel2] = useState('');
 
   const toggleSidebar = (value) => {
     console.log(value);
@@ -29,62 +29,62 @@ const Sidebar = (props) => {
     function handleMouseOver(e) {
       e.stopPropagation();
       if (
-        document.body.classList.contains("mini-sidebar") &&
-        document.querySelector("#toggle_btn").offsetParent !== null
+        document.body.classList.contains('mini-sidebar') &&
+        document.querySelector('#toggle_btn').offsetParent !== null
       ) {
-        var targ = e.target.closest(".sidebar");
+        var targ = e.target.closest('.sidebar');
         if (targ) {
-          document.body.classList.add("expand-menu");
+          document.body.classList.add('expand-menu');
           document
-            .querySelectorAll(".subdrop + ul")
-            .forEach((ul) => (ul.style.display = "block"));
+            .querySelectorAll('.subdrop + ul')
+            .forEach((ul) => (ul.style.display = 'block'));
         } else {
-          document.body.classList.remove("expand-menu");
+          document.body.classList.remove('expand-menu');
           document
-            .querySelectorAll(".subdrop + ul")
-            .forEach((ul) => (ul.style.display = "none"));
+            .querySelectorAll('.subdrop + ul')
+            .forEach((ul) => (ul.style.display = 'none'));
         }
         return false;
       }
     }
 
-    document.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener('mouseover', handleMouseOver);
 
     return () => {
-      document.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener('mouseover', handleMouseOver);
     };
   }, []);
 
   useEffect(() => {
-    $(document).on("change", ".sidebar-type-four input", function () {
-      if ($(this).is(":checked")) {
-        $(".sidebar").addClass("sidebar-eight");
-        $(".sidebar-menu").addClass("sidebar-menu-eight");
-        $(".menu-title").addClass("menu-title-eight");
-        $(".header").addClass("header-eight");
-        $(".header-left-two").addClass("header-left-eight");
-        $(".user-menu").addClass("user-menu-eight");
-        $(".dropdown-toggle").addClass("dropdown-toggle-eight");
-        $(".white-logo").addClass("show-logo");
+    $(document).on('change', '.sidebar-type-four input', function () {
+      if ($(this).is(':checked')) {
+        $('.sidebar').addClass('sidebar-eight');
+        $('.sidebar-menu').addClass('sidebar-menu-eight');
+        $('.menu-title').addClass('menu-title-eight');
+        $('.header').addClass('header-eight');
+        $('.header-left-two').addClass('header-left-eight');
+        $('.user-menu').addClass('user-menu-eight');
+        $('.dropdown-toggle').addClass('dropdown-toggle-eight');
+        $('.white-logo').addClass('show-logo');
         $(
-          ".header-one .header-left-one .logo:not(.logo-small), .header-five .header-left-five .logo:not(.logo-small)"
-        ).addClass("hide-logo");
-        $(".header-two .header-left-two .logo:not(.logo-small)").removeClass(
-          "hide-logo"
+          '.header-one .header-left-one .logo:not(.logo-small), .header-five .header-left-five .logo:not(.logo-small)'
+        ).addClass('hide-logo');
+        $('.header-two .header-left-two .logo:not(.logo-small)').removeClass(
+          'hide-logo'
         );
-        $(".header-two .header-left-two .dark-logo").removeClass("show-logo");
+        $('.header-two .header-left-two .dark-logo').removeClass('show-logo');
       } else {
-        $(".sidebar").removeClass("sidebar-eight");
-        $(".sidebar-menu").removeClass("sidebar-menu-eight");
-        $(".menu-title").removeClass("menu-title-eight");
-        $(".header").removeClass("header-eight");
-        $(".header-left-two").removeClass("header-left-eight");
-        $(".user-menu").removeClass("user-menu-eight");
-        $(".dropdown-toggle").removeClass("dropdown-toggle-eight");
-        $(".white-logo").removeClass("show-logo");
+        $('.sidebar').removeClass('sidebar-eight');
+        $('.sidebar-menu').removeClass('sidebar-menu-eight');
+        $('.menu-title').removeClass('menu-title-eight');
+        $('.header').removeClass('header-eight');
+        $('.header-left-two').removeClass('header-left-eight');
+        $('.user-menu').removeClass('user-menu-eight');
+        $('.dropdown-toggle').removeClass('dropdown-toggle-eight');
+        $('.white-logo').removeClass('show-logo');
         $(
-          ".header-one .header-left-one .logo:not(.logo-small), .header-five .header-left-five .logo:not(.logo-small)"
-        ).removeClass("hide-logo");
+          '.header-one .header-left-one .logo:not(.logo-small), .header-five .header-left-five .logo:not(.logo-small)'
+        ).removeClass('hide-logo');
       }
     });
   }, []);
@@ -93,81 +93,81 @@ const Sidebar = (props) => {
 
   return (
     <>
-      <div className="sidebar" id="sidebar">
+      <div className='sidebar' id='sidebar'>
         <Scrollbars
           autoHide
           autoHideTimeout={1000}
           autoHideDuration={200}
           autoHeight
           autoHeightMin={0}
-          autoHeightMax="95vh"
+          autoHeightMax='95vh'
           thumbMinSize={30}
           universal={false}
           hideTracksWhenNotNeeded={true}
         >
-          <div className="sidebar-inner slimscroll">
-            <div id="sidebar-menu" className="sidebar-menu">
+          <div className='sidebar-inner slimscroll'>
+            <div id='sidebar-menu' className='sidebar-menu'>
               <ul>
                 {navConfig?.map((nav, index) => (
                   <li
                     key={index}
                     className={`${
-                      nav.path === pathName ? "active submenu" : "submenu"
+                      nav.path === pathName ? 'active submenu' : 'submenu'
                     }`}
                   >
                     <NavLink
                       to={nav.path}
                       className={({ isActive }) => {
-                        isActive ? "active" : "";
-                        isSideMenu == "index" ? "subdrop" : "";
+                        isActive ? 'active' : '';
+                        isSideMenu == 'index' ? 'subdrop' : '';
                       }}
                       onClick={() =>
-                        toggleSidebar(isSideMenu == "index" ? "" : "index")
+                        toggleSidebar(isSideMenu == 'index' ? '' : 'index')
                       }
                     >
-                      {nav.icon.includes("fas") ? (
+                      {nav.icon.includes('fas') ? (
                         <i className={nav.icon} />
                       ) : (
                         <FeatherIcon icon={nav.icon} />
                       )}
                       <span>{nav.title}</span>
-                      <span className="menu-arrow"></span>
+                      <span className='menu-arrow'></span>
                     </NavLink>
                   </li>
                 ))}
               </ul>
               {/* Main Menu */}
               <ul>
-                <li className="menu-title">
+                <li className='menu-title'>
                   <span>Main Menu</span>
                 </li>
                 <li
                   className={`${
-                    "/dashboard" === pathName ? "active submenu" : "submenu"
+                    '/dashboard' === pathName ? 'active submenu' : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "index" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'index' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "index" ? "" : "index")
+                      toggleSidebar(isSideMenu == 'index' ? '' : 'index')
                     }
                   >
-                    <FeatherIcon icon="grid" />
+                    <FeatherIcon icon='grid' />
                     <span>Dashboard</span>
-                    <span className="menu-arrow"></span>
+                    <span className='menu-arrow'></span>
                   </Link>
-                  {isSideMenu == "index" ? (
+                  {isSideMenu == 'index' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "index" ? "block" : "none",
+                        display: isSideMenu == 'index' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/dashboard"
+                          to='/dashboard'
                           className={`${
-                            "/dashboard" === pathName ? "active" : ""
+                            '/dashboard' === pathName ? 'active' : ''
                           }`}
                         >
                           Admin Dashboard
@@ -175,11 +175,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <NavLink
-                          to="/dashboard/teacherdashboard"
+                          to='/dashboard/teacherdashboard'
                           className={`${
-                            "/dashboard/teacherdashboard" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/teacherdashboard' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Teachers Dashboard
@@ -187,11 +187,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <NavLink
-                          to="/dashboard/studentdashboard"
+                          to='/dashboard/studentdashboard'
                           className={`${
-                            "/dashboard/studentdashboard" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/studentdashboard' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Students Dashboard
@@ -199,40 +199,40 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
                 <li
                   className={`${
-                    "/students" === pathName ||
-                    "/studentsview" === pathName ||
-                    "/addstudent" === pathName ||
-                    "/editstudent" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/students' === pathName ||
+                    '/studentsview' === pathName ||
+                    '/addstudent' === pathName ||
+                    '/editstudent' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Students" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Students' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "Students" ? "" : "Students")
+                      toggleSidebar(isSideMenu == 'Students' ? '' : 'Students')
                     }
                   >
-                    <i className="fas fa-graduation-cap" />{" "}
-                    <span> Students</span> <span className="menu-arrow" />
+                    <i className='fas fa-graduation-cap' />{' '}
+                    <span> Students</span> <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Students" ? (
+                  {isSideMenu == 'Students' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Students" ? "block" : "none",
+                        display: isSideMenu == 'Students' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/dashboard/students"
+                          to='/dashboard/students'
                           className={`${
-                            "/dashboard/students" === pathName ? "active" : ""
+                            '/dashboard/students' === pathName ? 'active' : ''
                           }`}
                         >
                           Student List
@@ -240,11 +240,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/studentsview"
+                          to='/dashboard/studentsview'
                           className={`${
-                            "/dashboard/studentsview" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/studentsview' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Student View
@@ -252,9 +252,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/addstudent"
+                          to='/dashboard/addstudent'
                           className={`${
-                            "/dashboard/addstudent" === pathName ? "active" : ""
+                            '/dashboard/addstudent' === pathName ? 'active' : ''
                           }`}
                         >
                           Student Add
@@ -262,11 +262,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/editstudent"
+                          to='/dashboard/editstudent'
                           className={`${
-                            "/dashboard/editstudent" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/editstudent' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Student Edit
@@ -274,42 +274,42 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
                 <li
                   className={`${
-                    "/teacherslist" === pathName ||
-                    "/teachersprofile" === pathName ||
-                    "/addteacher" === pathName ||
-                    "/editteacher" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/teacherslist' === pathName ||
+                    '/teachersprofile' === pathName ||
+                    '/addteacher' === pathName ||
+                    '/editteacher' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Teachers" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Teachers' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "Teachers" ? "" : "Teachers")
+                      toggleSidebar(isSideMenu == 'Teachers' ? '' : 'Teachers')
                     }
                   >
-                    <i className="fas fa-chalkboard-teacher" />{" "}
-                    <span> Teachers</span> <span className="menu-arrow" />
+                    <i className='fas fa-chalkboard-teacher' />{' '}
+                    <span> Teachers</span> <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Teachers" ? (
+                  {isSideMenu == 'Teachers' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Teachers" ? "block" : "none",
+                        display: isSideMenu == 'Teachers' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/dashboard/teacherslist"
+                          to='/dashboard/teacherslist'
                           className={`${
-                            "/dashboard/teacherslist" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/teacherslist' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Teacher List
@@ -317,11 +317,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/teachersprofile"
+                          to='/dashboard/teachersprofile'
                           className={`${
-                            "/dashboard/teachersprofile" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/teachersprofile' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Teacher View
@@ -329,9 +329,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/addteacher"
+                          to='/dashboard/addteacher'
                           className={`${
-                            "/dashboard/addteacher" === pathName ? "active" : ""
+                            '/dashboard/addteacher' === pathName ? 'active' : ''
                           }`}
                         >
                           Teacher Add
@@ -339,11 +339,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/editteacher"
+                          to='/dashboard/editteacher'
                           className={`${
-                            "/dashboard/editteacher" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/editteacher' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Teacher Edit
@@ -351,41 +351,41 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
                 <li
                   className={`${
-                    "/department" === pathName ||
-                    "/adddepartment" === pathName ||
-                    "/editdepartment" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/department' === pathName ||
+                    '/adddepartment' === pathName ||
+                    '/editdepartment' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Departments" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Departments' ? 'subdrop' : ''}
                     onClick={() =>
                       toggleSidebar(
-                        isSideMenu == "Departments" ? "" : "Departments"
+                        isSideMenu == 'Departments' ? '' : 'Departments'
                       )
                     }
                   >
-                    <i className="fas fa-building" /> <span> Departments</span>{" "}
-                    <span className="menu-arrow" />
+                    <i className='fas fa-building' /> <span> Departments</span>{' '}
+                    <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Departments" ? (
+                  {isSideMenu == 'Departments' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Departments" ? "block" : "none",
+                        display: isSideMenu == 'Departments' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/dashboard/department"
+                          to='/dashboard/department'
                           className={`${
-                            "/dashboard/department" === pathName ? "active" : ""
+                            '/dashboard/department' === pathName ? 'active' : ''
                           }`}
                         >
                           Department List
@@ -393,11 +393,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/adddepartment"
+                          to='/dashboard/adddepartment'
                           className={`${
-                            "/dashboard/adddepartment" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/adddepartment' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Department Add
@@ -405,11 +405,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/editdepartment"
+                          to='/dashboard/editdepartment'
                           className={`${
-                            "/dashboard/editdepartment" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/editdepartment' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Department Edit
@@ -417,39 +417,39 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
                 <li
                   className={`${
-                    "/subject" === pathName ||
-                    "/addsubject" === pathName ||
-                    "/editsubject" === pathName
-                      ? "active submenu"
-                      : "submenu"
+                    '/subject' === pathName ||
+                    '/addsubject' === pathName ||
+                    '/editsubject' === pathName
+                      ? 'active submenu'
+                      : 'submenu'
                   }`}
                 >
                   <Link
-                    to="#"
-                    className={isSideMenu == "Subjects" ? "subdrop" : ""}
+                    to='#'
+                    className={isSideMenu == 'Subjects' ? 'subdrop' : ''}
                     onClick={() =>
-                      toggleSidebar(isSideMenu == "Subjects" ? "" : "Subjects")
+                      toggleSidebar(isSideMenu == 'Subjects' ? '' : 'Subjects')
                     }
                   >
-                    <i className="fas fa-book-reader" /> <span> Subjects</span>{" "}
-                    <span className="menu-arrow" />
+                    <i className='fas fa-book-reader' /> <span> Subjects</span>{' '}
+                    <span className='menu-arrow' />
                   </Link>
-                  {isSideMenu == "Subjects" ? (
+                  {isSideMenu == 'Subjects' ? (
                     <ul
                       style={{
-                        display: isSideMenu == "Subjects" ? "block" : "none",
+                        display: isSideMenu == 'Subjects' ? 'block' : 'none',
                       }}
                     >
                       <li>
                         <Link
-                          to="/dashboard/subject"
+                          to='/dashboard/subject'
                           className={`${
-                            "/dashboard/subject" === pathName ? "active" : ""
+                            '/dashboard/subject' === pathName ? 'active' : ''
                           }`}
                         >
                           Subject List
@@ -457,9 +457,9 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/addsubject"
+                          to='/dashboard/addsubject'
                           className={`${
-                            "/dashboard/addsubject" === pathName ? "active" : ""
+                            '/dashboard/addsubject' === pathName ? 'active' : ''
                           }`}
                         >
                           Subject Add
@@ -467,11 +467,11 @@ const Sidebar = (props) => {
                       </li>
                       <li>
                         <Link
-                          to="/dashboard/editsubject"
+                          to='/dashboard/editsubject'
                           className={`${
-                            "/dashboard/editsubject" === pathName
-                              ? "active"
-                              : ""
+                            '/dashboard/editsubject' === pathName
+                              ? 'active'
+                              : ''
                           }`}
                         >
                           Subject Edit
@@ -479,10 +479,10 @@ const Sidebar = (props) => {
                       </li>
                     </ul>
                   ) : (
-                    ""
+                    ''
                   )}
                 </li>
-                <li
+                {/* <li
                   className={`${
                     "/invoicelist" === pathName ||
                     "/invoicegrid" === pathName ||
@@ -584,7 +584,7 @@ const Sidebar = (props) => {
                   ) : (
                     ""
                   )}
-                </li>
+                </li> */}
               </ul>
               {/* /Main Menu*/}
 
