@@ -1,10 +1,9 @@
-import React from "react";
-import { Navigate, Outlet, Redirect, Route } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
-import useAuth from "../hooks/useAuth";
+import React from 'react';
+import { Navigate, Outlet, Redirect, Route } from 'react-router-dom';
 
-const ProtectedRoute = ({ isPublic, isAuthorized }) => {
-  return isPublic || isAuthorized ? <Outlet /> : <Navigate to="/login" />;
+const ProtectedRoute = () => {
+  const user = localStorage.getItem('user');
+  return user ? <Outlet /> : <Navigate to='/login' />;
 };
 
 export default ProtectedRoute;
