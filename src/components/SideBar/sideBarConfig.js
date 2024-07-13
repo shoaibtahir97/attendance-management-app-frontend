@@ -3,13 +3,13 @@ const navConfig = [
   // Dashboard
   {
     title: 'Admin Dashboard',
-    path: '/dashboard',
+    path: '/dashboard/admindashboard',
     icon: 'grid',
     role: ['admin'],
   },
   {
     title: 'Teacher Dashboard',
-    path: '/dashboard',
+    path: '/dashboard/teacherdashboard',
     icon: 'table',
     role: ['teacher'],
   },

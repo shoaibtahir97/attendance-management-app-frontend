@@ -56,13 +56,16 @@ const router = createBrowserRouter(
       <Route path='' element={<ProtectedRoute />}>
         <Route path='/dashboard' element={<DashboardLayout />}>
           {/* Dashboard */}
-          <Route path='' element={<AdminDashboard />} />
+          <Route
+            path='/dashboard/admindashboard'
+            element={<AdminDashboard />}
+          />
           <Route
             path='/dashboard/teacherdashboard'
             element={<TeacherDashboard />}
           />
           <Route
-            path='/dashboard/studentdashboard'
+            path='dashboard/studentdashboard'
             element={<StudentsDashboard />}
           />
           {/* Students */}

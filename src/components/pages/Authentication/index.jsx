@@ -62,7 +62,9 @@ const Login = () => {
 
   const handleLogin = async (data) => {
     await Login(data);
-    navigate('/dashboard', { replace: true });
+    data?.role === 'admin'
+      ? navigate('/dashboard/admindashboard', { replace: true })
+      : navigate('/dashboard/teacherdashboard', { replace: true });
   };
 
   return (
