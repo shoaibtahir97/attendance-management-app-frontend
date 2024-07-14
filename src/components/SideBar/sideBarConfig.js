@@ -1,22 +1,23 @@
 import React from 'react';
+import { PATH_DASHBOARD } from '../../routes/paths';
 const navConfig = [
   // Dashboard
   {
     title: 'Admin Dashboard',
-    path: '/dashboard/admindashboard',
+    path: PATH_DASHBOARD.adminDashboard,
     icon: 'grid',
     role: ['admin'],
   },
   {
     title: 'Teacher Dashboard',
-    path: '/dashboard/teacherdashboard',
+    path: PATH_DASHBOARD.teacherDashboard,
     icon: 'table',
     role: ['teacher'],
   },
   // Attendance
   {
     title: 'Attendance',
-    path: '/dashboard/attendance',
+    path: PATH_DASHBOARD.attendance,
     icon: 'table',
     role: ['teacher', 'admin'],
   },
@@ -29,22 +30,22 @@ const navConfig = [
     children: [
       {
         title: 'Student List',
-        path: `/dashboard/students`,
+        path: PATH_DASHBOARD.students,
         role: ['teacher', 'admin'],
       },
       {
         title: 'Student View',
-        path: `/dashboard/studentsview`,
+        path: PATH_DASHBOARD.studentProfile,
         role: ['teacher', 'admin'],
       },
       {
         title: 'Student Add',
-        path: `/dashboard/addstudent`,
+        path: PATH_DASHBOARD.studentAdd,
         role: ['admin'],
       },
       {
         title: 'Student Edit',
-        path: `/dashboard/editstudent`,
+        path: PATH_DASHBOARD.studentEdit,
         role: ['admin'],
       },
     ],
@@ -58,22 +59,22 @@ const navConfig = [
     children: [
       {
         title: 'Teacher List',
-        path: `/dashboard/teacherslist`,
+        path: PATH_DASHBOARD.teachers,
         role: ['admin'],
       },
       {
         title: 'Teacher View',
-        path: `/dashboard/teachersprofile`,
+        path: PATH_DASHBOARD.teacherProfile,
         role: ['admin'],
       },
       {
         title: 'Teacher Add',
-        path: `/dashboard/addteacher`,
+        path: PATH_DASHBOARD.teacherAdd,
         role: ['admin'],
       },
       {
         title: 'Teacher Edit',
-        path: `/dashboard/editteacher`,
+        path: PATH_DASHBOARD.teacherEdit,
         role: ['admin'],
       },
     ],
@@ -87,17 +88,17 @@ const navConfig = [
     children: [
       {
         title: 'Department List',
-        path: `/dashboard/department`,
+        path: PATH_DASHBOARD.departments,
         role: ['teacher', 'admin'],
       },
       {
         title: 'Department Add',
-        path: `/dashboard/adddepartment`,
+        path: PATH_DASHBOARD.departmentAdd,
         role: ['admin'],
       },
       {
         title: 'Department Edit',
-        path: `/dashboard/editdepartment`,
+        path: PATH_DASHBOARD.departmentEdit,
         role: ['admin'],
       },
     ],
@@ -111,17 +112,17 @@ const navConfig = [
     children: [
       {
         title: 'Subject List',
-        path: `/dashboard/subject`,
+        path: PATH_DASHBOARD.subjects,
         role: ['teacher', 'admin'],
       },
       {
         title: 'Subject Add',
-        path: `/dashboard/addsubject`,
+        path: PATH_DASHBOARD.subjectAdd,
         role: ['admin'],
       },
       {
         title: 'Department Edit',
-        path: `/dashboard/editsubject`,
+        path: PATH_DASHBOARD.subjectEdit,
         role: ['admin'],
       },
     ],
@@ -129,7 +130,7 @@ const navConfig = [
   // Reports
   {
     title: 'Reports',
-    path: '/dashboard/reports',
+    path: PATH_DASHBOARD.reports,
     icon: 'table',
     role: ['admin'],
   },
