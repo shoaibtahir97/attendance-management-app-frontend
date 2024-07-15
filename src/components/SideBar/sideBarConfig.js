@@ -1,137 +1,154 @@
-import React from 'react';
+import React from "react";
 const navConfig = [
   // Dashboard
   {
-    title: 'Admin Dashboard',
-    path: '/dashboard/admindashboard',
-    icon: 'grid',
-    role: ['admin'],
+    title: "Admin Dashboard",
+    path: "/dashboard/admindashboard",
+    icon: "grid",
+    role: ["admin"],
   },
   {
-    title: 'Teacher Dashboard',
-    path: '/dashboard/teacherdashboard',
-    icon: 'table',
-    role: ['teacher'],
+    title: "Teacher Dashboard",
+    path: "/dashboard/teacherdashboard",
+    icon: "table",
+    role: ["teacher"],
   },
   // Attendance
   {
-    title: 'Attendance',
-    path: '/dashboard/attendance',
-    icon: 'table',
-    role: ['teacher', 'admin'],
+    title: "Attendance",
+    path: "/dashboard/attendance",
+    icon: "table",
+    role: ["teacher", "admin"],
   },
   // Students
   {
-    title: 'Students',
-    path: '#',
-    icon: 'table',
-    role: ['teacher', 'admin'],
+    title: "Students",
+    path: "#",
+    icon: "table",
+    role: ["teacher", "admin"],
     children: [
       {
-        title: 'Student List',
+        title: "Student List",
         path: `/dashboard/students`,
-        role: ['teacher', 'admin'],
+        role: ["teacher", "admin"],
       },
       {
-        title: 'Student View',
+        title: "Student View",
         path: `/dashboard/studentsview`,
-        role: ['teacher', 'admin'],
+        role: ["teacher", "admin"],
       },
       {
-        title: 'Student Add',
+        title: "Student Add",
         path: `/dashboard/addstudent`,
-        role: ['admin'],
+        role: ["admin"],
       },
       {
-        title: 'Student Edit',
+        title: "Student Edit",
         path: `/dashboard/editstudent`,
-        role: ['admin'],
+        role: ["admin"],
       },
     ],
   },
   // Teachers
   {
-    title: 'Teachers',
-    path: '#',
-    icon: 'table',
-    role: ['admin'],
+    title: "Teachers",
+    path: "#",
+    icon: "table",
+    role: ["admin"],
     children: [
       {
-        title: 'Teacher List',
+        title: "Teacher List",
         path: `/dashboard/teacherslist`,
-        role: ['admin'],
+        role: ["admin"],
       },
       {
-        title: 'Teacher View',
+        title: "Teacher View",
         path: `/dashboard/teachersprofile`,
-        role: ['admin'],
+        role: ["admin"],
       },
       {
-        title: 'Teacher Add',
+        title: "Teacher Add",
         path: `/dashboard/addteacher`,
-        role: ['admin'],
+        role: ["admin"],
       },
       {
-        title: 'Teacher Edit',
+        title: "Teacher Edit",
         path: `/dashboard/editteacher`,
-        role: ['admin'],
+        role: ["admin"],
       },
     ],
   },
   // Departments
   {
-    title: 'Departments',
-    path: '#',
-    icon: 'table',
-    role: ['teacher', 'admin'],
+    title: "Departments",
+    path: "#",
+    icon: "table",
+    role: ["teacher", "admin"],
     children: [
       {
-        title: 'Department List',
+        title: "Department List",
         path: `/dashboard/department`,
-        role: ['teacher', 'admin'],
+        role: ["teacher", "admin"],
       },
       {
-        title: 'Department Add',
+        title: "Department Add",
         path: `/dashboard/adddepartment`,
-        role: ['admin'],
+        role: ["admin"],
       },
       {
-        title: 'Department Edit',
+        title: "Department Edit",
         path: `/dashboard/editdepartment`,
-        role: ['admin'],
+        role: ["admin"],
       },
     ],
   },
   // Subjects
   {
-    title: 'Subjects',
-    path: '#',
-    icon: 'table',
-    role: ['teacher', 'admin'],
+    title: "Subjects",
+    path: "#",
+    icon: "table",
+    role: ["teacher", "admin"],
     children: [
       {
-        title: 'Subject List',
+        title: "Subject List",
         path: `/dashboard/subject`,
-        role: ['teacher', 'admin'],
+        role: ["teacher", "admin"],
       },
       {
-        title: 'Subject Add',
+        title: "Subject Add",
         path: `/dashboard/addsubject`,
-        role: ['admin'],
+        role: ["admin"],
       },
       {
-        title: 'Department Edit',
+        title: "Department Edit",
         path: `/dashboard/editsubject`,
-        role: ['admin'],
+        role: ["admin"],
       },
     ],
   },
   // Reports
   {
-    title: 'Reports',
-    path: '/reports',
-    icon: 'table',
-    role: ['admin'],
+    title: "Reports",
+    path: "#",
+    icon: "table",
+    role: ["admin"],
+    children: [
+      {
+        title: "Student Reports",
+        path: "/dashboard/reports/students",
+        role: ["admin"],
+      },
+      {
+        title: "Teacher Reports",
+        path: "/dashboard/reports/teachers",
+        role: ["admin"],
+      },
+      {
+        title: "Group Reports",
+        path: "/dashboard/reports/groups",
+        role: ["admin"],
+      },
+    ],
   },
 ];
 

@@ -454,8 +454,8 @@ export default function AttendancePage() {
                 </div>
               </div>
             ) : (
-              <div className="card-body ">
-                <div className="py-10">
+              <div className="card-body">
+                <div className="py-400">
                   <Empty />
                 </div>
               </div>
