@@ -1,24 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { login } from '../../imagepath';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'react-feather/dist';
 import { FormProvider } from '../../HookForm';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { AuthContext } from '../../../contexts/AuthContext';
 import useAuth from '../../../hooks/useAuth';
-import {
-  Alert,
-  AlertTitle,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 
 const Login = () => {
@@ -38,22 +29,6 @@ const Login = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  /*
-  Role Based Authentication
-
-  const [(activeStep, setActiveStep)] = useState(0);
-  const createLoginSchema = [
-    Yup.object().shape({
-      role: Yup.string().required(),
-    }),
-    Yup.object().shape({
-      email: Yup.email().required(),
-    }),
-  ];
-
-  const currentLoginSchema = createLoginSchema[activeStep];
-  */
-
   const LoginSchema = Yup.object().shape({
     username: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required'),
@@ -66,7 +41,6 @@ const Login = () => {
 
   const {
     register,
-    control,
     handleSubmit,
     setError,
     formState: { errors },
@@ -92,6 +66,7 @@ const Login = () => {
       });
     }
   };
+
   return (
     <>
       <div className='main-wrapper login-body'>
