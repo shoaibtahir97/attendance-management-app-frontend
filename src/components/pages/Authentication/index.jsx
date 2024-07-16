@@ -48,7 +48,6 @@ const Login = () => {
 
   const handleLogin = async (data) => {
     let validatedUser = false;
-    console.log({ data, validateUser });
     const userData = validateUser.filter(
       (user, index) =>
         user?.username === data?.username && user?.password === data?.password
