@@ -27,7 +27,8 @@ const PATH_DASHBOARD = {
   subjects: path(ROOTS_DASHBOARD, '/subject'),
   subjectAdd: path(ROOTS_DASHBOARD, '/addsubject'),
   subjectEdit: path(ROOTS_DASHBOARD, '/editsubject'),
-  reports: path(ROOTS_DASHBOARD, '/reports'),
+  attendanceReports: path(ROOTS_DASHBOARD, '/attendanceReports'),
+  tutorReports: path(ROOTS_DASHBOARD, '/attendanceReports'),
 };
 
 export { PATH_DASHBOARD, PATH_AUTH };
