@@ -31,6 +31,7 @@ import ForgotPassword from '../components/pages/Authentication/ForgotPassword';
 import ProtectedRoute from './ProtectedRoute';
 import { PATH_AUTH, PATH_DASHBOARD } from './paths';
 import Reports from '../components/pages/Reports/Reports';
+import StudentReports from '../components/pages/Reports/StudentReports';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -134,11 +135,11 @@ const router = createBrowserRouter(
             path='/dashboard/reports/students'
             element={<StudentReports />}
           />
-          <Route
+          {/* <Route
             path='/dashboard/reports/teachers'
             element={<TeacherReports />}
           />
-          <Route path='/dashboard/reports/groups' element={<GroupReports />} />
+          <Route path='/dashboard/reports/groups' element={<GroupReports />} /> */}
         </Route>
       </Route>
     </Route>
