@@ -125,6 +125,20 @@ const router = createBrowserRouter(
         <Route path='/dashboard/viewinvoice' element={<ViewInvoice />} />
         <Route path='/dashboard/invoicesetting' element={<InvoiceSettings />} />
         <Route path='/dashboard/invoicelist' element={<InvoiceList />} /> */}
+
+          {/* Attendance */}
+          <Route path='/dashboard/attendance' element={<AttendancePage />} />
+
+          {/* Reports */}
+          <Route
+            path='/dashboard/reports/students'
+            element={<StudentReports />}
+          />
+          <Route
+            path='/dashboard/reports/teachers'
+            element={<TeacherReports />}
+          />
+          <Route path='/dashboard/reports/groups' element={<GroupReports />} />
         </Route>
       </Route>
     </Route>

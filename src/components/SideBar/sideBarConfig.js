@@ -130,9 +130,26 @@ const navConfig = [
   // Reports
   {
     title: 'Reports',
-    path: PATH_DASHBOARD.reports,
+    path: '#',
     icon: 'table',
     role: ['admin'],
+    children: [
+      {
+        title: 'Student Reports',
+        path: PATH_DASHBOARD.reportsAttendance,
+        role: ['admin'],
+      },
+      // {
+      //   title: 'Teacher Reports',
+      //   path: '/dashboard/reports/teachers',
+      //   role: ['admin'],
+      // },
+      // {
+      //   title: 'Group Reports',
+      //   path: '/dashboard/reports/groups',
+      //   role: ['admin'],
+      // },
+    ],
   },
 ];
 

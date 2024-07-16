@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Divider, Grid, Stack, Typography } from '@mui/material';
-import {
-  FormProvider,
-  RHFAutocomplete,
-  RHFDateCalendar,
-  RHFDatePicker,
-} from '../../HookForm';
+import { FormProvider, RHFAutocomplete, RHFDatePicker } from '../../HookForm';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -453,8 +447,8 @@ export default function AttendancePage() {
                 </div>
               </div>
             ) : (
-              <div className='card-body '>
-                <div className='py-10'>
+              <div className='card-body'>
+                <div className='py-400'>
                   <Empty />
                 </div>
               </div>
