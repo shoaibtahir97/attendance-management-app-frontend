@@ -27,76 +27,87 @@ import EditDepartment from '../components/pages/Department/EditDepartment';
 import SubjectList from '../components/pages/Subject/SubjectList';
 import AddSubject from '../components/pages/Subject/AddSubject';
 import EditSubject from '../components/pages/Subject/EditSubject';
-import InvoiceGrid from '../components/pages/Invoice/InvoiceGrid';
-import InvoicePaid from '../components/pages/Invoice/InvoicePaid';
-import InvoiceOverdue from '../components/pages/Invoice/InvoiceOverdue';
-import InvoiceDraft from '../components/pages/Invoice/InvoiceDraft';
-import InvoiceRecurring from '../components/pages/Invoice/InvoiceRecurring';
-import InvoiceCancelled from '../components/pages/Invoice/InvoiceCancelled';
-import InvoiceList from '../components/pages/Invoice/InvoiceList';
-import InvoiceSettings from '../components/pages/Invoice/InvoiceSettings';
-import ViewInvoice from '../components/pages/Invoice/ViewInvoice';
-import EditInvoice from '../components/pages/Invoice/EditInvoice';
-import AddInvoice from '../components/pages/Invoice/AddInvoice';
 import ForgotPassword from '../components/pages/Authentication/ForgotPassword';
 import ProtectedRoute from './ProtectedRoute';
+import { PATH_AUTH, PATH_DASHBOARD } from './paths';
+import Reports from '../components/pages/Reports/Reports';
+import StudentReports from '../components/pages/Reports/StudentReports';
+import AttendanceReports from '../components/pages/Reports/AttendanceReports';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path='/' element={<AuthLayout />}>
         <Route path='/login' element={<Login />} />
+        <Route path={PATH_AUTH.register} element={<Register />} />
         <Route
           index={true}
-          path='/forgotpassword'
+          path={PATH_AUTH.forgotPassword}
           element={<ForgotPassword />}
         />
-        <Route path='/register' element={<Register />} />
       </Route>
       <Route path='' element={<ProtectedRoute />}>
         <Route path='/dashboard' element={<DashboardLayout />}>
           {/* Dashboard */}
           <Route
-            path='/dashboard/admindashboard'
+            path={PATH_DASHBOARD.adminDashboard}
             element={<AdminDashboard />}
           />
           <Route
-            path='/dashboard/teacherdashboard'
+            path={PATH_DASHBOARD.teacherDashboard}
             element={<TeacherDashboard />}
           />
           <Route
-            path='dashboard/studentdashboard'
+            path={PATH_DASHBOARD.studentDashboard}
             element={<StudentsDashboard />}
           />
           {/* Students */}
 
-          <Route path='/dashboard/students' element={<Students />} />
-          <Route path='/dashboard/studentsview' element={<StudentsView />} />
-          <Route path='/dashboard/addstudent' element={<AddStudent />} />
-          <Route path='/dashboard/editstudent' element={<EditStudent />} />
+          <Route path={PATH_DASHBOARD.students} element={<Students />} />
+          <Route
+            path={PATH_DASHBOARD.studentProfile}
+            element={<StudentsView />}
+          />
+          <Route path={PATH_DASHBOARD.studentAdd} element={<AddStudent />} />
+          <Route path={PATH_DASHBOARD.studentEdit} element={<EditStudent />} />
 
           {/* Teachers */}
 
-          <Route path='/dashboard/teacherslist' element={<TeachersList />} />
+          <Route path={PATH_DASHBOARD.teachers} element={<TeachersList />} />
           <Route
-            path='/dashboard/teachersprofile'
+            path={PATH_DASHBOARD.teacherProfile}
             element={<TeachersProfile />}
           />
-          <Route path='/dashboard/addteacher' element={<TeachersAdd />} />
-          <Route path='/dashboard/editteacher' element={<TeachersEdit />} />
+          <Route path={PATH_DASHBOARD.teacherAdd} element={<TeachersAdd />} />
+          <Route path={PATH_DASHBOARD.teacherEdit} element={<TeachersEdit />} />
 
           {/* Departments */}
-          <Route path='/dashboard/department' element={<DepartmentList />} />
-          <Route path='/dashboard/adddepartment' element={<AddDepartment />} />
           <Route
-            path='/dashboard/editdepartment'
+            path={PATH_DASHBOARD.departments}
+            element={<DepartmentList />}
+          />
+          <Route
+            path={PATH_DASHBOARD.departmentAdd}
+            element={<AddDepartment />}
+          />
+          <Route
+            path={PATH_DASHBOARD.departmentEdit}
             element={<EditDepartment />}
           />
 
           {/* Subjects */}
-          <Route path='/dashboard/subject' element={<SubjectList />} />
-          <Route path='/dashboard/addsubject' element={<AddSubject />} />
-          <Route path='/dashboard/editsubject' element={<EditSubject />} />
+          <Route path={PATH_DASHBOARD.subjects} element={<SubjectList />} />
+          <Route path={PATH_DASHBOARD.subjectAdd} element={<AddSubject />} />
+          <Route path={PATH_DASHBOARD.subjectEdit} element={<EditSubject />} />
+
+          {/* Attendance */}
+          <Route
+            path={PATH_DASHBOARD.attendance}
+            element={<AttendancePage />}
+          />
+
+          {/* Reports */}
+          <Route path={PATH_DASHBOARD.reports} element={<Reports />} />
 
           {/* Invoices */}
           {/* <Route path='/dashboard/invoicegrid' element={<InvoiceGrid />} />
@@ -119,6 +130,17 @@ const router = createBrowserRouter(
 
           {/* Attendance */}
           <Route path='/dashboard/attendance' element={<AttendancePage />} />
+
+          {/* Reports */}
+          <Route
+            path={PATH_DASHBOARD.attendanceReports}
+            element={<AttendanceReports />}
+          />
+          {/* <Route
+            path='/dashboard/reports/teachers'
+            element={<TeacherReports />}
+          />
+          <Route path='/dashboard/reports/groups' element={<GroupReports />} /> */}
         </Route>
       </Route>
     </Route>

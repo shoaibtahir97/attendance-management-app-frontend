@@ -16,6 +16,7 @@ import {
 import 'react-calendar/dist/Calendar.css';
 
 const TeacherDashboard = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
   const [date, setDate] = useState(new Date());
 
   const [value, onChange] = useState(new Date());
@@ -57,7 +58,7 @@ const TeacherDashboard = () => {
           <div className='row'>
             <div className='col-sm-12'>
               <div className='page-sub-header'>
-                <h3 className='page-title'>Welcome Jonathan!</h3>
+                <h3 className='page-title'>Welcome {user.username}!</h3>
                 <ul className='breadcrumb'>
                   <li className='breadcrumb-item'>
                     <Link to='/admindashboard'>Home</Link>

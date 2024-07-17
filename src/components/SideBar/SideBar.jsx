@@ -144,7 +144,7 @@ const Sidebar = (props) => {
                             {nav?.children?.map((navChild, childIndex) => {
                               if (navChild?.role?.includes(user?.role)) {
                                 return (
-                                  <li>
+                                  <li key={childIndex}>
                                     <Link
                                       key={childIndex}
                                       to={navChild.path}

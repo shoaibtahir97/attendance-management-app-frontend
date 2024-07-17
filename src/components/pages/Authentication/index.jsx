@@ -1,52 +1,38 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { login } from '../../imagepath';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'react-feather/dist';
 import { FormProvider } from '../../HookForm';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { AuthContext } from '../../../contexts/AuthContext';
 import useAuth from '../../../hooks/useAuth';
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 
 const Login = () => {
   const navigate = useNavigate();
   const { Login } = useAuth();
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const validateUser = [
+    {
+      username: 'teacher@scl.edu',
+      password: 'teacher@scl2024!',
+      role: 'teacher',
+    },
+    { username: 'admin@scl.edu', password: 'admin@scl2024!', role: 'admin' },
+  ];
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  /*
-  Role Based Authentication
-
-  const [(activeStep, setActiveStep)] = useState(0);
-  const createLoginSchema = [
-    Yup.object().shape({
-      role: Yup.string().required(),
-    }),
-    Yup.object().shape({
-      email: Yup.email().required(),
-    }),
-  ];
-
-  const currentLoginSchema = createLoginSchema[activeStep];
-  */
-
   const LoginSchema = Yup.object().shape({
     username: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required'),
-    role: Yup.string().required('Role is required'),
+    afterSubmit: Yup.string(),
   });
 
   const methods = useForm({
@@ -55,16 +41,29 @@ const Login = () => {
 
   const {
     register,
-    control,
     handleSubmit,
+    setError,
     formState: { errors },
   } = methods;
 
   const handleLogin = async (data) => {
-    await Login(data);
-    data?.role === 'admin'
-      ? navigate('/dashboard/admindashboard', { replace: true })
-      : navigate('/dashboard/teacherdashboard', { replace: true });
+    let validatedUser = false;
+    const userData = validateUser.filter(
+      (user, index) =>
+        user?.username === data?.username && user?.password === data?.password
+    );
+
+    if (userData && userData.length > 0) {
+      Login(userData[0]);
+      userData[0]?.role === 'admin'
+        ? navigate(PATH_DASHBOARD.adminDashboard, { replace: true })
+        : navigate(PATH_DASHBOARD.adminDashboard, { replace: true });
+    } else {
+      setError('afterSubmit', {
+        type: 'validate',
+        message: 'Email or password is invalid',
+      });
+    }
   };
 
   return (
@@ -81,13 +80,29 @@ const Login = () => {
                   <h1>Welcome to Stratford College London</h1>
                   {/* <p className='account-subtitle'>
                     Need an account? <Link to='/register'>Sign Up</Link>
-                  </p> */}
+                </p> */}
                   <h2>Sign in</h2>
                   {/* Form */}
                   <FormProvider
                     methods={methods}
                     onSubmit={handleSubmit(handleLogin)}
                   >
+                    {errors.afterSubmit && (
+                      <Alert
+                        severity='error'
+                        sx={{
+                          border: '1px solid #CE0D09',
+                          color: '#CE0D09',
+                          backgroundColor: '#ffefef',
+                          mb: 3,
+                        }}
+                      >
+                        <AlertTitle>Information</AlertTitle>
+
+                        {errors.afterSubmit.message}
+                      </Alert>
+                    )}
+
                     <div className='form-group'>
                       <label>
                         Username <span className='login-danger'>*</span>
@@ -131,39 +146,6 @@ const Login = () => {
                           {errors.password.message}
                         </div>
                       )}
-                    </div>
-                    <div>
-                      <FormControl component='fieldset' sx={{ mb: 1 }}>
-                        <FormLabel component='legend' sx={{ fontSize: '14px' }}>
-                          Role
-                        </FormLabel>
-                        <Controller
-                          rules={{ required: true }}
-                          control={control}
-                          name='role'
-                          render={({ field }) => (
-                            <RadioGroup {...field} row>
-                              <FormControlLabel
-                                value='admin'
-                                sx={{ fontSize: '12px' }}
-                                control={<Radio />}
-                                label='Admin'
-                              />
-                              <FormControlLabel
-                                value='teacher'
-                                sx={{ fontSize: '12px' }}
-                                control={<Radio />}
-                                label='Teacher'
-                              />
-                            </RadioGroup>
-                          )}
-                        />
-                        {errors.role && (
-                          <div className='text-danger'>
-                            {errors.role.message}
-                          </div>
-                        )}
-                      </FormControl>
                     </div>
                     <div className='forgotpass'>
                       <div className='remember-me'>
