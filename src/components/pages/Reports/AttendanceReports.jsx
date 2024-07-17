@@ -317,7 +317,7 @@ const AttendanceReports = () => {
                 onSubmit={handleSubmit(getReports)}
               >
                 <div className='row'>
-                  <div className='col-xs-12 col-sm-6'>
+                  <div className='col-xs-12 col-sm-6 mt-2 '>
                     <p className=''>Attendance Status</p>
                     <RHFSelect
                       name='attendanceStatus'
@@ -332,11 +332,11 @@ const AttendanceReports = () => {
                       ))}
                     </RHFSelect>
                   </div>
-                  <div className='col-xs-12 col-sm-6 mt-2'>
+                  <div className='col-xs-12 col-sm-6 mt-2 '>
                     <p className=''>Timeline</p>
                     <RHFRadioGroup name='timeline' options={timelineOptions} />
                   </div>
-                  <div className='col-xs-12 col-sm-6'>
+                  <div className='col-xs-12 col-sm-6 mt-2'>
                     <p>Warning letters issued</p>
                     <RHFSelect
                       name='warningLettersIssued'
@@ -351,7 +351,7 @@ const AttendanceReports = () => {
                       ))}
                     </RHFSelect>
                   </div>
-                  <div className='col-xs-12 col-sm-6 mt-2'>
+                  <div className='col-xs-12 col-sm-6 mt-2 '>
                     <p>Group</p>
                     <RHFSelect
                       name='groups'
