@@ -32,6 +32,7 @@ import ProtectedRoute from './ProtectedRoute';
 import { PATH_AUTH, PATH_DASHBOARD } from './paths';
 import Reports from '../components/pages/Reports/Reports';
 import StudentReports from '../components/pages/Reports/StudentReports';
+import AttendanceReports from '../components/pages/Reports/AttendanceReports';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -132,8 +133,8 @@ const router = createBrowserRouter(
 
           {/* Reports */}
           <Route
-            path='/dashboard/reports/students'
-            element={<StudentReports />}
+            path={PATH_DASHBOARD.attendanceReports}
+            element={<AttendanceReports />}
           />
           {/* <Route
             path='/dashboard/reports/teachers'

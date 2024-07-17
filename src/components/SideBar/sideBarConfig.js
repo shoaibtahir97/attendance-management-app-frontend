@@ -135,8 +135,8 @@ const navConfig = [
     role: ['admin'],
     children: [
       {
-        title: 'Student Reports',
-        path: PATH_DASHBOARD.reportsAttendance,
+        title: 'Attendance Reports',
+        path: PATH_DASHBOARD.attendanceReports,
         role: ['admin'],
       },
       // {
