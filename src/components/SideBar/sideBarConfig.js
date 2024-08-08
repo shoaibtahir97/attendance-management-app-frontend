@@ -151,6 +151,12 @@ const navConfig = [
       // },
     ],
   },
+  // Calendar
+  {
+    title: 'Calendar',
+    path: PATH_DASHBOARD.calendar,
+    role: ['admin', 'teacher'],
+  },
 ];
 
 export default navConfig;

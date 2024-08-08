@@ -33,6 +33,7 @@ import { PATH_AUTH, PATH_DASHBOARD } from './paths';
 import Reports from '../components/pages/Reports/Reports';
 import StudentReports from '../components/pages/Reports/StudentReports';
 import AttendanceReports from '../components/pages/Reports/AttendanceReports';
+import Calendar from '../components/pages/Calendar';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -128,19 +129,20 @@ const router = createBrowserRouter(
         <Route path='/dashboard/invoicesetting' element={<InvoiceSettings />} />
         <Route path='/dashboard/invoicelist' element={<InvoiceList />} /> */}
 
-          {/* Attendance */}
-          <Route path='/dashboard/attendance' element={<AttendancePage />} />
-
           {/* Reports */}
           <Route
             path={PATH_DASHBOARD.attendanceReports}
             element={<AttendanceReports />}
           />
+
           {/* <Route
             path='/dashboard/reports/teachers'
             element={<TeacherReports />}
           />
           <Route path='/dashboard/reports/groups' element={<GroupReports />} /> */}
+
+          {/* Calendar */}
+          <Route path={PATH_DASHBOARD.calendar} element={<Calendar />} />
         </Route>
       </Route>
     </Route>
