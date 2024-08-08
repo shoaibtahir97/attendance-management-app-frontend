@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import daygridPlugin from '@fullcalendar/daygrid';
-import timegridPlugin from '@fullcalendar/timegrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-
+import './calendar.css';
 const Calendar = () => {
   const [events, setEvents] = useState([]);
 
@@ -25,12 +25,12 @@ const Calendar = () => {
   };
 
   return (
-    <div className='content container-fluid'>
-      <div className='page-header'>
-        <div className='row'>
-          <div className='col-sm-12'>
-            <div className='page-sub-header'>
-              <h3 className='page-title'>Calendar</h3>
+    <div className="content container-fluid">
+      <div className="page-header">
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="page-sub-header">
+              <h3 className="page-title">Calendar</h3>
             </div>
           </div>
         </div>
@@ -46,8 +46,12 @@ const Calendar = () => {
             start: 'today prev next',
             end: 'dayGridMonth,dayGridWeek,dayGridDay',
           }}
+          allDaySlot={false}
+          slotMinTime="08:00:00"
+          slotMaxTime="17:00:00"
+          slotDuration="00:45:00"
           weekends={false}
-          plugins={[daygridPlugin, interactionPlugin, timegridPlugin]}
+          plugins={[timeGridPlugin, interactionPlugin]}
           views={['timeGridMonth', 'timeGridWeek', 'timeGridDay']}
         />
       </div>
