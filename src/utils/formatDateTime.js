@@ -1,17 +1,20 @@
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
 ];
 
 const getDay = (date) => days[dayjs(date).day()];
 
-const getFormattedDate = (date, format = "DD/MM/YYY") =>
+const getFormattedDate = (date, format = 'DD/MM/YYY') =>
   dayjs(date).format(format);
 
-export { getDay, getFormattedDate };
+const getFormattedTime = (date, format = 'HH:mm:ss') =>
+  dayjs(date).format(format);
+
+export { getDay, getFormattedDate, getFormattedTime };
