@@ -2,7 +2,7 @@ import React from 'react';
 // form
 import { useFormContext, Controller } from 'react-hook-form';
 // @mui
-import { TextField } from '@mui/material';
+import { Box, InputLabel, MenuItem, Stack, TextField } from '@mui/material';
 import { Select } from '@mui/material';
 
 // ----------------------------------------------------------------------
@@ -13,7 +13,6 @@ export default function RHFSelect({
   onChange,
   label,
   options,
-  dense = false,
   ...other
 }) {
   const { control } = useFormContext();
@@ -21,15 +20,36 @@ export default function RHFSelect({
     <Controller
       name={name}
       control={control}
-      as={
-        <Select>
-          {options?.map((option, index) => (
-            <MenuItem key={index} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-      }
+      render={({ field, fieldState: { error } }) => (
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="flex-start"
+          spacing={2}
+          sx={{ width: '100%' }}>
+          <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+            {label}
+          </InputLabel>
+          <Select
+            fullWidth
+            value={field.value}
+            onChange={field.onChange}
+            error={!!error}
+            {...other}>
+            {options.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+          {error && (
+            <FormHelperText error sx={{ textAlign: 'left' }}>
+              {error.message}
+            </FormHelperText>
+          )}
+        </Stack>
+      )}
+      {...other}
     />
   );
 }
