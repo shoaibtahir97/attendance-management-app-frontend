@@ -163,15 +163,15 @@ export const column = [
     sorter: (a, b) => a.Name.length - b.Name.length,
     render: (text, record) => (
       <>
-        <h2 className='table-avatar'>
-          <Link to='/studentsview' className='avatar avatar-sm me-2 '>
+        <h2 className="table-avatar">
+          <Link to="/studentsview" className="avatar avatar-sm me-2 ">
             <img
-              className='avatar-img rounded-circle'
+              className="avatar-img rounded-circle"
               src={record.Img}
-              alt='User Image'
+              alt="User Image"
             />
           </Link>
-          <Link className='text-dark' to='/studentsview'>
+          <Link className="text-dark" to="/studentsview">
             {record.Name}
           </Link>
         </h2>
@@ -203,15 +203,15 @@ export const column = [
     dataIndex: 'Action',
     render: (text, record) => (
       <>
-        <div className='actions'>
-          <Link to='#' className='btn btn-sm bg-success-light me-2'>
-            <i className='feather-eye'>
-              <FeatherIcon icon='eye' />
+        <div className="actions">
+          <Link to="#" className="btn btn-sm bg-success-light me-2">
+            <i className="feather-eye">
+              <FeatherIcon icon="eye" />
             </i>
           </Link>
-          <Link to='/editstudent' className='btn btn-sm bg-danger-light'>
-            <i className='feather-edit'>
-              <FeatherIcon icon='edit' className='list-edit' />
+          <Link to="/editstudent" className="btn btn-sm bg-danger-light">
+            <i className="feather-edit">
+              <FeatherIcon icon="edit" className="list-edit" />
             </i>
           </Link>
         </div>
@@ -287,13 +287,13 @@ const AttendanceReports = () => {
   };
 
   return (
-    <div className='content container-fluid'>
-      <div className='page-header'>
-        <div className='page-header'>
-          <div className='row'>
-            <div className='col-sm-12'>
-              <div className='page-sub-header'>
-                <h3 className='page-title'>Attendance Reports</h3>
+    <div className="content container-fluid">
+      <div className="page-header">
+        <div className="page-header">
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="page-sub-header">
+                <h3 className="page-title">Attendance Reports</h3>
                 {/* <ul class="breadcrumb">
                   <li class="breadcrumb-item">
                     <Link to="/dashboard">Attendance</Link>
@@ -305,74 +305,75 @@ const AttendanceReports = () => {
           </div>
         </div>
       </div>
-      <div className='row'>
-        <div className='col-xs-12'>
-          <div className='card comman-shadow p-2'>
-            <div className='card-body'>
-              <div className='card-title'>
+      <div className="row">
+        <div className="col-xs-12">
+          <div className="card comman-shadow p-2">
+            <div className="card-body">
+              <div className="card-title">
                 <h4>Filters</h4>
               </div>
               <FormProvider
                 methods={methods}
-                onSubmit={handleSubmit(getReports)}
-              >
-                <div className='row'>
-                  <div className='col-xs-12 col-sm-6 mt-2 '>
-                    <p className=''>Attendance Status</p>
+                onSubmit={handleSubmit(getReports)}>
+                <div className="row">
+                  <div className="col-xs-12 col-sm-6 mt-2 ">
+                    <p className="">Attendance Status</p>
                     <RHFSelect
-                      name='attendanceStatus'
+                      name="attendanceStatus"
                       multiple
                       sx={{ width: '100%' }}
-                      size='small'
-                    >
-                      {attendanceStatusOptions.map((item, index) => (
+                      size="small"
+                      options={attendanceStatusOptions}
+                    />
+                    {/* {attendanceStatusOptions?.map((item, index) => (
                         <MenuItem key={index} value={item?.value}>
                           {item?.label}
                         </MenuItem>
                       ))}
-                    </RHFSelect>
+                    </RHFSelect> */}
                   </div>
-                  <div className='col-xs-12 col-sm-6 mt-2 '>
-                    <p className=''>Timeline</p>
-                    <RHFRadioGroup name='timeline' options={timelineOptions} />
+                  <div className="col-xs-12 col-sm-6 mt-2 ">
+                    <p className="">Timeline</p>
+                    <RHFRadioGroup name="timeline" options={timelineOptions} />
                   </div>
-                  <div className='col-xs-12 col-sm-6 mt-2'>
+                  <div className="col-xs-12 col-sm-6 mt-2">
                     <p>Warning letters issued</p>
                     <RHFSelect
-                      name='warningLettersIssued'
+                      name="warningLettersIssued"
                       multiple
                       sx={{ width: '100%' }}
-                      size='small'
-                    >
-                      {warningLettersIssued.map((item, index) => (
+                      size="small"
+                      options={warningLettersIssued}
+                    />
+                    {/* {warningLettersIssued?.map((item, index) => (
                         <MenuItem key={index} value={item.value}>
                           {item.label}
                         </MenuItem>
                       ))}
-                    </RHFSelect>
+                    </RHFSelect> */}
                   </div>
-                  <div className='col-xs-12 col-sm-6 mt-2 '>
+                  <div className="col-xs-12 col-sm-6 mt-2 ">
                     <p>Group</p>
                     <RHFSelect
-                      name='groups'
+                      name="groups"
                       multiple
                       sx={{ width: '100%' }}
-                      size='small'
-                    >
-                      {groups.map((item, index) => (
+                      size="small"
+                      options={groups}
+                    />
+                    {/* {groups?.map((item, index) => (
                         <MenuItem key={index} value={item.value}>
                           {item.label}
                         </MenuItem>
                       ))}
-                    </RHFSelect>
+                    </RHFSelect> */}
                   </div>
                 </div>
-                <div className='row mt-2'>
-                  <div className=' d-flex justify-content-end'>
+                <div className="row mt-2">
+                  <div className=" d-flex justify-content-end">
                     <button
-                      type='submit'
-                      className='btn btn-primary btn-sm py-2 px-4 text-center'
-                    >
+                      type="submit"
+                      className="btn btn-primary btn-sm py-2 px-4 text-center">
                       Search
                     </button>
                   </div>
@@ -382,24 +383,24 @@ const AttendanceReports = () => {
           </div>
         </div>
       </div>
-      <div className='row'>
-        <div className='col-xs-12'>
-          <div className='card card-table comman-shadow'>
-            <div className='card-body'>
+      <div className="row">
+        <div className="col-xs-12">
+          <div className="card card-table comman-shadow">
+            <div className="card-body">
               {/* Page Header */}
-              <div className='page-header'>
-                <div className='row align-items-center'>
-                  <div className='col'>
-                    <h3 className='page-title'>Attendance</h3>
+              <div className="page-header">
+                <div className="row align-items-center">
+                  <div className="col">
+                    <h3 className="page-title">Attendance</h3>
                   </div>
-                  <div className='col-auto text-end float-end ms-auto download-grp'>
-                    <Link to='#' className='btn btn-outline-primary me-2'>
-                      <i className='fas fa-download' /> Download
+                  <div className="col-auto text-end float-end ms-auto download-grp">
+                    <Link to="#" className="btn btn-outline-primary me-2">
+                      <i className="fas fa-download" /> Download
                     </Link>
                   </div>
                 </div>
               </div>
-              <div className='table-responsive'>
+              <div className="table-responsive">
                 <Table
                   pagination={{
                     total: datasource.length,
@@ -410,7 +411,7 @@ const AttendanceReports = () => {
                     itemRender: itemRender,
                   }}
                   columns={column}
-                  dataSource={datasource.map((data, ind) => ({
+                  dataSource={datasource?.map((data, ind) => ({
                     ...data,
                     Attendance: `${data?.Attendance} %`,
                   }))}
