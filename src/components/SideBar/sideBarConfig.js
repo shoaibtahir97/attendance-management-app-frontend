@@ -1,32 +1,42 @@
 import React from 'react';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import { PiStudent } from 'react-icons/pi';
+import { PiBooksLight } from 'react-icons/pi';
+import { RxDashboard } from 'react-icons/rx';
+import { MdListAlt } from 'react-icons/md';
+import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
+import { PiBuildingOfficeLight } from 'react-icons/pi';
+import { TbPresentationAnalytics } from 'react-icons/tb';
+import { IoCalendarNumberOutline } from 'react-icons/io5';
+import { PiChalkboardTeacherLight } from 'react-icons/pi';
 const navConfig = [
   // Dashboard
   {
     title: 'Admin Dashboard',
     path: PATH_DASHBOARD.adminDashboard,
-    icon: 'grid',
+    icon: <RxDashboard />,
     role: ['admin'],
   },
   {
     title: 'Teacher Dashboard',
     path: PATH_DASHBOARD.teacherDashboard,
-    icon: 'table',
+    icon: <LiaChalkboardTeacherSolid />,
     role: ['teacher'],
   },
   // Attendance
   {
     title: 'Attendance',
     path: PATH_DASHBOARD.attendance,
-    icon: 'table',
+    icon: <MdListAlt />,
     role: ['teacher', 'admin'],
   },
   // Students
   {
     title: 'Students',
     path: '#',
-    icon: 'table',
+    icon: <PiStudent />,
     role: ['teacher', 'admin'],
+
     children: [
       {
         title: 'Student List',
@@ -54,7 +64,7 @@ const navConfig = [
   {
     title: 'Teachers',
     path: '#',
-    icon: 'table',
+    icon: <PiChalkboardTeacherLight />,
     role: ['admin'],
     children: [
       {
@@ -83,7 +93,7 @@ const navConfig = [
   {
     title: 'Departments',
     path: '#',
-    icon: 'table',
+    icon: <PiBuildingOfficeLight />,
     role: ['teacher', 'admin'],
     children: [
       {
@@ -107,7 +117,7 @@ const navConfig = [
   {
     title: 'Subjects',
     path: '#',
-    icon: 'table',
+    icon: <PiBooksLight />,
     role: ['teacher', 'admin'],
     children: [
       {
@@ -131,7 +141,7 @@ const navConfig = [
   {
     title: 'Reports',
     path: '#',
-    icon: 'table',
+    icon: <TbPresentationAnalytics />,
     role: ['admin'],
     children: [
       {
@@ -154,6 +164,7 @@ const navConfig = [
   // Calendar
   {
     title: 'Calendar',
+    icon: <IoCalendarNumberOutline />,
     path: PATH_DASHBOARD.calendar,
     role: ['admin', 'teacher'],
   },

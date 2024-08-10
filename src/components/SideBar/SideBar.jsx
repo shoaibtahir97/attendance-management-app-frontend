@@ -94,20 +94,19 @@ const Sidebar = (props) => {
 
   return (
     <>
-      <div className='sidebar' id='sidebar'>
+      <div className="sidebar" id="sidebar">
         <Scrollbars
           autoHide
           autoHideTimeout={1000}
           autoHideDuration={200}
           autoHeight
           autoHeightMin={0}
-          autoHeightMax='95vh'
+          autoHeightMax="95vh"
           thumbMinSize={30}
           universal={false}
-          hideTracksWhenNotNeeded={true}
-        >
-          <div className='sidebar-inner slimscroll'>
-            <div id='sidebar-menu' className='sidebar-menu'>
+          hideTracksWhenNotNeeded={true}>
+          <div className="sidebar-inner slimscroll">
+            <div id="sidebar-menu" className="sidebar-menu">
               <ul>
                 {navConfig?.map((nav, navIndex) => {
                   if (nav.role.includes(user?.role)) {
@@ -116,8 +115,7 @@ const Sidebar = (props) => {
                         key={navIndex}
                         className={
                           nav?.path === pathName ? 'active submenu' : 'submenu'
-                        }
-                      >
+                        }>
                         {/* {nav.title} */}
                         <Link
                           to={nav.path}
@@ -126,11 +124,10 @@ const Sidebar = (props) => {
                             toggleSidebar(
                               isSideMenu == nav?.title ? '' : nav?.title
                             )
-                          }
-                        >
-                          <FeatherIcon icon='grid' />
+                          }>
+                          {nav.icon}
                           <span>{nav?.title}</span>
-                          {nav.children && <span className='menu-arrow'></span>}
+                          {nav.children && <span className="menu-arrow"></span>}
                         </Link>
                         {isSideMenu == nav?.title &&
                         nav?.children &&
@@ -139,8 +136,7 @@ const Sidebar = (props) => {
                             style={{
                               display:
                                 isSideMenu == nav?.title ? 'block' : 'none',
-                            }}
-                          >
+                            }}>
                             {nav?.children?.map((navChild, childIndex) => {
                               if (navChild?.role?.includes(user?.role)) {
                                 return (
@@ -152,8 +148,7 @@ const Sidebar = (props) => {
                                         navChild?.path === pathName
                                           ? 'active'
                                           : ''
-                                      }
-                                    >
+                                      }>
                                       {navChild?.title}
                                     </Link>
                                   </li>
