@@ -5,14 +5,17 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import './calendar.css';
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
+  Menu,
   MenuItem,
   Select,
+  Stack,
   TextField,
   Typography,
 } from '@mui/material';
@@ -21,40 +24,32 @@ import {
   FormProvider,
   RHFChipSelect,
   RHFSelect,
+  RHFDatePicker,
+  RHFTimePicker,
+  RHFCheckbox,
+  RHFAutocomplete,
 } from '../../HookForm/index';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
+import {
+  getDay,
+  getFormattedDate,
+  getFormattedTime,
+} from '../../../utils/formatDateTime';
+import dayjs from 'dayjs';
 const Calendar = () => {
   const calendarRef = useRef();
   const [events, setEvents] = useState([]);
+
   const [currentEvent, setCurrentEvent] = useState(null);
   const [isAddEventDialogOpen, setIsAddEventDialogOpen] = useState(false);
 
   const showModalMethod = () => setIsAddEventDialogOpen(!isAddEventDialogOpen);
 
-  // const handleViewChange = (event) => {
-  //   const calendarApi = calendarRef.current.getApi();
-  //   calendarApi.changeView(event.target.value);
-  // };
-
   const handleSelect = (info) => {
     setCurrentEvent(info);
     const calendarApi = calendarRef.current.getApi();
-    console.log({ calendarApi, info });
     showModalMethod();
-    // const { start, end } = info;
-    // const eventNamePrompt = prompt('Enter, event name');
-    // if (eventNamePrompt) {
-    //   setEvents([
-    //     ...events,
-    //     {
-    //       start,
-    //       end,
-    //       title: eventNamePrompt,
-    //       id: (Math.random() + 1).toString(36).substring(2),
-    //     },
-    //   ]);
-    // }
   };
 
   return (
@@ -98,57 +93,194 @@ const Calendar = () => {
         />
       </div>
       <div>
-        <EventDialog
-          isShowModal={isAddEventDialogOpen}
-          showModalMethod={showModalMethod}
-        />
+        {currentEvent && (
+          <EventDialog
+            isShowModal={isAddEventDialogOpen}
+            showModalMethod={showModalMethod}
+            currentEvent={currentEvent}
+            setEvents={setEvents}
+            events={events}
+          />
+        )}
       </div>
     </div>
   );
 };
 
 const EventDialog = (props) => {
-  const { isShowModal, showModalMethod } = props;
-  const events = ['class', 'event', 'extra class'];
-  // const saveEvent = () => {};
+  const {
+    isShowModal,
+    showModalMethod,
+    currentEvent,
+    setEvents,
+    events: createdEvents,
+  } = props;
 
-  const methods = useForm();
+  const events = [
+    { value: 'class', label: 'Class' },
+    { value: 'event', label: 'Event' },
+    { value: 'extraClass', label: 'Extra class' },
+  ];
 
-  const { handleSubmit } = methods;
+  const teachers = [
+    { value: 'John', label: 'John' },
+    { value: 'Eric', label: 'Eric' },
+    { value: 'Donald', label: 'Donald' },
+    { value: 'Susan', label: 'Susan' },
+    { value: 'Jessica', label: 'Jessica' },
+  ];
 
-  const addEvent = (data) => {
-    console.log(data);
+  const groups = [
+    { value: 'A', label: 'A' },
+    { value: 'B', label: 'B' },
+    { value: 'C', label: 'C' },
+    { value: 'D', label: 'D' },
+    { value: 'E', label: 'E' },
+  ];
+
+  const repeat = [
+    { value: '', label: 'Does not repeat' },
+    { value: '', label: 'Daily' },
+    { value: '', label: `Weekly on ${getDay(currentEvent?.startStr)}` },
+    { value: '', label: 'Every weekday' },
+  ];
+
+  const closeModal = () => {
+    showModalMethod();
+    reset();
   };
 
+  const defaultValues = {
+    title: '',
+    eventType: '',
+    start: dayjs(currentEvent?.startStr),
+    startTime: dayjs(currentEvent?.startStr),
+    endTime: dayjs(currentEvent?.endStr),
+    allDay: currentEvent?.allDay,
+    teacher: '',
+    group: '',
+    repeat: '',
+  };
+
+  const methods = useForm({
+    defaultValues,
+  });
+
+  const { watch, handleSubmit, reset } = methods;
+
+  const addEvent = (data) => {
+    const newEvent = {
+      id: (Math.random() + 1).toString(36).substring(2),
+      start: data.startTime.$d, // Use the formatted start date
+      end: data.endTime.$d, // Use the formatted end date
+      title: data.title,
+    };
+
+    setEvents([...createdEvents, newEvent]);
+
+    closeModal();
+  };
+
+  const eventType = watch('eventType');
+
   return (
-    <Dialog open={isShowModal} onClose={showModalMethod}>
-      <FormProvider methods={methods} onSubmit={handleSubmit(addEvent)}>
+    <Dialog open={isShowModal} onClose={closeModal} maxWidth="sm" fullWidth>
+      <FormProvider methods={methods}>
         <DialogTitle
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <Typography variant="h6">Add Title</Typography>
-          <IconButton onClick={showModalMethod}>
+          <Typography variant="subtitle1">Add Event</Typography>
+          <IconButton onClick={closeModal}>
             <MdClose />
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <RHFTextField
-            name="eventName"
-            size="small"
-            variant="filled"
-            label="Title"
-          />
-          <Select></Select>
+          <Stack direction="column" alignItems="flex-start" spacing={1}>
+            <RHFTextField
+              name="title"
+              size="small"
+              variant="outlined"
+              label="Title"
+            />
+            <RHFSelect
+              name="eventType"
+              size="small"
+              label={'Event type'}
+              options={events}
+            />
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              spacing={1}>
+              <RHFDatePicker name="start" label="Event date" />
+              <RHFTimePicker name="startTime" label="Event start time" />
+              <RHFTimePicker name="endTime" label="Event end time" />
+            </Stack>
+
+            <RHFCheckbox name="allDay" label="All day" />
+
+            {eventType === 'class' || eventType == 'extraClass' ? (
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                spacing={1}
+                sx={{ width: '100%' }}>
+                <RHFAutocomplete
+                  name="teacher"
+                  label="Teacher"
+                  options={teachers}
+                  sx={{ width: '250px' }}
+                />
+                <RHFAutocomplete
+                  name="group"
+                  label="Group"
+                  options={groups}
+                  sx={{ width: '250px' }}
+                />
+              </Stack>
+            ) : (
+              <></>
+            )}
+            {/* <Button
+              id="basic-button"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              
+            >
+              {repeat[0].label}
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}>
+              {repeat.map((item, index) => (
+                <MenuItem
+                // onClick={() => handleClose(item.value)}
+                >
+                  {item.label}
+                </MenuItem>
+              ))}
+              {/* <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleClose}>Logout</MenuItem> 
+            </Menu> */}
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={showModalMethod}>
+          <Button variant="outlined" onClick={closeModal}>
             Cancel
           </Button>
 
-          <Button variant="contained" type="submit">
+          <Button variant="contained" onClick={handleSubmit(addEvent)}>
             Save
           </Button>
         </DialogActions>
