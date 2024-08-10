@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -39,9 +39,11 @@ import {
 import dayjs from 'dayjs';
 const Calendar = () => {
   const calendarRef = useRef();
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(
+    JSON.parse(localStorage.getItem('events') || '[]')
+  );
 
-  const [currentEvent, setCurrentEvent] = useState(null);
+  const [currentEvent, setCurrentEvent] = useState();
   const [isAddEventDialogOpen, setIsAddEventDialogOpen] = useState(false);
 
   const showModalMethod = () => setIsAddEventDialogOpen(!isAddEventDialogOpen);
@@ -115,7 +117,7 @@ const EventDialog = (props) => {
     setEvents,
     events: createdEvents,
   } = props;
-
+  console.log({ currentEvent });
   const events = [
     { value: 'class', label: 'Class' },
     { value: 'event', label: 'Event' },
@@ -147,15 +149,15 @@ const EventDialog = (props) => {
 
   const closeModal = () => {
     showModalMethod();
-    reset();
+    reset({}, { keepValues: false });
   };
 
   const defaultValues = {
     title: '',
     eventType: '',
     start: dayjs(currentEvent?.startStr),
-    startTime: dayjs(currentEvent?.startStr),
-    endTime: dayjs(currentEvent?.endStr),
+    startTime: dayjs(currentEvent?.start),
+    endTime: dayjs(currentEvent?.end),
     allDay: currentEvent?.allDay,
     teacher: '',
     group: '',
@@ -166,7 +168,8 @@ const EventDialog = (props) => {
     defaultValues,
   });
 
-  const { watch, handleSubmit, reset } = methods;
+  const { watch, handleSubmit, reset, getValues } = methods;
+  const eventType = watch('eventType');
 
   const addEvent = (data) => {
     const newEvent = {
@@ -174,14 +177,34 @@ const EventDialog = (props) => {
       start: data.startTime.$d, // Use the formatted start date
       end: data.endTime.$d, // Use the formatted end date
       title: data.title,
+      allDay: data.allDay,
     };
 
     setEvents([...createdEvents, newEvent]);
+    localStorage.setItem(
+      'events',
+      JSON.stringify([...createdEvents, { ...newEvent }])
+    );
 
     closeModal();
   };
 
-  const eventType = watch('eventType');
+  useEffect(() => {
+    if (currentEvent) {
+      const newDefaultValues = {
+        title: currentEvent.title || '',
+        eventType: currentEvent.eventType || '',
+        start: dayjs(currentEvent.startStr),
+        startTime: dayjs(currentEvent.start),
+        endTime: dayjs(currentEvent.end),
+        allDay: currentEvent.allDay || false,
+        teacher: currentEvent.teacher || '',
+        group: currentEvent.group || '',
+        repeat: currentEvent.repeat || '',
+      };
+      reset(newDefaultValues); // Reset the form with the new values
+    }
+  }, [currentEvent, reset]);
 
   return (
     <Dialog open={isShowModal} onClose={closeModal} maxWidth="sm" fullWidth>
