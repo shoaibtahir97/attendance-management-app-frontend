@@ -14,3 +14,4 @@ export { default as RHFChipSelect } from './RHFChipSelect';
 export { default as RHFDatePicker } from './RHFDatePicker';
 export { default as RHFDateCalendar } from './RHFDateCalendar';
 export { default as RHFAutocomplete } from './RHFAutocomplete';
+export { default as RHFTimePicker } from './RHFTimePicker';
