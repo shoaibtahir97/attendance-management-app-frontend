@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { Empty, Table } from 'antd';
 import { itemRender, onShowSizeChange } from '../../Pagination';
+import { Box } from '@mui/material';
 
 const status = ['Present', 'Absent', 'Late'];
 
@@ -170,7 +171,7 @@ export const column = [
     sorter: (a, b) => a.Name.length - b.Name.length,
     render: (text, record) => (
       <>
-        <h2 className='table-avatar'>
+        <h2 className="table-avatar">
           {/* <Link to="/studentsview" className="avatar avatar-sm me-2 ">
             <img
               className="avatar-img rounded-circle"
@@ -178,7 +179,7 @@ export const column = [
               alt="User Image"
             />
           </Link> */}
-          <Link className='text-dark' to='/studentsview'>
+          <Link className="text-dark" to="/studentsview">
             {record.Name}
           </Link>
         </h2>
@@ -214,18 +215,17 @@ export const column = [
     title: 'Status',
     dataIndex: 'Status',
     render: (text, record) => (
-      <div role='group' aria-label='Basic mixed styles example'>
+      <div role="group" aria-label="Basic mixed styles example">
         {status?.map((status, index) => (
           <button
-            type='button'
+            type="button"
             className={`btn btn${record.Status === status ? '' : '-outline'}-${
               status === 'Present'
                 ? 'success'
                 : status === 'Absent'
-                ? 'danger'
-                : 'warning'
-            } mx-1`}
-          >
+                  ? 'danger'
+                  : 'warning'
+            } mx-1`}>
             {status}
           </button>
         ))}
@@ -254,15 +254,15 @@ export const column = [
     dataIndex: 'Action',
     render: (text, record) => (
       <>
-        <div className='actions'>
-          <Link to='#' className='btn btn-sm bg-success-light me-2'>
-            <i className='feather-eye'>
-              <FeatherIcon icon='eye' />
+        <div className="actions">
+          <Link to="#" className="btn btn-sm bg-success-light me-2">
+            <i className="feather-eye">
+              <FeatherIcon icon="eye" />
             </i>
           </Link>
-          <Link to='/editstudent' className='btn btn-sm bg-danger-light'>
-            <i className='feather-edit'>
-              <FeatherIcon icon='edit' className='list-edit' />
+          <Link to="/editstudent" className="btn btn-sm bg-danger-light">
+            <i className="feather-edit">
+              <FeatherIcon icon="edit" className="list-edit" />
             </i>
           </Link>
         </div>
@@ -324,12 +324,12 @@ export default function AttendancePage() {
   };
 
   return (
-    <div className='content container-fluid'>
-      <div className='page-header'>
-        <div className='row'>
-          <div className='col-sm-12'>
-            <div className='page-sub-header'>
-              <h3 className='page-title'>Attendance</h3>
+    <div className="content container-fluid">
+      <div className="page-header">
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="page-sub-header">
+              <h3 className="page-title">Attendance</h3>
               {/* <ul class="breadcrumb">
                   <li class="breadcrumb-item">
                     <Link to="/students">Attendance</Link>
@@ -341,35 +341,37 @@ export default function AttendancePage() {
         </div>
       </div>
 
-      <div className='student-group-form'>
+      <div className="student-group-form">
         <FormProvider methods={methods} onSubmit={handleSubmit(getStudentList)}>
-          <div className='row'>
-            <div className='col-lg-3 col-md-6'>
-              <div className='form-group'>
-                <RHFDatePicker name='date' />
+          <div className="row ">
+            <div className="col-lg-3 col-md-6">
+              <div className="form-group">
+                <RHFDatePicker name="date" label="Date" />
               </div>
             </div>
-            <div className='col-lg-3 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-3 col-md-6">
+              <div className="form-group">
                 <RHFAutocomplete
                   name={'group'}
                   label={'Group'}
                   options={groups}
+                  sx={{ width: '100%' }}
                 />
               </div>
             </div>
-            <div className='col-lg-4 col-md-6'>
-              <div className='form-group'>
+            <div className="col-lg-4 col-md-6">
+              <div className="form-group">
                 <RHFAutocomplete
-                  name='subject'
-                  label='Subject'
+                  name="subject"
+                  label="Subject"
                   options={courses}
+                  sx={{ width: '100%' }}
                 />
               </div>
             </div>
-            <div className='col-lg-2'>
-              <div className='search-student-btn '>
-                <button type='submit' className='btn btn-primary btn-sm'>
+            <div className="col-lg-2">
+              <div className="search-student-btn mt-1">
+                <button type="submit" className="btn btn-primary btn-sm mt-4">
                   Search
                 </button>
               </div>
@@ -378,32 +380,32 @@ export default function AttendancePage() {
         </FormProvider>
       </div>
 
-      <div className='row'>
-        <div className='col-sm-12'>
-          <div className='card card-table comman-shadow'>
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="card card-table comman-shadow">
             {attendance ? (
-              <div className='card-body'>
+              <div className="card-body">
                 {/* Page Header */}
-                <div className='page-header'>
-                  <div className='row align-items-center'>
-                    <div className='col '>
-                      <div className=' d-flex flex-column me-2 pe-2 border-end'>
-                        <p className='fs-6'>Subject: {attendance?.subject}</p>
-                        <p className='fs-6 text-secondary'>
+                <div className="page-header">
+                  <div className="row align-items-center">
+                    <div className="col ">
+                      <div className=" d-flex flex-column me-2 pe-2 border-end">
+                        <p className="fs-6">Subject: {attendance?.subject}</p>
+                        <p className="fs-6 text-secondary">
                           Group - {attendance?.group}
                         </p>
                       </div>
-                      <div className=' d-flex flex-column me-2 pe-2 border-end'>
-                        <p className='fs-6'>Time: 10:00 AM to 10:45 AM</p>
-                        <p className='fs-6 text-secondary'>
+                      <div className=" d-flex flex-column me-2 pe-2 border-end">
+                        <p className="fs-6">Time: 10:00 AM to 10:45 AM</p>
+                        <p className="fs-6 text-secondary">
                           Week 3 - {getDay(attendance?.date)} -
                           {getFormattedDate(attendance?.date, 'll')}
                         </p>
                       </div>
-                      <div className='d-flex flex-column'>
-                        <div className='d-flex mb-2'>
-                          <p className='fs-6'>Status: </p>{' '}
-                          <p className='fs-6 text-warning'>
+                      <div className="d-flex flex-column">
+                        <div className="d-flex mb-2">
+                          <p className="fs-6">Status: </p>{' '}
+                          <p className="fs-6 text-warning">
                             {attendance?.status}
                           </p>
                         </div>
@@ -413,23 +415,22 @@ export default function AttendancePage() {
                         </div>
                       </div>
                     </div>
-                    <div className='col-auto text-end float-end ms-auto download-grp'>
-                      <Link to='#' className='btn btn-outline-primary me-2'>
-                        <i class='fa-solid fa-floppy-disk' /> Save Attendance
+                    <div className="col-auto text-end float-end ms-auto download-grp">
+                      <Link to="#" className="btn btn-outline-primary me-2">
+                        <i class="fa-solid fa-floppy-disk" /> Save Attendance
                       </Link>
-                      <Link to='#' className='btn btn-outline-primary me-2'>
-                        <i className='fas fa-download' /> Download
+                      <Link to="#" className="btn btn-outline-primary me-2">
+                        <i className="fas fa-download" /> Download
                       </Link>
                       <Link
-                        to='/dashboard/addstudent'
-                        className='btn btn-primary'
-                      >
-                        <i className='fas fa-plus' />
+                        to="/dashboard/addstudent"
+                        className="btn btn-primary">
+                        <i className="fas fa-plus" />
                       </Link>
                     </div>
                   </div>
                 </div>
-                <div class='table-responsive'>
+                <div class="table-responsive">
                   <Table
                     pagination={{
                       total: dataSource.length,
@@ -447,8 +448,8 @@ export default function AttendancePage() {
                 </div>
               </div>
             ) : (
-              <div className='card-body'>
-                <div className='py-400'>
+              <div className="card-body">
+                <div className="py-400">
                   <Empty />
                 </div>
               </div>
