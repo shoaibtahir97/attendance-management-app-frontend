@@ -1,7 +1,7 @@
-import { FormHelperText } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { FormHelperText, InputLabel, Stack } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 const RHFDatePicker = (props) => {
   const { name, label, ...other } = props;
@@ -15,23 +15,29 @@ const RHFDatePicker = (props) => {
       control={control}
       render={({ field, fieldState: { error } }) => {
         return (
-          <>
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}>
+            <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+              {label}
+            </InputLabel>
             <DatePicker
               value={field.value}
               onChange={(date, event) => {
                 field.onChange(date);
               }}
-              label={label}
               error={!!error}
               {...other}
-              slotProps={{ textField: { size: "small" } }}
+              slotProps={{ textField: { size: 'small' } }}
             />
             {error && (
-              <FormHelperText error sx={{ textAlign: "left" }}>
+              <FormHelperText error sx={{ textAlign: 'left' }}>
                 {error.message}
               </FormHelperText>
             )}
-          </>
+          </Stack>
         );
       }}
     />

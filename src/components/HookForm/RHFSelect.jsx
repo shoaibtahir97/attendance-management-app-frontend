@@ -2,7 +2,7 @@ import React from 'react';
 // form
 import { useFormContext, Controller } from 'react-hook-form';
 // @mui
-import { Chip, OutlinedInput, TextField } from '@mui/material';
+import { Box, InputLabel, MenuItem, Stack, TextField } from '@mui/material';
 import { Select } from '@mui/material';
 
 // ----------------------------------------------------------------------
@@ -12,7 +12,7 @@ export default function RHFSelect({
   children,
   onChange,
   label,
-  dense = false,
+  options,
   ...other
 }) {
   const { control } = useFormContext();
@@ -20,30 +20,36 @@ export default function RHFSelect({
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => {
-        let { onChange, ...field_ } = field;
-        return (
+      render={({ field, fieldState: { error } }) => (
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="flex-start"
+          spacing={2}
+          sx={{ width: '100%' }}>
+          <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+            {label}
+          </InputLabel>
           <Select
-            id='customized-textbox'
-            {...field_}
-            displayEmpty
-            value={field?.value}
-            onChange={field?.onChange}
-            // input={
-            //   <TextField
-            //     label={label}
-            //     placeholder={label}
-            //     error={!!error}
-            //     helperText={error?.message}
-            //     onChange={(e) => field?.onChange(e)}
-            //   />
-            // }
-            {...other}
-          >
-            {children}
+            fullWidth
+            value={field.value}
+            onChange={field.onChange}
+            error={!!error}
+            {...other}>
+            {options.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
           </Select>
-        );
-      }}
+          {error && (
+            <FormHelperText error sx={{ textAlign: 'left' }}>
+              {error.message}
+            </FormHelperText>
+          )}
+        </Stack>
+      )}
+      {...other}
     />
   );
 }

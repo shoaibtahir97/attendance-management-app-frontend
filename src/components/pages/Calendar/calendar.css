@@ -1,0 +1,8 @@
+.fc .fc-timegrid-slot {
+  height: 4em;
+}
+
+.fc-toolbar h2 {
+  display: inline;
+  text-transform: capitalize;
+}
