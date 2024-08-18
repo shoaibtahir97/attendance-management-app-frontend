@@ -21,6 +21,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Provider } from 'react-redux';
 import store from './redux/store.js';
 import 'dayjs/locale/en-gb';
+import { NotificationProvider } from './contexts/NotificationContext.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -30,7 +31,9 @@ root.render(
         <LocalizationProvider
           dateAdapter={AdapterDayjs}
           adapterLocale={'en-gb'}>
-          <RouterProvider router={router} />
+          <NotificationProvider>
+            <RouterProvider router={router} />
+          </NotificationProvider>
         </LocalizationProvider>
       </AuthProvider>
     </Provider>
