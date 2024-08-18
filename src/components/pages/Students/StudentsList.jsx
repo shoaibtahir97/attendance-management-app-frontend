@@ -124,8 +124,8 @@ const Students = () => {
     onChange: onSelectChange,
   };
   useEffect(() => {
-    if (data && data.data && data.data.length) {
-      const students = data.data.map((student) => ({
+    if (data && data.length) {
+      const students = data.map((student) => ({
         id: student._id,
         studentId: student.studentId,
         name: `${student.firstName} ${student.lastName}`,
