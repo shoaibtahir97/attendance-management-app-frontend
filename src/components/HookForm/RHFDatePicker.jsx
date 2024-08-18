@@ -14,8 +14,8 @@ const RHFDatePicker = (props) => {
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => {
-        return (
+      render={({ field, fieldState: { error } }) => (
+        <>
           <Stack
             direction="column"
             justifyContent="center"
@@ -31,16 +31,16 @@ const RHFDatePicker = (props) => {
               }}
               error={!!error}
               {...other}
-              slotProps={{ textField: { size: 'small' } }}
+              slotProps={{ textField: { size: 'small', error: !!error } }}
             />
-            {error && (
-              <FormHelperText error sx={{ textAlign: 'left' }}>
-                {error.message}
-              </FormHelperText>
-            )}
           </Stack>
-        );
-      }}
+          {error && (
+            <FormHelperText error sx={{ textAlign: 'left', ml: 2 }}>
+              {error.message}
+            </FormHelperText>
+          )}
+        </>
+      )}
     />
   );
 };
