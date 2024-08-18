@@ -7,9 +7,18 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: STUDENTS_URL,
       }),
+      transformResponse: (res) => res?.data,
       keepUnusedDataFor: 5,
+    }),
+    getStudentDetails: builder.query({
+      query: (studentId) => ({
+        url: `${STUDENTS_URL}/${studentId}`,
+        keepUnusedDataFor: 5,
+      }),
+      transformResponse: (res) => res?.data,
     }),
   }),
 });
 
-export const { useGetStudentsQuery } = studentApiSlice;
+export const { useGetStudentsQuery, useGetStudentDetailsQuery } =
+  studentApiSlice;
