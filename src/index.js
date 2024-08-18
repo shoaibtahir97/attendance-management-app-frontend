@@ -13,7 +13,6 @@ import './assets/plugins/select2/css/select2.min.css';
 import './assets/plugins/fontawesome/css/fontawesome.min.css';
 import './assets/plugins/fontawesome/css/all.min.css';
 
-import App from './App.js';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes/routes.js';
 import { AuthProvider } from './contexts/AuthContext.js';
@@ -21,13 +20,16 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Provider } from 'react-redux';
 import store from './redux/store.js';
+import 'dayjs/locale/en-gb';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider
+          dateAdapter={AdapterDayjs}
+          adapterLocale={'en-gb'}>
           <RouterProvider router={router} />
         </LocalizationProvider>
       </AuthProvider>
