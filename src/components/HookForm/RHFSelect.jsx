@@ -32,9 +32,10 @@ export default function RHFSelect({
           </InputLabel>
           <Select
             fullWidth
-            value={field.value}
+            value={field.value || ''}
             onChange={field.onChange}
             error={!!error}
+            size="small"
             {...other}>
             {options.map((option) => (
               <MenuItem key={option.value} value={option.value}>

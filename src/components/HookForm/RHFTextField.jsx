@@ -24,6 +24,7 @@ const RHFTextField = (props) => {
             error={!!error}
             helperText={error?.message}
             {...field}
+            size="small"
             {...other}
           />
         </Stack>
