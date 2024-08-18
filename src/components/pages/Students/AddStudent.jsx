@@ -1,308 +1,163 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import Header from "../../Header/Header";
-import SideBar from "../../SideBar/SideBar";
-import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import Select from "react-select";
+import React from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
+import PageHeader from '../../PageHeader';
+import { PATH_DASHBOARD } from '../../../routes/paths';
+import {
+  FormProvider,
+  RHFDatePicker,
+  RHFSelect,
+  RHFTextField,
+} from '../../HookForm';
+import * as Yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Button } from 'antd';
+import { Grid } from '@mui/material';
+import { useRegisterStudentMutation } from '../../../redux/slices/studentApiSlice';
+import useNotification from '../../../hooks/useNotification';
 
 const AddStudent = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [selectedOption1, setSelectedOption1] = useState(null);
-  const [selectedOption2, setSelectedOption2] = useState(null);
-  const [selectedOption3, setSelectedOption3] = useState(null);
-  const [selectedOption4, setSelectedOption4] = useState(null);
-  const [selectedOption5, setSelectedOption5] = useState(null);
+  const { openNotification } = useNotification();
 
-  const options1 = [
-    { value: 1, label: "Select Gender" },
-    { value: 2, label: "Female" },
-    { value: 3, label: "Male" },
-    { value: 4, label: "Others" },
+  const [registerStudent, { isLoading: loadingRegister }] =
+    useRegisterStudentMutation();
+
+  const studentSchema = Yup.object().shape({
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
+    studentId: Yup.string().required(),
+    phoneNumber: Yup.string().required(),
+    emailAddress: Yup.string().email().required(),
+    address: Yup.string().required(),
+    // group: Yup.string().required(),
+    gender: Yup.string().required(),
+    dateOfBirth: Yup.date().required(),
+    parentName: Yup.string().required(),
+    emergencyNumber: Yup.string().required(),
+    // numberOfWarningLettersIssues: Yup.string().required(),
+  });
+
+  const methods = useForm({
+    resolver: yupResolver(studentSchema),
+  });
+
+  const { handleSubmit, reset } = methods;
+
+  const genders = [
+    { value: '', label: 'Select Gender' },
+    { value: 'female', label: 'Female' },
+    { value: 'male', label: 'Male' },
+    { value: 'others', label: 'Others' },
   ];
 
-  const options2 = [
-    { value: 1, label: "Please Select Group" },
-    { value: 2, label: "B+" },
-    { value: 3, label: "A+" },
-    { value: 4, label: "O+" },
-  ];
-
-  const options3 = [
-    { value: 1, label: "Please Select Religion" },
-    { value: 2, label: "Hindu" },
-    { value: 3, label: "Christian" },
-    { value: 4, label: "Others" },
-  ];
-
-  const options4 = [
-    { value: 1, label: "Please Select Class" },
-    { value: 2, label: "12" },
-    { value: 3, label: "11" },
-    { value: 4, label: "10" },
-  ];
-
-  const options5 = [
-    { value: 1, label: "Please Select Section" },
-    { value: 2, label: "A" },
-    { value: 3, label: "B" },
-    { value: 4, label: "C" },
-  ];
-
-  const handleOption1Change = (selectedOption) => {
-    setSelectedOption1(selectedOption);
+  const registerStudentData = async (data) => {
+    registerStudent(data)
+      .unwrap()
+      .then((res) => {
+        openNotification('success', res?.message);
+        reset();
+      })
+      .catch((err) => openNotification('error', err.data.message || err.error));
   };
 
-  const handleOption2Change = (selectedOption) => {
-    setSelectedOption2(selectedOption);
-  };
-
-  const handleOption3Change = (selectedOption) => {
-    setSelectedOption3(selectedOption);
-  };
-
-  const handleOption4Change = (selectedOption) => {
-    setSelectedOption4(selectedOption);
-  };
-
-  const handleOption5Change = (selectedOption) => {
-    setSelectedOption5(selectedOption);
-  };
   return (
     <div className="content container-fluid">
       {/* Page Header */}
-      <div className="page-header">
-        <div className="row align-items-center">
-          <div className="col-sm-12">
-            <div className="page-sub-header">
-              <h3 className="page-title">Add Students</h3>
-              <ul className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="/students">Student</Link>
-                </li>
-                <li className="breadcrumb-item active">Add Students</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        currentSection="Register Student"
+        pageTitle="Register Student"
+        parentRoute={PATH_DASHBOARD.students}
+        parentSection="Student"
+      />
       {/* /Page Header */}
       <div className="row">
         <div className="col-sm-12">
           <div className="card comman-shadow">
             <div className="card-body">
-              <form>
-                <div className="row">
-                  <div className="col-12">
+              <FormProvider
+                methods={methods}
+                onSubmit={handleSubmit(registerStudentData)}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
                     <h5 className="form-title student-info">
-                      Student Information{" "}
-                      <span>
-                        <Link to="#">
-                          <i className="feather-more-vertical">
-                            <FeatherIcon icon="more-vertical" />
-                          </i>
-                        </Link>
-                      </span>
+                      Student Information
+                      {/* <span>
+                          <Link to="#">
+                            <i className="feather-more-vertical">
+                              <FeatherIcon icon="more-vertical" />
+                            </i>
+                          </Link>
+                        </span> */}
                     </h5>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>
-                        First Name <span className="login-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Enter First Name"
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFTextField name="firstName" label={'First Name'} />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFTextField name="lastName" label={'Last Name'} />
+                  </Grid>{' '}
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFTextField name="studentId" label="Student ID" />
+                  </Grid>
+                  {/* <Grid item xs={12} sm={6} md={4}>
+                      <RHFTextField name="group" label="Group" />
+                    </Grid> */}
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFSelect name="gender" label="Gender" options={genders} />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFDatePicker
+                      name="dateOfBirth"
+                      label="Date of Birth"
+                      sx={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFTextField name="phoneNumber" label="Phone number" />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFTextField name="emailAddress" label="Email Address" />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFTextField name="address" label="Address" />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFTextField name="parentName" label="Parent Name" />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFTextField
+                      name="emergencyNumber"
+                      label="Emergency number"
+                    />
+                  </Grid>
+                  {/* <Grid item xs={12} sm={6} md={4}>
+                      <RHFTextField
+                        name="numOfWarningLettersIssued"
+                        label="Warning Letters"
                       />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>
-                        Last Name <span className="login-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Enter First Name"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>
-                        Gender <span className="login-danger">*</span>
-                      </label>
-
-                      <Select
-                        className="w-100 local-forms  select"
-                        value={selectedOption1}
-                        onChange={handleOption1Change}
-                        options={options1}
-                        placeholder="Select Gender"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms calendar-icon">
-                      <label>
-                        Date Of Birth <span className="login-danger">*</span>
-                      </label>
-                      {/* <input
-                                                            className="form-control datetimepicker"
-                                                            type="text"
-                                                            placeholder="DD-MM-YYYY"
-                                                        /> */}
-                      <DatePicker
-                        className="form-control datetimepicker"
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>Roll </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Enter Roll Number"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>
-                        Blood Group <span className="login-danger">*</span>
-                      </label>
-                      {/* <select className="form-control select">
-                                                            <option>Please Select Group </option>
-                                                            <option>B+</option>
-                                                            <option>A+</option>
-                                                            <option>O+</option>
-                                                        </select> */}
-                      <Select
-                        className="w-100 select"
-                        value={selectedOption2}
-                        onChange={handleOption2Change}
-                        options={options2}
-                        placeholder="Please Select Group"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>
-                        Religion <span className="login-danger">*</span>
-                      </label>
-                      {/* <select className="form-control select">
-                                                            <option>Please Select Religion</option>
-                                                            <option>Hindu</option>
-                                                            <option>Christian</option>
-                                                            <option>Others</option>
-                                                        </select> */}
-                      <Select
-                        className="w-100 select"
-                        value={selectedOption3}
-                        onChange={handleOption3Change}
-                        options={options3}
-                        placeholder="Please Select Religion"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>
-                        E-Mail <span className="login-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Enter Email Address"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>
-                        Class <span className="login-danger">*</span>
-                      </label>
-                      {/* <select className="form-control select">
-                                                            <option>Please Select Class</option>
-                                                            <option>12</option>
-                                                            <option>11</option>
-                                                            <option>10</option>
-                                                        </select> */}
-                      <Select
-                        className="w-100 select"
-                        value={selectedOption4}
-                        onChange={handleOption4Change}
-                        options={options4}
-                        placeholder="Please Select Class"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>
-                        Section <span className="login-danger">*</span>
-                      </label>
-                      {/* <select className="form-control select">
-                                                            <option>Please Select Section </option>
-                                                            <option>B</option>
-                                                            <option>A</option>
-                                                            <option>C</option>
-                                                        </select> */}
-                      <Select
-                        className="w-100 select"
-                        value={selectedOption5}
-                        onChange={handleOption5Change}
-                        options={options5}
-                        placeholder="Please Select Section"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>Admission ID </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Enter Admission ID"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group local-forms">
-                      <label>Phone </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Enter Phone Number"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-sm-4">
-                    <div className="form-group students-up-files">
-                      <label>Upload Student Photo (150px X 150px)</label>
-                      <div className="uplod">
-                        <label className="file-upload image-upbtn mb-0">
-                          Choose File <input type="file" />
-                        </label>
+                    </Grid> */}
+                  {/* <div className="col-12 col-sm-4">
+                      <div className="form-group students-up-files">
+                        <label>Upload Student Photo (150px X 150px)</label>
+                        <div className="uplod">
+                          <label className="file-upload image-upbtn mb-0">
+                            Choose File <input type="file" />
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <div className="student-submit">
-                      <button type="submit" className="btn btn-primary">
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </form>
+                    </div> */}
+                  <Grid item xs={12}>
+                    {/* <div className="student-submit"> */}
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      loading={loadingRegister}>
+                      Save
+                    </Button>
+                    {/* </div> */}
+                  </Grid>
+                </Grid>
+              </FormProvider>
             </div>
           </div>
         </div>
