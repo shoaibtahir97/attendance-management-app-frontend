@@ -111,7 +111,6 @@ export const column = [
 const Students = () => {
   const { data, isLoading, error } = useGetStudentsQuery();
   const [dataSource, setDataSource] = useState([]);
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
@@ -240,7 +239,7 @@ const Students = () => {
                       columns={column}
                       dataSource={dataSource}
                       rowSelection={rowSelection}
-                      rowKey={(record) => record.Id}
+                      rowKey={(record) => record.id}
                     />
                   </div>
                 </div>

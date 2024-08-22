@@ -17,8 +17,36 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
       transformResponse: (res) => res?.data,
     }),
+    registerStudent: builder.mutation({
+      query: (payload) => ({
+        url: STUDENTS_URL,
+        method: 'POST',
+        body: payload,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        transformResponse: (res) => res?.data,
+      }),
+      invalidatesTags: ['Student'],
+    }),
+    updateStudentDetails: builder.mutation({
+      query: (payload) => ({
+        url: `${STUDENTS_URL}/${payload.id}`,
+        method: 'PUT',
+        body: payload,
+        header: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        transformResponse: (res) => res?.data,
+      }),
+      invalidatesTags: ['Student'],
+    }),
   }),
 });
 
-export const { useGetStudentsQuery, useGetStudentDetailsQuery } =
-  studentApiSlice;
+export const {
+  useGetStudentsQuery,
+  useGetStudentDetailsQuery,
+  useRegisterStudentMutation,
+  useUpdateStudentDetailsMutation,
+} = studentApiSlice;
