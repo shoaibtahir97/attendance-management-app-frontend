@@ -1,9 +1,9 @@
-import { FormControl, FormHelperText } from "@mui/material";
-import { DateCalendar } from "@mui/x-date-pickers";
-import { format } from "date-fns";
-import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import dayjs, { Dayjs } from "dayjs";
+import { FormControl, FormHelperText } from '@mui/material';
+import { DateCalendar } from '@mui/x-date-pickers';
+import { format } from 'date-fns';
+import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import dayjs, { Dayjs } from 'dayjs';
 
 const RHFDateCalendar = (props) => {
   const { name, label, ...other } = props;
@@ -21,10 +21,10 @@ const RHFDateCalendar = (props) => {
                 field.onChange(date);
               }}
               label={label}
-              error={error ? "true" : "false"}
+              error={error ? 'true' : 'false'}
             />
             {error && (
-              <FormHelperText error sx={{ textAlign: "left" }}>
+              <FormHelperText error sx={{ textAlign: 'left' }}>
                 {error.message}
               </FormHelperText>
             )}

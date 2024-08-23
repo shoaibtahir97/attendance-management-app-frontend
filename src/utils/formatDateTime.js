@@ -11,7 +11,7 @@ const days = [
 
 const getDay = (date) => days[dayjs(date).day()];
 
-const getFormattedDate = (date, format = 'DD/MM/YYY') =>
+const getFormattedDate = (date, format = 'DD/MM/YYYY') =>
   dayjs(date).format(format);
 
 const getFormattedTime = (date, format = 'HH:mm:ss') =>

@@ -38,8 +38,8 @@ import Calendar from '../components/pages/Calendar';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path='/' element={<AuthLayout />}>
-        <Route path='/login' element={<Login />} />
+      <Route path="/" element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
         <Route path={PATH_AUTH.register} element={<Register />} />
         <Route
           index={true}
@@ -47,8 +47,8 @@ const router = createBrowserRouter(
           element={<ForgotPassword />}
         />
       </Route>
-      <Route path='' element={<ProtectedRoute />}>
-        <Route path='/dashboard' element={<DashboardLayout />}>
+      <Route path="" element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<DashboardLayout />}>
           {/* Dashboard */}
           <Route
             path={PATH_DASHBOARD.adminDashboard}
@@ -70,7 +70,10 @@ const router = createBrowserRouter(
             element={<StudentsView />}
           />
           <Route path={PATH_DASHBOARD.studentAdd} element={<AddStudent />} />
-          <Route path={PATH_DASHBOARD.studentEdit} element={<EditStudent />} />
+          <Route
+            path={`${PATH_DASHBOARD.studentEdit}/:id`}
+            element={<EditStudent />}
+          />
 
           {/* Teachers */}
 

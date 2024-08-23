@@ -16,7 +16,7 @@ const PATH_DASHBOARD = {
   students: path(ROOTS_DASHBOARD, '/students'),
   studentProfile: path(ROOTS_DASHBOARD, '/studentsview'),
   studentAdd: path(ROOTS_DASHBOARD, '/addstudent'),
-  studentEdit: path(ROOTS_DASHBOARD, '/editstudnet'),
+  studentEdit: path(ROOTS_DASHBOARD, '/editstudent'),
   teachers: path(ROOTS_DASHBOARD, '/teacherslist'),
   teacherProfile: path(ROOTS_DASHBOARD, '/teachersprofile'),
   teacherAdd: path(ROOTS_DASHBOARD, '/addteacher'),
