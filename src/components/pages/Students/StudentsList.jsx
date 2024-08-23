@@ -1,12 +1,21 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Table } from 'antd';
+import { Button, Table } from 'antd';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { onShowSizeChange, itemRender } from '../../Pagination';
 import { useState } from 'react';
-import { useGetStudentsQuery } from '../../../redux/slices/studentApiSlice';
+import {
+  studentApiSlice,
+  useGetStudentsQuery,
+  useLazyGetStudentDetailsQuery,
+  useLazyGetStudentsQuery,
+} from '../../../redux/slices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import PageHeader from '../../PageHeader';
+import { apiSlice } from '../../../redux/slices/apiSlice';
+import { useForm } from 'react-hook-form';
+import { FormProvider, RHFTextField } from '../../HookForm';
+import { Box, Grid, Stack } from '@mui/material';
 
 export const column = [
   {
@@ -109,8 +118,17 @@ export const column = [
 ];
 
 const Students = () => {
-  const { data, isLoading, error } = useGetStudentsQuery();
-  const [dataSource, setDataSource] = useState([]);
+  const [studentsQuery, setStudentsQuery] = useState({
+    page: 1,
+    recordsPerPage: 10,
+  });
+  // const { data, isLoading, error } = useGetStudentsQuery(defaultQuery);
+  const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
+
+  const [dataSource, setDataSource] = useState({
+    students: [],
+    totalRecords: 0,
+  });
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
@@ -122,25 +140,53 @@ const Students = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
+
+  const methods = useForm();
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const fetchStudents = async (query) => {
+    await getStudents(query)
+      .unwrap()
+      .then((res) => {
+        const { students, totalRecordsCount, filteredRecordsCount } = res;
+        if (students && students.length > 0) {
+          const updatedStudents = students.map((student) => ({
+            id: student._id,
+            studentId: student.studentId,
+            name: `${student.firstName} ${student.lastName}`,
+            group: student.group,
+            phoneNumber: student.phoneNumber,
+            emailAddress: student.emailAddress,
+            address: student.address,
+            gender: student.gender,
+            dateOfBirth: student.dateOfBirth,
+            parentName: student.parentName,
+            emergencyNumber: student.emergencyNumber,
+            numOfWarningLettersIssued:
+              student.numOfWarningLettersIssued &&
+              student.numOfWarningLettersIssued.length
+                ? student.numOfWarningLettersIssued.length
+                : 0,
+          }));
+          setDataSource({
+            students: updatedStudents,
+            totalRecords: filteredRecordsCount,
+          });
+        }
+      });
+  };
+
+  const fetchStudentsByQuery = (data) => {
+    fetchStudents({ ...data, ...studentsQuery });
+  };
+
   useEffect(() => {
-    if (data && data.length) {
-      const students = data.map((student) => ({
-        id: student._id,
-        studentId: student.studentId,
-        name: `${student.firstName} ${student.lastName}`,
-        group: student.group,
-        phoneNumber: student.phoneNumber,
-        emailAddress: student.emailAddress,
-        address: student.address,
-        gender: student.gender,
-        dateOfBirth: student.dateOfBirth,
-        parentName: student.parentName,
-        emergencyNumber: student.emergencyNumber,
-        numOfWarningLettersIssued: student.numOfWarningLettersIssued.length,
-      }));
-      setDataSource(students);
-    }
-  }, [data]);
+    fetchStudents(studentsQuery);
+  }, []);
 
   return (
     <>
@@ -152,45 +198,35 @@ const Students = () => {
           parentRoute={PATH_DASHBOARD.students}
           parentSection="Student"
         />
-
-        <div className="student-group-form">
-          <div className="row">
-            <div className="col-lg-3 col-md-6">
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search by ID ..."
-                />
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6">
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search by Name ..."
-                />
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search by Phone ..."
-                />
-              </div>
-            </div>
-            <div className="col-lg-2">
-              <div className="search-student-btn">
-                <button type="btn" className="btn btn-primary">
-                  Search
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <FormProvider
+          methods={methods}
+          onSubmit={handleSubmit(fetchStudentsByQuery)}>
+          <Stack
+            direction="row"
+            alignItems="end"
+            justifyContent="space-between"
+            spacing={2}
+            sx={{ mb: 2 }}>
+            <Box sx={{ width: '100%' }}>
+              <RHFTextField name="studentId" label="Student ID" />
+            </Box>
+            <Box sx={{ width: '100%' }}>
+              <RHFTextField name="name" label="Name" />
+            </Box>
+            <Box sx={{ width: '100%' }}>
+              <RHFTextField name="phoneNumber" label="Phone number" />
+            </Box>
+            <Box sx={{ width: '100%', mt: 1 }}>
+              <Button
+                loading={isSubmitting}
+                type="primary"
+                htmlType="submit"
+                size="large">
+                Search
+              </Button>
+            </Box>
+          </Stack>
+        </FormProvider>
         {isLoading ? (
           <h2>Loading</h2>
         ) : error ? (
@@ -229,15 +265,24 @@ const Students = () => {
                   <div className="table-responsive">
                     <Table
                       pagination={{
-                        total: dataSource.length,
+                        total: dataSource?.totalRecords,
+
                         showTotal: (total, range) =>
                           `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                         showSizeChanger: true,
                         onShowSizeChange: onShowSizeChange,
                         itemRender: itemRender,
+                        onChange: (page, pageSize) => {
+                          setStudentsQuery({
+                            ...studentsQuery,
+                            page,
+                            recordsPerPage: pageSize,
+                          });
+                          fetchStudents({ page, recordsPerPage: pageSize });
+                        },
                       }}
                       columns={column}
-                      dataSource={dataSource}
+                      dataSource={dataSource.students}
                       rowSelection={rowSelection}
                       rowKey={(record) => record.id}
                     />
