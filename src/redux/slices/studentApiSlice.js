@@ -4,9 +4,12 @@ import { apiSlice } from './apiSlice';
 export const studentApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getStudents: builder.query({
-      query: () => ({
-        url: STUDENTS_URL,
-      }),
+      query: (params) => {
+        return {
+          url: STUDENTS_URL,
+          params,
+        };
+      },
       transformResponse: (res) => res?.data,
       keepUnusedDataFor: 5,
     }),
@@ -46,6 +49,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetStudentsQuery,
+  useLazyGetStudentsQuery,
   useGetStudentDetailsQuery,
   useRegisterStudentMutation,
   useUpdateStudentDetailsMutation,
