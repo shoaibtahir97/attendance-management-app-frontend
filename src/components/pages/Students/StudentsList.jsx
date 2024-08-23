@@ -98,13 +98,6 @@ export const column = [
     render: (text, record) => (
       <>
         <div className="actions">
-          {/* <Link
-            to={`${PATH_DASHBOARD.studentEdit}/${record.id}`}
-            className="btn btn-sm bg-success-light me-2">
-            <i className="feather-eye">
-              <FeatherIcon icon="eye" />
-            </i>
-          </Link> */}
           <Link
             to={`${PATH_DASHBOARD.studentEdit}/${record.id}`}
             className="btn btn-sm bg-danger-light">
@@ -158,7 +151,7 @@ const Students = () => {
         const { students, totalRecordsCount, filteredRecordsCount } = res;
         if (students && students.length > 0) {
           const updatedStudents = students.map((student) => ({
-            id: student._id,
+            id: student.id,
             studentId: student.studentId,
             name: `${student.firstName} ${student.lastName}`,
             group: student.group,
