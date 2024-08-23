@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Table } from 'antd';
+import { Alert, Button, Table, Tooltip } from 'antd';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { onShowSizeChange, itemRender } from '../../Pagination';
 import { useState } from 'react';
@@ -16,6 +16,7 @@ import { apiSlice } from '../../../redux/slices/apiSlice';
 import { useForm } from 'react-hook-form';
 import { FormProvider, RHFTextField } from '../../HookForm';
 import { Box, Grid, Stack } from '@mui/material';
+import TableSkeleton from '../../TableSkeleton';
 
 export const column = [
   {
@@ -116,6 +117,8 @@ export const column = [
     ),
   },
 ];
+
+const SKELETON = ['', '', '', '', ''];
 
 const Students = () => {
   const [studentsQuery, setStudentsQuery] = useState({
@@ -227,41 +230,47 @@ const Students = () => {
             </Box>
           </Stack>
         </FormProvider>
-        {isLoading ? (
-          <h2>Loading</h2>
-        ) : error ? (
-          <div>{error?.data?.message || error.error}</div>
-        ) : (
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="card card-table comman-shadow">
-                <div className="card-body">
-                  {/* Page Header */}
-                  <div className="page-header">
-                    <div className="row align-items-center">
-                      <div className="col">
-                        <h3 className="page-title">Students</h3>
-                      </div>
-                      <div className="col-auto text-end float-end ms-auto download-grp">
-                        <Link
-                          to="/students"
-                          className="btn btn-outline-gray me-2 active">
-                          <FeatherIcon className="feather-list" icon="list" />
-                        </Link>
-                        <Link
-                          to="/studentgrid"
-                          className="btn btn-outline-gray me-2">
-                          <FeatherIcon className="feather-grid" icon="grid" />
-                        </Link>
+
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="card card-table comman-shadow">
+              <div className="card-body">
+                {/* Page Header */}
+                <div className="page-header">
+                  <div className="row align-items-center">
+                    <div className="col">
+                      <h3 className="page-title">Students</h3>
+                    </div>
+                    <div className="col-auto text-end float-end ms-auto download-grp">
+                      {dataSource.students.length ? (
                         <Link to="#" className="btn btn-outline-primary me-2">
                           <i className="fas fa-download" /> Download
                         </Link>
-                        <Link to="/addstudent" className="btn btn-primary">
+                      ) : (
+                        <></>
+                      )}
+                      <Tooltip title="Add student">
+                        <Link
+                          to={PATH_DASHBOARD.studentAdd}
+                          className="btn btn-primary">
                           <i className="fas fa-plus" />
                         </Link>
-                      </div>
+                      </Tooltip>
                     </div>
                   </div>
+                </div>
+                {isLoading ? (
+                  SKELETON.map((_, index) => (
+                    <TableSkeleton key={index} columns={column} />
+                  ))
+                ) : error ? (
+                  <Alert
+                    message="Error"
+                    description={error?.data?.message || error.error}
+                    type="error"
+                    showIcon
+                  />
+                ) : (
                   <div className="table-responsive">
                     <Table
                       pagination={{
@@ -287,11 +296,12 @@ const Students = () => {
                       rowKey={(record) => record.id}
                     />
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
-        )}
+        </div>
+        {/* // )} */}
       </div>
     </>
   );
