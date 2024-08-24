@@ -17,6 +17,8 @@ import { useForm } from 'react-hook-form';
 import { FormProvider, RHFTextField } from '../../HookForm';
 import { Box, Grid, Stack } from '@mui/material';
 import TableSkeleton from '../../TableSkeleton';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
 export const column = [
   {
@@ -137,7 +139,15 @@ const Students = () => {
     onChange: onSelectChange,
   };
 
-  const methods = useForm();
+  const studentQuerySchema = Yup.object().shape({
+    studentId: Yup.string().trim(),
+    name: Yup.string().trim(),
+    phoneNumber: Yup.string().trim(),
+  });
+
+  const methods = useForm({
+    resolver: yupResolver(studentQuerySchema),
+  });
 
   const {
     handleSubmit,
