@@ -67,7 +67,9 @@ const EditStudent = () => {
     updateStudentDetails(data)
       .unwrap()
       .then((res) => openNotification('success', res?.message))
-      .catch((err) => openNotification('error', err.data.message || err.error));
+      .catch((err) =>
+        openNotification('error', err?.data?.message || err?.error)
+      );
   };
 
   useEffect(() => {
