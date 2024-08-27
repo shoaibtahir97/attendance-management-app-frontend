@@ -3,12 +3,10 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  Routes,
 } from 'react-router-dom';
 import AuthLayout from '../components/Layouts/AuthLayout.t';
 import DashboardLayout from '../components/Layouts/DashboardLayout';
 import AttendancePage from '../components/pages/Attendance';
-import Login from '../components/pages/Authentication';
 import Register from '../components/pages/Authentication/Register';
 import AdminDashboard from '../components/pages/Dashboard/AdminDashboard';
 import TeacherDashboard from '../components/pages/Dashboard/TeacherDashboard';
