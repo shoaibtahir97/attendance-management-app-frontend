@@ -34,12 +34,13 @@ import Reports from '../components/pages/Reports/Reports';
 import StudentReports from '../components/pages/Reports/StudentReports';
 import AttendanceReports from '../components/pages/Reports/AttendanceReports';
 import Calendar from '../components/pages/Calendar';
+import LoginScreen from '../screens/LoginScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
+        <Route index={true} path={PATH_AUTH.login} element={<LoginScreen />} />
         <Route path={PATH_AUTH.register} element={<Register />} />
         <Route
           index={true}
