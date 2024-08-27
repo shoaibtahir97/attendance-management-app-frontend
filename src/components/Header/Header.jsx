@@ -23,7 +23,6 @@ const Header = () => {
 
   const [logOutUser, { isLoading }] = useLogoutUserMutation();
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('userInfo'));
 
   const handlesidebar = () => {
     document.body.classList.toggle('mini-sidebar');
@@ -282,8 +281,8 @@ const Header = () => {
                   alt="Ryan Taylor"
                 />
                 <div className="user-text">
-                  <h6>{user?.username}</h6>
-                  <p className="text-muted mb-0">{user?.role}</p>
+                  <h6>{userInfo?.firstName}</h6>
+                  <p className="text-muted mb-0">{userInfo?.role}</p>
                 </div>
               </span>
             </Link>
@@ -297,8 +296,8 @@ const Header = () => {
                   />
                 </div>
                 <div className="user-text">
-                  <h6>{user?.username}</h6>
-                  <p className="text-muted mb-0">{user?.role}</p>
+                  <h6>{userInfo?.firstName}</h6>
+                  <p className="text-muted mb-0">{userInfo?.role}</p>
                 </div>
               </div>
               <Link className="dropdown-item" to="/profile">
