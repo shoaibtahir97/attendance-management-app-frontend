@@ -1,29 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation, withRouter } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-import FeatherIcon from 'feather-icons-react';
 import Scrollbars from 'react-custom-scrollbars-2';
 import navConfig from './sideBarConfig';
-// import { LogoImg, LogoSmallImg } from "../_components/imagepath";
+import { useSelector } from 'react-redux';
 
 const Sidebar = (props) => {
   const location = useLocation();
+  const { userInfo } = useSelector((state) => state.auth);
   const [isSideMenu, setSideMenu] = useState('');
-  const [isSideMenuLevel, setSideMenuLevel] = useState('');
-  const [isSideMenuLevel2, setSideMenuLevel2] = useState('');
-  const user = JSON.parse(localStorage.getItem('user'));
 
   const toggleSidebar = (value) => {
     console.log(value);
     setSideMenu(value);
-  };
-  const toggleSidebar1 = (value) => {
-    console.log(value);
-    setSideMenuLevel(value);
-  };
-  const toggleSidebar2 = (value) => {
-    console.log(value);
-    setSideMenuLevel2(value);
   };
 
   useEffect(() => {
@@ -109,7 +98,7 @@ const Sidebar = (props) => {
             <div id="sidebar-menu" className="sidebar-menu">
               <ul>
                 {navConfig?.map((nav, navIndex) => {
-                  if (nav.role.includes(user?.role)) {
+                  if (nav.role.includes(userInfo?.role)) {
                     return (
                       <li
                         key={navIndex}
@@ -138,7 +127,7 @@ const Sidebar = (props) => {
                                 isSideMenu == nav?.title ? 'block' : 'none',
                             }}>
                             {nav?.children?.map((navChild, childIndex) => {
-                              if (navChild?.role?.includes(user?.role)) {
+                              if (navChild?.role?.includes(userInfo?.role)) {
                                 return (
                                   <li key={childIndex}>
                                     <Link
