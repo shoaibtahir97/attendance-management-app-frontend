@@ -63,31 +63,31 @@ const navConfig = [
   // Teachers
   {
     title: 'Teachers',
-    path: '#',
+    path: PATH_DASHBOARD.teachers,
     icon: <PiChalkboardTeacherLight />,
     role: ['admin'],
-    children: [
-      {
-        title: 'Teacher List',
-        path: PATH_DASHBOARD.teachers,
-        role: ['admin'],
-      },
-      {
-        title: 'Teacher View',
-        path: PATH_DASHBOARD.teacherProfile,
-        role: ['admin'],
-      },
-      {
-        title: 'Teacher Add',
-        path: PATH_DASHBOARD.teacherAdd,
-        role: ['admin'],
-      },
-      {
-        title: 'Teacher Edit',
-        path: PATH_DASHBOARD.teacherEdit,
-        role: ['admin'],
-      },
-    ],
+    // children: [
+    // {
+    //   title: 'Teacher List',
+    //   path: PATH_DASHBOARD.teachers,
+    //   role: ['admin'],
+    // },
+    // {
+    //   title: 'Teacher View',
+    //   path: PATH_DASHBOARD.teacherProfile,
+    //   role: ['admin'],
+    // },
+    // {
+    //   title: 'Teacher Add',
+    //   path: PATH_DASHBOARD.teacherAdd,
+    //   role: ['admin'],
+    // },
+    // {
+    //   title: 'Teacher Edit',
+    //   path: PATH_DASHBOARD.teacherEdit,
+    //   role: ['admin'],
+    // },
+    // ],
   },
   // Departments
   {
