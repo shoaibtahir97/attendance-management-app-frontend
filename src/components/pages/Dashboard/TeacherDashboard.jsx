@@ -14,6 +14,7 @@ import {
   teachericon03,
 } from '../../imagepath';
 import 'react-calendar/dist/Calendar.css';
+import { useSelector } from 'react-redux';
 
 const TeacherDashboard = () => {
   const { userInfo } = useSelector((state) => state.auth);
