@@ -17,6 +17,8 @@ import { useSelector } from 'react-redux';
 import { useAuthUserMutation } from '../redux/slices/usersApiSlice';
 import { setCredentials } from '../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { setSubjects } from '../redux/slices/subjectSlice';
+import { setGroups } from '../redux/slices/groupSlice';
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -46,15 +48,18 @@ const LoginScreen = () => {
   const {
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = methods;
 
   const handleLogin = async (data) => {
     await authUser(data)
       .unwrap()
       .then((res) => {
-        console.log('res', res);
-        dispatch(setCredentials({ ...res?.data }));
+        const { groups, subjects, ...userInfo } = { ...res?.data };
+        console.log({ groups, subjects, userInfo });
+        dispatch(setGroups(groups));
+        dispatch(setSubjects(subjects));
+        dispatch(setCredentials({ ...userInfo }));
         if (res.data.role === 'admin') {
           navigate(PATH_DASHBOARD.adminDashboard, { replace: true });
         } else if (res.data.role === 'teacher') {
