@@ -2,19 +2,6 @@ import { Autocomplete, InputLabel, Stack, TextField } from '@mui/material';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-// interface Options {
-//   label: string;
-//   value: any;
-// }
-
-// interface RHFAutocompleteProps {
-//   name: string;
-//   options?: Options[] | null;
-//   multiple?: boolean;
-//   freeSolo?: boolean;
-//   label?: string;
-// }
-
 const RHFAutocomplete = (props) => {
   const { name, multiple, freeSolo, options, label, ...other } = props;
   const { control } = useFormContext();
