@@ -15,6 +15,8 @@ import { useLogoutUserMutation } from '../../redux/slices/usersApiSlice';
 import { logout } from '../../redux/slices/authSlice';
 import { PATH_AUTH, PATH_DASHBOARD } from '../../routes/paths';
 import useNotification from '../../hooks/useNotification';
+import { unsetGroups } from '../../redux/slices/groupSlice';
+import { unsetSubjects } from '../../redux/slices/subjectSlice';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -36,9 +38,13 @@ const Header = () => {
     await logOutUser()
       .unwrap()
       .then((res) => {
+        // Clear Redux Store
         dispatch(logout());
+        dispatch(unsetGroups());
+        dispatch(unsetSubjects());
         navigate(PATH_AUTH.login, { replace: true });
       })
+
       .catch((err) => {
         console.log('Error', err.data.message);
         openNotification('error', err.data.message || err.error);
