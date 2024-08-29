@@ -30,23 +30,7 @@ export const column = [
     title: 'Name',
     dataIndex: 'name',
     sorter: (a, b) => a.name.length - b.name.length,
-    render: (text, record) => (
-      <>
-        <h2 className="table-avatar">
-          {text}
-          {/* <Link to="/studentsview" className="avatar avatar-sm me-2 ">
-            <img
-              className="avatar-img rounded-circle"
-              src={record.Img}
-              alt="User Image"
-            />
-          </Link>
-          <Link className="text-dark" to="/studentsview">
-            {record.Name}
-          </Link> */}
-        </h2>
-      </>
-    ),
+    render: (text, record) => <h2 className="table-avatar">{text}</h2>,
   },
   {
     title: 'Group',
