@@ -3,6 +3,7 @@ import { apiSlice } from './slices/apiSlice';
 import authSliceReducer from './slices/authSlice';
 import subjectSliceReducer from './slices/subjectSlice';
 import groupSliceReducer from './slices/groupSlice';
+import attendanceSliceReducer from './slices/attendanceSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     auth: authSliceReducer,
     subjects: subjectSliceReducer,
     groups: groupSliceReducer,
+    attendanceRecords: attendanceSliceReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
