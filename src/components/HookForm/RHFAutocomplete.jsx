@@ -21,7 +21,13 @@ const RHFAutocomplete = (props) => {
               {label}
             </InputLabel>
             <Autocomplete
-              value={value === null ? [] : value}
+              value={
+                value
+                  ? (options.find((option) => {
+                      return value === option.value;
+                    }) ?? null)
+                  : null
+              }
               onChange={(event, newValue) => {
                 if (Array.isArray(newValue))
                   onChange(newValue ? newValue : null);
@@ -31,6 +37,9 @@ const RHFAutocomplete = (props) => {
               multiple={!!multiple}
               freeSolo={!!freeSolo}
               options={options ? options : []}
+              getOptionLabel={(option) => {
+                return typeof option === 'string' ? option : option.label;
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
