@@ -26,6 +26,16 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    getUsers: builder.query({
+      query: (params) => ({
+        url: USERS_URL,
+        params,
+        credentials: 'include',
+      }),
+
+      transformResponse: (res) => res?.data,
+      keepUnusedDataFor: 5,
+    }),
   }),
 });
 
@@ -33,4 +43,5 @@ export const {
   useAuthUserMutation,
   useRegisterUserMutation,
   useLogoutUserMutation,
+  useLazyGetUsersQuery,
 } = usersApiSlice;
