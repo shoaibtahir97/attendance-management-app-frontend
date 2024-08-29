@@ -3,12 +3,9 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  Routes,
 } from 'react-router-dom';
 import AuthLayout from '../components/Layouts/AuthLayout.t';
 import DashboardLayout from '../components/Layouts/DashboardLayout';
-import AttendancePage from '../components/pages/Attendance';
-import Login from '../components/pages/Authentication';
 import Register from '../components/pages/Authentication/Register';
 import AdminDashboard from '../components/pages/Dashboard/AdminDashboard';
 import TeacherDashboard from '../components/pages/Dashboard/TeacherDashboard';
@@ -34,12 +31,16 @@ import Reports from '../components/pages/Reports/Reports';
 import StudentReports from '../components/pages/Reports/StudentReports';
 import AttendanceReports from '../components/pages/Reports/AttendanceReports';
 import Calendar from '../components/pages/Calendar';
+import LoginScreen from '../screens/LoginScreen';
+import TeachersScreen from '../screens/Teachers/TeachersScreen';
+import AddTeacher from '../screens/Teachers/AddTeacher';
+import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
+        <Route index={true} path={PATH_AUTH.login} element={<LoginScreen />} />
         <Route path={PATH_AUTH.register} element={<Register />} />
         <Route
           index={true}
@@ -77,12 +78,12 @@ const router = createBrowserRouter(
 
           {/* Teachers */}
 
-          <Route path={PATH_DASHBOARD.teachers} element={<TeachersList />} />
+          <Route path={PATH_DASHBOARD.teachers} element={<TeachersScreen />} />
           <Route
             path={PATH_DASHBOARD.teacherProfile}
             element={<TeachersProfile />}
           />
-          <Route path={PATH_DASHBOARD.teacherAdd} element={<TeachersAdd />} />
+          <Route path={PATH_DASHBOARD.teacherAdd} element={<AddTeacher />} />
           <Route path={PATH_DASHBOARD.teacherEdit} element={<TeachersEdit />} />
 
           {/* Departments */}
@@ -107,7 +108,7 @@ const router = createBrowserRouter(
           {/* Attendance */}
           <Route
             path={PATH_DASHBOARD.attendance}
-            element={<AttendancePage />}
+            element={<MarkAttendanceScreen />}
           />
 
           {/* Reports */}

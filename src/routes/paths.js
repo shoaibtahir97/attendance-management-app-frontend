@@ -3,7 +3,7 @@ const path = (root, subLink) => `${root}${subLink}`;
 const ROOTS_DASHBOARD = '/dashboard';
 
 const PATH_AUTH = {
-  login: '/login',
+  login: '/',
   register: '/register',
   forgotPassword: '/forgotpassword',
 };

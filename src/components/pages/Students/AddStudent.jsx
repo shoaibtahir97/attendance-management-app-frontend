@@ -55,7 +55,18 @@ const AddStudent = () => {
       .unwrap()
       .then((res) => {
         openNotification('success', res?.message);
-        reset();
+        reset({
+          firstName: '',
+          lastName: '',
+          studentId: '',
+          phoneNumber: '',
+          emailAddress: '',
+          address: '',
+          gender: '',
+          dateOfBirth: '',
+          parentName: '',
+          emergencyNumber: '',
+        });
       })
       .catch((err) => openNotification('error', err.data.message || err.error));
   };

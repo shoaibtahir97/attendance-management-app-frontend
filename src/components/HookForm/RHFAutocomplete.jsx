@@ -2,19 +2,6 @@ import { Autocomplete, InputLabel, Stack, TextField } from '@mui/material';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-// interface Options {
-//   label: string;
-//   value: any;
-// }
-
-// interface RHFAutocompleteProps {
-//   name: string;
-//   options?: Options[] | null;
-//   multiple?: boolean;
-//   freeSolo?: boolean;
-//   label?: string;
-// }
-
 const RHFAutocomplete = (props) => {
   const { name, multiple, freeSolo, options, label, ...other } = props;
   const { control } = useFormContext();
@@ -34,7 +21,13 @@ const RHFAutocomplete = (props) => {
               {label}
             </InputLabel>
             <Autocomplete
-              value={value === null ? [] : value}
+              value={
+                value
+                  ? (options.find((option) => {
+                      return value === option.value;
+                    }) ?? null)
+                  : null
+              }
               onChange={(event, newValue) => {
                 if (Array.isArray(newValue))
                   onChange(newValue ? newValue : null);
@@ -44,6 +37,9 @@ const RHFAutocomplete = (props) => {
               multiple={!!multiple}
               freeSolo={!!freeSolo}
               options={options ? options : []}
+              getOptionLabel={(option) => {
+                return typeof option === 'string' ? option : option.label;
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}

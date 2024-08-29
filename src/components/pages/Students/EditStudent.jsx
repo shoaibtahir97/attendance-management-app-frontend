@@ -8,7 +8,6 @@ import PageHeader from '../../PageHeader';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import {
   useGetStudentDetailsQuery,
-  useRegisterStudentMutation,
   useUpdateStudentDetailsMutation,
 } from '../../../redux/slices/studentApiSlice';
 import { useForm } from 'react-hook-form';
