@@ -23,7 +23,7 @@ module.exports = (env, args) => {
       port: 3001,
       historyApiFallback: true,
       onAfterSetupMiddleware() {
-        opn(`http://localhost:${this.port}/login`);
+        opn(`http://localhost:${this.port}`);
       },
     },
     performance: {
