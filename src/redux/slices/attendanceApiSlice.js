@@ -9,6 +9,7 @@ export const attendanceApiSlice = apiSlice.injectEndpoints({
         url: ATTENDANCE_URL,
         body: payload,
         method: 'POST',
+        credentials:'include',
       }),
     }),
   }),

@@ -134,7 +134,11 @@ const Header = () => {
           {/* Notifications */}
           <li className="nav-item dropdown noti-dropdown me-2">
             <Link
-              to="#"
+              to={
+                userInfo?.role === 'admin'
+                  ? PATH_DASHBOARD.adminDashboard
+                  : PATH_DASHBOARD.teacherDashboard
+              }
               className="dropdown-toggle nav-link header-nav-list"
               data-bs-toggle="dropdown">
               <img src={headericon05} alt="" />
@@ -276,7 +280,11 @@ const Header = () => {
           {/* User Menu */}
           <li className="nav-item dropdown has-arrow new-user-menus">
             <Link
-              to="#"
+              to={
+                userInfo?.role === 'admin'
+                  ? PATH_DASHBOARD.adminDashboard
+                  : PATH_DASHBOARD.teacherDashboard
+              }
               className="dropdown-toggle nav-link"
               data-bs-toggle="dropdown">
               <span className="user-img">
