@@ -28,7 +28,7 @@ import {
   RHFTimePicker,
   RHFCheckbox,
   RHFAutocomplete,
-} from '../../HookForm/index';
+} from '../../HookForm';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
 import {
