@@ -9,8 +9,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const opn = require("opn"); // Import the 'opn' package
 
-const publicPath = "/"; // To run this file in local
-// const publicPath = "/react/"; // To build the file
+const publicPath = "/demo"; // To run this file in local
+// const prodPath = "/demo/"; // To build the file
 module.exports = (env, args) => {
   const mode = args.mode || "development";
   return {
