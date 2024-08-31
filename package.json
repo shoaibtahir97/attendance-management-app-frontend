@@ -4,11 +4,15 @@
   "version": "1.0.0",
   "description": "",
   "private": "true",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+ "scripts": {
+    "start": "webpack-dev-server --mode development  --progress",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "build": "webpack --mode production",
+    "dev": "webpack-dev-server",
+    "production": "webpack --mode production",
+    "preinstall": "npx npm-force-resolutions",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shoaib Tahir",
   "license": "ISC",
