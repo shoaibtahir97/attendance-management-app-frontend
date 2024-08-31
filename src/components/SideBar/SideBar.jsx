@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Scrollbars from 'react-custom-scrollbars-2';
 import navConfig from './sideBarConfig';
 import { useSelector } from 'react-redux';
+import $ from 'jquery';
 
 const Sidebar = (props) => {
   const location = useLocation();
