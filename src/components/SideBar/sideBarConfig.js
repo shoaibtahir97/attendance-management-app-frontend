@@ -36,7 +36,6 @@ const navConfig = [
     path: '#',
     icon: <PiStudent />,
     role: ['teacher', 'admin'],
-
     children: [
       {
         title: 'Student List',

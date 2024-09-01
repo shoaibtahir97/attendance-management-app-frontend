@@ -282,8 +282,8 @@ const Header = () => {
             <Link
               to={
                 userInfo?.role === 'admin'
-                  ? PATH_DASHBOARD.adminDashboard
-                  : PATH_DASHBOARD.teacherDashboard
+                  ? `/demo/${PATH_DASHBOARD.adminDashboard}`
+                  : `/demo/${PATH_DASHBOARD.teacherDashboard}`
               }
               className="dropdown-toggle nav-link"
               data-bs-toggle="dropdown">
