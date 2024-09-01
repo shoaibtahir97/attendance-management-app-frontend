@@ -11,7 +11,7 @@ import {
   avatar01,
 } from '../imagepath';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLogoutUserMutation } from '../../redux/slices/usersApiSlice';
+import { useLogoutUserMutation } from '../../redux/slices/apiSlices/usersApiSlice';
 import { logout } from '../../redux/slices/authSlice';
 import { PATH_AUTH, PATH_DASHBOARD } from '../../routes/paths';
 import useNotification from '../../hooks/useNotification';
@@ -320,7 +320,9 @@ const Header = () => {
               <Link className="dropdown-item" to="/inbox">
                 Inbox
               </Link>
-              <Link className="dropdown-item" onClick={LogOut}>
+              <Link to={userInfo?.role === 'admin'
+                  ? PATH_DASHBOARD.adminDashboard
+                  : PATH_DASHBOARD.teacherDashboard} className="dropdown-item" onClick={LogOut}>
                 Logout
               </Link>
             </div>

@@ -9,7 +9,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 import {
   useGetStudentDetailsQuery,
   useUpdateStudentDetailsMutation,
-} from '../../../redux/slices/studentApiSlice';
+} from '../../../redux/slices/apiSlices/studentApiSlice';
 import { useForm } from 'react-hook-form';
 import {
   FormProvider,

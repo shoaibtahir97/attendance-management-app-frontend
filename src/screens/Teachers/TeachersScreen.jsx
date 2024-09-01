@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { Box, Stack, Tooltip } from '@mui/material';
 import { Button, Table } from 'antd';
 import { Link } from 'react-router-dom';
-import { useLazyGetStudentsQuery } from '../../redux/slices/studentApiSlice';
+import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
 
 const TeachersScreen = () => {
