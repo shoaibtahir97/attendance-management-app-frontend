@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'antd';
 import { Grid } from '@mui/material';
-import { useRegisterStudentMutation } from '../../../redux/slices/studentApiSlice';
+import { useRegisterStudentMutation } from '../../../redux/slices/apiSlices/studentApiSlice';
 import useNotification from '../../../hooks/useNotification';
 
 const AddStudent = () => {

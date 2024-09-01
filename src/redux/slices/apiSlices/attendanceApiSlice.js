@@ -1,6 +1,5 @@
 import { apiSlice } from './apiSlice';
-import { ATTENDANCE_URL } from '../../constants';
-import { markAttendance } from './attendanceSlice';
+import { ATTENDANCE_URL } from '../../../constants';
 
 export const attendanceApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,6 +8,7 @@ export const attendanceApiSlice = apiSlice.injectEndpoints({
         url: ATTENDANCE_URL,
         body: payload,
         method: 'POST',
+        credentials:'include',
       }),
     }),
   }),

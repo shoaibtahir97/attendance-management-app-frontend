@@ -1,6 +1,6 @@
 import React from 'react';
 import useNotification from '../../hooks/useNotification';
-import { useRegisterUserMutation } from '../../redux/slices/usersApiSlice';
+import { useRegisterUserMutation } from '../../redux/slices/apiSlices/usersApiSlice';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';

@@ -12,23 +12,20 @@ import * as Yup from 'yup';
 import dayjs from 'dayjs';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { useSelector } from 'react-redux';
-import { useLazyGetStudentsQuery } from '../../redux/slices/studentApiSlice';
+import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { Alert, Button, Table } from 'antd';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import {
-  markAttendance,
-  resetAttendanceRecord,
-} from '../../redux/slices/attendanceSlice';
 import { IoMdCheckmark } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
 import { GoClock } from 'react-icons/go';
 import { getFormattedDate } from '../../utils/formatDateTime';
 import { Grid, Stack } from '@mui/material';
-import { useMarkAttendanceMutation } from '../../redux/slices/attendanceApiSlice';
+import { useMarkAttendanceMutation } from '../../redux/slices/apiSlices/attendanceApiSlice';
 import useNotification from '../../hooks/useNotification';
+import { markAttendance, resetAttendanceRecord } from '../../redux/slices/attendanceSlice';
 
 const MarkAttendanceScreen = () => {
   const { groups } = useSelector((state) => state.groups);

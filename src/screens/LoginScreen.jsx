@@ -14,7 +14,7 @@ import { PATH_DASHBOARD } from '../routes/paths';
 import { Alert, Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useAuthUserMutation } from '../redux/slices/usersApiSlice';
+import { useAuthUserMutation } from '../redux/slices/apiSlices/usersApiSlice';
 import { setCredentials } from '../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { setSubjects } from '../redux/slices/subjectSlice';
