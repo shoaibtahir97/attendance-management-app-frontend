@@ -37,7 +37,7 @@ import TeachersScreen from '../screens/Teachers/TeachersScreen';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
 
-const router = createBrowserRouter(
+const router = createHashRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<AuthLayout />}>
