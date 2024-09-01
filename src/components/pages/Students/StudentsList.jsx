@@ -9,10 +9,10 @@ import {
   useGetStudentsQuery,
   useLazyGetStudentDetailsQuery,
   useLazyGetStudentsQuery,
-} from '../../../redux/slices/studentApiSlice';
+} from '../../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import PageHeader from '../../PageHeader';
-import { apiSlice } from '../../../redux/slices/apiSlice';
+import { apiSlice } from '../../../redux/slices/apiSlices/apiSlice';
 import { useForm } from 'react-hook-form';
 import { FormProvider, RHFTextField } from '../../HookForm';
 import { Box, Grid, Stack } from '@mui/material';
