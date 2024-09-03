@@ -36,6 +36,9 @@ import LoginScreen from '../screens/LoginScreen';
 import TeachersScreen from '../screens/Teachers/TeachersScreen';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
+import CourseScreen from '../screens/Course/CourseScreen';
+import AddCourse from '../screens/Course/AddCourse';
+import EditCourse from '../screens/Course/EditCourse';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -87,17 +90,11 @@ const router = createBrowserRouter(
           <Route path={PATH_DASHBOARD.teacherAdd} element={<AddTeacher />} />
           <Route path={PATH_DASHBOARD.teacherEdit} element={<TeachersEdit />} />
 
-          {/* Departments */}
+          {/* Courses */}
+          <Route path={PATH_DASHBOARD.courses} element={<DepartmentList />} />
+          <Route path={PATH_DASHBOARD.courseAdd} element={<AddDepartment />} />
           <Route
-            path={PATH_DASHBOARD.departments}
-            element={<DepartmentList />}
-          />
-          <Route
-            path={PATH_DASHBOARD.departmentAdd}
-            element={<AddDepartment />}
-          />
-          <Route
-            path={PATH_DASHBOARD.departmentEdit}
+            path={PATH_DASHBOARD.courseEdit}
             element={<EditDepartment />}
           />
 

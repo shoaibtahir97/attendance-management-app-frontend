@@ -91,51 +91,51 @@ const navConfig = [
   },
   // Departments
   {
-    title: 'Departments',
-    path: '#',
+    title: 'Courses',
+    path: PATH_DASHBOARD.courses,
     icon: <PiBuildingOfficeLight />,
     role: ['teacher', 'admin'],
-    children: [
-      {
-        title: 'Department List',
-        path: PATH_DASHBOARD.departments,
-        role: ['teacher', 'admin'],
-      },
-      {
-        title: 'Department Add',
-        path: PATH_DASHBOARD.departmentAdd,
-        role: ['admin'],
-      },
-      {
-        title: 'Department Edit',
-        path: PATH_DASHBOARD.departmentEdit,
-        role: ['admin'],
-      },
-    ],
+    // children: [
+    //   {
+    //     title: 'Department List',
+    //     path: PATH_DASHBOARD.departments,
+    //     role: ['teacher', 'admin'],
+    //   },
+    //   {
+    //     title: 'Department Add',
+    //     path: PATH_DASHBOARD.departmentAdd,
+    //     role: ['admin'],
+    //   },
+    //   {
+    //     title: 'Department Edit',
+    //     path: PATH_DASHBOARD.departmentEdit,
+    //     role: ['admin'],
+    //   },
+    // ],
   },
   // Subjects
   {
     title: 'Subjects',
-    path: '#',
+    path: PATH_DASHBOARD.subjects,
     icon: <PiBooksLight />,
     role: ['teacher', 'admin'],
-    children: [
-      {
-        title: 'Subject List',
-        path: PATH_DASHBOARD.subjects,
-        role: ['teacher', 'admin'],
-      },
-      {
-        title: 'Subject Add',
-        path: PATH_DASHBOARD.subjectAdd,
-        role: ['admin'],
-      },
-      {
-        title: 'Department Edit',
-        path: PATH_DASHBOARD.subjectEdit,
-        role: ['admin'],
-      },
-    ],
+    // children: [
+    //   {
+    //     title: 'Subject List',
+    //     path: PATH_DASHBOARD.subjects,
+    //     role: ['teacher', 'admin'],
+    //   },
+    //   {
+    //     title: 'Subject Add',
+    //     path: PATH_DASHBOARD.subjectAdd,
+    //     role: ['admin'],
+    //   },
+    //   {
+    //     title: 'Department Edit',
+    //     path: PATH_DASHBOARD.subjectEdit,
+    //     role: ['admin'],
+    //   },
+    // ],
   },
   // Reports
   {

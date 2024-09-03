@@ -1,18 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import FeatherIcon from "feather-icons-react";
-import { pagination, Table } from "antd";
-import { onShowSizeChange, itemRender } from "../../Pagination";
-import Header from "../../Header/Header";
-import SideBar from "../../SideBar/SideBar";
-import Footer from "../../Footer/Footer";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import FeatherIcon from 'feather-icons-react';
+import { pagination, Table } from 'antd';
+import { onShowSizeChange, itemRender } from '../../Pagination';
+import Header from '../../Header/Header';
+import SideBar from '../../SideBar/SideBar';
+import Footer from '../../Footer/Footer';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 
 const SubjectList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -22,67 +23,67 @@ const SubjectList = () => {
   };
   const datasource = [
     {
-      id: "1",
-      SubjectID: "PRE2209",
-      Name: "Mathematics",
+      id: '1',
+      SubjectID: 'PRE2209',
+      Name: 'Mathematics',
       Class: 5,
-      Action: "",
+      Action: '',
     },
     {
-      id: "2",
-      SubjectID: "PRE2213",
-      Name: "History",
+      id: '2',
+      SubjectID: 'PRE2213',
+      Name: 'History',
       Class: 6,
-      Action: "",
+      Action: '',
     },
     {
-      id: "3",
-      SubjectID: "PRE2143",
-      Name: "Science",
+      id: '3',
+      SubjectID: 'PRE2143',
+      Name: 'Science',
       Class: 3,
-      Action: "",
+      Action: '',
     },
     {
-      id: "4",
-      SubjectID: "PRE2431",
-      Name: "Geography",
+      id: '4',
+      SubjectID: 'PRE2431',
+      Name: 'Geography',
       Class: 8,
-      Action: "",
+      Action: '',
     },
     {
-      id: "5",
-      SubjectID: "PRE1534",
-      Name: "Botony",
+      id: '5',
+      SubjectID: 'PRE1534',
+      Name: 'Botony',
       Class: 9,
-      Action: "",
+      Action: '',
     },
     {
-      id: "6",
-      SubjectID: "PRE2153",
-      Name: "English",
+      id: '6',
+      SubjectID: 'PRE2153',
+      Name: 'English',
       Class: 4,
-      Action: "",
+      Action: '',
     },
   ];
   const column = [
     {
-      title: "ID",
-      dataIndex: "SubjectID",
+      title: 'ID',
+      dataIndex: 'SubjectID',
       sorter: (a, b) => a.DepartmentID.length - b.DepartmentID.length,
     },
     {
-      title: "Name",
-      dataIndex: "Name",
+      title: 'Name',
+      dataIndex: 'Name',
       sorter: (a, b) => a.Name.length - b.Name.length,
     },
+    // {
+    //   title: 'Class',
+    //   dataIndex: 'Class',
+    //   sorter: (a, b) => a.Class.length - b.Class.length,
+    // },
     {
-      title: "Class",
-      dataIndex: "Class",
-      sorter: (a, b) => a.Class.length - b.Class.length,
-    },
-    {
-      title: "Action",
-      dataIndex: "Action",
+      title: 'Action',
+      dataIndex: 'Action',
       render: (text, record) => (
         <>
           <Link to="#" className="btn btn-sm bg-success-light me-2 ">
@@ -90,7 +91,9 @@ const SubjectList = () => {
               <FeatherIcon icon="eye" />
             </i>
           </Link>
-          <Link to="/editsubject" className="btn btn-sm bg-danger-light ">
+          <Link
+            to={PATH_DASHBOARD.subjectEdit}
+            className="btn btn-sm bg-danger-light ">
             <i className="departmentedit feather-edit">
               <FeatherIcon icon="edit" />
             </i>
@@ -165,10 +168,12 @@ const SubjectList = () => {
                     <h3 className="page-title">Subjects</h3>
                   </div>
                   <div className="col-auto text-end float-end ms-auto download-grp">
-                    <Link to="#" className="btn btn-outline-primary me-2">
+                    {/* <Link to="#" className="btn btn-outline-primary me-2">
                       <i className="fas fa-download" /> Download
-                    </Link>
-                    <Link to="/addsubject" className="btn btn-primary">
+                    </Link> */}
+                    <Link
+                      to={PATH_DASHBOARD.subjectAdd}
+                      className="btn btn-primary">
                       <i className="fas fa-plus" />
                     </Link>
                   </div>
