@@ -36,6 +36,7 @@ import LoginScreen from '../screens/LoginScreen';
 import TeachersScreen from '../screens/Teachers/TeachersScreen';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
+import StudentsScreen from '../screens/Students/StudentsScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -66,7 +67,7 @@ const router = createBrowserRouter(
           />
           {/* Students */}
 
-          <Route path={PATH_DASHBOARD.students} element={<Students />} />
+          <Route path={PATH_DASHBOARD.students} element={<StudentsScreen />} />
           <Route
             path={PATH_DASHBOARD.studentProfile}
             element={<StudentsView />}

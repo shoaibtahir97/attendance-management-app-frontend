@@ -33,32 +33,31 @@ const navConfig = [
   // Students
   {
     title: 'Students',
-    path: '#',
+    path: PATH_DASHBOARD.students,
     icon: <PiStudent />,
     role: ['teacher', 'admin'],
-
-    children: [
-      {
-        title: 'Student List',
-        path: PATH_DASHBOARD.students,
-        role: ['teacher', 'admin'],
-      },
-      // {
-      //   title: 'Student View',
-      //   path: PATH_DASHBOARD.studentProfile,
-      //   role: ['teacher', 'admin'],
-      // },
-      {
-        title: 'Student Add',
-        path: PATH_DASHBOARD.studentAdd,
-        role: ['admin'],
-      },
-      // {
-      //   title: 'Student Edit',
-      //   path: PATH_DASHBOARD.studentEdit,
-      //   role: ['admin'],
-      // },
-    ],
+    // children: [
+    //   {
+    //     title: 'Student List',
+    //     path: PATH_DASHBOARD.students,
+    //     role: ['teacher', 'admin'],
+    //   },
+    //   {
+    //     title: 'Student View',
+    //     path: PATH_DASHBOARD.studentProfile,
+    //     role: ['teacher', 'admin'],
+    //   },
+    //   {
+    //     title: 'Student Add',
+    //     path: PATH_DASHBOARD.studentAdd,
+    //     role: ['admin'],
+    //   },
+    //   {
+    //     title: 'Student Edit',
+    //     path: PATH_DASHBOARD.studentEdit,
+    //     role: ['admin'],
+    //   },
+    // ],
   },
   // Teachers
   {
