@@ -46,8 +46,8 @@ const Header = () => {
       })
 
       .catch((err) => {
-        console.log('Error', err.data.message);
-        openNotification('error', err.data.message || err.error);
+        console.log('Error', err?.data?.message);
+        openNotification('error', err?.data?.message || err?.error);
       });
   };
 
@@ -320,9 +320,14 @@ const Header = () => {
               <Link className="dropdown-item" to="/inbox">
                 Inbox
               </Link>
-              <Link to={userInfo?.role === 'admin'
-                  ? PATH_DASHBOARD.adminDashboard
-                  : PATH_DASHBOARD.teacherDashboard} className="dropdown-item" onClick={LogOut}>
+              <Link
+                to={
+                  userInfo?.role === 'admin'
+                    ? PATH_DASHBOARD.adminDashboard
+                    : PATH_DASHBOARD.teacherDashboard
+                }
+                className="dropdown-item"
+                onClick={LogOut}>
                 Logout
               </Link>
             </div>
