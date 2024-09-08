@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import Select from 'react-select';
 import PageHeader from '../../PageHeader';
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '../../routes/paths';
 import {
   useGetStudentDetailsQuery,
   useUpdateStudentDetailsMutation,

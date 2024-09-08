@@ -1,7 +1,7 @@
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import PageHeader from '../../PageHeader';
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '../../routes/paths';
 import {
   FormProvider,
   RHFDatePicker,
