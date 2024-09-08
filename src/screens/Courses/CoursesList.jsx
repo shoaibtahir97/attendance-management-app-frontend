@@ -3,68 +3,72 @@ import PageHeader from '../../components/PageHeader';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { FormProvider, RHFTextField } from '../../components/HookForm';
 import { useForm } from 'react-hook-form';
-import { Alert, Box, Stack, Tooltip } from '@mui/material';
+import { Alert, Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { Button, Table } from 'antd';
-import { useLazyGetCoursesQuery } from '../../redux/slices/apiSlices/coursesApiSlice';
-import { Link } from 'react-router-dom';
+import { useLazyGetCoursesQuery } from '../../redux/slices/apiSlices/courseApiSlice';
+import { Link, useNavigate } from 'react-router-dom';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
 import useNotification from '../../hooks/useNotification';
 import { FiEye } from 'react-icons/fi';
 import { FiEdit } from 'react-icons/fi';
 
-export const column = [
-  {
-    title: 'Course code',
-    dataIndex: 'code',
-    sorter: (a, b) => a.code.length - b.code.length,
-  },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    sorter: (a, b) => a.name.length - b.name.length,
-    render: (text, record) => <h2 className="table-avatar">{text}</h2>,
-  },
-  {
-    title: 'Groups',
-    dataIndex: 'groups',
-    sorter: (a, b) => a.groups.length - b.groups.length,
-  },
-  {
-    title: 'Action',
-    dataIndex: 'Action',
-    render: (text, record) => (
-      <>
-        <div className="actions">
-          <Link className="btn btn-sm bg-danger-light">
-            <i className="feather-edit">
-              <FiEye />
-            </i>
-          </Link>
-          <Link
-            to={`${PATH_DASHBOARD.teacherEdit}/${record._id}`}
-            className="btn btn-sm bg-danger-light">
-            <i className="feather-edit">
-              <FiEdit />
-            </i>
-          </Link>
-        </div>
-      </>
-    ),
-  },
-];
-
 const SKELETON = ['', '', '', '', ''];
 
 const CoursesList = () => {
   const methods = useForm();
   const [getCourses, { data, isLoading, error }] = useLazyGetCoursesQuery();
+  const { openNotification } = useNotification();
+  const navigate = useNavigate();
+
+  const column = [
+    {
+      title: 'Course code',
+      dataIndex: 'code',
+      sorter: (a, b) => a.code.length - b.code.length,
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      sorter: (a, b) => a.name.length - b.name.length,
+      render: (text, record) => <h2 className="table-avatar">{text}</h2>,
+    },
+    {
+      title: 'Groups',
+      dataIndex: 'groups',
+      sorter: (a, b) => a.groups.length - b.groups.length,
+    },
+    {
+      title: 'Action',
+      dataIndex: 'Action',
+      render: (text, record) => {
+        const onEditCourse = () => {
+          navigate(`${PATH_DASHBOARD.courseEdit}/${record._id}`);
+        };
+        return (
+          <>
+            <div className="actions">
+              <Tooltip title="View Course" placement="top">
+                <IconButton>
+                  <FiEye size="14px" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit Course" placement="top">
+                <IconButton onClick={onEditCourse}>
+                  <FiEdit size="14px" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          </>
+        );
+      },
+    },
+  ];
+
   const [coursesQuery, setCoursesQuery] = useState({
     page: 1,
     recordsPerPage: 10,
   });
-  const { openNotification } = useNotification();
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {

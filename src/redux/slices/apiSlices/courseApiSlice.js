@@ -20,14 +20,14 @@ export const courseApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
-    // getStudentDetails: builder.query({
-    //   query: (studentId) => ({
-    //     url: `${COURSES_URL}/${studentId}`,
-    //     keepUnusedDataFor: 5,
-    //     credentials:'include'
-    //   }),
-    //   transformResponse: (res) => res?.data,
-    // }),
+    getCourseDetails: builder.query({
+      query: (courseId) => ({
+        url: `${COURSES_URL}/${courseId}`,
+        keepUnusedDataFor: 5,
+        credentials: 'include',
+      }),
+      transformResponse: (res) => res?.data,
+    }),
     // registerStudent: builder.mutation({
     //   query: (payload) => ({
     //     url: STUDENTS_URL,
@@ -41,19 +41,19 @@ export const courseApiSlice = apiSlice.injectEndpoints({
     //   }),
     //   invalidatesTags: ['Student'],
     // }),
-    // updateStudentDetails: builder.mutation({
-    //   query: (payload) => ({
-    //     url: `${STUDENTS_URL}/${payload.id}`,
-    //     method: 'PUT',
-    //     body: payload,
-    //     header: {
-    //       'Content-Type': 'application/json; charset=UTF-8',
-    //     },
-    //     transformResponse: (res) => res?.data,
-    //     credentials:'include'
-    //   }),
-    //   invalidatesTags: ['Student'],
-    // }),
+    updateCourseDetails: builder.mutation({
+      query: (payload) => ({
+        url: `${COURSES_URL}/${payload._id}`,
+        method: 'PUT',
+        body: payload,
+        header: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        transformResponse: (res) => res?.data,
+        credentials: 'include',
+      }),
+      invalidatesTags: ['Course'],
+    }),
   }),
 });
 
@@ -61,7 +61,7 @@ export const {
   //   useGetStudentsQuery,
   useLazyGetCoursesQuery,
   useCreateCourseMutation,
-  //   useGetStudentDetailsQuery,
+  useGetCourseDetailsQuery,
   //   useRegisterStudentMutation,
-  //   useUpdateStudentDetailsMutation,
+  useUpdateCourseDetailsMutation,
 } = courseApiSlice;

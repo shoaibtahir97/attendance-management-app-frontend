@@ -1,5 +1,5 @@
-import React from 'react';
-import PageHeader from '../../components/PageHeader';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import {
   FormProvider,
@@ -8,42 +8,28 @@ import {
   RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
+import EditStudentSkeleton from '../../components/pages/Students/StudentSkeletons/EditStudentSkeleton';
+import { Alert, Button } from 'antd';
+import { Grid, IconButton, Tooltip } from '@mui/material';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import {
+  useGetCourseDetailsQuery,
+  useUpdateCourseDetailsMutation,
+} from '../../redux/slices/apiSlices/courseApiSlice';
 import * as Yup from 'yup';
-import { Grid, IconButton, Tooltip, Typography } from '@mui/material';
-import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
-import { Alert, Button } from 'antd';
+import PageHeader from '../../components/PageHeader';
 import { IoIosAddCircleOutline } from 'react-icons/io';
-import { MdOutlineDelete } from 'react-icons/md';
+import { moduleYears } from './AddCourse';
 import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice';
-import { useCreateCourseMutation } from '../../redux/slices/apiSlices/courseApiSlice';
+import { MdOutlineDelete } from 'react-icons/md';
 import useNotification from '../../hooks/useNotification';
-import EditStudentSkeleton from '../../components/pages/Students/StudentSkeletons/EditStudentSkeleton';
 
-export const moduleYears = [
-  { label: 'Foundation', value: 0 },
-  { label: 'First Year', value: 1 },
-  { label: 'Second Year', value: 2 },
-  { label: 'Third Year', value: 3 },
-];
+const EditCourse = () => {
+  const { openNotification } = useNotification();
 
-const defaultValues = {
-  name: '',
-  code: '',
-  modules: [
-    {
-      cohortStartDate: null,
-      groups: [],
-      moduleLead: '',
-      subjects: [],
-      year: null,
-    },
-  ],
-};
-
-const AddCourse = () => {
   const { data: subjectsList, isLoading: loadingSubjects } =
     useGetSubjectsListQuery();
 
@@ -53,9 +39,11 @@ const AddCourse = () => {
   const { data: teachersList, isLoading: loadingTeachers } =
     useGetUsersListQuery({ role: 'teacher' });
 
-  const [createCourse] = useCreateCourseMutation();
+  const { id: courseId } = useParams();
 
-  const { openNotification } = useNotification();
+  const { data, isLoading, error } = useGetCourseDetailsQuery(courseId);
+
+  const [updateCourseDetails] = useUpdateCourseDetailsMutation();
 
   const courseSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -81,14 +69,15 @@ const AddCourse = () => {
 
   const methods = useForm({
     resolver: yupResolver(courseSchema),
-    defaultValues,
+    defaultValues: data,
   });
 
   const {
     handleSubmit,
+    reset,
     control,
     getValues,
-    formState: { isSubmitting, errors, isSubmitted },
+    formState: { isSubmitted, isSubmitting, errors },
   } = methods;
 
   const {
@@ -100,8 +89,8 @@ const AddCourse = () => {
     control,
   });
 
-  const handleCreateCourse = async (data) => {
-    await createCourse(data)
+  const updateCourseData = async (data) => {
+    updateCourseDetails(data)
       .unwrap()
       .then((res) => {
         openNotification('success', res?.message);
@@ -111,26 +100,39 @@ const AddCourse = () => {
       });
   };
 
+  useEffect(() => {
+    reset(data);
+  }, [data]);
+
   return (
     <div className="content container-fluid">
       {/* Page Header */}
       <PageHeader
-        currentSection="Create Course"
-        pageTitle="Create Course"
+        currentSection="Edit Course"
+        pageTitle="Edit Course"
         parentRoute={PATH_DASHBOARD.courses}
         parentSection="Course"
       />
       {/* /Page Header */}
       <div className="row">
         <div className="col-sm-12">
-          <div className="card">
+          <div className="card comman-shadow">
             <div className="card-body">
-              {loadingGroups || loadingSubjects || loadingTeachers ? (
+              {isLoading ||
+              loadingSubjects ||
+              loadingGroups ||
+              loadingTeachers ? (
                 <EditStudentSkeleton />
+              ) : error ? (
+                <Alert
+                  message="Error"
+                  type="error"
+                  description={error.data?.message}
+                />
               ) : (
                 <FormProvider
                   methods={methods}
-                  onSubmit={handleSubmit(handleCreateCourse)}>
+                  onSubmit={handleSubmit(updateCourseData)}>
                   <Grid container spacing={1}>
                     <Grid item xs={12}>
                       <h5 className="form-title student-info">
@@ -248,7 +250,7 @@ const AddCourse = () => {
                         type="primary"
                         htmlType="submit"
                         loading={isSubmitting}>
-                        Save
+                        Update
                       </Button>
                     </Grid>
                   </Grid>
@@ -262,4 +264,4 @@ const AddCourse = () => {
   );
 };
 
-export default AddCourse;
+export default EditCourse;

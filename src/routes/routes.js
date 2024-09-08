@@ -90,7 +90,10 @@ const router = createBrowserRouter(
           {/* Courses */}
           <Route path={PATH_DASHBOARD.courses} element={<CoursesList />} />
           <Route path={PATH_DASHBOARD.courseAdd} element={<AddCourse />} />
-          <Route path={PATH_DASHBOARD.courseEdit} element={<EditCourse />} />
+          <Route
+            path={`${PATH_DASHBOARD.courseEdit}/:id`}
+            element={<EditCourse />}
+          />
 
           {/* Subjects */}
           <Route path={PATH_DASHBOARD.subjects} element={<SubjectList />} />
