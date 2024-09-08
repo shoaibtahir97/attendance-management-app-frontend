@@ -8,7 +8,7 @@ import {
   RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
-import EditStudentSkeleton from '../../components/pages/Students/StudentSkeletons/EditStudentSkeleton';
+import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
 import { Alert, Button } from 'antd';
 import { Grid, IconButton, Tooltip } from '@mui/material';
 import { useFieldArray, useForm } from 'react-hook-form';

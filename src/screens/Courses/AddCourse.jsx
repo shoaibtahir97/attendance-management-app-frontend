@@ -20,7 +20,7 @@ import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApi
 import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice';
 import { useCreateCourseMutation } from '../../redux/slices/apiSlices/courseApiSlice';
 import useNotification from '../../hooks/useNotification';
-import EditStudentSkeleton from '../../components/pages/Students/StudentSkeletons/EditStudentSkeleton';
+import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
 
 export const moduleYears = [
   { label: 'Foundation', value: 0 },

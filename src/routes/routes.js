@@ -12,7 +12,6 @@ import AdminDashboard from '../components/pages/Dashboard/AdminDashboard';
 import TeacherDashboard from '../components/pages/Dashboard/TeacherDashboard';
 import StudentsDashboard from '../components/pages/Dashboard/StudentsDashboard';
 import Students from '../screens/Students/StudentsList';
-
 import AddStudent from '../screens/Students/AddStudent';
 import EditStudent from '../screens/Students/EditStudent';
 import TeachersProfile from '../components/pages/Teachers/TeachersProfile';
@@ -64,10 +63,7 @@ const router = createHashRouter(
           {/* Students */}
 
           <Route path={PATH_DASHBOARD.students} element={<Students />} />
-          <Route
-            path={PATH_DASHBOARD.studentProfile}
-            element={<StudentsView />}
-          />
+
           <Route path={PATH_DASHBOARD.studentAdd} element={<AddStudent />} />
           <Route
             path={`${PATH_DASHBOARD.studentEdit}/:id`}
