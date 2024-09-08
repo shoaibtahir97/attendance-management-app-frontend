@@ -2,16 +2,16 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Button, Table, Tooltip } from 'antd';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import { onShowSizeChange, itemRender } from '../../Pagination';
+import { onShowSizeChange, itemRender } from '../../components/Pagination';
 import { useState } from 'react';
-import { useLazyGetStudentsQuery } from '../../../redux/slices/apiSlices/studentApiSlice';
+import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
-import PageHeader from '../../PageHeader';
-import { apiSlice } from '../../../redux/slices/apiSlices/apiSlice';
+import PageHeader from '../../components/PageHeader';
+import { apiSlice } from '../../redux/slices/apiSlices/apiSlice';
 import { useForm } from 'react-hook-form';
-import { FormProvider, RHFTextField } from '../../HookForm';
+import { FormProvider, RHFTextField } from '../../components/HookForm';
 import { Box, Grid, Stack } from '@mui/material';
-import TableSkeleton from '../../TableSkeleton';
+import TableSkeleton from '../../components/TableSkeleton';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
@@ -94,7 +94,7 @@ export const column = [
 
 const SKELETON = ['', '', '', '', ''];
 
-const StudentsScreen = () => {
+const Students = () => {
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
     recordsPerPage: 10,
@@ -289,4 +289,4 @@ const StudentsScreen = () => {
   );
 };
 
-export default StudentsScreen;
+export default Students;
