@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Header from "../../Header/Header";
-import SideBar from "../../SideBar/SideBar";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Header from '../../Header/Header';
+import SideBar from '../../SideBar/SideBar';
 
 const AddSubject = () => {
   return (
@@ -35,7 +35,7 @@ const AddSubject = () => {
                   <div className="col-12 col-sm-4">
                     <div className="form-group local-forms">
                       <label>
-                        Subject ID <span className="login-danger">*</span>
+                        Subject Code <span className="login-danger">*</span>
                       </label>
                       <input type="text" className="form-control" />
                     </div>
@@ -50,9 +50,7 @@ const AddSubject = () => {
                   </div>
                   <div className="col-12 col-sm-4">
                     <div className="form-group local-forms">
-                      <label>
-                        Class <span className="login-danger">*</span>
-                      </label>
+                      <label>Description</label>
                       <input type="text" className="form-control" />
                     </div>
                   </div>

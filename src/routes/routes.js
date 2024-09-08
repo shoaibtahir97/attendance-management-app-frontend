@@ -19,9 +19,6 @@ import TeachersList from '../components/pages/Teachers/TeachersList';
 import TeachersProfile from '../components/pages/Teachers/TeachersProfile';
 import TeachersAdd from '../components/pages/Teachers/TeachersAdd';
 import TeachersEdit from '../components/pages/Teachers/TeachersEdit';
-import DepartmentList from '../components/pages/Department/DepartmentList';
-import AddDepartment from '../components/pages/Department/AddDepartment';
-import EditDepartment from '../components/pages/Department/EditDepartment';
 import SubjectList from '../components/pages/Subject/SubjectList';
 import AddSubject from '../components/pages/Subject/AddSubject';
 import EditSubject from '../components/pages/Subject/EditSubject';
@@ -36,6 +33,9 @@ import LoginScreen from '../screens/LoginScreen';
 import TeachersScreen from '../screens/Teachers/TeachersScreen';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
+import AddCourse from '../screens/Courses/AddCourse';
+import EditCourse from '../screens/Courses/EditCourse';
+import CoursesList from '../screens/Courses/CoursesList';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -87,18 +87,12 @@ const router = createBrowserRouter(
           <Route path={PATH_DASHBOARD.teacherAdd} element={<AddTeacher />} />
           <Route path={PATH_DASHBOARD.teacherEdit} element={<TeachersEdit />} />
 
-          {/* Departments */}
+          {/* Courses */}
+          <Route path={PATH_DASHBOARD.courses} element={<CoursesList />} />
+          <Route path={PATH_DASHBOARD.courseAdd} element={<AddCourse />} />
           <Route
-            path={PATH_DASHBOARD.departments}
-            element={<DepartmentList />}
-          />
-          <Route
-            path={PATH_DASHBOARD.departmentAdd}
-            element={<AddDepartment />}
-          />
-          <Route
-            path={PATH_DASHBOARD.departmentEdit}
-            element={<EditDepartment />}
+            path={`${PATH_DASHBOARD.courseEdit}/:id`}
+            element={<EditCourse />}
           />
 
           {/* Subjects */}
