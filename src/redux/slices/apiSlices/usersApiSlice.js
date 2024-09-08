@@ -35,6 +35,15 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       transformResponse: (res) => res?.data,
       keepUnusedDataFor: 5,
     }),
+    getUsersList: builder.query({
+      query: (params) => ({
+        url: `${USERS_URL}/list`,
+        params,
+        credentials: 'include',
+      }),
+      transformResponse: (res) => res?.data,
+      keepUnusedDataFor: 5,
+    }),
   }),
 });
 
@@ -43,4 +52,5 @@ export const {
   useRegisterUserMutation,
   useLogoutUserMutation,
   useLazyGetUsersQuery,
+  useGetUsersListQuery,
 } = usersApiSlice;
