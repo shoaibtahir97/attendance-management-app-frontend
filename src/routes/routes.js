@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   createBrowserRouter,
-  createHashRouter,
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
@@ -11,13 +10,11 @@ import Register from '../components/pages/Authentication/Register';
 import AdminDashboard from '../components/pages/Dashboard/AdminDashboard';
 import TeacherDashboard from '../components/pages/Dashboard/TeacherDashboard';
 import StudentsDashboard from '../components/pages/Dashboard/StudentsDashboard';
-import Students from '../components/pages/Students/StudentsList';
-import StudentsView from '../components/pages/Students/StudentsView';
-import AddStudent from '../components/pages/Students/AddStudent';
-import EditStudent from '../components/pages/Students/EditStudent';
-import TeachersList from '../components/pages/Teachers/TeachersList';
+import Students from '../screens/Students/StudentsList';
+
+import AddStudent from '../screens/Students/AddStudent';
+import EditStudent from '../screens/Students/EditStudent';
 import TeachersProfile from '../components/pages/Teachers/TeachersProfile';
-import TeachersAdd from '../components/pages/Teachers/TeachersAdd';
 import TeachersEdit from '../components/pages/Teachers/TeachersEdit';
 import SubjectList from '../components/pages/Subject/SubjectList';
 import AddSubject from '../components/pages/Subject/AddSubject';
@@ -26,14 +23,12 @@ import ForgotPassword from '../components/pages/Authentication/ForgotPassword';
 import ProtectedRoute from './ProtectedRoute';
 import { PATH_AUTH, PATH_DASHBOARD } from './paths';
 import Reports from '../components/pages/Reports/Reports';
-import StudentReports from '../components/pages/Reports/StudentReports';
 import AttendanceReports from '../components/pages/Reports/AttendanceReports';
 import Calendar from '../components/pages/Calendar';
 import LoginScreen from '../screens/LoginScreen';
 import TeachersScreen from '../screens/Teachers/TeachersScreen';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
-import StudentsScreen from '../screens/Students/StudentsScreen';
 import AddCourse from '../screens/Courses/AddCourse';
 import EditCourse from '../screens/Courses/EditCourse';
 import CoursesList from '../screens/Courses/CoursesList';
@@ -67,7 +62,7 @@ const router = createHashRouter(
           />
           {/* Students */}
 
-          <Route path={PATH_DASHBOARD.students} element={<StudentsScreen />} />
+          <Route path={PATH_DASHBOARD.students} element={<Students />} />
           <Route
             path={PATH_DASHBOARD.studentProfile}
             element={<StudentsView />}

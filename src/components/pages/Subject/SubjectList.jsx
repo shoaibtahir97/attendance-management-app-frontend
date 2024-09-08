@@ -7,7 +7,7 @@ import { onShowSizeChange, itemRender } from '../../Pagination';
 import Header from '../../Header/Header';
 import SideBar from '../../SideBar/SideBar';
 import Footer from '../../Footer/Footer';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 
 const SubjectList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
