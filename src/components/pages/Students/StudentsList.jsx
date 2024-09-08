@@ -5,7 +5,7 @@ import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { onShowSizeChange, itemRender } from '../../Pagination';
 import { useState } from 'react';
 import { useLazyGetStudentsQuery } from '../../../redux/slices/apiSlices/studentApiSlice';
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '../../routes/paths';
 import PageHeader from '../../PageHeader';
 import { apiSlice } from '../../../redux/slices/apiSlices/apiSlice';
 import { useForm } from 'react-hook-form';
