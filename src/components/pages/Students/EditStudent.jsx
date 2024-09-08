@@ -25,21 +25,21 @@ import EditStudentSkeleton from './StudentSkeletons/EditStudentSkeleton';
 import Alert from '../../Alert';
 import useNotification from '../../../hooks/useNotification';
 
+const genders = [
+  { value: '', label: 'Select Gender' },
+  { value: 'female', label: 'Female' },
+  { value: 'male', label: 'Male' },
+  { value: 'others', label: 'Others' },
+];
 const EditStudent = () => {
   const { openNotification } = useNotification();
 
   const { id: studentId } = useParams();
 
   const { data, isLoading, error } = useGetStudentDetailsQuery(studentId);
+
   const [updateStudentDetails, { isLoading: loadingUpdate }] =
     useUpdateStudentDetailsMutation();
-
-  const genders = [
-    { value: '', label: 'Select Gender' },
-    { value: 'female', label: 'Female' },
-    { value: 'male', label: 'Male' },
-    { value: 'others', label: 'Others' },
-  ];
 
   const studentSchema = Yup.object().shape({
     firstName: Yup.string().required(),

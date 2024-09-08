@@ -1,18 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import FeatherIcon from "feather-icons-react";
-import { pagination, Table } from "antd";
-import { onShowSizeChange, itemRender } from "../../Pagination";
-import Footer from "../../Footer/Footer";
-import Header from "../../Header/Header";
-import SideBar from "../../SideBar/SideBar";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import FeatherIcon from 'feather-icons-react';
+import { pagination, Table } from 'antd';
+import { onShowSizeChange, itemRender } from '../../Pagination';
+import Footer from '../../Footer/Footer';
+import Header from '../../Header/Header';
+import SideBar from '../../SideBar/SideBar';
+import { PATH_DASHBOARD } from '../../../routes/paths';
+import { Tooltip } from '@mui/material';
 
 const DepartmentList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -22,65 +24,65 @@ const DepartmentList = () => {
   };
   const datasource = [
     {
-      id: "1",
-      DepartmentID: "PRE2209",
-      Name: "Computer Science Engg",
-      HOD: "Aaliyah",
+      id: '1',
+      DepartmentID: 'PRE2209',
+      Name: 'Computer Science Engg',
+      HOD: 'Aaliyah',
       StartedYear: 1995,
       NoofStudents: 180,
-      Action: "",
+      Action: '',
     },
     {
-      id: "2",
-      DepartmentID: "PRE2213",
-      Name: "Mechanical Engg",
-      HOD: "Malynne",
+      id: '2',
+      DepartmentID: 'PRE2213',
+      Name: 'Mechanical Engg',
+      HOD: 'Malynne',
       StartedYear: 1999,
       NoofStudents: 240,
-      Action: "",
+      Action: '',
     },
     {
-      id: "3",
-      DepartmentID: "PRE2143",
-      Name: "Electrical Engg",
-      HOD: "Levell Scott",
+      id: '3',
+      DepartmentID: 'PRE2143',
+      Name: 'Electrical Engg',
+      HOD: 'Levell Scott',
       StartedYear: 1994,
       NoofStudents: 163,
-      Action: "",
+      Action: '',
     },
     {
-      id: "4",
-      DepartmentID: "PRE2431",
-      Name: "Civil Engg",
-      HOD: "Minnie",
+      id: '4',
+      DepartmentID: 'PRE2431',
+      Name: 'Civil Engg',
+      HOD: 'Minnie',
       StartedYear: 2000,
       NoofStudents: 195,
-      Action: "",
+      Action: '',
     },
     {
-      id: "5",
-      DepartmentID: "PRE1534",
-      Name: "MCA",
-      HOD: "Lois A",
+      id: '5',
+      DepartmentID: 'PRE1534',
+      Name: 'MCA',
+      HOD: 'Lois A',
       StartedYear: 1992,
       NoofStudents: 200,
-      Action: "",
+      Action: '',
     },
     {
-      id: "6",
-      DepartmentID: "PRE2153",
-      Name: "BCA",
-      HOD: "Calvin",
+      id: '6',
+      DepartmentID: 'PRE2153',
+      Name: 'BCA',
+      HOD: 'Calvin',
       StartedYear: 1992,
       NoofStudents: 152,
-      Action: "",
+      Action: '',
     },
   ];
 
   const column = [
     {
-      title: "ID",
-      dataIndex: "DepartmentID",
+      title: 'ID',
+      dataIndex: 'DepartmentID',
       sorter: (a, b) => a.DepartmentID.length - b.DepartmentID.length,
       // render: (text, record) => (
       //     <>
@@ -91,28 +93,28 @@ const DepartmentList = () => {
       // )
     },
     {
-      title: "Name",
-      dataIndex: "Name",
+      title: 'Name',
+      dataIndex: 'Name',
       sorter: (a, b) => a.Name.length - b.Name.length,
     },
     {
-      title: "HOD",
-      dataIndex: "HOD",
+      title: 'Module Lead',
+      dataIndex: 'HOD',
       sorter: (a, b) => a.HOD.length - b.HOD.length,
     },
     {
-      title: "Started Year",
-      dataIndex: "StartedYear",
+      title: 'Started Year',
+      dataIndex: 'StartedYear',
       sorter: (a, b) => a.StartedYear.length - b.StartedYear.length,
     },
     {
-      title: "No of Students",
-      dataIndex: "NoofStudents",
+      title: 'No of Students',
+      dataIndex: 'NoofStudents',
       sorter: (a, b) => a.NoofStudents.length - b.NoofStudents.length,
     },
     {
-      title: "Action",
-      dataIndex: "Action",
+      title: 'Action',
+      dataIndex: 'Action',
       render: (text, record) => (
         <>
           <div className="actions">
@@ -121,7 +123,9 @@ const DepartmentList = () => {
                 <FeatherIcon icon="eye" />
               </i>
             </Link>
-            <Link to="/editdepartment" className="btn btn-sm bg-danger-light">
+            <Link
+              to={PATH_DASHBOARD.courseEdit}
+              className="btn btn-sm bg-danger-light">
               <i className="feather-edit ">
                 <FeatherIcon icon="edit" className="list-edit" />
               </i>
@@ -137,12 +141,12 @@ const DepartmentList = () => {
       <div className="page-header">
         <div className="row align-items-center">
           <div className="col">
-            <h3 className="page-title">Departments</h3>
+            <h3 className="page-title">Courses</h3>
             <ul className="breadcrumb">
               <li className="breadcrumb-item">
                 <Link to="/admindashboard">Dashboard</Link>
               </li>
-              <li className="breadcrumb-item active">Departments</li>
+              <li className="breadcrumb-item active">Courses</li>
             </ul>
           </div>
         </div>
@@ -194,15 +198,19 @@ const DepartmentList = () => {
               <div className="page-header">
                 <div className="row align-items-center">
                   <div className="col">
-                    <h3 className="page-title">Departments</h3>
+                    <h3 className="page-title">Courses</h3>
                   </div>
                   <div className="col-auto text-end float-end ms-auto download-grp">
-                    <Link to="#" className="btn btn-outline-primary me-2">
+                    {/* <Link to="#" className="btn btn-outline-primary me-2">
                       <i className="fas fa-download" /> Download
-                    </Link>
-                    <Link to="/adddepartment" className="btn btn-primary">
-                      <i className="fas fa-plus" />
-                    </Link>
+                    </Link> */}
+                    <Tooltip title="Add Course" placement="top">
+                      <Link
+                        to={PATH_DASHBOARD.courseAdd}
+                        className="btn btn-primary">
+                        <i className="fas fa-plus" />
+                      </Link>
+                    </Tooltip>
                   </div>
                 </div>
               </div>

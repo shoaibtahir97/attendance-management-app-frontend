@@ -46,8 +46,8 @@ const Header = () => {
       })
 
       .catch((err) => {
-        console.log('Error', err.data.message);
-        openNotification('error', err.data.message || err.error);
+        console.log('Error', err?.data?.message);
+        openNotification('error', err?.data?.message || err?.error);
       });
   };
 
@@ -283,8 +283,13 @@ const Header = () => {
               className="dropdown-toggle"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-              style={{border:'none', background:'none', display:'flex', alignItems:'center', margin:'10px'}}
-            >
+              style={{
+                border: 'none',
+                background: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                margin: '10px',
+              }}>
               <span className="user-img">
                 <img
                   className="rounded-circle"
@@ -325,8 +330,7 @@ const Header = () => {
                     : PATH_DASHBOARD.teacherDashboard
                 }
                 className="dropdown-item"
-                onClick={LogOut}
-              >
+                onClick={LogOut}>
                 Logout
               </Link>
             </div>
