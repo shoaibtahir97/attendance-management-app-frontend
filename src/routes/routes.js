@@ -20,7 +20,7 @@ import TeachersProfile from '../components/pages/Teachers/TeachersProfile';
 import TeachersAdd from '../components/pages/Teachers/TeachersAdd';
 import TeachersEdit from '../components/pages/Teachers/TeachersEdit';
 import DepartmentList from '../components/pages/Department/DepartmentList';
-import AddDepartment from '../components/pages/Department/AddDepartment';
+import AddDepartment from '../screens/Courses/AddCourse';
 import EditDepartment from '../components/pages/Department/EditDepartment';
 import SubjectList from '../components/pages/Subject/SubjectList';
 import AddSubject from '../components/pages/Subject/AddSubject';
@@ -39,6 +39,7 @@ import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
 import CourseScreen from '../screens/Course/CourseScreen';
 import AddCourse from '../screens/Course/AddCourse';
 import EditCourse from '../screens/Course/EditCourse';
+import CoursesList from '../screens/Courses/CoursesList';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -91,7 +92,7 @@ const router = createBrowserRouter(
           <Route path={PATH_DASHBOARD.teacherEdit} element={<TeachersEdit />} />
 
           {/* Courses */}
-          <Route path={PATH_DASHBOARD.courses} element={<DepartmentList />} />
+          <Route path={PATH_DASHBOARD.courses} element={<CoursesList />} />
           <Route path={PATH_DASHBOARD.courseAdd} element={<AddDepartment />} />
           <Route
             path={PATH_DASHBOARD.courseEdit}
