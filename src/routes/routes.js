@@ -16,9 +16,6 @@ import AddStudent from '../screens/Students/AddStudent';
 import EditStudent from '../screens/Students/EditStudent';
 import TeachersProfile from '../components/pages/Teachers/TeachersProfile';
 import TeachersEdit from '../components/pages/Teachers/TeachersEdit';
-import SubjectList from '../components/pages/Subject/SubjectList';
-import AddSubject from '../components/pages/Subject/AddSubject';
-import EditSubject from '../components/pages/Subject/EditSubject';
 import ForgotPassword from '../components/pages/Authentication/ForgotPassword';
 import ProtectedRoute from './ProtectedRoute';
 import { PATH_AUTH, PATH_DASHBOARD } from './paths';
@@ -32,6 +29,9 @@ import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
 import AddCourse from '../screens/Courses/AddCourse';
 import EditCourse from '../screens/Courses/EditCourse';
 import CoursesList from '../screens/Courses/CoursesList';
+import AddSubject from '../screens/Subjects/AddSubject';
+import EditSubject from '../screens/Subjects/EditSubject';
+import SubjectsList from '../screens/Subjects/SubjectList';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -89,9 +89,12 @@ const router = createHashRouter(
           />
 
           {/* Subjects */}
-          <Route path={PATH_DASHBOARD.subjects} element={<SubjectList />} />
+          <Route path={PATH_DASHBOARD.subjects} element={<SubjectsList />} />
           <Route path={PATH_DASHBOARD.subjectAdd} element={<AddSubject />} />
-          <Route path={PATH_DASHBOARD.subjectEdit} element={<EditSubject />} />
+          <Route
+            path={`${PATH_DASHBOARD.subjectEdit}/:id`}
+            element={<EditSubject />}
+          />
 
           {/* Attendance */}
           <Route

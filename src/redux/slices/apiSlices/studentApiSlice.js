@@ -4,20 +4,19 @@ import { apiSlice } from './apiSlice';
 export const studentApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getStudents: builder.query({
-      query: (params) => ({ 
-          url: STUDENTS_URL,
-          params,
-          credentials:'include'
+      query: (params) => ({
+        url: STUDENTS_URL,
+        params,
+        credentials: 'include',
       }),
       transformResponse: (res) => res?.data,
       keepUnusedDataFor: 5,
-    
     }),
     getStudentDetails: builder.query({
       query: (studentId) => ({
         url: `${STUDENTS_URL}/${studentId}`,
         keepUnusedDataFor: 5,
-        credentials:'include'
+        credentials: 'include',
       }),
       transformResponse: (res) => res?.data,
     }),
@@ -30,7 +29,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
           'Content-Type': 'application/json; charset=UTF-8',
         },
         transformResponse: (res) => res?.data,
-        credentials:'include',
+        credentials: 'include',
       }),
       invalidatesTags: ['Student'],
     }),
@@ -43,7 +42,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
           'Content-Type': 'application/json; charset=UTF-8',
         },
         transformResponse: (res) => res?.data,
-        credentials:'include'
+        credentials: 'include',
       }),
       invalidatesTags: ['Student'],
     }),
