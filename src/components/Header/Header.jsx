@@ -279,14 +279,17 @@ const Header = () => {
           </li> */}
           {/* User Menu */}
           <li className="nav-item dropdown has-arrow new-user-menus">
-            <Link
-              to={
-                userInfo?.role === 'admin'
-                  ? PATH_DASHBOARD.adminDashboard
-                  : PATH_DASHBOARD.teacherDashboard
-              }
-              className="dropdown-toggle nav-link"
-              data-bs-toggle="dropdown">
+            <button
+              className="dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style={{
+                border: 'none',
+                background: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                margin: '10px',
+              }}>
               <span className="user-img">
                 <img
                   className="rounded-circle"
@@ -299,7 +302,7 @@ const Header = () => {
                   <p className="text-muted mb-0">{userInfo?.role}</p>
                 </div>
               </span>
-            </Link>
+            </button>
             <div className="dropdown-menu">
               <div className="user-header">
                 <div className="avatar avatar-sm">

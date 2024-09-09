@@ -21,7 +21,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 import { Button } from 'antd';
-import EditStudentSkeleton from '../../components/pages/Students/StudentSkeletons/EditStudentSkeleton';
+import EditStudentSkeleton from './components/EditStudentSkeleton';
 import Alert from '../../components/Alert';
 import useNotification from '../../hooks/useNotification';
 
