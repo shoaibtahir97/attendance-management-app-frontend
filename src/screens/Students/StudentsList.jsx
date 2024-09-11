@@ -98,7 +98,7 @@ export const column = [
       <>
         <div className="actions">
           <Link
-            to={`${PATH_DASHBOARD.studentEdit}/${record.id}`}
+            to={`${PATH_DASHBOARD.studentEdit}/${record._id}`}
             className="btn btn-sm bg-danger-light">
             <i className="feather-edit">
               <FeatherIcon icon="edit" className="list-edit" />
