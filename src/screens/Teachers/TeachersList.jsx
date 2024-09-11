@@ -10,8 +10,9 @@ import { Button, Table } from 'antd';
 import { Link } from 'react-router-dom';
 import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
+import { useLazyGetUsersQuery } from '../../redux/slices/apiSlices/usersApiSlice';
 
-const TeachersScreen = () => {
+const TeachersList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
@@ -23,138 +24,7 @@ const TeachersScreen = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  // const datasource = [
-  //   {
-  //     ID: '1',
-  //     TeachersID: 'PRE2209',
-  //     Img: avatar02,
-  //     Name: 'Aaliyah',
-  //     Class: 10,
-  //     Gender: 'Female',
-  //     Subject: 'Mathematics',
-  //     Section: 'A',
-  //     MobileNumber: '097 3584 5870',
-  //     Address: '911 Deer Ridge Drive,USA',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '2',
-  //     TeachersID: 'PRE2213',
-  //     Img: avatar03,
-  //     Name: 'Malynne',
-  //     Class: 8,
-  //     Gender: 'Female',
-  //     Subject: 'Physics',
-  //     Section: 'A',
-  //     MobileNumber: '242 362 3100',
-  //     Address: 'Bacardi Rd P.O. Box N-4880, New Providence',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '3',
-  //     TeachersID: 'PRE2143',
-  //     Img: avatar04,
-  //     Name: 'Levell Scott',
-  //     Class: 10,
-  //     Gender: 'Male',
-  //     Subject: 'Science',
-  //     Section: 'B',
-  //     MobileNumber: '026 7318 4366',
-  //     Address: 'P.O. Box: 41, Gaborone',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '4',
-  //     TeachersID: 'PRE2431',
-  //     Img: avatar05,
-  //     Name: 'Minnie',
-  //     Class: 11,
-  //     Gender: 'Male',
-  //     Subject: 'History',
-  //     Section: 'C',
-  //     MobileNumber: '952 512 4909',
-  //     Address: '4771  Oral Lake Road, Golden Valley',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '5',
-  //     TeachersID: 'PRE1534',
-  //     Img: avatar06,
-  //     Name: 'Lois A',
-  //     Class: 10,
-  //     Gender: 'Female',
-  //     Subject: 'English',
-  //     Section: 'B',
-  //     MobileNumber: '413 289 1314',
-  //     Address: '2844 Leverton Cove Road, Palmer',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '6',
-  //     TeachersID: 'PRE2153',
-  //     Img: avatar07,
-  //     Name: 'Calvin',
-  //     Class: 9,
-  //     Gender: 'Male',
-  //     Subject: 'Mathematics',
-  //     Section: 'C',
-  //     MobileNumber: '701 753 3810',
-  //     Address: '1900  Hidden Meadow Drive, Crete',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '7',
-  //     TeachersID: 'PRE1434',
-  //     Img: avatar08,
-  //     Name: 'Vincent',
-  //     Class: 10,
-  //     Gender: 'Male',
-  //     Subject: 'Mathematics',
-  //     Section: 'C',
-  //     MobileNumber: '402 221 7523',
-  //     Address: '3979  Ashwood Drive, Omaha',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '8',
-  //     TeachersID: 'PRE2345',
-  //     Img: avatar09,
-  //     Name: 'Kozma  Tatari',
-  //     Class: 9,
-  //     Gender: 'Female',
-  //     Subject: 'Science',
-  //     Section: 'A',
-  //     MobileNumber: '04 2239 968',
-  //     Address: 'Rruga E Kavajes, Condor Center, Tirana',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '9',
-  //     TeachersID: 'PRE2365',
-  //     Img: avatar10,
-  //     Name: 'John Chambers',
-  //     Class: 11,
-  //     Gender: 'Male',
-  //     Subject: 'Botony',
-  //     Section: 'B',
-  //     MobileNumber: '870 663 2334',
-  //     Address: '4667 Sunset Drive, Pine Bluff',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '10',
-  //     TeachersID: 'PRE1234',
-  //     Img: avatar11,
-  //     Name: 'Nathan Humphries',
-  //     Class: 10,
-  //     Gender: 'Male',
-  //     Subject: 'Biology',
-  //     Section: 'A',
-  //     MobileNumber: '077 3499 9959',
-  //     Address: '86 Lamphey Road, Thelnetham',
-  //     Action: '',
-  //   },
-  // ];
+
   const column = [
     {
       title: 'ID',
@@ -195,16 +65,16 @@ const TeachersScreen = () => {
       render: (text, record) => (
         <>
           <div className="actions">
-            <Link to="#" className="btn btn-sm bg-success-light me-2">
-              <i className="feather-eye">
-                <FeatherIcon icon="eye" />
-              </i>
-            </Link>
-            <Link to="/editteacher" className="btn btn-sm bg-danger-light">
-              <i className="feather-edit">
-                <FeatherIcon icon="edit" className="list-edit" />
-              </i>
-            </Link>
+            <Tooltip title="View Course" placement="top">
+              <IconButton>
+                <FiEye size="14px" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Edit Course" placement="top">
+              <IconButton onClick={onEditTeacher}>
+                <FiEdit size="14px" />
+              </IconButton>
+            </Tooltip>
           </div>
         </>
       ),
@@ -215,7 +85,7 @@ const TeachersScreen = () => {
     users: [],
     totalRecords: 0,
   });
-  const [getUsers, { data, isLoading, error }] = useLazyGetStudentsQuery();
+  const [getUsers, { data, isLoading, error }] = useLazyGetUsersQuery();
 
   const [usersQuery, setUsersQuery] = useState({
     page: 1,
@@ -257,6 +127,7 @@ const TeachersScreen = () => {
   useEffect(() => {
     fetchUsers(usersQuery);
   }, []);
+
   return (
     <div className="content container-fluid">
       {/* Page Header */}
@@ -351,4 +222,4 @@ const TeachersScreen = () => {
   );
 };
 
-export default TeachersScreen;
+export default TeachersList;

@@ -9,7 +9,11 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import PageHeader from '../../components/PageHeader';
 import { apiSlice } from '../../redux/slices/apiSlices/apiSlice';
 import { useForm } from 'react-hook-form';
-import { FormProvider, RHFTextField } from '../../components/HookForm';
+import {
+  FormProvider,
+  RHFAutocomplete,
+  RHFTextField,
+} from '../../components/HookForm';
 import {
   Box,
   Grid,
@@ -26,6 +30,7 @@ import { formatDate } from 'date-fns';
 import { getFormattedDate } from '../../utils/formatDateTime';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
+import { useSelector } from 'react-redux';
 
 export const column = [
   {
@@ -109,6 +114,8 @@ const SKELETON = ['', '', '', '', ''];
 
 const Students = () => {
   const navigate = useNavigate();
+  const { groups } = useSelector((state) => state.groups);
+
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
     recordsPerPage: 10,
@@ -215,7 +222,14 @@ const Students = () => {
               <RHFTextField name="name" label="Name" />
             </Box>
             <Box sx={{ width: '100%' }}>
-              <RHFTextField name="group" label="Group" />
+              <RHFAutocomplete
+                name="group"
+                label="Group"
+                options={groups.map((group) => ({
+                  value: group._id,
+                  label: group.name,
+                }))}
+              />
             </Box>
             <Box sx={{ width: '100%', mt: 1 }}>
               <Button

@@ -23,7 +23,6 @@ import Reports from '../components/pages/Reports/Reports';
 import AttendanceReports from '../components/pages/Reports/AttendanceReports';
 import Calendar from '../components/pages/Calendar';
 import LoginScreen from '../screens/LoginScreen';
-import TeachersScreen from '../screens/Teachers/TeachersScreen';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
 import AddCourse from '../screens/Courses/AddCourse';
@@ -32,6 +31,8 @@ import CoursesList from '../screens/Courses/CoursesList';
 import AddSubject from '../screens/Subjects/AddSubject';
 import EditSubject from '../screens/Subjects/EditSubject';
 import SubjectsList from '../screens/Subjects/SubjectList';
+import TeachersList from '../screens/Teachers/TeachersList';
+import ViewAttendanceScreen from '../screens/Attendance/ViewAttendanceScreen';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -72,7 +73,7 @@ const router = createHashRouter(
 
           {/* Teachers */}
 
-          <Route path={PATH_DASHBOARD.teachers} element={<TeachersScreen />} />
+          <Route path={PATH_DASHBOARD.teachers} element={<TeachersList />} />
           <Route
             path={PATH_DASHBOARD.teacherProfile}
             element={<TeachersProfile />}
@@ -98,8 +99,12 @@ const router = createHashRouter(
 
           {/* Attendance */}
           <Route
-            path={PATH_DASHBOARD.attendance}
+            path={PATH_DASHBOARD.markattendance}
             element={<MarkAttendanceScreen />}
+          />
+          <Route
+            path={PATH_DASHBOARD.viewattendance}
+            element={<ViewAttendanceScreen />}
           />
 
           {/* Reports */}

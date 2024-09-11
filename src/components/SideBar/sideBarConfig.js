@@ -26,9 +26,21 @@ const navConfig = [
   // Attendance
   {
     title: 'Attendance',
-    path: PATH_DASHBOARD.attendance,
+    path: PATH_DASHBOARD.markattendance,
     icon: <MdListAlt />,
     role: ['teacher', 'admin'],
+    // children: [
+    //   {
+    //     title: 'Mark Attendance',
+    //     path: PATH_DASHBOARD.markattendance,
+    //     role: ['teacher', 'admin'],
+    //   },
+    //   {
+    //     title: 'View Attendance',
+    //     path: PATH_DASHBOARD.viewattendance,
+    //     role: ['teacher', 'admin'],
+    //   },
+    // ],
   },
   // Students
   {
