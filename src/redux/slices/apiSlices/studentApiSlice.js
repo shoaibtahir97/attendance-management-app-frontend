@@ -33,6 +33,19 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Student'],
     }),
+    uploadBulkStudents: builder.mutation({
+      query: (file) => {
+        const body = new FormData();
+        body.append('Content-Type', file.type);
+        body.append('registerBulkStudents', file);
+        return {
+          url: `${STUDENTS_URL}/upload`,
+          method: 'POST',
+          body,
+          credentials: 'include',
+        };
+      },
+    }),
     updateStudentDetails: builder.mutation({
       query: (payload) => ({
         url: `${STUDENTS_URL}/${payload.id}`,
@@ -50,9 +63,9 @@ export const studentApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetStudentsQuery,
   useLazyGetStudentsQuery,
   useGetStudentDetailsQuery,
   useRegisterStudentMutation,
+  useUploadBulkStudentsMutation,
   useUpdateStudentDetailsMutation,
 } = studentApiSlice;

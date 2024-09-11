@@ -28,19 +28,14 @@ export const courseApiSlice = apiSlice.injectEndpoints({
       }),
       transformResponse: (res) => res?.data,
     }),
-    // registerStudent: builder.mutation({
-    //   query: (payload) => ({
-    //     url: STUDENTS_URL,
-    //     method: 'POST',
-    //     body: payload,
-    //     headers: {
-    //       'Content-Type': 'application/json; charset=UTF-8',
-    //     },
-    //     transformResponse: (res) => res?.data,
-    //     credentials:'include',
-    //   }),
-    //   invalidatesTags: ['Student'],
-    // }),
+    getCoursesList: builder.query({
+      query: () => ({
+        url: `${COURSES_URL}/list`,
+        credentials: 'include',
+      }),
+      transformResponse: (res) => res?.data,
+      keepUnusedDataFor: 5,
+    }),
     updateCourseDetails: builder.mutation({
       query: (payload) => ({
         url: `${COURSES_URL}/${payload._id}`,
@@ -58,10 +53,9 @@ export const courseApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  //   useGetStudentsQuery,
   useLazyGetCoursesQuery,
   useCreateCourseMutation,
   useGetCourseDetailsQuery,
-  //   useRegisterStudentMutation,
+  useGetCoursesListQuery,
   useUpdateCourseDetailsMutation,
 } = courseApiSlice;

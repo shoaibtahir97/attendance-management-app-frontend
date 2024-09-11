@@ -46,7 +46,7 @@ export default function RHFSelect({
                 error={!!error}
                 size="small"
                 {...other}>
-                {options.map((option) => (
+                {options?.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>

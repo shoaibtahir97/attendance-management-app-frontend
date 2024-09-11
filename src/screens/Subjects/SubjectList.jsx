@@ -164,7 +164,7 @@ const SubjectsList = () => {
                       ) : (
                         <></>
                       )} */}
-                      <Tooltip title="Add student">
+                      <Tooltip title="Add Subject">
                         <Link
                           to={PATH_DASHBOARD.subjectAdd}
                           className="btn btn-primary">
