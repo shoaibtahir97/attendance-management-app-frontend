@@ -35,9 +35,10 @@ const RHFAutocomplete = (props) => {
               options={options || []}
               value={
                 multiple
-                  ? options.filter((option) => value?.includes(option.value)) ||
-                    []
-                  : options.find((option) => option.value === value) || null
+                  ? options?.filter((option) =>
+                      value?.includes(option.value)
+                    ) || []
+                  : options?.find((option) => option.value === value) || null
               }
               onChange={(event, newValue) => {
                 if (multiple) {
@@ -72,6 +73,8 @@ const RHFAutocomplete = (props) => {
                   }}
                 />
               )}
+              size="small"
+              sx={{ width: '100%' }}
               {...other}
             />
           </Stack>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Button, Table, Tooltip } from 'antd';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { onShowSizeChange, itemRender } from '../../components/Pagination';
@@ -10,10 +10,22 @@ import PageHeader from '../../components/PageHeader';
 import { apiSlice } from '../../redux/slices/apiSlices/apiSlice';
 import { useForm } from 'react-hook-form';
 import { FormProvider, RHFTextField } from '../../components/HookForm';
-import { Box, Grid, Stack } from '@mui/material';
+import {
+  Box,
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Popover,
+  Stack,
+} from '@mui/material';
 import TableSkeleton from '../../components/TableSkeleton';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import { formatDate } from 'date-fns';
+import { getFormattedDate } from '../../utils/formatDateTime';
+import { moduleYears } from '../Courses/AddCourse';
+import BulkUploadStudent from './components/BulkUploadStudent';
 
 export const column = [
   {
@@ -22,10 +34,22 @@ export const column = [
     sorter: (a, b) => a.studentId.length - b.studentId.length,
   },
   {
-    title: 'Name',
-    dataIndex: 'name',
-    sorter: (a, b) => a.name.length - b.name.length,
+    title: 'First Name',
+    dataIndex: 'firstName',
+    sorter: (a, b) => a.firstName.length - b.firstName.length,
     render: (text, record) => <h2 className="table-avatar">{text}</h2>,
+  },
+
+  {
+    title: 'Last Name',
+    dataIndex: 'lastName',
+    sorter: (a, b) => a.lastName.length - b.lastName.length,
+    render: (text, record) => <h2 className="table-avatar">{text}</h2>,
+  },
+  {
+    title: 'Course',
+    dataIndex: 'courseName',
+    sorter: (a, b) => a.courseName.length - b.courseName.length,
   },
   {
     title: 'Group',
@@ -33,45 +57,34 @@ export const column = [
     sorter: (a, b) => a.group.length - b.group.length,
   },
   {
-    title: 'Phone number',
-    dataIndex: 'phoneNumber',
-    sorter: (a, b) => a.phoneNumber.length - b.phoneNumber.length,
+    title: 'Phone ',
+    dataIndex: 'phone',
+    sorter: (a, b) => a.phone.length - b.phone.length,
   },
   {
-    title: 'Email Address',
-    dataIndex: 'emailAddress',
-    sorter: (a, b) => a.emailAddress.length - b.emailAddress.length,
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    sorter: (a, b) => a.address.length - b.address.length,
-  },
-  {
-    title: 'Gender',
-    dataIndex: 'gender',
-    sorter: (a, b) => a.gender.length - b.gender.length,
+    title: 'Email ',
+    dataIndex: 'email',
+    sorter: (a, b) => a.email.length - b.email.length,
   },
   {
     title: 'DOB',
-    dataIndex: 'dateOfBirth',
-    sorter: (a, b) => a.dateOfBirth.length - b.dateOfBirth.length,
+    dataIndex: 'DOB',
+    sorter: (a, b) => a.DOB.length - b.DOB.length,
+    render: (text, record) => <p>{getFormattedDate(text, 'DD-MM-YYYY')}</p>,
   },
   {
-    title: 'Parent Name',
-    dataIndex: 'parentName',
-    sorter: (a, b) => a.parentName.length - b.parentName.length,
-  },
-  {
-    title: 'Emergency Number',
-    dataIndex: 'emergencyNumber',
-    sorter: (a, b) => a.emergencyNumber.length - b.emergencyNumber.length,
-  },
-  {
-    title: 'Warning Letters Issued',
-    dataIndex: 'numOfWarningLettersIssued',
-    sorter: (a, b) =>
-      a.numOfWarningLettersIssued.length - b.numOfWarningLettersIssued.length,
+    title: 'Year',
+    dataIndex: 'year',
+    sorter: (a, b) => a.year.length - b.year.length,
+    render: (text, record) => (
+      <p>
+        {moduleYears.map((module) => {
+          if (module.value == text) {
+            return module.label;
+          }
+        })}
+      </p>
+    ),
   },
   {
     title: 'Action',
@@ -95,23 +108,39 @@ export const column = [
 const SKELETON = ['', '', '', '', ''];
 
 const Students = () => {
+  const navigate = useNavigate();
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
     recordsPerPage: 10,
   });
-  // const { data, isLoading, error } = useGetStudentsQuery(defaultQuery);
   const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
 
   const [dataSource, setDataSource] = useState({
     students: [],
     totalRecords: 0,
   });
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isBulkStudentUploadModalVisible, setIsBulkStudentUploadModalVisible] =
+    useState(false);
+  const open = Boolean(anchorEl);
 
   const onSelectChange = (newSelectedRowKeys) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
+
+  const openAddStudentPopover = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const closeAddStudentPopover = (event) => {
+    setAnchorEl(null);
+  };
+
+  const openUploadExcelModal = () =>
+    setIsBulkStudentUploadModalVisible(!isBulkStudentUploadModalVisible);
 
   const rowSelection = {
     selectedRowKeys,
@@ -121,7 +150,7 @@ const Students = () => {
   const studentQuerySchema = Yup.object().shape({
     studentId: Yup.string().trim(),
     name: Yup.string().trim(),
-    phoneNumber: Yup.string().trim(),
+    group: Yup.string().trim(),
   });
 
   const methods = useForm({
@@ -138,30 +167,10 @@ const Students = () => {
       .unwrap()
       .then((res) => {
         const { students, totalRecordsCount, filteredRecordsCount } = res;
-        if (students && students.length > 0) {
-          const updatedStudents = students.map((student) => ({
-            id: student.id,
-            studentId: student.studentId,
-            name: `${student.firstName} ${student.lastName}`,
-            group: student.group,
-            phoneNumber: student.phoneNumber,
-            emailAddress: student.emailAddress,
-            address: student.address,
-            gender: student.gender,
-            dateOfBirth: student.dateOfBirth,
-            parentName: student.parentName,
-            emergencyNumber: student.emergencyNumber,
-            numOfWarningLettersIssued:
-              student.numOfWarningLettersIssued &&
-              student.numOfWarningLettersIssued.length
-                ? student.numOfWarningLettersIssued.length
-                : 0,
-          }));
-          setDataSource({
-            students: updatedStudents,
-            totalRecords: filteredRecordsCount,
-          });
-        }
+        setDataSource({
+          students: students,
+          totalRecords: filteredRecordsCount,
+        });
       });
   };
 
@@ -183,6 +192,13 @@ const Students = () => {
           parentRoute={PATH_DASHBOARD.students}
           parentSection="Student"
         />
+        {isBulkStudentUploadModalVisible && (
+          <BulkUploadStudent
+            open={isBulkStudentUploadModalVisible}
+            handleClose={openUploadExcelModal}
+            fetchStudents={fetchStudents}
+          />
+        )}
         <FormProvider
           methods={methods}
           onSubmit={handleSubmit(fetchStudentsByQuery)}>
@@ -199,7 +215,7 @@ const Students = () => {
               <RHFTextField name="name" label="Name" />
             </Box>
             <Box sx={{ width: '100%' }}>
-              <RHFTextField name="phoneNumber" label="Phone number" />
+              <RHFTextField name="group" label="Group" />
             </Box>
             <Box sx={{ width: '100%', mt: 1 }}>
               <Button
@@ -231,13 +247,37 @@ const Students = () => {
                       ) : (
                         <></>
                       )}
-                      <Tooltip title="Add student">
+                      <Tooltip title="Register Student">
                         <Link
-                          to={PATH_DASHBOARD.studentAdd}
+                          onClick={openAddStudentPopover}
+                          // to={PATH_DASHBOARD.studentAdd}
                           className="btn btn-primary">
                           <i className="fas fa-plus" />
                         </Link>
                       </Tooltip>
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={closeAddStudentPopover}
+                        MenuListProps={{
+                          'aria-labelledby': 'basic-button',
+                        }}>
+                        <MenuItem
+                          onClick={() => {
+                            closeAddStudentPopover();
+                            navigate(PATH_DASHBOARD.studentAdd);
+                          }}>
+                          Register Student
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            closeAddStudentPopover();
+                            openUploadExcelModal();
+                          }}>
+                          Bulk Student Registration
+                        </MenuItem>
+                      </Menu>
                     </div>
                   </div>
                 </div>

@@ -39,7 +39,9 @@ const AddSubject = () => {
           description: '',
         });
       })
-      .catch((err) => openNotification('error', err.data.message || err.error));
+      .catch((err) =>
+        openNotification('error', err?.data?.message || err?.error)
+      );
   };
 
   return (

@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import {
   FormProvider,
+  RHFAutocomplete,
   RHFDatePicker,
   RHFSelect,
   RHFTextField,
@@ -16,6 +17,9 @@ import { Grid } from '@mui/material';
 import { useRegisterStudentMutation } from '../../redux/slices/apiSlices/studentApiSlice';
 import useNotification from '../../hooks/useNotification';
 import PageHeader from '../../components/PageHeader';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import { moduleYears } from '../Courses/AddCourse';
+import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
 
 const AddStudent = () => {
   const { openNotification } = useNotification();
@@ -23,19 +27,22 @@ const AddStudent = () => {
   const [registerStudent, { isLoading: loadingRegister }] =
     useRegisterStudentMutation();
 
+  const { data: groupsList, isLoading: loadingGroups } =
+    useGetGroupsListQuery();
+
+  const { data: coursesList, isLoading: loadingCourses } =
+    useGetCoursesListQuery();
+
   const studentSchema = Yup.object().shape({
+    studentId: Yup.string().required(),
     firstName: Yup.string().required(),
     lastName: Yup.string().required(),
-    studentId: Yup.string().required(),
-    phoneNumber: Yup.string().required(),
-    emailAddress: Yup.string().email().required(),
-    address: Yup.string().required(),
-    // group: Yup.string().required(),
-    gender: Yup.string().required(),
-    dateOfBirth: Yup.date().required(),
-    parentName: Yup.string().required(),
-    emergencyNumber: Yup.string().required(),
-    // numberOfWarningLettersIssues: Yup.string().required(),
+    DOB: Yup.date().required(),
+    phone: Yup.string().required(),
+    email: Yup.string().email().required(),
+    group: Yup.string().required(),
+    courseName: Yup.string().required(),
+    year: Yup.string().required(),
   });
 
   const methods = useForm({
@@ -60,13 +67,12 @@ const AddStudent = () => {
           firstName: '',
           lastName: '',
           studentId: '',
-          phoneNumber: '',
-          emailAddress: '',
-          address: '',
-          gender: '',
-          dateOfBirth: '',
-          parentName: '',
-          emergencyNumber: '',
+          group: '',
+          phone: '',
+          email: '',
+          DOB: '',
+          courseName: '',
+          year: '',
         });
       })
       .catch((err) => openNotification('error', err.data.message || err.error));
@@ -111,62 +117,43 @@ const AddStudent = () => {
                   <Grid item xs={12} sm={6} md={4}>
                     <RHFTextField name="studentId" label="Student ID" />
                   </Grid>
-                  {/* <Grid item xs={12} sm={6} md={4}>
-                      <RHFTextField name="group" label="Group" />
-                    </Grid> */}
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFSelect name="gender" label="Gender" options={genders} />
+                    <RHFAutocomplete
+                      name="group"
+                      label="Group"
+                      options={groupsList}
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
                     <RHFDatePicker
-                      name="dateOfBirth"
+                      name="DOB"
                       label="Date of Birth"
                       sx={{ width: '100%' }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFTextField name="phoneNumber" label="Phone number" />
+                    <RHFTextField name="phone" label="Phone " />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFTextField name="emailAddress" label="Email Address" />
+                    <RHFTextField name="email" label="Email " />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFTextField name="address" label="Address" />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
-                    <RHFTextField name="parentName" label="Parent Name" />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
-                    <RHFTextField
-                      name="emergencyNumber"
-                      label="Emergency number"
+                    <RHFAutocomplete
+                      name="courseName"
+                      label="Course Name"
+                      options={coursesList}
                     />
                   </Grid>
-                  {/* <Grid item xs={12} sm={6} md={4}>
-                      <RHFTextField
-                        name="numOfWarningLettersIssued"
-                        label="Warning Letters"
-                      />
-                    </Grid> */}
-                  {/* <div className="col-12 col-sm-4">
-                      <div className="form-group students-up-files">
-                        <label>Upload Student Photo (150px X 150px)</label>
-                        <div className="uplod">
-                          <label className="file-upload image-upbtn mb-0">
-                            Choose File <input type="file" />
-                          </label>
-                        </div>
-                      </div>
-                    </div> */}
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFSelect name="year" label="Year" options={moduleYears} />
+                  </Grid>
                   <Grid item xs={12}>
-                    {/* <div className="student-submit"> */}
                     <Button
                       type="primary"
                       htmlType="submit"
                       loading={loadingRegister}>
                       Save
                     </Button>
-                    {/* </div> */}
                   </Grid>
                 </Grid>
               </FormProvider>
