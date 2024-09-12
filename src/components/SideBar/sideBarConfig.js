@@ -179,6 +179,12 @@ const navConfig = [
     path: PATH_DASHBOARD.calendar,
     role: ['admin', 'teacher'],
   },
+  {
+    title: 'Contact',
+    icon: <IoCalendarNumberOutline />,
+    path: PATH_DASHBOARD.contact,
+    role: ['admin'],
+  },
 ];
 
 export default navConfig;
