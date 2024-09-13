@@ -110,7 +110,7 @@ export const column = [
   },
 ];
 
-const SKELETON = ['', '', '', '', ''];
+export const SKELETON = ['', '', '', '', ''];
 
 const Students = () => {
   const navigate = useNavigate();

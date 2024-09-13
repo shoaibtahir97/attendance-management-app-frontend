@@ -7,14 +7,25 @@ import { useForm } from 'react-hook-form';
 import {
   FormProvider,
   RHFAutocomplete,
+  RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
 import { Grid } from '@mui/material';
 import { Button, Typography } from 'antd';
 import PageHeader from '../../components/PageHeader';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
+
+export const genders = [
+  { value: '', label: 'Select Gender' },
+  { value: 'female', label: 'Female' },
+  { value: 'male', label: 'Male' },
+  { value: 'others', label: 'Others' },
+];
 const AddTeacher = () => {
   const { openNotification } = useNotification();
+  const { data: subjectsList, isLoading: loadingSubjects } =
+    useGetSubjectsListQuery();
 
   const [registerUser, { isLoading: loadingRegister }] =
     useRegisterUserMutation();
@@ -22,19 +33,19 @@ const AddTeacher = () => {
   const defaultValues = {
     firstName: '',
     lastName: '',
-    emailAddress: '',
+    email: '',
     password: '',
     confirmPassword: '',
     role: 'teacher',
-    phoneNumber: '',
-    groups: [],
+    phone: '',
     subjects: [],
   };
 
   const studentSchema = Yup.object().shape({
-    firstName: Yup.string().required(),
-    lastName: Yup.string().required(),
-    emailAddress: Yup.string().email().required(),
+    firstName: Yup.string().required('First name is required'),
+    lastName: Yup.string().required('Last name is required'),
+    email: Yup.string().email().required('Email address is required'),
+    gender: Yup.string().required('Gender is required'),
     password: Yup.string()
       .required()
       .matches(
@@ -46,9 +57,10 @@ const AddTeacher = () => {
       'Passwords must match'
     ),
     role: Yup.string().required(),
-    phoneNumber: Yup.string().required(),
-    groups: Yup.array().of(Yup.string()),
-    subjects: Yup.array().of(Yup.string()),
+    phone: Yup.string().required('Phone number is required'),
+    subjects: Yup.array()
+      .of(Yup.string())
+      .min(1, 'Please select at least one subject'),
   });
 
   const methods = useForm({
@@ -66,16 +78,17 @@ const AddTeacher = () => {
         reset({
           firstName: '',
           lastName: '',
-          emailAddress: '',
+          email: '',
           password: '',
           confirmPassword: '',
           role: 'teacher',
-          phoneNumber: '',
-          groups: [],
+          phone: '',
           subjects: [],
         });
       })
-      .catch((err) => openNotification('error', err.data.message || err.error));
+      .catch((err) =>
+        openNotification('error', err?.data?.message || err?.error)
+      );
   };
 
   return (
@@ -108,21 +121,20 @@ const AddTeacher = () => {
                     <RHFTextField name="lastName" label={'Last Name'} />
                   </Grid>{' '}
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFTextField name="phoneNumber" label="Phone number" />
+                    <RHFTextField name="phone" label="Phone number" />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFAutocomplete
-                      multiple
-                      freeSolo
-                      name="groups"
-                      label="Groups"
+                    <RHFSelect
+                      name="gender"
+                      label="Gender"
+                      options={genders}
                       sx={{ width: '100%' }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
                     <RHFAutocomplete
                       multiple
-                      freeSolo
+                      options={subjectsList}
                       name="subjects"
                       label="Subjects"
                       sx={{ width: '100%' }}
@@ -134,7 +146,7 @@ const AddTeacher = () => {
                     </h5>
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFTextField name="emailAddress" label="Email Address" />
+                    <RHFTextField name="email" label="Email Address" />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
                     <RHFTextField name="password" label="Password" />

@@ -36,7 +36,7 @@ const LoginScreen = () => {
   };
 
   const LoginSchema = Yup.object().shape({
-    emailAddress: Yup.string().email().required('Email address is required'),
+    email: Yup.string().email().required('Email address is required'),
     password: Yup.string().required('Password is required'),
     afterSubmit: Yup.string(),
   });
@@ -140,7 +140,7 @@ const LoginScreen = () => {
                         // </Alert>
                       )}
 
-                      <RHFTextField name="emailAddress" label="Email Address" />
+                      <RHFTextField name="email" label="Email Address" />
                       <RHFTextField
                         name="password"
                         size="small"

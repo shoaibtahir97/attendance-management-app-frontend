@@ -44,6 +44,40 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       transformResponse: (res) => res?.data,
       keepUnusedDataFor: 5,
     }),
+    getUsersDetails: builder.query({
+      query: (userId) => ({
+        url: `${USERS_URL}/${userId}`,
+        credentials: 'include',
+        keepUnusedDataFor: 5,
+      }),
+      transformResponse: (res) => res?.data,
+    }),
+    updateUserDetails: builder.mutation({
+      query: (payload) => ({
+        url: `${USERS_URL}/${payload._id}`,
+        method: 'PUT',
+        body: payload,
+        header: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        transformResponse: (res) => res?.data,
+        credentials: 'include',
+      }),
+      invalidatesTags: ['User'],
+    }),
+    uploadBulkUsers: builder.mutation({
+      query: (file) => {
+        const body = new FormData();
+        body.append('Content-Type', file.type);
+        body.append('registerBulkUsers', file);
+        return {
+          url: `${USERS_URL}/upload`,
+          method: 'POST',
+          body,
+          credentials: 'include',
+        };
+      },
+    }),
   }),
 });
 
@@ -53,4 +87,7 @@ export const {
   useLogoutUserMutation,
   useLazyGetUsersQuery,
   useGetUsersListQuery,
+  useGetUsersDetailsQuery,
+  useUpdateUserDetailsMutation,
+  useUploadBulkUsersMutation,
 } = usersApiSlice;
