@@ -16,15 +16,15 @@ export default function TableSkeleton({ columns, ...other }) {
             sx={{ borderRadius: 1, flexShrink: 0 }}
           />
 
-          <Skeleton variant="text" width="100%" height={20} />
-          <Skeleton variant="text" width={180} height={20} />
-          <Skeleton variant="text" width={180} height={20} />
-          <Skeleton variant="text" width={180} height={20} />
-          <Skeleton variant="text" width={180} height={20} />
-          <Skeleton variant="text" width={180} height={20} />
-          <Skeleton variant="text" width={180} height={20} />
-          <Skeleton variant="text" width={180} height={20} />
-          <Skeleton variant="text" width={180} height={20} />
+          <Skeleton variant="text" width={100} height={20} />
+          <Skeleton variant="text" width={90} height={20} />
+          <Skeleton variant="text" width={90} height={20} />
+          <Skeleton variant="text" width={90} height={20} />
+          <Skeleton variant="text" width={90} height={20} />
+          <Skeleton variant="text" width={90} height={20} />
+          <Skeleton variant="text" width={90} height={20} />
+          <Skeleton variant="text" width={90} height={20} />
+          <Skeleton variant="text" width={90} height={20} />
         </Stack>
       </TableCell>
     </TableRow>

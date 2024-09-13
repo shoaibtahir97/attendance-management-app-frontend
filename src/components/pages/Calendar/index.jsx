@@ -40,7 +40,7 @@ import dayjs from 'dayjs';
 const Calendar = () => {
   const calendarRef = useRef();
   const [events, setEvents] = useState(
-    JSON.parse(localStorage.getItem('events') || '[]')
+    JSON?.parse(localStorage.getItem('events') || '[]')
   );
 
   const [currentEvent, setCurrentEvent] = useState();

@@ -51,13 +51,6 @@ const AddStudent = () => {
 
   const { handleSubmit, reset } = methods;
 
-  const genders = [
-    { value: '', label: 'Select Gender' },
-    { value: 'female', label: 'Female' },
-    { value: 'male', label: 'Male' },
-    { value: 'others', label: 'Others' },
-  ];
-
   const registerStudentData = async (data) => {
     registerStudent(data)
       .unwrap()

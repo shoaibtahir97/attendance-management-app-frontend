@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../../components/PageHeader';
 import { PATH_DASHBOARD } from '../../routes/paths';
-import { FormProvider, RHFTextField } from '../../components/HookForm';
+import {
+  FormProvider,
+  RHFSelect,
+  RHFTextField,
+} from '../../components/HookForm';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Box, Stack, Tooltip } from '@mui/material';
-import { Button, Table } from 'antd';
+import { Box, Menu, MenuItem, Stack, Tooltip } from '@mui/material';
+import { Alert, Button, Table } from 'antd';
 import { Link } from 'react-router-dom';
 import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
+import { useLazyGetUsersQuery } from '../../redux/slices/apiSlices/usersApiSlice';
+import { FiEdit, FiEye } from 'react-icons/fi';
+import { genders } from './AddTeacher';
+import { SKELETON } from '../Students/StudentsList';
+import TableSkeleton from '../../components/TableSkeleton';
+import BulkUploadTeacher from './components/BulkUploadTeacher';
 
 const TeachersScreen = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -23,171 +33,36 @@ const TeachersScreen = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  // const datasource = [
-  //   {
-  //     ID: '1',
-  //     TeachersID: 'PRE2209',
-  //     Img: avatar02,
-  //     Name: 'Aaliyah',
-  //     Class: 10,
-  //     Gender: 'Female',
-  //     Subject: 'Mathematics',
-  //     Section: 'A',
-  //     MobileNumber: '097 3584 5870',
-  //     Address: '911 Deer Ridge Drive,USA',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '2',
-  //     TeachersID: 'PRE2213',
-  //     Img: avatar03,
-  //     Name: 'Malynne',
-  //     Class: 8,
-  //     Gender: 'Female',
-  //     Subject: 'Physics',
-  //     Section: 'A',
-  //     MobileNumber: '242 362 3100',
-  //     Address: 'Bacardi Rd P.O. Box N-4880, New Providence',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '3',
-  //     TeachersID: 'PRE2143',
-  //     Img: avatar04,
-  //     Name: 'Levell Scott',
-  //     Class: 10,
-  //     Gender: 'Male',
-  //     Subject: 'Science',
-  //     Section: 'B',
-  //     MobileNumber: '026 7318 4366',
-  //     Address: 'P.O. Box: 41, Gaborone',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '4',
-  //     TeachersID: 'PRE2431',
-  //     Img: avatar05,
-  //     Name: 'Minnie',
-  //     Class: 11,
-  //     Gender: 'Male',
-  //     Subject: 'History',
-  //     Section: 'C',
-  //     MobileNumber: '952 512 4909',
-  //     Address: '4771  Oral Lake Road, Golden Valley',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '5',
-  //     TeachersID: 'PRE1534',
-  //     Img: avatar06,
-  //     Name: 'Lois A',
-  //     Class: 10,
-  //     Gender: 'Female',
-  //     Subject: 'English',
-  //     Section: 'B',
-  //     MobileNumber: '413 289 1314',
-  //     Address: '2844 Leverton Cove Road, Palmer',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '6',
-  //     TeachersID: 'PRE2153',
-  //     Img: avatar07,
-  //     Name: 'Calvin',
-  //     Class: 9,
-  //     Gender: 'Male',
-  //     Subject: 'Mathematics',
-  //     Section: 'C',
-  //     MobileNumber: '701 753 3810',
-  //     Address: '1900  Hidden Meadow Drive, Crete',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '7',
-  //     TeachersID: 'PRE1434',
-  //     Img: avatar08,
-  //     Name: 'Vincent',
-  //     Class: 10,
-  //     Gender: 'Male',
-  //     Subject: 'Mathematics',
-  //     Section: 'C',
-  //     MobileNumber: '402 221 7523',
-  //     Address: '3979  Ashwood Drive, Omaha',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '8',
-  //     TeachersID: 'PRE2345',
-  //     Img: avatar09,
-  //     Name: 'Kozma  Tatari',
-  //     Class: 9,
-  //     Gender: 'Female',
-  //     Subject: 'Science',
-  //     Section: 'A',
-  //     MobileNumber: '04 2239 968',
-  //     Address: 'Rruga E Kavajes, Condor Center, Tirana',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '9',
-  //     TeachersID: 'PRE2365',
-  //     Img: avatar10,
-  //     Name: 'John Chambers',
-  //     Class: 11,
-  //     Gender: 'Male',
-  //     Subject: 'Botony',
-  //     Section: 'B',
-  //     MobileNumber: '870 663 2334',
-  //     Address: '4667 Sunset Drive, Pine Bluff',
-  //     Action: '',
-  //   },
-  //   {
-  //     ID: '10',
-  //     TeachersID: 'PRE1234',
-  //     Img: avatar11,
-  //     Name: 'Nathan Humphries',
-  //     Class: 10,
-  //     Gender: 'Male',
-  //     Subject: 'Biology',
-  //     Section: 'A',
-  //     MobileNumber: '077 3499 9959',
-  //     Address: '86 Lamphey Road, Thelnetham',
-  //     Action: '',
-  //   },
-  // ];
   const column = [
     {
       title: 'ID',
       dataIndex: '_id',
       sorter: (a, b) => a._id.length - b._id.length,
-      // render: (text, record) => (
-      //     <>
-      //         <Link to="/viewinvoice">{record.TeachersID}</Link>
-      //     </>
-      // )
     },
     {
-      title: 'Name',
+      title: 'First Name',
       dataIndex: 'firstName',
       sorter: (a, b) => a.firstName.length - b.firstName.length,
-      // render: (text, record) => <h2 className="table-avatar">{text}</h2>,
     },
     {
-      title: 'Group',
-      dataIndex: 'groups',
-      sorter: (a, b) => a.groups.length - b.groups.length,
+      title: 'Last Name',
+      dataIndex: 'lastName',
+      sorter: (a, b) => a.lastName.length - b.lastName.length,
     },
-
     {
-      title: 'Subject',
-      dataIndex: 'subjects',
-      sorter: (a, b) => a.subjects.length - b.subjects.length,
+      title: 'Email Address',
+      dataIndex: 'email',
+      sorter: (a, b) => a.email.length - b.email.length,
     },
-
     {
       title: 'Phone Number',
-      dataIndex: 'phoneNumber',
-      sorter: (a, b) => a.phoneNumber.length - b.phoneNumber.length,
+      dataIndex: 'phone',
+      sorter: (a, b) => a.phone.length - b.phone.length,
+    },
+    {
+      title: 'Gender',
+      dataIndex: 'gender',
+      sorter: (a, b) => a.gender.length - b.gender.length,
     },
     {
       title: 'Action',
@@ -197,12 +72,14 @@ const TeachersScreen = () => {
           <div className="actions">
             <Link to="#" className="btn btn-sm bg-success-light me-2">
               <i className="feather-eye">
-                <FeatherIcon icon="eye" />
+                <FiEye size="14px" />
               </i>
             </Link>
-            <Link to="/editteacher" className="btn btn-sm bg-danger-light">
+            <Link
+              to={`${PATH_DASHBOARD.teacherEdit}/${record._id}`}
+              className="btn btn-sm bg-danger-light">
               <i className="feather-edit">
-                <FeatherIcon icon="edit" className="list-edit" />
+                <FiEdit size="14px" />
               </i>
             </Link>
           </div>
@@ -215,7 +92,8 @@ const TeachersScreen = () => {
     users: [],
     totalRecords: 0,
   });
-  const [getUsers, { data, isLoading, error }] = useLazyGetStudentsQuery();
+
+  const [getUsers, { data, isLoading, error }] = useLazyGetUsersQuery();
 
   const [usersQuery, setUsersQuery] = useState({
     page: 1,
@@ -223,14 +101,31 @@ const TeachersScreen = () => {
     role: 'teacher',
   });
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isBulkTeacherUploadModalVisible, setIsBulkTeacherUploadModalVisible] =
+    useState(false);
+  const open = Boolean(anchorEl);
+
+  const openAddUserPopover = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const closeAddUserPopover = (event) => {
+    setAnchorEl(null);
+  };
+
+  const openUploadExcelModal = () =>
+    setIsBulkTeacherUploadModalVisible(!isBulkTeacherUploadModalVisible);
+
   const fetchUsersByQuery = (data) => {
     fetchUsers({ ...data, ...usersQuery });
   };
 
   const usersQuerySchema = Yup.object().shape({
+    id: Yup.string().trim(),
     name: Yup.string().trim(),
-    group: Yup.string().trim(),
-    phoneNumber: Yup.string().trim(),
+    email: Yup.string().trim(),
+    gender: Yup.string().trim(),
   });
 
   const methods = useForm({
@@ -257,6 +152,7 @@ const TeachersScreen = () => {
   useEffect(() => {
     fetchUsers(usersQuery);
   }, []);
+
   return (
     <div className="content container-fluid">
       {/* Page Header */}
@@ -267,6 +163,13 @@ const TeachersScreen = () => {
         parentSection="Teacher"
       />
       {/* /Page Header */}
+      {isBulkTeacherUploadModalVisible && (
+        <BulkUploadTeacher
+          open={isBulkTeacherUploadModalVisible}
+          handleClose={openUploadExcelModal}
+          fetchStudents={fetchUsers}
+        />
+      )}
       <FormProvider
         methods={methods}
         onSubmit={handleSubmit(fetchUsersByQuery)}>
@@ -277,13 +180,22 @@ const TeachersScreen = () => {
           spacing={2}
           sx={{ mb: 2 }}>
           <Box sx={{ width: '100%' }}>
+            <RHFTextField name="id" label="ID" />
+          </Box>
+          <Box sx={{ width: '100%' }}>
             <RHFTextField name="name" label="Name" />
           </Box>
+
           <Box sx={{ width: '100%' }}>
-            <RHFTextField name="group" label="group" />
+            <RHFTextField name="email" label="Email Address" />
           </Box>
           <Box sx={{ width: '100%' }}>
-            <RHFTextField name="phoneNumber" label="Phone number" />
+            <RHFSelect
+              name="gender"
+              label="Gender"
+              options={genders}
+              sx={{ width: '100%' }}
+            />
           </Box>
           <Box sx={{ width: '100%', mt: 1 }}>
             <Button
@@ -308,41 +220,77 @@ const TeachersScreen = () => {
                     <h3 className="page-title">Teachers</h3>
                   </div>
                   <div className="col-auto text-end float-end ms-auto download-grp">
-                    {/* {dataSource.users.length ? (
-                      <Link to="#" className="btn btn-outline-primary me-2">
-                        <i className="fas fa-download" /> Download
-                      </Link>
-                    ) : (
-                      <></>
-                    )} */}
-                    <Tooltip title="Add teacher" placement="top">
+                    <Tooltip title="Add Teacher" placement="top">
                       <Link
+                        // onClick={openAddUserPopover}
                         to={PATH_DASHBOARD.teacherAdd}
                         className="btn btn-primary">
                         <i className="fas fa-plus" />
                       </Link>
                     </Tooltip>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={closeAddUserPopover}
+                      MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                      }}>
+                      <MenuItem
+                        onClick={() => {
+                          closeAddUserPopover();
+                          navigate(PATH_DASHBOARD.teacherAdd);
+                        }}>
+                        Add Teacher
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          closeAddUserPopover();
+                          openUploadExcelModal();
+                        }}>
+                        Add Bulk Teacher
+                      </MenuItem>
+                    </Menu>
                   </div>
                 </div>
               </div>
               {/* /Page Header */}
-              <div className="table-responsive">
-                <Table
-                  className="table border-0 star-student table-hover table-center mb-0 datatable table-striped"
-                  pagination={{
-                    total: dataSource.totalRecords,
-                    showTotal: (total, range) =>
-                      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                    showSizeChanger: true,
-                    onShowSizeChange: onShowSizeChange,
-                    itemRender: itemRender,
-                  }}
-                  columns={column}
-                  dataSource={dataSource.users}
-                  rowSelection={rowSelection}
-                  rowKey={(record) => record._id}
+              {isLoading ? (
+                SKELETON.map((_, index) => <TableSkeleton key={index} />)
+              ) : error ? (
+                <Alert
+                  message="Error"
+                  description={error?.data?.message || error.error}
+                  type="error"
+                  showIcon
                 />
-              </div>
+              ) : (
+                <div className="table-responsive">
+                  <Table
+                    className="table border-0 star-student table-hover table-center mb-0 datatable table-striped"
+                    pagination={{
+                      total: dataSource.totalRecords,
+                      showTotal: (total, range) =>
+                        `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                      showSizeChanger: true,
+                      onShowSizeChange: onShowSizeChange,
+                      itemRender: itemRender,
+                      onChange: (page, pageSize) => {
+                        setUsersQuery({
+                          ...usersQuery,
+                          page,
+                          recordsPerPage: pageSize,
+                        });
+                        fetchUsers({ page, recordsPerPage: pageSize });
+                      },
+                    }}
+                    columns={column}
+                    dataSource={dataSource.users}
+                    rowSelection={rowSelection}
+                    rowKey={(record) => record._id}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
