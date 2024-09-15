@@ -133,6 +133,7 @@ const TeachersList = () => {
 
   const {
     handleSubmit,
+    getValues,
     formState: { isSubmitting },
   } = methods;
 
@@ -280,7 +281,11 @@ const TeachersList = () => {
                           page,
                           recordsPerPage: pageSize,
                         });
-                        fetchUsers({ page, recordsPerPage: pageSize });
+                        fetchUsers({
+                          page,
+                          recordsPerPage: pageSize,
+                          ...getValues(),
+                        });
                       },
                     }}
                     columns={column}
