@@ -1,5 +1,5 @@
 export * from './RHFCheckbox';
-// export * from "./RHFUpload";
+export * from './RHFUpload';
 
 export { default as FormProvider } from './FormProvider';
 
@@ -15,3 +15,4 @@ export { default as RHFDatePicker } from './RHFDatePicker';
 export { default as RHFDateCalendar } from './RHFDateCalendar';
 export { default as RHFAutocomplete } from './RHFAutocomplete';
 export { default as RHFTimePicker } from './RHFTimePicker';
+// export { default as RHFSingleUpload } from './RHFUpload';
