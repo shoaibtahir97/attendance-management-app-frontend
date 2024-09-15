@@ -33,6 +33,8 @@ import EditSubject from '../screens/Subjects/EditSubject';
 import SubjectsList from '../screens/Subjects/SubjectList';
 import TeachersList from '../screens/Teachers/TeachersList';
 import ViewAttendanceScreen from '../screens/Attendance/ViewAttendanceScreen';
+import ContactScreen from '../screens/Mail/MailScreen';
+import MailScreen from '../screens/Mail/MailScreen';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -146,6 +148,9 @@ const router = createHashRouter(
 
           {/* Calendar */}
           <Route path={PATH_DASHBOARD.calendar} element={<Calendar />} />
+
+          {/* Mail */}
+          <Route path={PATH_DASHBOARD.mail} element={<MailScreen />} />
         </Route>
       </Route>
     </Route>

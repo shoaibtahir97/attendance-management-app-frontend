@@ -9,6 +9,8 @@ import { PiBuildingOfficeLight } from 'react-icons/pi';
 import { TbPresentationAnalytics } from 'react-icons/tb';
 import { IoCalendarNumberOutline } from 'react-icons/io5';
 import { PiChalkboardTeacherLight } from 'react-icons/pi';
+import { IoMailOpenOutline } from 'react-icons/io5';
+
 const navConfig = [
   // Dashboard
   {
@@ -180,9 +182,9 @@ const navConfig = [
     role: ['admin', 'teacher'],
   },
   {
-    title: 'Contact',
-    icon: <IoCalendarNumberOutline />,
-    path: PATH_DASHBOARD.contact,
+    title: 'Mail',
+    icon: <IoMailOpenOutline />,
+    path: PATH_DASHBOARD.mail,
     role: ['admin'],
   },
 ];
