@@ -22,7 +22,6 @@ import Reports from '../components/pages/Reports/Reports';
 import AttendanceReports from '../components/pages/Reports/AttendanceReports';
 import Calendar from '../components/pages/Calendar';
 import LoginScreen from '../screens/LoginScreen';
-import TeachersScreen from '../screens/Teachers/TeachersScreen';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import EditTeacher from '../screens/Teachers/EditTeacher';
 import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
@@ -32,6 +31,10 @@ import CoursesList from '../screens/Courses/CoursesList';
 import AddSubject from '../screens/Subjects/AddSubject';
 import EditSubject from '../screens/Subjects/EditSubject';
 import SubjectsList from '../screens/Subjects/SubjectList';
+import TeachersList from '../screens/Teachers/TeachersList';
+import ViewAttendanceScreen from '../screens/Attendance/ViewAttendanceScreen';
+import ContactScreen from '../screens/Mail/MailScreen';
+import MailScreen from '../screens/Mail/MailScreen';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -72,7 +75,7 @@ const router = createHashRouter(
 
           {/* Teachers */}
 
-          <Route path={PATH_DASHBOARD.teachers} element={<TeachersScreen />} />
+          <Route path={PATH_DASHBOARD.teachers} element={<TeachersList />} />
           <Route
             path={PATH_DASHBOARD.teacherProfile}
             element={<TeachersProfile />}
@@ -101,8 +104,12 @@ const router = createHashRouter(
 
           {/* Attendance */}
           <Route
-            path={PATH_DASHBOARD.attendance}
+            path={PATH_DASHBOARD.markattendance}
             element={<MarkAttendanceScreen />}
+          />
+          <Route
+            path={PATH_DASHBOARD.viewattendance}
+            element={<ViewAttendanceScreen />}
           />
 
           {/* Reports */}
@@ -141,6 +148,9 @@ const router = createHashRouter(
 
           {/* Calendar */}
           <Route path={PATH_DASHBOARD.calendar} element={<Calendar />} />
+
+          {/* Mail */}
+          <Route path={PATH_DASHBOARD.mail} element={<MailScreen />} />
         </Route>
       </Route>
     </Route>

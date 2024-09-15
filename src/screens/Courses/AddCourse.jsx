@@ -35,6 +35,7 @@ const defaultValues = {
   modules: [
     {
       cohortStartDate: null,
+      cohortEndDate: null,
       groups: [],
       moduleLead: '',
       subjects: [],
@@ -65,6 +66,7 @@ const AddCourse = () => {
         Yup.object().shape({
           year: Yup.number().required('Year is required'),
           cohortStartDate: Yup.date().required('Cohort start date is required'),
+          cohortEndDate: Yup.date().required('Cohort start date is required'),
           subjects: Yup.array()
             .of(Yup.string())
             .min(1, 'Minimum one subject is required')
@@ -199,6 +201,13 @@ const AddCourse = () => {
                           <RHFDatePicker
                             name={`modules[${index}].cohortStartDate`}
                             label="Cohort Start Date"
+                            sx={{ width: '100%' }}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={2}>
+                          <RHFDatePicker
+                            name={`modules[${index}].cohortEndDate`}
+                            label="Cohort End Date"
                             sx={{ width: '100%' }}
                           />
                         </Grid>

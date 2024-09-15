@@ -88,6 +88,7 @@ const CoursesList = () => {
 
   const {
     handleSubmit,
+    getValues,
     formState: { isSubmitting },
   } = methods;
 
@@ -211,7 +212,11 @@ const CoursesList = () => {
                           page,
                           recordsPerPage: pageSize,
                         });
-                        fetchCourses({ page, recordsPerPage: pageSize });
+                        fetchCourses({
+                          page,
+                          recordsPerPage: pageSize,
+                          ...getValues(),
+                        });
                       },
                     }}
                     columns={column}

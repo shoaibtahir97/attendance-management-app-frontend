@@ -55,11 +55,9 @@ const LoginScreen = () => {
     await authUser(data)
       .unwrap()
       .then((res) => {
-        const { groups, subjects, ...userInfo } = { ...res?.data };
-        console.log({ groups, subjects, userInfo });
-        dispatch(setGroups(groups));
-        dispatch(setSubjects(subjects));
-        dispatch(setCredentials({ ...userInfo }));
+        // const { userInfo } = { };
+
+        dispatch(setCredentials({ ...res?.data }));
         if (res.data.role === 'admin') {
           navigate(PATH_DASHBOARD.adminDashboard, { replace: true });
         } else if (res.data.role === 'teacher') {

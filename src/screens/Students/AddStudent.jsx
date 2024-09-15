@@ -92,13 +92,6 @@ const AddStudent = () => {
                   <Grid item xs={12}>
                     <h5 className="form-title student-info">
                       Student Information
-                      {/* <span>
-                          <Link to="#">
-                            <i className="feather-more-vertical">
-                              <FeatherIcon icon="more-vertical" />
-                            </i>
-                          </Link>
-                        </span> */}
                     </h5>
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>

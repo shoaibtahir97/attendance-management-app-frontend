@@ -146,6 +146,7 @@ const SubjectsList = () => {
           </Stack>
         </FormProvider>
         {/* Subjects list */}
+
         <div className="row">
           <div className="col-sm-12">
             <div className="card card-table comman-shadow">

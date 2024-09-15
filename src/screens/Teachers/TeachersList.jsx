@@ -21,7 +21,7 @@ import { SKELETON } from '../Students/StudentsList';
 import TableSkeleton from '../../components/TableSkeleton';
 import BulkUploadTeacher from './components/BulkUploadTeacher';
 
-const TeachersScreen = () => {
+const TeachersList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
@@ -92,7 +92,6 @@ const TeachersScreen = () => {
     users: [],
     totalRecords: 0,
   });
-
   const [getUsers, { data, isLoading, error }] = useLazyGetUsersQuery();
 
   const [usersQuery, setUsersQuery] = useState({
@@ -134,6 +133,7 @@ const TeachersScreen = () => {
 
   const {
     handleSubmit,
+    getValues,
     formState: { isSubmitting },
   } = methods;
 
@@ -281,7 +281,11 @@ const TeachersScreen = () => {
                           page,
                           recordsPerPage: pageSize,
                         });
-                        fetchUsers({ page, recordsPerPage: pageSize });
+                        fetchUsers({
+                          page,
+                          recordsPerPage: pageSize,
+                          ...getValues(),
+                        });
                       },
                     }}
                     columns={column}
@@ -299,4 +303,4 @@ const TeachersScreen = () => {
   );
 };
 
-export default TeachersScreen;
+export default TeachersList;

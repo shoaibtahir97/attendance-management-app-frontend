@@ -22,15 +22,23 @@ import { IoMdCheckmark } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
 import { GoClock } from 'react-icons/go';
 import { getFormattedDate } from '../../utils/formatDateTime';
-import { Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { useMarkAttendanceMutation } from '../../redux/slices/apiSlices/attendanceApiSlice';
 import useNotification from '../../hooks/useNotification';
-import { markAttendance, resetAttendanceRecord } from '../../redux/slices/attendanceSlice';
+import {
+  markAttendance,
+  resetAttendanceRecord,
+} from '../../redux/slices/attendanceSlice';
+import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 
 const MarkAttendanceScreen = () => {
-  const { groups } = useSelector((state) => state.groups);
-  const { subjects } = useSelector((state) => state.subjects);
+  const { data: groupsList, isLoading: loadingGroups } =
+    useGetGroupsListQuery();
+  const { data: subjectsList, isLoading: loadingSubjects } =
+    useGetSubjectsListQuery();
   const { userInfo } = useSelector((state) => state.auth);
+
   const { attendanceRecords } = useSelector((state) => state.attendanceRecords);
   const [markStudentAttendance, { isLoading: loadingAttendance }] =
     useMarkAttendanceMutation();
@@ -102,7 +110,8 @@ const MarkAttendanceScreen = () => {
         <div role="group" aria-label="Basic mixed styles example">
           {status?.map((status, index) => {
             const attendanceStatus = attendanceRecords.find(
-              (attendanceRecord) => attendanceRecord.studentId === record.id
+              (attendanceRecord) =>
+                attendanceRecord.studentId === record.studentId
             );
 
             return (
@@ -112,7 +121,7 @@ const MarkAttendanceScreen = () => {
                 onClick={() => {
                   dispatch(
                     markAttendance({
-                      studentId: record.id,
+                      studentId: record.studentId,
                       status: status.value,
                     })
                   );
@@ -193,9 +202,12 @@ const MarkAttendanceScreen = () => {
 
   const attendanceSchema = Yup.object().shape({
     date: Yup.string().required(),
-    timeSlot: Yup.string().required('Time slot is required'),
-    subject: Yup.string().required('Subject is required'),
-    group: Yup.string().required('Group is required'),
+    timeSlot: Yup.string(),
+    // .required('Time slot is required'),
+    subject: Yup.string(),
+    // .required('Subject is required'),
+    group: Yup.string(),
+    // .required('Group is required'),
   });
 
   const defaultValues = {
@@ -209,7 +221,11 @@ const MarkAttendanceScreen = () => {
     resolver: yupResolver(attendanceSchema),
     defaultValues,
   });
-  const { handleSubmit, getValues } = methods;
+  const {
+    handleSubmit,
+    getValues,
+    formState: { isSubmitting },
+  } = methods;
 
   const fetchStudents = async (data) => {
     const { date, subject, ...query } = { ...data };
@@ -273,56 +289,54 @@ const MarkAttendanceScreen = () => {
       />
       <div className="student-group-form">
         <FormProvider methods={methods} onSubmit={handleSubmit(fetchStudents)}>
-          <div className="row ">
-            <div className="col-lg-2 col-md-6">
-              <div className="form-group">
-                <RHFDatePicker name="date" label="Date" disabled />
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6">
-              <div className="form-group">
-                <RHFSelect
-                  name="timeSlot"
-                  label="Period"
-                  options={timeSlotOptions}
-                />
-              </div>
-            </div>
-
-            <div className="col-lg-2 col-md-6">
-              <div className="form-group">
-                <RHFAutocomplete
-                  name={'group'}
-                  label={'Group'}
-                  options={groups.map((group) => ({
-                    value: group._id,
-                    label: group.name,
-                  }))}
-                  sx={{ width: '100%' }}
-                />
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6">
-              <div className="form-group">
-                <RHFAutocomplete
-                  name="subject"
-                  label="Subject"
-                  options={subjects.map((subject) => ({
-                    value: subject._id,
-                    label: subject.name,
-                  }))}
-                  sx={{ width: '100%' }}
-                />
-              </div>
-            </div>
-            <div className="col-lg-2">
-              <div className="search-student-btn mt-1">
-                <button type="submit" className="btn btn-primary btn-sm mt-4">
-                  Search
-                </button>
-              </div>
-            </div>
-          </div>
+          <Stack
+            direction="row"
+            alignItems="end"
+            justifyContent="space-between"
+            spacing={2}
+            sx={{ mb: 2 }}>
+            <Box sx={{ width: '100%' }}>
+              <RHFDatePicker name="date" label="Date" disabled />
+            </Box>
+            <Box sx={{ width: '100%' }}>
+              <RHFSelect
+                name="timeSlot"
+                label="Period"
+                options={timeSlotOptions}
+              />
+            </Box>
+            <Box sx={{ width: '100%' }}>
+              <RHFAutocomplete
+                name={'group'}
+                label={'Group'}
+                options={groupsList?.map((group) => ({
+                  value: group?._id,
+                  label: group?.name,
+                }))}
+                sx={{ width: '100%' }}
+              />
+            </Box>
+            <Box width="100%">
+              <RHFAutocomplete
+                name="subject"
+                label="Subject"
+                options={subjectsList?.map((subject) => ({
+                  value: subject?._id,
+                  label: subject?.name,
+                }))}
+                sx={{ width: '100%' }}
+              />
+            </Box>
+            <Box sx={{ width: '100%', mt: 1 }}>
+              <Button
+                htmlType="submit"
+                type="primary"
+                size="large"
+                loading={isSubmitting}>
+                Search
+              </Button>
+            </Box>
+          </Stack>
         </FormProvider>
       </div>
 
@@ -346,7 +360,7 @@ const MarkAttendanceScreen = () => {
                       justifyContent="center">
                       <p className="fs-6">
                         Subject:{' '}
-                        {subjects?.map((subject) => {
+                        {subjectsList?.map((subject) => {
                           if (subject._id === getValues('subject')) {
                             return subject.name;
                           }
@@ -354,7 +368,7 @@ const MarkAttendanceScreen = () => {
                       </p>
                       <p className="fs-6 text-secondary">
                         Group:{' '}
-                        {groups?.map((group) => {
+                        {groupsList?.map((group) => {
                           if (group._id === getValues('group')) {
                             return group.name;
                           }
@@ -424,7 +438,11 @@ const MarkAttendanceScreen = () => {
                           page,
                           recordsPerPage: pageSize,
                         });
-                        fetchStudents({ page, recordsPerPage: pageSize });
+                        fetchStudents({
+                          page,
+                          recordsPerPage: pageSize,
+                          ...getValues(),
+                        });
                       },
                     }}
                     columns={column}

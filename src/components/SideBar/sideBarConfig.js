@@ -9,6 +9,8 @@ import { PiBuildingOfficeLight } from 'react-icons/pi';
 import { TbPresentationAnalytics } from 'react-icons/tb';
 import { IoCalendarNumberOutline } from 'react-icons/io5';
 import { PiChalkboardTeacherLight } from 'react-icons/pi';
+import { IoMailOpenOutline } from 'react-icons/io5';
+
 const navConfig = [
   // Dashboard
   {
@@ -26,9 +28,21 @@ const navConfig = [
   // Attendance
   {
     title: 'Attendance',
-    path: PATH_DASHBOARD.attendance,
+    path: PATH_DASHBOARD.markattendance,
     icon: <MdListAlt />,
     role: ['teacher', 'admin'],
+    // children: [
+    //   {
+    //     title: 'Mark Attendance',
+    //     path: PATH_DASHBOARD.markattendance,
+    //     role: ['teacher', 'admin'],
+    //   },
+    //   {
+    //     title: 'View Attendance',
+    //     path: PATH_DASHBOARD.viewattendance,
+    //     role: ['teacher', 'admin'],
+    //   },
+    // ],
   },
   // Students
   {
@@ -166,6 +180,12 @@ const navConfig = [
     icon: <IoCalendarNumberOutline />,
     path: PATH_DASHBOARD.calendar,
     role: ['admin', 'teacher'],
+  },
+  {
+    title: 'Mails',
+    icon: <IoMailOpenOutline />,
+    path: PATH_DASHBOARD.mail,
+    role: ['admin'],
   },
 ];
 

@@ -9,7 +9,11 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import PageHeader from '../../components/PageHeader';
 import { apiSlice } from '../../redux/slices/apiSlices/apiSlice';
 import { useForm } from 'react-hook-form';
-import { FormProvider, RHFTextField } from '../../components/HookForm';
+import {
+  FormProvider,
+  RHFAutocomplete,
+  RHFTextField,
+} from '../../components/HookForm';
 import {
   Box,
   Grid,
@@ -26,6 +30,8 @@ import { formatDate } from 'date-fns';
 import { getFormattedDate } from '../../utils/formatDateTime';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
+import { useSelector } from 'react-redux';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 
 export const column = [
   {
@@ -93,7 +99,7 @@ export const column = [
       <>
         <div className="actions">
           <Link
-            to={`${PATH_DASHBOARD.studentEdit}/${record.id}`}
+            to={`${PATH_DASHBOARD.studentEdit}/${record._id}`}
             className="btn btn-sm bg-danger-light">
             <i className="feather-edit">
               <FeatherIcon icon="edit" className="list-edit" />
@@ -109,11 +115,14 @@ export const SKELETON = ['', '', '', '', ''];
 
 const Students = () => {
   const navigate = useNavigate();
+  const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
+  const { data: groupsList, isLoading: loadingGroups } =
+    useGetGroupsListQuery();
+
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
     recordsPerPage: 10,
   });
-  const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
 
   const [dataSource, setDataSource] = useState({
     students: [],
@@ -159,6 +168,7 @@ const Students = () => {
 
   const {
     handleSubmit,
+    getValues,
     formState: { isSubmitting },
   } = methods;
 
@@ -215,7 +225,11 @@ const Students = () => {
               <RHFTextField name="name" label="Name" />
             </Box>
             <Box sx={{ width: '100%' }}>
-              <RHFTextField name="group" label="Group" />
+              <RHFAutocomplete
+                name="group"
+                label="Group"
+                options={groupsList}
+              />
             </Box>
             <Box sx={{ width: '100%', mt: 1 }}>
               <Button
@@ -309,7 +323,11 @@ const Students = () => {
                             page,
                             recordsPerPage: pageSize,
                           });
-                          fetchStudents({ page, recordsPerPage: pageSize });
+                          fetchStudents({
+                            page,
+                            recordsPerPage: pageSize,
+                            ...getValues(),
+                          });
                         },
                       }}
                       columns={column}
