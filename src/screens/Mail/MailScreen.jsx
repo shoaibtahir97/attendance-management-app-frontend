@@ -97,7 +97,7 @@ const MailScreen = () => {
       />
       <div className="row">
         <div className="col-sm-12">
-          <div className="d-flex justify-content-center my-4">
+          <div className="d-flex justify-content-center mb-4 ">
             {loadingStudents || loadingTeachers ? (
               <>Loading...</>
             ) : studentsError || teachersError ? (
@@ -113,12 +113,14 @@ const MailScreen = () => {
               <FormProvider
                 methods={methods}
                 onSubmit={handleSubmit(handleSendMail)}>
-                <RHFAutocomplete
-                  name="recipients"
-                  multiple
-                  label="Recipients"
-                  options={[...teachersList, ...studentsList]}
-                />
+                <Box sx={{ maxWidth: '75vh' }}>
+                  <RHFAutocomplete
+                    name="recipients"
+                    multiple
+                    label="Recipients"
+                    options={[...teachersList, ...studentsList]}
+                  />
+                </Box>
                 <RHFTextField name="subject" label="Subject" />
                 <div className="mb-5">
                   <RHFEditor simple name="body" label="Body" />

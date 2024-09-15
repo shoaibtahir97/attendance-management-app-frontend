@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import styles from './styles.module.css';
+// import styles from './styles.module.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -58,14 +58,18 @@ const Editor = ({
     <div style={{ minWidth: '100%', maxWidth: '75vh' }}>
       <ReactQuill
         ref={(el) => (quill.current = el)}
-        className={styles.editor}
         theme="snow"
         value={value}
         onChange={onChange}
         formats={formats}
         modules={modules}
         {...other}
-        style={{ minWidth: '100%', maxWidth: '75vh', maxHeight: '300px' }}
+        style={{
+          minWidth: '100%',
+          maxWidth: '75vh',
+          marginTop: '1rem',
+          height: '260px',
+        }}
       />
       {helperText && helperText}
     </div>
