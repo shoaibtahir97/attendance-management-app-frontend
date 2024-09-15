@@ -31,6 +31,7 @@ import { getFormattedDate } from '../../utils/formatDateTime';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
 import { useSelector } from 'react-redux';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 
 export const column = [
   {
@@ -114,13 +115,14 @@ export const SKELETON = ['', '', '', '', ''];
 
 const Students = () => {
   const navigate = useNavigate();
-  const { groups } = useSelector((state) => state.groups);
+  const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
+  const { data: groupsList, isLoading: loadingGroups } =
+    useGetGroupsListQuery();
 
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
     recordsPerPage: 10,
   });
-  const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
 
   const [dataSource, setDataSource] = useState({
     students: [],
@@ -225,10 +227,7 @@ const Students = () => {
               <RHFAutocomplete
                 name="group"
                 label="Group"
-                options={groups.map((group) => ({
-                  value: group._id,
-                  label: group.name,
-                }))}
+                options={groupsList}
               />
             </Box>
             <Box sx={{ width: '100%', mt: 1 }}>

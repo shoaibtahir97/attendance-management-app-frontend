@@ -29,11 +29,16 @@ import {
   markAttendance,
   resetAttendanceRecord,
 } from '../../redux/slices/attendanceSlice';
+import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 
 const MarkAttendanceScreen = () => {
-  const { groups } = useSelector((state) => state.groups);
-  const { subjects } = useSelector((state) => state.subjects);
+  const { data: groupsList, isLoading: loadingGroups } =
+    useGetGroupsListQuery();
+  const { data: subjectsList, isLoading: loadingSubjects } =
+    useGetSubjectsListQuery();
   const { userInfo } = useSelector((state) => state.auth);
+
   const { attendanceRecords } = useSelector((state) => state.attendanceRecords);
   const [markStudentAttendance, { isLoading: loadingAttendance }] =
     useMarkAttendanceMutation();
@@ -304,7 +309,7 @@ const MarkAttendanceScreen = () => {
               <RHFAutocomplete
                 name={'group'}
                 label={'Group'}
-                options={groups?.map((group) => ({
+                options={groupsList?.map((group) => ({
                   value: group?._id,
                   label: group?.name,
                 }))}
@@ -315,7 +320,7 @@ const MarkAttendanceScreen = () => {
               <RHFAutocomplete
                 name="subject"
                 label="Subject"
-                options={subjects?.map((subject) => ({
+                options={subjectsList?.map((subject) => ({
                   value: subject?._id,
                   label: subject?.name,
                 }))}
@@ -355,7 +360,7 @@ const MarkAttendanceScreen = () => {
                       justifyContent="center">
                       <p className="fs-6">
                         Subject:{' '}
-                        {subjects?.map((subject) => {
+                        {subjectsList?.map((subject) => {
                           if (subject._id === getValues('subject')) {
                             return subject.name;
                           }
@@ -363,7 +368,7 @@ const MarkAttendanceScreen = () => {
                       </p>
                       <p className="fs-6 text-secondary">
                         Group:{' '}
-                        {groups?.map((group) => {
+                        {groupsList?.map((group) => {
                           if (group._id === getValues('group')) {
                             return group.name;
                           }
