@@ -72,32 +72,32 @@ export function RHFUploadSingleFile({ name, fileName, ...other }) {
 
 // ----------------------------------------------------------------------
 
-// export function RHFUploadMultiFile({ name, ...other }) {
-//   const { control } = useFormContext();
+export function RHFUploadMultiFile({ name, ...other }) {
+  const { control } = useFormContext();
 
-//   return (
-//     <Controller
-//       name={name}
-//       control={control}
-//       render={({ field, fieldState: { error } }) => {
-//         const checkError = !!error && field.value?.length === 0;
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState: { error } }) => {
+        const checkError = !!error && field.value?.length === 0;
 
-//         return (
-//           <UploadMultiFile
-//             accept="image/*"
-//             files={field.value}
-//             error={checkError}
-//             helperText={
-//               checkError && (
-//                 <FormHelperText error sx={{ px: 2 }}>
-//                   {error?.message}
-//                 </FormHelperText>
-//               )
-//             }
-//             {...other}
-//           />
-//         );
-//       }}
-//     />
-//   );
-// }
+        return (
+          <UploadMultiFile
+            accept="image/*"
+            files={field.value}
+            error={checkError}
+            helperText={
+              checkError && (
+                <FormHelperText error sx={{ px: 2 }}>
+                  {error?.message}
+                </FormHelperText>
+              )
+            }
+            {...other}
+          />
+        );
+      }}
+    />
+  );
+}
