@@ -6,6 +6,7 @@ const ATTENDANCE_URL = '/api/v1/attendance';
 const COURSES_URL = '/api/v1/courses';
 const SUBJECTS_URL = '/api/v1/subjects';
 const GROUPS_URL = '/api/v1/groups';
+const MAIL_URL = '/api/v1/mail';
 
 export {
   BASE_URL,
@@ -15,4 +16,5 @@ export {
   COURSES_URL,
   SUBJECTS_URL,
   GROUPS_URL,
+  MAIL_URL,
 };
