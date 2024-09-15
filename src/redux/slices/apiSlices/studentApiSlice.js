@@ -59,6 +59,15 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Student'],
     }),
+    getStudentsList: builder.query({
+      query: (params) => ({
+        url: `${STUDENTS_URL}/list`,
+        params,
+        credentials: 'include',
+      }),
+      transformResponse: (res) => res?.data,
+      keepUnusedDataFor: 5,
+    }),
   }),
 });
 
@@ -68,4 +77,5 @@ export const {
   useRegisterStudentMutation,
   useUploadBulkStudentsMutation,
   useUpdateStudentDetailsMutation,
+  useGetStudentsListQuery,
 } = studentApiSlice;
