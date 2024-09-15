@@ -35,6 +35,9 @@ import TeachersList from '../screens/Teachers/TeachersList';
 import ViewAttendanceScreen from '../screens/Attendance/ViewAttendanceScreen';
 import ContactScreen from '../screens/Mail/MailScreen';
 import MailScreen from '../screens/Mail/MailScreen';
+import GroupsList from '../screens/Groups/GroupsList';
+import AddGroup from '../screens/Groups/AddGroup';
+import EditGroup from '../screens/Groups/EditGroups';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -92,6 +95,13 @@ const router = createHashRouter(
           <Route
             path={`${PATH_DASHBOARD.courseEdit}/:id`}
             element={<EditCourse />}
+          />
+          {/* Groups */}
+          <Route path={PATH_DASHBOARD.groups} element={<GroupsList />} />
+          <Route path={PATH_DASHBOARD.groupAdd} element={<AddGroup />} />
+          <Route
+            path={`${PATH_DASHBOARD.groupEdit}/:id`}
+            element={<EditGroup />}
           />
 
           {/* Subjects */}
