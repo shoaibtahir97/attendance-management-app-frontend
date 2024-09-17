@@ -52,7 +52,7 @@ const BulkUploadStudent = (props) => {
   );
 
   const uploadStudentFile = async (data) => {
-    await uploadBulkStudents(data.studentsFile)
+    await uploadBulkStudents(data)
       .unwrap()
       .then((res) => {
         openNotification('success', res?.message);
@@ -98,7 +98,7 @@ const BulkUploadStudent = (props) => {
             name="studentsFile"
             onDrop={handleDrop}
             fileName={fileName}
-            accept=".csv"
+            accept={['.csv']}
           />
           <Box
             sx={{

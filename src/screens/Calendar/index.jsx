@@ -6,7 +6,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import './calendar.css';
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -28,23 +27,40 @@ import {
   RHFTimePicker,
   RHFCheckbox,
   RHFAutocomplete,
-} from '../../HookForm';
+} from '../../components/HookForm';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
 import {
   getDay,
   getFormattedDate,
   getFormattedTime,
-} from '../../../utils/formatDateTime';
+} from '../../utils/formatDateTime';
 import dayjs from 'dayjs';
-const Calendar = () => {
-  const calendarRef = useRef();
-  const [events, setEvents] = useState(
-    JSON?.parse(localStorage.getItem('events') || '[]')
-  );
+import { Button } from 'antd';
+import UploadTimetableModal from './components/UploadTimetableModal';
+import { useLazyGetTimetableQuery } from '../../redux/slices/apiSlices/timetableApiSlice';
+import { useSelector } from 'react-redux';
+import useNotification from '../../hooks/useNotification';
 
+const Calendar = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  const { openNotification } = useNotification();
+  // const [
+  //   getTeacherTimetable,
+  //   {
+  //     data: teacherTimetable,
+  //     isLoading: loadingTeacherTimetable,
+  //     error: teacherTimetableError,
+  //   },
+  // ] = useLazyGetTeacherTimetableQuery();
+  const [getTimetable, { data, isLoading, error }] = useLazyGetTimetableQuery();
+  const calendarRef = useRef();
+  const [events, setEvents] = useState();
   const [currentEvent, setCurrentEvent] = useState();
+
   const [isAddEventDialogOpen, setIsAddEventDialogOpen] = useState(false);
+  const [isUploadTimetableModalVisible, setIsUploadTimetableModalVisible] =
+    useState(false);
 
   const showModalMethod = () => setIsAddEventDialogOpen(!isAddEventDialogOpen);
 
@@ -54,17 +70,70 @@ const Calendar = () => {
     showModalMethod();
   };
 
+  const handleShowUploadTimetableModal = () =>
+    setIsUploadTimetableModalVisible(!isUploadTimetableModalVisible);
+
+  const fetchAllTimeTables = async () => {
+    await getTimetable()
+      .unwrap()
+      .then((res) => {
+        console.log('res', res);
+        // const timetableData = res.data.map((item) => ({
+        //   title: `${item.subjectName} - ${item.groupName} `,
+        // }));
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message || err?.error);
+      });
+  };
+
+  // const fetchTeacherTimeTable = async () => {
+  //   await getTimetable()
+  //     .unwrap()
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       openNotification('error', err?.data?.message || err?.error);
+  //     });
+  // };
+
+  useEffect(() => {
+    // if (userInfo.role === 'admin') {
+    //   fetchAllTimeTables();
+    // } else {
+    //   fetchTeacherTimeTable();
+    // }
+    fetchAllTimeTables();
+  }, []);
+
   return (
     <div className="content container-fluid">
       <div className="page-header">
-        <div className="row">
+        <div className="row align-items-center">
           <div className="col-sm-12">
             <div className="page-sub-header">
               <h3 className="page-title">Calendar</h3>
+              <div className="breadcrumb">
+                <Button
+                  type="primary"
+                  size="large"
+                  loading={false}
+                  onClick={handleShowUploadTimetableModal}>
+                  Upload Timetable
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      {isUploadTimetableModalVisible && (
+        <UploadTimetableModal
+          showModalMethod={handleShowUploadTimetableModal}
+          isShowModal={isUploadTimetableModalVisible}
+          fetchAllTimeTables={fetchAllTimeTables}
+        />
+      )}
 
       <div>
         <FullCalendar
