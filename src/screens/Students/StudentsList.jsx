@@ -79,6 +79,11 @@ export const column = [
     render: (text, record) => <p>{getFormattedDate(text, 'DD-MM-YYYY')}</p>,
   },
   {
+    title: 'Nationality',
+    dataIndex: 'nationality',
+    sorter: (a, b) => a.nationality.length - b.nationality.length,
+  },
+  {
     title: 'Year',
     dataIndex: 'year',
     sorter: (a, b) => a.year.length - b.year.length,

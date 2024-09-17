@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import {
   FormProvider,
   RHFAutocomplete,
+  RHFCountries,
   RHFDatePicker,
   RHFSelect,
   RHFTextField,
@@ -27,6 +28,7 @@ import Alert from '../../components/Alert';
 import useNotification from '../../hooks/useNotification';
 import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
 import { moduleYears } from '../Courses/AddCourse';
+import { countries } from '../../utils/countries';
 
 const EditStudent = () => {
   const { openNotification } = useNotification();
@@ -48,6 +50,7 @@ const EditStudent = () => {
     DOB: Yup.date().required(),
     phone: Yup.string().required(),
     email: Yup.string().required(),
+    nationality: Yup.string().required(),
     group: Yup.string().required(),
     gender: Yup.string().required(),
     courseName: Yup.string().required(),
@@ -129,6 +132,13 @@ const EditStudent = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                       <RHFTextField name="email" label="Email" />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                      <RHFCountries
+                        name="nationality"
+                        label="Nationality"
+                        options={countries}
+                      />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                       <RHFAutocomplete
