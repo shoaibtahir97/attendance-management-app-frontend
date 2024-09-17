@@ -5,6 +5,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import {
   FormProvider,
   RHFAutocomplete,
+  RHFCountries,
   RHFDatePicker,
   RHFSelect,
   RHFTextField,
@@ -20,6 +21,7 @@ import PageHeader from '../../components/PageHeader';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 import { moduleYears } from '../Courses/AddCourse';
 import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
+import { countries } from '../../utils/countries';
 
 const AddStudent = () => {
   const { openNotification } = useNotification();
@@ -40,6 +42,7 @@ const AddStudent = () => {
     DOB: Yup.date().required(),
     phone: Yup.string().required(),
     email: Yup.string().email().required(),
+    nationality: Yup.string().required(),
     group: Yup.string().required(),
     courseName: Yup.string().required(),
     year: Yup.string().required(),
@@ -65,10 +68,13 @@ const AddStudent = () => {
           email: '',
           DOB: '',
           courseName: '',
+          nationality: '',
           year: '',
         });
       })
-      .catch((err) => openNotification('error', err.data.message || err.error));
+      .catch((err) =>
+        openNotification('error', err?.data?.message || err?.error)
+      );
   };
 
   return (
@@ -104,13 +110,6 @@ const AddStudent = () => {
                     <RHFTextField name="studentId" label="Student ID" />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFAutocomplete
-                      name="group"
-                      label="Group"
-                      options={groupsList}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
                     <RHFDatePicker
                       name="DOB"
                       label="Date of Birth"
@@ -124,10 +123,24 @@ const AddStudent = () => {
                     <RHFTextField name="email" label="Email " />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
+                    <RHFCountries
+                      name="nationality"
+                      label="Nationality"
+                      options={countries}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
                     <RHFAutocomplete
                       name="courseName"
                       label="Course Name"
                       options={coursesList}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFAutocomplete
+                      name="group"
+                      label="Group"
+                      options={groupsList}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
