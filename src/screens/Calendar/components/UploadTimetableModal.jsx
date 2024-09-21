@@ -15,6 +15,7 @@ import { Button } from 'antd';
 import useNotification from '../../../hooks/useNotification';
 import { useUploadTimetableMutation } from '../../../redux/slices/apiSlices/timetableApiSlice';
 import * as Yup from 'yup';
+import * as XLSX from 'xlsx';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MdClose } from 'react-icons/md';
@@ -71,23 +72,36 @@ const UploadTimetableModal = (props) => {
   };
 
   const exportSampleCSV = () => {
-    // const headers = [
-    //   'group',
-    //   'dayOfWeek',
-    //   'teacher',
-    //   'subject',
-    //   'startTime',
-    //   'endTime',
-    // ];
+    const headers = [
+      'group',
+      'dayOfWeek',
+      'teacher',
+      'subject',
+      'startTime',
+      'endTime',
+    ];
 
-    let csv = 'group,dayOfWeek,teacher,subject,startTime,endTime\n';
+    const worksheet = XLSX.utils.aoa_to_sheet([headers]);
 
-    // csvTableFields.forEach((field) => {
-    //   csv += field.join(',');
-    //   csv += '\n';
-    // });
+    // Create a new workbook and append the worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'SampleSheet');
 
-    const blob = new Blob([csv], { type: 'text/xlsx' });
+    // Generate binary string data for the Excel file
+    const binaryString = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'binary',
+    });
+
+    // Convert the binary string to an ArrayBuffer
+    const buffer = new ArrayBuffer(binaryString.length);
+    const view = new Uint8Array(buffer);
+    for (let i = 0; i < binaryString.length; i++) {
+      view[i] = binaryString.charCodeAt(i) & 0xff;
+    }
+
+    // Create a Blob from the ArrayBuffer
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
 
     // Create a URL for the Blob
     const url = URL.createObjectURL(blob);
@@ -97,10 +111,13 @@ const UploadTimetableModal = (props) => {
 
     // Set the URL and download attribute of the anchor tag
     a.href = url;
-    a.download = 'timetable.xlsx';
+    a.download = 'sample.xlsx';
 
     // Trigger the download by clicking the anchor tag
     a.click();
+
+    // Clean up the URL after download
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -115,7 +132,7 @@ const UploadTimetableModal = (props) => {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <Typography variant="subtitle1">Upload Timetable</Typography>
+        <Typography variant="h6">Upload Timetable</Typography>
         <IconButton onClick={showModalMethod}>
           <MdClose />
         </IconButton>
@@ -128,7 +145,7 @@ const UploadTimetableModal = (props) => {
             name="timetableFile"
             onDrop={handleDrop}
             fileName={fileName}
-            accept=".csv"
+            accept={['.xlsx']}
           />
           <Box
             sx={{
@@ -148,7 +165,7 @@ const UploadTimetableModal = (props) => {
 
             <Button
               type="default"
-              style={{ mr: 1 }}
+              style={{ marginTop: '10px' }}
               onClick={exportSampleCSV}
               icon={<MdDownload />}>
               Sample Excel template
@@ -159,7 +176,7 @@ const UploadTimetableModal = (props) => {
             spacing={2}
             alignItems="center"
             justifyContent="center"
-            sx={{ mt: 3 }}>
+            sx={{ mt: 2 }}>
             <Button
               variant="contained"
               htmlType="submit"
