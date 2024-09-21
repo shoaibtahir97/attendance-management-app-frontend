@@ -4,7 +4,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   Stack,
+  Typography,
 } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import { FormProvider } from '../../../components/HookForm';
@@ -15,6 +17,8 @@ import { useUploadTimetableMutation } from '../../../redux/slices/apiSlices/time
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { MdClose } from 'react-icons/md';
+import { MdDownload } from 'react-icons/md';
 
 const UploadTimetableModal = (props) => {
   const { showModalMethod, isShowModal, fetchAllTimeTables } = props;
@@ -34,6 +38,7 @@ const UploadTimetableModal = (props) => {
       timetableFile: null,
     },
   });
+
   const { setValue, handleSubmit } = methods;
 
   const handleDrop = useCallback(
@@ -65,13 +70,56 @@ const UploadTimetableModal = (props) => {
       });
   };
 
+  const exportSampleCSV = () => {
+    // const headers = [
+    //   'group',
+    //   'dayOfWeek',
+    //   'teacher',
+    //   'subject',
+    //   'startTime',
+    //   'endTime',
+    // ];
+
+    let csv = 'group,dayOfWeek,teacher,subject,startTime,endTime\n';
+
+    // csvTableFields.forEach((field) => {
+    //   csv += field.join(',');
+    //   csv += '\n';
+    // });
+
+    const blob = new Blob([csv], { type: 'text/xlsx' });
+
+    // Create a URL for the Blob
+    const url = URL.createObjectURL(blob);
+
+    // Create an anchor tag for downloading
+    const a = document.createElement('a');
+
+    // Set the URL and download attribute of the anchor tag
+    a.href = url;
+    a.download = 'timetable.xlsx';
+
+    // Trigger the download by clicking the anchor tag
+    a.click();
+  };
+
   return (
     <Dialog
       open={isShowModal}
       onClose={showModalMethod}
       fullWidth
       maxWidth="md">
-      <DialogTitle>Upload Timetable</DialogTitle>
+      <DialogTitle
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <Typography variant="subtitle1">Upload Timetable</Typography>
+        <IconButton onClick={showModalMethod}>
+          <MdClose />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         <FormProvider
           methods={methods}
@@ -82,11 +130,36 @@ const UploadTimetableModal = (props) => {
             fileName={fileName}
             accept=".csv"
           />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexGrow: 1,
+              my: 1,
+            }}>
+            <Typography
+              sx={{ display: 'flex', marginTop: 1 }}
+              id="modal-modal-title"
+              variant="body1">
+              Download sample Excel template for uploading timetable
+            </Typography>
+
+            <Button
+              type="default"
+              style={{ mr: 1 }}
+              onClick={exportSampleCSV}
+              icon={<MdDownload />}>
+              Sample Excel template
+            </Button>
+          </Box>
           <Stack
             direction="row"
             spacing={2}
             alignItems="center"
-            justifyContent="center">
+            justifyContent="center"
+            sx={{ mt: 3 }}>
             <Button
               variant="contained"
               htmlType="submit"

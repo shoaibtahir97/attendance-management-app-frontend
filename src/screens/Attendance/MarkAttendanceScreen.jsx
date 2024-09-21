@@ -309,10 +309,7 @@ const MarkAttendanceScreen = () => {
               <RHFAutocomplete
                 name={'group'}
                 label={'Group'}
-                options={groupsList?.map((group) => ({
-                  value: group?._id,
-                  label: group?.name,
-                }))}
+                options={groupsList}
                 sx={{ width: '100%' }}
               />
             </Box>
@@ -320,10 +317,7 @@ const MarkAttendanceScreen = () => {
               <RHFAutocomplete
                 name="subject"
                 label="Subject"
-                options={subjectsList?.map((subject) => ({
-                  value: subject?._id,
-                  label: subject?.name,
-                }))}
+                options={subjectsList}
                 sx={{ width: '100%' }}
               />
             </Box>
