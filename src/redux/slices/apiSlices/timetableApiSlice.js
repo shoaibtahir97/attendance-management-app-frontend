@@ -25,8 +25,20 @@ export const timetableApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       invalidatesTags: ['Timetable'],
     }),
+    getTeacherTimeTable: builder.query({
+      query: () => ({
+        url: `${TIMETABLE_URL}/teacher`,
+        credentials: 'include',
+        method: 'GET',
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ['Timetable'],
+    }),
   }),
 });
 
-export const { useUploadTimetableMutation, useLazyGetTimetableQuery } =
-  timetableApiSlice;
+export const {
+  useUploadTimetableMutation,
+  useLazyGetTimetableQuery,
+  useLazyGetTeacherTimeTableQuery,
+} = timetableApiSlice;

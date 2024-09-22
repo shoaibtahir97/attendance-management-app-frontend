@@ -32,36 +32,45 @@ import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
 import {
   getDay,
+  getDayOfWeek,
   getFormattedDate,
   getFormattedTime,
 } from '../../utils/formatDateTime';
 import dayjs from 'dayjs';
-import { Button } from 'antd';
+import { Alert, Button } from 'antd';
 import UploadTimetableModal from './components/UploadTimetableModal';
-import { useLazyGetTimetableQuery } from '../../redux/slices/apiSlices/timetableApiSlice';
+import {
+  useLazyGetTeacherTimeTableQuery,
+  useLazyGetTimetableQuery,
+} from '../../redux/slices/apiSlices/timetableApiSlice';
 import { useSelector } from 'react-redux';
 import useNotification from '../../hooks/useNotification';
+import CalendarSkeleton from './components/CalendarSkeleton';
+import { useNavigate } from 'react-router-dom';
+import { PATH_DASHBOARD } from '../../routes/paths';
 
 const Calendar = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { openNotification } = useNotification();
-  // const [
-  //   getTeacherTimetable,
-  //   {
-  //     data: teacherTimetable,
-  //     isLoading: loadingTeacherTimetable,
-  //     error: teacherTimetableError,
-  //   },
-  // ] = useLazyGetTeacherTimetableQuery();
+  const navigate = useNavigate();
+  const [
+    getTeacherTimetable,
+    {
+      data: teacherTimetable,
+      isLoading: loadingTeacherTimetable,
+      error: teacherTimetableError,
+    },
+  ] = useLazyGetTeacherTimeTableQuery();
   const [getTimetable, { data, isLoading, error }] = useLazyGetTimetableQuery();
   const calendarRef = useRef();
-  const [events, setEvents] = useState();
+  const [events, setEvents] = useState([]);
   const [currentEvent, setCurrentEvent] = useState();
 
   const [isAddEventDialogOpen, setIsAddEventDialogOpen] = useState(false);
   const [isUploadTimetableModalVisible, setIsUploadTimetableModalVisible] =
     useState(false);
-
+  const [isAttendanceModalVisible, setIsAttendanceModalVisible] =
+    useState(false);
   const showModalMethod = () => setIsAddEventDialogOpen(!isAddEventDialogOpen);
 
   const handleSelect = (info) => {
@@ -70,43 +79,134 @@ const Calendar = () => {
     showModalMethod();
   };
 
+  const handleEventClick = (eventInfo) => {
+    const event = eventInfo.event;
+
+    const [group, subject, teacher] = event.title.split('\n');
+
+    if (
+      event.title.startsWith('Group') &&
+      userInfo.role === 'teacher' &&
+      new Date(event._instance.range.start) >= new Date()
+    ) {
+      navigate(PATH_DASHBOARD.markattendance, {
+        state: {
+          group: group.split(':')[1],
+          groupId: event.groupId,
+          startTime: event._instance.range.start.toISOString(),
+          endTime: event._instance.range.end.toISOString(),
+          subject: subject.split(':')[1],
+          teacher: teacher.split(':')[1],
+          subjectId: event.extendedProps.subjectId,
+        },
+      });
+    } else if (event.title.startsWith('Group') && userInfo.role === 'admin') {
+      navigate(PATH_DASHBOARD.markattendance, {
+        state: {
+          group: group.split(':')[1],
+          groupId: event.groupId,
+          startTime: event._instance.range.start.toISOString(),
+          endTime: event._instance.range.end.toISOString(),
+          subject: subject.split(':')[1],
+          teacher: teacher.split(':')[1],
+          subjectId: event.extendedProps.subjectId,
+        },
+      });
+    } else {
+      openNotification('error', 'Access denied');
+    }
+  };
+
   const handleShowUploadTimetableModal = () =>
     setIsUploadTimetableModalVisible(!isUploadTimetableModalVisible);
+
+  // const getNextDayOfWeek = (dayOfWeek) => {
+  //   const daysOfWeekMap = {
+  //     Monday: 1,
+  //     Tuesday: 2,
+  //     Wednesday: 3,
+  //     Thursday: 4,
+  //     Friday: 5,
+  //     Saturday: 6,
+  //     Sunday: 0,
+  //   };
+
+  //   const today = new Date();
+  //   const currentDayOfWeek = today.getDay();
+  //   const targetDayOfWeek = daysOfWeekMap[dayOfWeek];
+  //   const differenceInDays = (targetDayOfWeek + 7 - currentDayOfWeek) % 7;
+
+  //   const nextDay = new Date();
+  //   nextDay.setDate(today.getDate() + differenceInDays);
+
+  //   return nextDay.toISOString().split('T')[0];
+  // };
+
+  // All Time Tables for Admin
 
   const fetchAllTimeTables = async () => {
     await getTimetable()
       .unwrap()
       .then((res) => {
-        console.log('res', res);
-        // const timetableData = res.data.map((item) => ({
-        //   title: `${item.subjectName} - ${item.groupName} `,
-        // }));
+        const events = [];
+        res.data.forEach((item) => {
+          item.entries.forEach((entry) => {
+            events.push({
+              title: `Group: ${item.group.name} \n Subject: ${entry.subject.name} \n Teacher: ${entry.teacher.firstName} ${entry.teacher.lastName}`,
+              startTime: `${entry.startTime}:00`,
+              endTime: `${entry.endTime}:00`,
+              groupId: item.group._id,
+              subjectId: entry.subject._id,
+              allDay: false,
+              daysOfWeek: [`${getDayOfWeek(entry.dayOfWeek)}`],
+            });
+          });
+        });
+
+        setEvents(events);
       })
       .catch((err) => {
         openNotification('error', err?.data?.message || err?.error);
       });
   };
 
-  // const fetchTeacherTimeTable = async () => {
-  //   await getTimetable()
-  //     .unwrap()
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       openNotification('error', err?.data?.message || err?.error);
-  //     });
-  // };
+  // Single Time Table for Teacher
+  const fetchTeacherTimeTable = async () => {
+    await getTeacherTimetable()
+      .unwrap()
+      .then((res) => {
+        const events = [];
+        res.data.forEach((item) => {
+          item.entries.forEach((entry) => {
+            events.push({
+              title: `Group: ${item.group.name} \n Subject: ${entry.subject.name} \n Teacher: ${entry.teacher.firstName} ${entry.teacher.lastName}`,
+              startTime: `${entry.startTime}:00`,
+              endTime: `${entry.endTime}:00`,
+              groupId: item.group._id,
+              subjectId: entry.subject._id,
+              allDay: false,
+              daysOfWeek: [`${getDayOfWeek(entry.dayOfWeek)}`],
+            });
+          });
+        });
+        setEvents(events);
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message || err?.error);
+      });
+  };
 
   useEffect(() => {
-    // if (userInfo.role === 'admin') {
-    //   fetchAllTimeTables();
-    // } else {
-    //   fetchTeacherTimeTable();
-    // }
-    fetchAllTimeTables();
+    if (userInfo.role === 'admin') {
+      fetchAllTimeTables();
+    } else {
+      fetchTeacherTimeTable();
+    }
   }, []);
 
+  // const renderEventContent = (eventInfo) => {
+  //   return <CustomEvent event={eventInfo.event} />;
+  // };
   return (
     <div className="content container-fluid">
       <div className="page-header">
@@ -115,13 +215,15 @@ const Calendar = () => {
             <div className="page-sub-header">
               <h3 className="page-title">Calendar</h3>
               <div className="breadcrumb">
-                <Button
-                  type="primary"
-                  size="large"
-                  loading={false}
-                  onClick={handleShowUploadTimetableModal}>
-                  Upload Timetable
-                </Button>
+                {userInfo.role === 'admin' && (
+                  <Button
+                    type="primary"
+                    size="large"
+                    loading={false}
+                    onClick={handleShowUploadTimetableModal}>
+                    Upload Timetable
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -136,32 +238,57 @@ const Calendar = () => {
       )}
 
       <div>
-        <FullCalendar
-          ref={calendarRef}
-          editable
-          selectable
-          events={events}
-          select={handleSelect}
-          headerToolbar={{
-            left: 'today prev next title',
-            center: '',
-            right: 'dayGridMonth timeGridWeek timeGridDay',
-          }}
-          titleFormat={{ year: 'numeric', month: 'long' }}
-          allDaySlot={false}
-          viewHeight={'100vh'}
-          slotMinTime="08:00:00"
-          slotMaxTime="17:00:00"
-          slotDuration="00:45:00"
-          weekends={false}
-          dayHeaderFormat={{
-            weekday: 'short',
-            day: 'numeric',
-            omitCommas: true,
-          }}
-          plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
-          views={['dayGridMonth', 'timeGridWeek', 'timeGridDay']}
-        />
+        {isLoading || loadingTeacherTimetable ? (
+          <CalendarSkeleton />
+        ) : error || teacherTimetableError ? (
+          <Alert
+            message="Error"
+            description={
+              error?.data?.message || teacherTimetableError.data.message
+            }
+            type="error"
+            showIcon
+          />
+        ) : (
+          <FullCalendar
+            ref={calendarRef}
+            editable
+            selectable
+            events={events}
+            select={handleSelect}
+            eventClick={handleEventClick}
+            // eventContent={renderEventComponent}
+            headerToolbar={{
+              left: 'today prev next title',
+              center: '',
+              right: 'dayGridMonth timeGridWeek timeGridDay',
+            }}
+            titleFormat={{ year: 'numeric', month: 'long' }}
+            allDaySlot={false}
+            viewHeight={'100vh'}
+            eventTimeFormat={{
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            }}
+            slotLabelFormat={{
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false, // Set to false for 24-hour format
+            }}
+            slotMinTime="09:30:00"
+            slotMaxTime="22:00:00"
+            slotDuration="01:00:00"
+            weekends={false}
+            dayHeaderFormat={{
+              weekday: 'short',
+              day: 'numeric',
+              omitCommas: true,
+            }}
+            plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
+            views={['dayGridMonth', 'timeGridWeek', 'timeGridDay']}
+          />
+        )}
       </div>
       <div>
         {currentEvent && (
@@ -186,7 +313,6 @@ const EventDialog = (props) => {
     setEvents,
     events: createdEvents,
   } = props;
-  console.log({ currentEvent });
   const events = [
     { value: 'class', label: 'Class' },
     { value: 'event', label: 'Event' },
@@ -378,6 +504,22 @@ const EventDialog = (props) => {
         </DialogActions>
       </FormProvider>
     </Dialog>
+  );
+};
+
+const CustomEvent = ({ event }) => {
+  const { title, extendedProps } = event;
+  return (
+    <div
+      style={{
+        padding: '5px',
+        backgroundColor: '#dfe7fd',
+        borderRadius: '4px',
+      }}>
+      <strong>{title}</strong>
+      <div>Group: {extendedProps.groupName}</div>
+      <div>Teacher: {extendedProps.teacherName}</div>
+    </div>
   );
 };
 

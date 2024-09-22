@@ -8,10 +8,21 @@ export const attendanceApiSlice = apiSlice.injectEndpoints({
         url: ATTENDANCE_URL,
         body: payload,
         method: 'POST',
-        credentials:'include',
+        credentials: 'include',
       }),
+    }),
+    getAttendance: builder.query({
+      query: (params) => ({
+        url: ATTENDANCE_URL,
+        params,
+        method: 'GET',
+        credentials: 'include',
+      }),
+      transformResponse: (res) => res?.data,
+      keepUnusedDataFor: 5,
     }),
   }),
 });
 
-export const { useMarkAttendanceMutation } = attendanceApiSlice;
+export const { useMarkAttendanceMutation, useLazyGetAttendanceQuery } =
+  attendanceApiSlice;
