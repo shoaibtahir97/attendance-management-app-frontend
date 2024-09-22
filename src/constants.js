@@ -7,6 +7,7 @@ const COURSES_URL = '/api/v1/courses';
 const SUBJECTS_URL = '/api/v1/subjects';
 const GROUPS_URL = '/api/v1/groups';
 const MAIL_URL = '/api/v1/mail';
+const TIMETABLE_URL = '/api/v1/timetable';
 
 export {
   BASE_URL,
@@ -17,4 +18,5 @@ export {
   SUBJECTS_URL,
   GROUPS_URL,
   MAIL_URL,
+  TIMETABLE_URL,
 };

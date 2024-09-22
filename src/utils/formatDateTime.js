@@ -18,4 +18,16 @@ const getFormattedDate = (date, format = 'DD/MM/YYYY') =>
 const getFormattedTime = (date, format = 'HH:mm:ss') =>
   dayjs(date).format(format);
 
-export { getDay, getFormattedDate, getFormattedTime };
+const getDayOfWeek = (dayOfWeek) => {
+  const daysOfWeekMap = {
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6,
+    Sunday: 0,
+  };
+  return daysOfWeekMap[dayOfWeek];
+};
+export { getDay, getFormattedDate, getFormattedTime, getDayOfWeek };

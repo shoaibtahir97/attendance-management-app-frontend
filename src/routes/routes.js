@@ -20,7 +20,7 @@ import ProtectedRoute from './ProtectedRoute';
 import { PATH_AUTH, PATH_DASHBOARD } from './paths';
 import Reports from '../components/pages/Reports/Reports';
 import AttendanceReports from '../components/pages/Reports/AttendanceReports';
-import Calendar from '../components/pages/Calendar';
+
 import LoginScreen from '../screens/LoginScreen';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import EditTeacher from '../screens/Teachers/EditTeacher';
@@ -38,6 +38,7 @@ import MailScreen from '../screens/Mail/MailScreen';
 import GroupsList from '../screens/Groups/GroupsList';
 import AddGroup from '../screens/Groups/AddGroup';
 import EditGroup from '../screens/Groups/EditGroups';
+import Calendar from '../screens/Calendar';
 
 const router = createHashRouter(
   createRoutesFromElements(
