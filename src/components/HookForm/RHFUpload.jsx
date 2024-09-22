@@ -53,7 +53,6 @@ export function RHFUploadSingleFile({ name, fileName, ...other }) {
 
         return (
           <UploadSingleFile
-            // accept="image/*"
             file={field.value}
             error={checkError}
             fileName={fileName}
