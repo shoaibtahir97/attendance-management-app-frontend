@@ -8,6 +8,7 @@ const SUBJECTS_URL = '/api/v1/subjects';
 const GROUPS_URL = '/api/v1/groups';
 const MAIL_URL = '/api/v1/mail';
 const TIMETABLE_URL = '/api/v1/timetable';
+const REPORTS_URL = '/api/v1/reports';
 
 export {
   BASE_URL,
@@ -19,4 +20,5 @@ export {
   GROUPS_URL,
   MAIL_URL,
   TIMETABLE_URL,
+  REPORTS_URL,
 };

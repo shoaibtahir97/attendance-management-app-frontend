@@ -71,8 +71,8 @@ const MarkAttendanceScreen = () => {
 
   const { data: groupsList, isLoading: loadingGroups } =
     useGetGroupsListQuery();
-  const { data: subjectsList, isLoading: loadingSubjects } =
-    useGetSubjectsListQuery();
+  // const { data: subjectsList, isLoading: loadingSubjects } =
+  //   useGetSubjectsListQuery();
 
   const [getAttendance, { loading: loadingGetAttendance }] =
     useLazyGetAttendanceQuery();
@@ -106,8 +106,8 @@ const MarkAttendanceScreen = () => {
   const column = [
     {
       title: 'ID',
-      dataIndex: 'student',
-      sorter: (a, b) => a.student.length - b.student.length,
+      dataIndex: 'studentId',
+      sorter: (a, b) => a.studentId.length - b.studentId.length,
     },
     {
       title: 'Name',
@@ -126,7 +126,7 @@ const MarkAttendanceScreen = () => {
         <div role="group" aria-label="Basic mixed styles example">
           {status?.map((status, index) => {
             const attendanceStatus = attendanceRecords.find(
-              (attendanceRecord) => attendanceRecord.student === record.student
+              (attendanceRecord) => attendanceRecord.studentId === record.id
             );
 
             return (
@@ -141,7 +141,7 @@ const MarkAttendanceScreen = () => {
                 onClick={() => {
                   dispatch(
                     markAttendance({
-                      student: record.student,
+                      studentId: record.id,
                       status: status.value,
                     })
                   );
@@ -262,7 +262,8 @@ const MarkAttendanceScreen = () => {
         const { students, totalRecords, filteredRecordsCount } = res;
         if (students && students.length > 0) {
           const updatedStudents = students.map((student) => ({
-            student: student._id,
+            studentId: student.studentId,
+            id: student._id,
             name: `${student.firstName} ${student.lastName}`,
           }));
           setDataSource({
