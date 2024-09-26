@@ -7,6 +7,7 @@ const reportApiSlice = apiSlice.injectEndpoints({
       query: (params) => ({
         url: `${REPORTS_URL}/attendance`,
         params,
+        credentials: 'include',
       }),
       transformResponse: (res) => res?.data,
     }),
