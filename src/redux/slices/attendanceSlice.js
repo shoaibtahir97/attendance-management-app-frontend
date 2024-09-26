@@ -19,10 +19,10 @@ const attendanceSlice = createSlice({
       } else {
         state.attendanceRecords.push(action.payload);
       }
-      localStorage.setItem(
-        'attendanceRecords',
-        JSON.stringify(state.attendanceRecords)
-      );
+      // localStorage.setItem(
+      //   'attendanceRecords',
+      //   JSON.stringify(state.attendanceRecords)
+      // );
     },
     resetAttendanceRecord: (state, action) => {
       localStorage.removeItem('attendanceRecords');

@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FormProvider,
+  RHFAutocomplete,
   RHFCheckbox,
+  RHFDatePicker,
   RHFMultiCheckbox,
   RHFRadioGroup,
 } from '../../HookForm';
@@ -25,131 +27,11 @@ import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { Table } from 'antd';
 import { itemRender, onShowSizeChange } from '../../Pagination';
 import RHFSelect from '../../HookForm/RHFSelect';
-import { MenuItem } from '@mui/material';
-
-export const datasource = [
-  {
-    Id: '1',
-    StudentId: 'PRE2209',
-    Name: 'Aaliyah',
-    Img: img1,
-    Class: '10 A',
-    Attendance: 95,
-    MobileNumber: '097 3584 5870',
-    Address: '911 Deer Ridge Drive,USA',
-    Action: '',
-  },
-  {
-    Id: '2',
-    StudentId: 'PRE2213',
-    Name: 'Malynne',
-    Img: img3,
-    Class: '8 A',
-    Attendance: 71,
-    MobileNumber: '242 362 3100',
-    Address: 'Bacardi Rd P.O. Box N-4880, New Providence',
-    Action: '',
-  },
-  {
-    Id: '3',
-    StudentId: 'PRE2143',
-    Name: 'Levell Scott',
-    Img: img2,
-    Class: '10 A',
-    Attendance: 81,
-    MobileNumber: '026 7318 4366',
-    Address: 'P.O. Box: 41, Gaborone',
-    Action: '',
-  },
-  {
-    Id: '4',
-    StudentId: 'PRE2431',
-    Name: 'Minnie',
-    Img: img3,
-    Class: '11 C',
-    Attendance: 79,
-    MobileNumber: '952 512 4909',
-    Address: '4771  Oral Lake Road, Golden Valley',
-    Action: '',
-  },
-  {
-    Id: '5',
-    StudentId: 'PRE1534',
-    Name: 'Lois A',
-    Img: img4,
-    Class: '10 A',
-    Attendance: 74,
-    MobileNumber: '413 289 1314',
-    Address: '2844 Leverton Cove Road, Palmer',
-    Action: '',
-  },
-  {
-    Id: '6',
-    StudentId: 'PRE2153',
-    Name: 'Calvin',
-    Img: img5,
-    Class: '9 B',
-    Attendance: 85,
-    MobileNumber: '701 753 3810',
-    Address: '1900  Hidden Meadow Drive, Crete',
-    Action: '',
-  },
-  {
-    Id: '7',
-    StudentId: 'PRE1252',
-    Name: 'Joe Kelley',
-    Img: img6,
-    Class: '11 C',
-    Attendance: 49,
-    MobileNumber: '402 221 7523',
-    Address: '3979  Ashwood Drive, Omaha',
-    Action: '',
-  },
-  {
-    Id: '8',
-    StudentId: 'PRE1434',
-    Name: 'Vincent',
-    Img: img7,
-    Class: '10 A',
-    Attendance: 74,
-    MobileNumber: '402 221 7523',
-    Address: '3979  Ashwood Drive, Omaha',
-    Action: '',
-  },
-  {
-    Id: '9',
-    StudentId: 'PRE2345',
-    Name: 'Kozma  Tatari',
-    Img: img8,
-    Class: '9 A',
-    Attendance: 85,
-    MobileNumber: '04 2239 968',
-    Address: 'Rruga E Kavajes, Condor Center, Tirana',
-    Action: '',
-  },
-  {
-    Id: '10',
-    StudentId: 'PRE2365',
-    Name: 'John Chambers',
-    Img: img9,
-    Class: '11 B',
-    Attendance: 69,
-    MobileNumber: '870 663 2334',
-    Address: '4667 Sunset Drive, Pine Bluff',
-    Action: '',
-  },
-  {
-    Id: '11',
-    StudentId: 'PRE1234',
-    Name: 'Nathan Humphries',
-    Img: img10,
-    Class: '10 B',
-    Attendance: 100,
-    MobileNumber: '077 3499 9959',
-    Address: '86 Lamphey Road, Thelnetham',
-    Action: '',
-  },
-];
+import { MenuItem, Stack } from '@mui/material';
+import { useGetGroupsListQuery } from '../../../redux/slices/apiSlices/groupApiSlice';
+import { useGetStudentsListQuery } from '../../../redux/slices/apiSlices/studentApiSlice';
+import { useLazyGetAttendanceReportQuery } from '../../../redux/slices/apiSlices/reportApiSlice';
+import PageHeader from '../../PageHeader';
 
 export const column = [
   {
@@ -161,6 +43,7 @@ export const column = [
     title: 'Name',
     dataIndex: 'Name',
     sorter: (a, b) => a.Name.length - b.Name.length,
+
     render: (text, record) => (
       <>
         <h2 className="table-avatar">
@@ -179,7 +62,7 @@ export const column = [
     ),
   },
   {
-    title: 'Class',
+    title: 'Group',
     dataIndex: 'Class',
     sorter: (a, b) => a.Class.length - b.Class.length,
   },
@@ -187,36 +70,6 @@ export const column = [
     title: 'Attendance',
     dataIndex: 'Attendance',
     sorter: (a, b) => a.Attendance.length - b.Attendance.length,
-  },
-  {
-    title: 'Mobile Number',
-    dataIndex: 'MobileNumber',
-    sorter: (a, b) => a.MobileNumber.length - b.MobileNumber.length,
-  },
-  {
-    title: 'Address',
-    dataIndex: 'Address',
-    sorter: (a, b) => a.Address.length - b.Address.length,
-  },
-  {
-    title: 'Action',
-    dataIndex: 'Action',
-    render: (text, record) => (
-      <>
-        <div className="actions">
-          <Link to="#" className="btn btn-sm bg-success-light me-2">
-            <i className="feather-eye">
-              <FeatherIcon icon="eye" />
-            </i>
-          </Link>
-          <Link to="/editstudent" className="btn btn-sm bg-danger-light">
-            <i className="feather-edit">
-              <FeatherIcon icon="edit" className="list-edit" />
-            </i>
-          </Link>
-        </div>
-      </>
-    ),
   },
 ];
 
@@ -239,30 +92,41 @@ const warningLettersIssued = [
   { label: 'Third Warning Letter', value: 2 },
 ];
 
-const groups = [
-  { label: 'Group A', value: 'A' },
-  { label: 'Group B', value: 'B' },
-  { label: 'Group C', value: 'C' },
-  { label: 'Group D', value: 'D' },
-];
-
 const AttendanceReports = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
+  const { data: groupsList, isLoading: loadingGroups } =
+    useGetGroupsListQuery();
+
+  const [getAttendanceReports, { data, isLoading, error }] =
+    useLazyGetAttendanceReportQuery();
+
+  const [datasource, setDatasource] = useState([]);
+  // const {openNotification}  = useNotification()
+
+  const {
+    data: studentsList,
+    error: studentsError,
+    isLoading: loadingStudents,
+  } = useGetStudentsListQuery();
+
   const filterSchema = Yup.object().shape({
-    timeline: Yup.string(),
     attendanceStatus: Yup.array().of(Yup.string()),
-    warningLettersIssued: Yup.array().of(Yup.string()),
-    courses: Yup.array().of(Yup.string()),
+    // warningLettersIssued: Yup.array().of(Yup.string()),
+    startDate: Yup.date(),
+    endDate: Yup.date(),
     groups: Yup.array().of(Yup.string()),
+    student: Yup.string().nullable(),
   });
 
   const defaultValues = {
-    timeline: '',
     attendanceStatus: [],
-    warningLettersIssued: [],
+    // warningLettersIssued: [],
     courses: [],
     groups: [],
+    startDate: new Date(),
+    endDate: new Date(),
+    student: '',
   };
 
   const methods = useForm({
@@ -272,8 +136,34 @@ const AttendanceReports = () => {
 
   const { handleSubmit, getValues } = methods;
 
-  const getReports = (data) => {
-    console.log(data);
+  const convertArrayToObj = (array, key) => {
+    const newObj = {};
+    array.forEach((item, index) => {
+      newObj[`${key}[${index}]`] = item;
+    });
+    return newObj;
+  };
+
+  const getReports = async (data) => {
+    const { attendanceStatus, groups, ...query } = data;
+    const attendanceStatusObj = convertArrayToObj(
+      attendanceStatus,
+      'attendanceStatus'
+    );
+    const groupsObj = convertArrayToObj(groups, 'groups');
+
+    await getAttendanceReports({
+      ...query,
+      ...attendanceStatusObj,
+      ...groupsObj,
+    })
+      .unwrap()
+      .then((res) => {
+        console.log('res', res);
+      })
+      .catch((err) => {
+        // openNotification('error', err?.data?.message || err?.error);
+      });
   };
 
   const onSelectChange = (newSelectedRowKeys) => {
@@ -294,12 +184,6 @@ const AttendanceReports = () => {
             <div className="col-sm-12">
               <div className="page-sub-header">
                 <h3 className="page-title">Attendance Reports</h3>
-                {/* <ul class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <Link to="/dashboard">Attendance</Link>
-                  </li>
-                  <li class="breadcrumb-item active">Attendance</li>
-                </ul> */}
               </div>
             </div>
           </div>
@@ -316,27 +200,30 @@ const AttendanceReports = () => {
                 methods={methods}
                 onSubmit={handleSubmit(getReports)}>
                 <div className="row">
-                  <div className="col-xs-12 col-sm-6 mt-2 ">
-                    <p className="">Attendance Status</p>
-                    <RHFSelect
+                  <div className="col-xs-12 col-sm-6 col-md-4 mt-2 ">
+                    <RHFAutocomplete
+                      label="Attendance Status"
                       name="attendanceStatus"
                       multiple
                       sx={{ width: '100%' }}
                       size="small"
                       options={attendanceStatusOptions}
                     />
-                    {/* {attendanceStatusOptions?.map((item, index) => (
-                        <MenuItem key={index} value={item?.value}>
-                          {item?.label}
-                        </MenuItem>
-                      ))}
-                    </RHFSelect> */}
                   </div>
-                  <div className="col-xs-12 col-sm-6 mt-2 ">
-                    <p className="">Timeline</p>
-                    <RHFRadioGroup name="timeline" options={timelineOptions} />
+                  <div className="col-xs-12 col-sm-6 col-md-4 mt-2 ">
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <RHFDatePicker label="Start date" name="startDate" />
+                      <RHFDatePicker label="End date" name="endDate" />
+                    </Stack>
                   </div>
-                  <div className="col-xs-12 col-sm-6 mt-2">
+                  <div className="col-xs-12 col-sm-6 col-md-4 mt-2">
+                    <RHFAutocomplete
+                      name="student"
+                      label="Student"
+                      options={studentsList}
+                    />
+                  </div>
+                  {/* <div className="col-xs-12 col-sm-6 mt-2">
                     <p>Warning letters issued</p>
                     <RHFSelect
                       name="warningLettersIssued"
@@ -345,28 +232,16 @@ const AttendanceReports = () => {
                       size="small"
                       options={warningLettersIssued}
                     />
-                    {/* {warningLettersIssued?.map((item, index) => (
-                        <MenuItem key={index} value={item.value}>
-                          {item.label}
-                        </MenuItem>
-                      ))}
-                    </RHFSelect> */}
-                  </div>
+                  </div> */}
                   <div className="col-xs-12 col-sm-6 mt-2 ">
-                    <p>Group</p>
-                    <RHFSelect
+                    <RHFAutocomplete
+                      label="Groups"
                       name="groups"
                       multiple
                       sx={{ width: '100%' }}
                       size="small"
-                      options={groups}
+                      options={groupsList}
                     />
-                    {/* {groups?.map((item, index) => (
-                        <MenuItem key={index} value={item.value}>
-                          {item.label}
-                        </MenuItem>
-                      ))}
-                    </RHFSelect> */}
                   </div>
                 </div>
                 <div className="row mt-2">
@@ -374,7 +249,7 @@ const AttendanceReports = () => {
                     <button
                       type="submit"
                       className="btn btn-primary btn-sm py-2 px-4 text-center">
-                      Search
+                      Generate Report
                     </button>
                   </div>
                 </div>
