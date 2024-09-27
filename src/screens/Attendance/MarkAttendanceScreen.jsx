@@ -16,7 +16,7 @@ import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApi
 import { Alert, Button, Table } from 'antd';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { IoMdCheckmark } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
@@ -62,6 +62,7 @@ const timeSlotOptions = [
 export const SKELETON = ['', '', '', '', ''];
 
 const MarkAttendanceScreen = () => {
+  const navigate = useNavigate();
   const { state } = useLocation();
 
   // const { group, groupId, startTime, endTime, subject, teacher, subjectId } =
@@ -71,8 +72,8 @@ const MarkAttendanceScreen = () => {
 
   const { data: groupsList, isLoading: loadingGroups } =
     useGetGroupsListQuery();
-  // const { data: subjectsList, isLoading: loadingSubjects } =
-  //   useGetSubjectsListQuery();
+  const { data: subjectsList, isLoading: loadingSubjects } =
+    useGetSubjectsListQuery();
 
   const [getAttendance, { loading: loadingGetAttendance }] =
     useLazyGetAttendanceQuery();
@@ -88,8 +89,6 @@ const MarkAttendanceScreen = () => {
     page: 1,
     recordsPerPage: 10,
   });
-
-  const [isAttendanceMarked, setIsAttendanceMarked] = useState(false);
 
   const [dataSource, setDataSource] = useState({
     students: [],
@@ -132,9 +131,8 @@ const MarkAttendanceScreen = () => {
             return (
               <Button
                 disabled={
-                  isAttendanceMarked ||
-                  (userInfo.role === 'teacher' &&
-                    new Date() >= new Date(state?.startTime))
+                  userInfo.role === 'teacher' &&
+                  new Date() >= new Date(state?.startTime)
                 }
                 key={index}
                 type="primary"
@@ -226,18 +224,13 @@ const MarkAttendanceScreen = () => {
   };
 
   const attendanceSchema = Yup.object().shape({
-    date: Yup.string().required(),
-    timeSlot: Yup.string(),
-    // .required('Time slot is required'),
-    subject: Yup.string(),
-    // .required('Subject is required'),
-    group: Yup.string(),
-    // .required('Group is required'),
+    date: Yup.string().required('Date is required'),
+    subject: Yup.string().required('Subject is required'),
+    group: Yup.string().required('Group is required'),
   });
 
   const defaultValues = {
-    date: dayjs(),
-    timeSlot: '',
+    date: '',
     subject: '',
     group: '',
   };
@@ -294,6 +287,7 @@ const MarkAttendanceScreen = () => {
       .then((res) => {
         openNotification('success', res?.data);
         dispatch(resetAttendanceRecord());
+        navigate(-1);
       })
       .catch((err) => {
         openNotification('error', err?.data?.message || err.error);
@@ -309,9 +303,25 @@ const MarkAttendanceScreen = () => {
     await getAttendance({ ...data })
       .unwrap()
       .then((res) => {
-        // setAttendanceRecords(res?.attendanceRecords);
-        // dispatch(resetAttendanceRecord());
-        setIsAttendanceMarked(true);
+        res?.records.forEach((record) => {
+          dispatch(
+            markAttendance({
+              studentId: record?.studentId?._id,
+              status: record?.status,
+            })
+          );
+        });
+
+        const attendanceRecords = res?.records.map((record) => ({
+          studentId: record?.studentId?.studentId,
+          name:
+            record?.studentId?.firstName + ' ' + record?.studentId?.lastName,
+          id: record?.studentId?._id,
+        }));
+        setDataSource({
+          students: attendanceRecords,
+          totalRecords: attendanceRecords.length,
+        });
       })
       .catch((err) => {
         if (err?.data?.status === 400) {
@@ -320,10 +330,46 @@ const MarkAttendanceScreen = () => {
       });
   }
 
+  async function fetchAttendanceRecordsByDate(data) {
+    await getAttendance({
+      ...data,
+      date: new Date(data?.date),
+    })
+      .unwrap()
+      .then((res) => {
+        res?.records.forEach((record) => {
+          dispatch(
+            markAttendance({
+              studentId: record?.studentId?._id,
+              status: record?.status,
+            })
+          );
+        });
+
+        const attendanceRecords = res?.records.map((record) => ({
+          studentId: record?.studentId?.studentId,
+          name:
+            record?.studentId?.firstName + ' ' + record?.studentId?.lastName,
+          id: record?.studentId?._id,
+        }));
+        setDataSource({
+          students: attendanceRecords,
+          totalRecords: attendanceRecords.length,
+        });
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message || err?.error);
+      });
+  }
+
   useEffect(() => {
     if (state) {
       fetchAttendanceRecords();
     }
+
+    return () => {
+      dispatch(resetAttendanceRecord());
+    };
   }, []);
 
   return (
@@ -335,11 +381,11 @@ const MarkAttendanceScreen = () => {
         parentSection="Attendance"
       />
 
-      {userInfo === 'admin' && (
+      {userInfo.role === 'admin' && (
         <div className="student-group-form">
           <FormProvider
             methods={methods}
-            onSubmit={handleSubmit(fetchStudents)}>
+            onSubmit={handleSubmit(fetchAttendanceRecordsByDate)}>
             <Stack
               direction="row"
               alignItems="end"
@@ -351,6 +397,7 @@ const MarkAttendanceScreen = () => {
                   name="date"
                   label="Date"
                   disabled={userInfo.role === 'teacher'}
+                  sx={{ width: '100%' }}
                 />
               </Box>
               <Box sx={{ width: '100%' }}>
@@ -358,6 +405,14 @@ const MarkAttendanceScreen = () => {
                   name={'group'}
                   label={'Group'}
                   options={groupsList}
+                  sx={{ width: '100%' }}
+                />
+              </Box>
+              <Box sx={{ width: '100%' }}>
+                <RHFAutocomplete
+                  name={'subject'}
+                  label={'Subject'}
+                  options={subjectsList}
                   sx={{ width: '100%' }}
                 />
               </Box>
@@ -385,8 +440,7 @@ const MarkAttendanceScreen = () => {
                   <Grid
                     item
                     xs={12}
-                    sm={6}
-                    md={4}
+                    sm={4}
                     sx={{ borderRight: '1px solid #aeb1bd', pr: 1 }}>
                     <Stack
                       direction="column"
@@ -402,8 +456,7 @@ const MarkAttendanceScreen = () => {
                   <Grid
                     item
                     xs={12}
-                    sm={6}
-                    md={4}
+                    sm={4}
                     sx={{ borderRight: '1px solid #aeb1bd', pr: 1 }}>
                     <Stack
                       direction="column"
@@ -418,7 +471,7 @@ const MarkAttendanceScreen = () => {
                       </p>
                     </Stack>
                   </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
+                  <Grid item xs={12} sm={4}>
                     <Stack
                       direction="row"
                       spacing={1}
@@ -427,9 +480,8 @@ const MarkAttendanceScreen = () => {
                       <Button
                         onClick={handleMarkAttendance}
                         disabled={
-                          isAttendanceMarked ||
-                          (userInfo.role === 'teacher' &&
-                            new Date() > new Date(state?.startTime))
+                          userInfo.role === 'teacher' &&
+                          new Date() > new Date(state?.startTime)
                         }
                         type="primary"
                         size="large"
