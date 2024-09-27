@@ -30,7 +30,7 @@ const navConfig = [
     title: 'Attendance',
     path: PATH_DASHBOARD.markattendance,
     icon: <MdListAlt />,
-    role: ['teacher', 'admin'],
+    role: ['admin'],
     // children: [
     //   {
     //     title: 'Mark Attendance',
@@ -49,7 +49,7 @@ const navConfig = [
     title: 'Students',
     path: PATH_DASHBOARD.students,
     icon: <PiStudent />,
-    role: ['teacher', 'admin'],
+    role: ['admin'],
   },
   // Teachers
   {
@@ -63,7 +63,7 @@ const navConfig = [
     title: 'Courses',
     path: PATH_DASHBOARD.courses,
     icon: <PiBuildingOfficeLight />,
-    role: ['teacher', 'admin'],
+    role: ['admin'],
   },
   {
     title: 'Groups',
@@ -76,7 +76,7 @@ const navConfig = [
     title: 'Subjects',
     path: PATH_DASHBOARD.subjects,
     icon: <PiBooksLight />,
-    role: ['teacher', 'admin'],
+    role: ['admin'],
   },
   // Reports
   {
