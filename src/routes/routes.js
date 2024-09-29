@@ -39,6 +39,7 @@ import GroupsList from '../screens/Groups/GroupsList';
 import AddGroup from '../screens/Groups/AddGroup';
 import EditGroup from '../screens/Groups/EditGroups';
 import Calendar from '../screens/Calendar';
+import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -148,7 +149,7 @@ const router = createHashRouter(
           {/* Reports */}
           <Route
             path={PATH_DASHBOARD.attendanceReports}
-            element={<AttendanceReports />}
+            element={<AttendanceReportsV2 />}
           />
 
           {/* <Route

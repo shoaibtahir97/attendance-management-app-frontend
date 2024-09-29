@@ -87,7 +87,7 @@ const Calendar = () => {
     if (
       event.title.startsWith('Group') &&
       userInfo.role === 'teacher' &&
-      new Date(event._instance.range.start) >= new Date()
+      new Date(event._instance.range.start) == new Date()
     ) {
       navigate(PATH_DASHBOARD.markattendance, {
         state: {

@@ -30,7 +30,7 @@ const navConfig = [
     title: 'Attendance',
     path: PATH_DASHBOARD.markattendance,
     icon: <MdListAlt />,
-    role: ['teacher', 'admin'],
+    role: ['admin'],
     // children: [
     //   {
     //     title: 'Mark Attendance',
@@ -49,7 +49,7 @@ const navConfig = [
     title: 'Students',
     path: PATH_DASHBOARD.students,
     icon: <PiStudent />,
-    role: ['teacher', 'admin'],
+    role: ['admin'],
   },
   // Teachers
   {
@@ -63,7 +63,7 @@ const navConfig = [
     title: 'Courses',
     path: PATH_DASHBOARD.courses,
     icon: <PiBuildingOfficeLight />,
-    role: ['teacher', 'admin'],
+    role: ['admin'],
   },
   {
     title: 'Groups',
@@ -76,32 +76,9 @@ const navConfig = [
     title: 'Subjects',
     path: PATH_DASHBOARD.subjects,
     icon: <PiBooksLight />,
-    role: ['teacher', 'admin'],
-  },
-  // Reports
-  {
-    title: 'Reports',
-    path: '#',
-    icon: <TbPresentationAnalytics />,
     role: ['admin'],
-    children: [
-      {
-        title: 'Attendance Reports',
-        path: PATH_DASHBOARD.attendanceReports,
-        role: ['admin'],
-      },
-      // {
-      //   title: 'Teacher Reports',
-      //   path: '/dashboard/reports/teachers',
-      //   role: ['admin'],
-      // },
-      // {
-      //   title: 'Group Reports',
-      //   path: '/dashboard/reports/groups',
-      //   role: ['admin'],
-      // },
-    ],
   },
+
   // Calendar
   {
     title: 'Calendar',
@@ -114,6 +91,30 @@ const navConfig = [
     icon: <IoMailOpenOutline />,
     path: PATH_DASHBOARD.mail,
     role: ['admin'],
+  },
+  // Reports
+  {
+    title: 'Reports',
+    path: '#',
+    icon: <TbPresentationAnalytics />,
+    role: ['teacher', 'admin'],
+    children: [
+      {
+        title: 'Attendance Reports',
+        path: PATH_DASHBOARD.attendanceReports,
+        role: ['teacher', 'admin'],
+      },
+      // {
+      //   title: 'Teacher Reports',
+      //   path: '/dashboard/reports/teachers',
+      //   role: ['admin'],
+      // },
+      // {
+      //   title: 'Group Reports',
+      //   path: '/dashboard/reports/groups',
+      //   role: ['admin'],
+      // },
+    ],
   },
 ];
 
