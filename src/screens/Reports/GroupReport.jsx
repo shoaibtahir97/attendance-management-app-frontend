@@ -91,8 +91,8 @@ const GroupReport = () => {
     const data = getValues();
     await downloadGroupAttendanceReport({
       ...data,
-      startDate: new Date(data?.startDate),
-      endDate: new Date(data?.endDate),
+      startDate: new Date(data?.startDate).toISOString(),
+      endDate: new Date(data?.endDate).toISOString(),
     })
       .unwrap()
       .then((res) => {
@@ -132,7 +132,7 @@ const GroupReport = () => {
           <div className="col-xs-12 col-sm-6 col-md-3 mt-2 ">
             <RHFAutocomplete
               label="Subject"
-              name="subject"
+              name="subjects"
               multiple
               sx={{ width: '100%' }}
               size="small"

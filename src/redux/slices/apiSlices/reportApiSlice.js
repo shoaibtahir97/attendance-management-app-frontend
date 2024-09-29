@@ -12,11 +12,18 @@ const reportApiSlice = apiSlice.injectEndpoints({
       transformResponse: (res) => res?.data,
     }),
     getGroupAttendanceReport: builder.query({
-      query: (params) => ({
-        url: `${REPORTS_URL}/attendance/group`,
-        params,
-        credentials: 'include',
-      }),
+      query: (params) => {
+        const subjects_ = {};
+        params.subjects.forEach((subject, index) => {
+          subjects_[`subject[${index}]`] = subject;
+        });
+
+        return {
+          url: `${REPORTS_URL}/attendance/group`,
+          params: { ...params, ...subjects_ },
+          credentials: 'include',
+        };
+      },
       transformResponse: (res) => res?.data,
     }),
     downloadGroupAttendanceReport: builder.query({
