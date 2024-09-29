@@ -78,30 +78,7 @@ const navConfig = [
     icon: <PiBooksLight />,
     role: ['admin'],
   },
-  // Reports
-  {
-    title: 'Reports',
-    path: '#',
-    icon: <TbPresentationAnalytics />,
-    role: ['admin'],
-    children: [
-      {
-        title: 'Attendance Reports',
-        path: PATH_DASHBOARD.attendanceReports,
-        role: ['admin'],
-      },
-      // {
-      //   title: 'Teacher Reports',
-      //   path: '/dashboard/reports/teachers',
-      //   role: ['admin'],
-      // },
-      // {
-      //   title: 'Group Reports',
-      //   path: '/dashboard/reports/groups',
-      //   role: ['admin'],
-      // },
-    ],
-  },
+
   // Calendar
   {
     title: 'Calendar',
@@ -114,6 +91,30 @@ const navConfig = [
     icon: <IoMailOpenOutline />,
     path: PATH_DASHBOARD.mail,
     role: ['admin'],
+  },
+  // Reports
+  {
+    title: 'Reports',
+    path: '#',
+    icon: <TbPresentationAnalytics />,
+    role: ['teacher', 'admin'],
+    children: [
+      {
+        title: 'Attendance Reports',
+        path: PATH_DASHBOARD.attendanceReports,
+        role: ['teacher', 'admin'],
+      },
+      // {
+      //   title: 'Teacher Reports',
+      //   path: '/dashboard/reports/teachers',
+      //   role: ['admin'],
+      // },
+      // {
+      //   title: 'Group Reports',
+      //   path: '/dashboard/reports/groups',
+      //   role: ['admin'],
+      // },
+    ],
   },
 ];
 
