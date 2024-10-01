@@ -69,6 +69,7 @@ const MarkAttendanceScreen = () => {
   //   state;
   const { openNotification } = useNotification();
   const dispatch = useDispatch();
+  const [isAttendanceMarked, setIsAttendanceMarked] = useState(false);
 
   const { data: groupsList, isLoading: loadingGroups } =
     useGetGroupsListQuery();
@@ -84,11 +85,6 @@ const MarkAttendanceScreen = () => {
     useMarkAttendanceMutation();
 
   const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
-
-  const [studentsQuery, setStudentsQuery] = useState({
-    page: 1,
-    recordsPerPage: 10,
-  });
 
   const [dataSource, setDataSource] = useState({
     students: [],
@@ -282,6 +278,11 @@ const MarkAttendanceScreen = () => {
       attendanceRecords,
     };
 
+    if (attendanceRecords.length !== dataSource.totalRecords) {
+      openNotification('error', 'Please mark all students attendance');
+      return;
+    }
+
     await markStudentAttendance(payload)
       .unwrap()
       .then((res) => {
@@ -322,6 +323,7 @@ const MarkAttendanceScreen = () => {
           students: attendanceRecords,
           totalRecords: attendanceRecords.length,
         });
+        setIsAttendanceMarked(true);
       })
       .catch((err) => {
         if (err?.data?.status === 400) {
@@ -515,11 +517,7 @@ const MarkAttendanceScreen = () => {
                       onShowSizeChange: onShowSizeChange,
                       itemRender: itemRender,
                       onChange: (page, pageSize) => {
-                        // setStudentsQuery({
-                        //   ...studentsQuery,
-                        //   page,
-                        //   recordsPerPage: pageSize,
-                        // });
+                        if (isAttendanceMarked) return;
                         fetchStudents({
                           page,
                           recordsPerPage: pageSize,
