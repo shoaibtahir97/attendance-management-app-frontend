@@ -28,7 +28,6 @@ export default function RHFSelect({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
-        console.log('field', field);
         return (
           <>
             <Stack
