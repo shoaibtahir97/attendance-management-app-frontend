@@ -70,21 +70,11 @@ export default function UploadMultiFile({
     p: 4,
     margin: 'auto',
   };
+
   const fileMessage = `a_maximum_of_10_files_are_allowed_in_a_single_upload`;
 
   return (
-    <Box sx={{ ...sx, ...myStyle }}>
-      {/* <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: -2, mr: -2 }}>
-        <IconButton sx={{ height: 30, width: 30 }} onClick={handleCloseModal}>
-          <CloseModalButton />
-        </IconButton>
-      </Box> */}
-      <Typography
-        id="modal-modal-title"
-        variant="h5"
-        sx={{ fontWeight: 'bold' }}>
-        Upload by device
-      </Typography>
+    <Box sx={{ ...sx, width: '100%' }}>
       <DropZoneStyle
         {...getRootProps()}
         sx={{
@@ -99,7 +89,7 @@ export default function UploadMultiFile({
         }}>
         <input {...getInputProps()} />
 
-        <BlockContent fileName={undefined} fileMessage={fileMessage} />
+        <BlockContent fileName={null} />
       </DropZoneStyle>
 
       {fileRejections.length > 0 && (
@@ -118,7 +108,7 @@ export default function UploadMultiFile({
           <Typography variant="subtitle1" sx={{ ml: 2 }}>
             Selected files: {files?.length}
           </Typography>
-          <Stack
+          {/* <Stack
             direction="row"
             justifyContent="center"
             sx={{ marginTop: '10px' }}
@@ -145,7 +135,7 @@ export default function UploadMultiFile({
                 Upload
               </LoadingButton>
             </Box>
-          </Stack>
+          </Stack> */}
         </>
       )}
 

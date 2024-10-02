@@ -18,9 +18,10 @@ import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApi
 
 export const genders = [
   { value: '', label: 'Select Gender' },
-  { value: 'female', label: 'Female' },
-  { value: 'male', label: 'Male' },
-  { value: 'others', label: 'Others' },
+  { value: 'mane', label: 'Man' },
+  { value: 'woman', label: 'Woman' },
+  { value: 'I prefer another term', label: 'Others' },
+  { value: 'I prefer not to say', label: 'Prefer not to say' },
 ];
 const AddTeacher = () => {
   const { openNotification } = useNotification();
