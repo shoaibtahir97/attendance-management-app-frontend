@@ -49,8 +49,9 @@ const AddCourse = () => {
   const { data: subjectsList, isLoading: loadingSubjects } =
     useGetSubjectsListQuery();
 
-  const { data: groupsList, isLoading: loadingGroups } =
-    useGetGroupsListQuery();
+  const { data: groupsList, isLoading: loadingGroups } = useGetGroupsListQuery({
+    course: null,
+  });
 
   const { data: teachersList, isLoading: loadingTeachers } =
     useGetUsersListQuery({ role: 'teacher' });
