@@ -37,6 +37,7 @@
     "dayjs": "^1.11.11",
     "depcheck": "^1.4.7",
     "feather-icons-react": "^0.6.2",
+    "framer-motion": "^11.9.0",
     "install": "^0.13.0",
     "jquery": "^3.6.0",
     "mini-css-extract-plugin": "^2.4.5",

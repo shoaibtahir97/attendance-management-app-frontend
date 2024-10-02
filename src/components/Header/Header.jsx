@@ -21,7 +21,6 @@ import { unsetSubjects } from '../../redux/slices/subjectSlice';
 const Header = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const { openNotification } = useNotification();
 
   const [logOutUser, { isLoading }] = useLogoutUserMutation();
   const navigate = useNavigate();
@@ -47,7 +46,6 @@ const Header = () => {
 
       .catch((err) => {
         console.log('Error', err?.data?.message);
-        openNotification('error', err?.data?.message || err?.error);
       });
   };
 

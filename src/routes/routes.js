@@ -40,6 +40,7 @@ import AddGroup from '../screens/Groups/AddGroup';
 import EditGroup from '../screens/Groups/EditGroups';
 import Calendar from '../screens/Calendar';
 import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
+import AdmissionForm from '../screens/AdmissionForm';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -52,6 +53,9 @@ const router = createHashRouter(
           path={PATH_AUTH.forgotPassword}
           element={<ForgotPassword />}
         />
+
+        {/* Admission Form */}
+        <Route path={PATH_AUTH.admissionForm} element={<AdmissionForm />} />
       </Route>
       <Route path="" element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardLayout />}>

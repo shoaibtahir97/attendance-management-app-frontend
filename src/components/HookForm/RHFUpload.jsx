@@ -6,7 +6,7 @@ import { FormHelperText } from '@mui/material';
 // type
 import {
   // UploadAvatar,
-  // UploadMultiFile,
+  UploadMultiFile,
   UploadSingleFile,
   // UploadProps,
   // UploadMultiFileProps,
