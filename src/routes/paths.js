@@ -6,6 +6,7 @@ const PATH_AUTH = {
   login: '/',
   register: '/register',
   forgotPassword: '/forgotpassword',
+  admissionForm: '/admissionform',
 };
 
 const PATH_DASHBOARD = {
