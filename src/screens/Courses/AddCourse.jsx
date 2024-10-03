@@ -80,8 +80,7 @@ const AddCourse = () => {
             .min(1, 'Minimum one group is required'),
         })
       )
-      .min(1)
-      .max(4),
+      .min(1),
   });
 
   const methods = useForm({
