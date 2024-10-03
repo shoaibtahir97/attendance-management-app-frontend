@@ -259,13 +259,13 @@ const Students = () => {
                       <h3 className="page-title">Students</h3>
                     </div>
                     <div className="col-auto text-end float-end ms-auto download-grp">
-                      {dataSource.students.length ? (
+                      {/* {dataSource.students.length ? (
                         <Link to="#" className="btn btn-outline-primary me-2">
                           <i className="fas fa-download" /> Download
                         </Link>
                       ) : (
                         <></>
-                      )}
+                      )} */}
                       <Tooltip title="Register Student">
                         <Link
                           onClick={openAddStudentPopover}
