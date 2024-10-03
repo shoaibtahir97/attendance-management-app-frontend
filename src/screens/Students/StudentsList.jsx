@@ -164,7 +164,7 @@ const Students = () => {
   const studentQuerySchema = Yup.object().shape({
     studentId: Yup.string().trim(),
     name: Yup.string().trim(),
-    group: Yup.string().trim(),
+    group: Yup.string().trim().nullable(),
   });
 
   const methods = useForm({
@@ -190,7 +190,7 @@ const Students = () => {
   };
 
   const fetchStudentsByQuery = (data) => {
-    fetchStudents({ ...data, ...studentsQuery });
+    fetchStudents({ ...data });
   };
 
   useEffect(() => {
