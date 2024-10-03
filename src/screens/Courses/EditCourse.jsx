@@ -48,11 +48,12 @@ const EditCourse = () => {
   const courseSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     code: Yup.string().required('Code is required'),
+    cohort: Yup.date().required('Cohort date is required'),
     modules: Yup.array()
       .of(
         Yup.object().shape({
           year: Yup.number().required('Year is required'),
-          cohortStartDate: Yup.date().required('Cohort start date is required'),
+          // cohortStartDate: Yup.date().required('Cohort start date is required'),
           subjects: Yup.array()
             .of(Yup.string())
             .min(1, 'Minimum one subject is required')
@@ -63,8 +64,7 @@ const EditCourse = () => {
             .min(1, 'Minimum one group is required'),
         })
       )
-      .min(1)
-      .max(4),
+      .min(1),
   });
 
   const methods = useForm({
@@ -149,11 +149,18 @@ const EditCourse = () => {
                         />
                       )}
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={4}>
                       <RHFTextField name="name" label="Course Name" />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={4}>
                       <RHFTextField name="code" label="Course code" />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <RHFDatePicker
+                        name="cohort"
+                        label="Cohort date"
+                        sx={{ width: '100%' }}
+                      />
                     </Grid>
                     <Grid
                       item
@@ -171,7 +178,7 @@ const EditCourse = () => {
                           onClick={() =>
                             ModulesAppend({
                               year: null,
-                              cohortStartDate: null,
+                              // cohortStartDate: null,
                               groups: [],
                               moduleLead: '',
                               subjects: [],
@@ -197,13 +204,13 @@ const EditCourse = () => {
                             options={moduleYears}
                           />
                         </Grid>
-                        <Grid item xs={12} sm={2}>
+                        {/* <Grid item xs={12} sm={2}>
                           <RHFDatePicker
                             name={`modules[${index}].cohortStartDate`}
                             label="Cohort Start Date"
                             sx={{ width: '100%' }}
                           />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12} sm={2}>
                           <RHFAutocomplete
                             name={`modules[${index}].moduleLead`}
