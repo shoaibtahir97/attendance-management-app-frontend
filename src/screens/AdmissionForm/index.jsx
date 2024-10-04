@@ -32,6 +32,7 @@ import { MdOutlineDelete } from 'react-icons/md';
 import { UploadMultiFile } from '../../components/upload';
 import { moduleYears } from '../Courses/AddCourse';
 import useNotification from '../../hooks/useNotification';
+import { usePostAdmissionFormMutation } from '../../redux/slices/apiSlices/admissionsApiSlice';
 
 export const ethnicities = [
   'White Gypsy',
@@ -110,6 +111,7 @@ const defaultValues = {
 };
 const AdmissionForm = () => {
   const { openNotification } = useNotification();
+  const [postAdmissionForm] = usePostAdmissionFormMutation();
 
   const admissionFormSchema = Yup.object().shape({
     course: Yup.string().required('Course Is required'),
@@ -208,10 +210,24 @@ const AdmissionForm = () => {
   });
 
   const submitApplication = async (data) => {
-    console.log(data);
-    setTimeout(() => {
-      openNotification('success', 'Application Submitted Successfully');
-    }, 3000);
+    const formData = new FormData();
+
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+
+    for (const file of files) {
+      formData.append('documents', file);
+    }
+
+    await postAdmissionForm(formData)
+      .unwrap()
+      .then((res) => {
+        openNotification('success', res?.message);
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message || err?.error);
+      });
   };
 
   return (
