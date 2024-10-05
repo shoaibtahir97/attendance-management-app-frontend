@@ -9,6 +9,7 @@ const admissionsApiSlice = apiSlice.injectEndpoints({
         body: payload,
         method: 'POST',
         credentials: 'include',
+        responseHandler: (response) => response.blob(),
       }),
     }),
   }),
