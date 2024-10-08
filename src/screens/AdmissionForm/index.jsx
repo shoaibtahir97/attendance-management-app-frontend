@@ -161,10 +161,10 @@ const defaultValues = {
 //       responsibilities: '',
 //     },
 //   ],
-//   referenceDetails: 'HRSG',
+//   referenceDetails: '',
 //   personalStatement: '',
-//   declaration: true,
-//   declarationDate: '04-10-2024',
+//   declaration: false,
+//   declarationDate: null,
 // };
 
 const intakes = [
@@ -179,6 +179,8 @@ const intakes = [
 const AdmissionForm = () => {
   const { openNotification } = useNotification();
   const [postAdmissionForm] = usePostAdmissionFormMutation();
+  const [isFormSuccessfullySubmit, setIsFormSuccessfullySubmit] =
+    useState(false);
 
   const admissionFormSchema = Yup.object().shape({
     course: Yup.string().required('Course Is required'),
@@ -302,21 +304,10 @@ const AdmissionForm = () => {
     await postAdmissionForm(formData)
       .unwrap()
       .then((res) => {
-        // const url = window.URL.createObjectURL(res);
-        // // Create a link element
-        // const link = document.createElement('a');
-        // link.href = url;
-        // link.setAttribute('download', `admission_form.pdf`); // Specify the file name
-        // // Append to the document and trigger the download
-        // document.body.appendChild(link);
-        // link.click();
-        // // Clean up and remove the link
-        // link.parentNode.removeChild(link);
-        // window.URL.revokeObjectURL(url);
-        // openNotification('success', res?.message);
+        setIsFormSuccessfullySubmit(true);
       })
       .catch((err) => {
-        openNotification('error', err?.data?.message || err?.error);
+        openNotification('error', err?.message || err?.error);
       });
   };
 
@@ -333,7 +324,7 @@ const AdmissionForm = () => {
 
   return (
     <div className="main-wrapper login-body mt-4">
-      {isSubmitSuccessful ? (
+      {isSubmitSuccessful && isFormSuccessfullySubmit ? (
         <Zoom
           in={isSubmitSuccessful}
           style={{ transitionDelay: isSubmitSuccessful ? '400ms' : '0ms' }}>
