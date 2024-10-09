@@ -69,42 +69,95 @@ export const feeStatuses = [
   'Not known',
 ];
 
+const defaultValues = {
+  course: '',
+  intake: '',
+  pointOfEntry: '',
+  firstName: '',
+  lastName: '',
+  gender: '',
+  DOB: null,
+  ethnicity: '',
+  email: '',
+  contactNumber: '',
+  homeAddress: '',
+  postcode: '',
+  county: '',
+  countryOfBirth: '',
+  legalNationality: '',
+  dualNationality: '',
+  countryOfResidence: '',
+  disability: '',
+  additionalSupport: '',
+  feePaymentMethod: '',
+  qualifications: [
+    {
+      institute: '',
+      qualification: '',
+      subject: '',
+      country: '',
+      dateOfCompletion: null,
+    },
+  ],
+  workExperience: [
+    {
+      from: null,
+      to: null,
+      employer: '',
+      position: '',
+      responsibilities: '',
+    },
+  ],
+  referenceDetails: '',
+  personalStatement: '',
+  declaration: false,
+  declarationDate: null,
+};
+
 // const defaultValues = {
-//   course: '',
-//   intake: '',
-//   pointOfEntry: '',
-//   firstName: '',
-//   lastName: '',
-//   gender: '',
-//   DOB: null,
-//   ethnicity: '',
-//   email: '',
-//   contactNumber: '',
-//   homeAddress: '',
-//   postcode: '',
-//   county: '',
-//   countryOfBirth: '',
-//   legalNationality: '',
-//   dualNationality: '',
-//   countryOfResidence: '',
-//   disability: '',
-//   additionalSupport: '',
-//   feePaymentMethod: '',
+//   course: 'BS Computer Science',
+//   intake: 'January 2024',
+//   pointOfEntry: 0,
+//   firstName: 'John',
+//   lastName: 'Doe',
+//   gender: 'man',
+//   DOB: '27-10-1997',
+//   ethnicity: 'Asian - Pakistani',
+//   email: 'john@doe.com',
+//   contactNumber: '70690',
+//   homeAddress: 'R-461, Block 19 FB Area, Karachi',
+//   postcode: '75950',
+//   county: 'Yorkshire',
+//   countryOfBirth: 'Pakistan',
+//   legalNationality: 'Pakistan',
+//   dualNationality: 'Pakistan',
+//   countryOfResidence: 'Pakistan',
+//   disability: 'no',
+//   additionalSupport: 'no',
+//   feePaymentMethod: 'Private finance',
+//   englishQualificationLevel: `Intermediate`,
 //   qualifications: [
 //     {
-//       institute: '',
-//       qualification: '',
-//       subject: '',
-//       country: '',
-//       dateOfCompletion: null,
+//       institute: 'Saint Patricks High School',
+//       qualification: 'Matric',
+//       subject: 'Science',
+//       country: 'Pakistan',
+//       dateOfCompletion: '01-01-2013',
+//     },
+//     {
+//       institute: 'Saint Patricks High School',
+//       qualification: 'Matric',
+//       subject: 'Science',
+//       country: 'Pakistan',
+//       dateOfCompletion: '01-01-2013',
 //     },
 //   ],
 //   workExperience: [
 //     {
-//       from: null,
-//       to: null,
-//       employer: '',
-//       position: '',
+//       from: '01-06-2021',
+//       to: '01-06-2022',
+//       employer: 'Abbott',
+//       position: 'Production Supervisor',
 //       responsibilities: '',
 //     },
 //   ],
@@ -114,71 +167,23 @@ export const feeStatuses = [
 //   declarationDate: null,
 // };
 
-const defaultValues = {
-  course: 'BS Computer Science',
-  intake: 'January 2024',
-  pointOfEntry: 0,
-  firstName: 'John',
-  lastName: 'Doe',
-  gender: 'man',
-  DOB: '27-10-1997',
-  ethnicity: 'Asian - Pakistani',
-  email: 'john@doe.com',
-  contactNumber: '70690',
-  homeAddress: 'R-461, Block 19 FB Area, Karachi',
-  postcode: '75950',
-  county: 'Yorkshire',
-  countryOfBirth: 'Pakistan',
-  legalNationality: 'Pakistan',
-  dualNationality: 'Pakistan',
-  countryOfResidence: 'Pakistan',
-  disability: 'no',
-  additionalSupport: 'no',
-  feePaymentMethod: 'Private finance',
-  englishQualificationLevel: `Intermediate`,
-  qualifications: [
-    {
-      institute: 'Saint Patricks High School',
-      qualification: 'Matric',
-      subject: 'Science',
-      country: 'Pakistan',
-      dateOfCompletion: '01-01-2013',
-    },
-    {
-      institute: 'Saint Patricks High School',
-      qualification: 'Matric',
-      subject: 'Science',
-      country: 'Pakistan',
-      dateOfCompletion: '01-01-2013',
-    },
-  ],
-  workExperience: [
-    {
-      from: '01-06-2021',
-      to: '01-06-2022',
-      employer: 'Abbott',
-      position: 'Production Supervisor',
-      responsibilities: '',
-    },
-  ],
-  referenceDetails: 'HRSG',
-  personalStatement: '',
-  declaration: true,
-  declarationDate: '04-10-2024',
-};
-
 const intakes = [
-  { label: 'January 2024', value: 'January 2024' },
-  { label: 'June 2024', value: 'June 2024' },
-  { label: 'September 2024', value: 'September 2024' },
-  { label: 'January 2025', value: 'January 2025' },
-  { label: 'June 2025', value: 'June 2025' },
-  { label: 'September 2025', value: 'September 2025' },
+  'JAN 25',
+  'JUN 25',
+  'SEP 25',
+  'JAN 26',
+  'JUN 26',
+  'SEP 26',
+  'JAN 27',
+  ' JUN 27',
+  ' SEP 27',
 ];
 
 const AdmissionForm = () => {
   const { openNotification } = useNotification();
   const [postAdmissionForm] = usePostAdmissionFormMutation();
+  const [isFormSuccessfullySubmit, setIsFormSuccessfullySubmit] =
+    useState(false);
 
   const admissionFormSchema = Yup.object().shape({
     course: Yup.string().required('Course Is required'),
@@ -302,21 +307,10 @@ const AdmissionForm = () => {
     await postAdmissionForm(formData)
       .unwrap()
       .then((res) => {
-        // const url = window.URL.createObjectURL(res);
-        // // Create a link element
-        // const link = document.createElement('a');
-        // link.href = url;
-        // link.setAttribute('download', `admission_form.pdf`); // Specify the file name
-        // // Append to the document and trigger the download
-        // document.body.appendChild(link);
-        // link.click();
-        // // Clean up and remove the link
-        // link.parentNode.removeChild(link);
-        // window.URL.revokeObjectURL(url);
-        // openNotification('success', res?.message);
+        setIsFormSuccessfullySubmit(true);
       })
       .catch((err) => {
-        openNotification('error', err?.data?.message || err?.error);
+        openNotification('error', err?.message || err?.error);
       });
   };
 
@@ -333,7 +327,7 @@ const AdmissionForm = () => {
 
   return (
     <div className="main-wrapper login-body mt-4">
-      {isSubmitSuccessful ? (
+      {isSubmitSuccessful && isFormSuccessfullySubmit ? (
         <Zoom
           in={isSubmitSuccessful}
           style={{ transitionDelay: isSubmitSuccessful ? '400ms' : '0ms' }}>
@@ -393,7 +387,14 @@ const AdmissionForm = () => {
                   <RHFTextField name="course" label={'Course Applied for'} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                  <RHFSelect name="intake" label={'Intake'} options={intakes} />
+                  <RHFSelect
+                    name="intake"
+                    label={'Intake'}
+                    options={intakes.map((intake) => ({
+                      label: intake,
+                      value: intake,
+                    }))}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
                   <RHFSelect
