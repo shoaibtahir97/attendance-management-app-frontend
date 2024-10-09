@@ -168,12 +168,15 @@ const defaultValues = {
 // };
 
 const intakes = [
-  { label: 'January 2024', value: 'January 2024' },
-  { label: 'June 2024', value: 'June 2024' },
-  { label: 'September 2024', value: 'September 2024' },
-  { label: 'January 2025', value: 'January 2025' },
-  { label: 'June 2025', value: 'June 2025' },
-  { label: 'September 2025', value: 'September 2025' },
+  'JAN 25',
+  'JUN 25',
+  'SEP 25',
+  'JAN 26',
+  'JUN 26',
+  'SEP 26',
+  'JAN 27',
+  ' JUN 27',
+  ' SEP 27',
 ];
 
 const AdmissionForm = () => {
@@ -384,7 +387,14 @@ const AdmissionForm = () => {
                   <RHFTextField name="course" label={'Course Applied for'} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                  <RHFSelect name="intake" label={'Intake'} options={intakes} />
+                  <RHFSelect
+                    name="intake"
+                    label={'Intake'}
+                    options={intakes.map((intake) => ({
+                      label: intake,
+                      value: intake,
+                    }))}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
                   <RHFSelect

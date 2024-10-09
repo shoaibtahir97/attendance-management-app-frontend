@@ -1,8 +1,4 @@
-import { PDFDocument, StandardFonts } from 'pdf-lib';
-import {
-  admissionFormImageLeft,
-  admissionFormImageRight,
-} from '../components/imagepath';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 async function createPdfForm() {
   const pdfDoc = await PDFDocument.create();
@@ -16,38 +12,18 @@ async function createPdfForm() {
   // Set font size
   const fontSize = 14;
 
-  //   const headerLeft = await fetch(
-  //     ''
-  //   ).then((res) => res.arrayBuffer());
-  //   const headerRight = admissionFormImageRight;
+  const headerLeftBytes = await fetch(
+    `${process.env.PUBLIC_URL}/logo512.png`
+  ).then((res) => res.arrayBuffer());
 
-  //   const headerLeftBytes = headerLeft;
-  //   const headerRightBytes = headerRight;
+  const headerLeftImage = await pdfDoc.embedPng(headerLeftBytes);
 
-  //   const headerLeftImage = await pdfDoc.embedPng(headerLeftBytes);
-  // const headerRightImage = await pdfDoc.embedPng(headerRightBytes);
-
-  //   const headerLeftImageWidth = headerLeftImage.width;
-  //   const headerLeftImageHeight = headerLeftImage.height;
-  // const headerRightImageWidth = headerRightImage.width;
-  // const headerRightImageHeight = headerRightImage.height;
-
-  //   const pages = pdfDoc.getPages();
-  //   pages.forEach((page) => {
-  //     const { width, height } = page.getSize();
-  //     page.drawImage(headerLeftImage, {
-  //       x: 0,
-  //       y: height - headerLeftImageHeight,
-  //       width: headerLeftImageWidth,
-  //       height: headerLeftImageHeight,
-  //     });
-  //   page.drawImage(headerRightImage, {
-  //     x: 300,
-  //     y: height - headerRightImageHeight,
-  //     width: headerRightImageWidth,
-  //     height: headerRightImageHeight,
-  //   });
-  //   });
+  page.drawImage(headerLeftImage, {
+    x: 480,
+    y: height - 90,
+    width: 80,
+    height: 80,
+  });
 
   page.drawText('Course Application Form', {
     x: 180,
@@ -83,12 +59,15 @@ async function createPdfForm() {
   page.drawText('Intake', { x: 50, y: height - 120, size: fontSize, font });
   const intakeDropdown = form.createDropdown('intake');
   intakeDropdown.setOptions([
-    'January 2024',
-    'June 2024',
-    'September 2024',
-    'January 2025',
-    'June 2025',
-    'September 2025',
+    'JAN 25',
+    'JUN 25',
+    'SEP 25',
+    'JAN 26',
+    'JUN 26',
+    'SEP 26',
+    'JAN 27',
+    ' JUN 27',
+    ' SEP 27',
   ]);
   intakeDropdown.addToPage(page, {
     x: 180,
@@ -334,6 +313,7 @@ async function createPdfForm() {
     size: fontSize,
     font,
   });
+
   const nationalityField = form.createTextField('Country of Residence');
   nationalityField.addToPage(page, {
     x: 180,
@@ -382,9 +362,15 @@ async function createPdfForm() {
     font: fontBold,
   });
 
-  page.drawText('How you will be paying fees', {
+  page.drawText('How you will be ', {
     x: 50,
     y: height - 680,
+    size: fontSize,
+  });
+
+  page.drawText('paying fee', {
+    x: 50,
+    y: height - 700,
     size: fontSize,
   });
 
@@ -400,10 +386,16 @@ async function createPdfForm() {
     'Not known',
   ]);
   feeStatusDropdown.addToPage(page, {
-    x: 50,
+    x: 180,
     y: height - 700,
     width: 250,
     height: 18,
+  });
+
+  page.drawText('1 of 3', {
+    x: 520,
+    y: height - 870,
+    size: 14,
   });
 
   let page2 = pdfDoc.addPage([600, 900]);
@@ -439,7 +431,7 @@ async function createPdfForm() {
   });
 
   page2.drawText('Subject', {
-    x: 280,
+    x: 250,
     y: height2 - 120,
     size: fontSize,
   });
@@ -477,7 +469,7 @@ async function createPdfForm() {
 
     const subjectField = form.createTextField(`subject${index}`);
     subjectField.addToPage(page2, {
-      x: 280,
+      x: 250,
       y: height2 - 127 - (index + 1) * 20,
       width: 80,
       height: 18,
@@ -494,6 +486,7 @@ async function createPdfForm() {
     const dateOfCompletionField = form.createTextField(
       `dateOfCompletion${index}`
     );
+
     dateOfCompletionField.addToPage(page2, {
       x: 470,
       y: height2 - 127 - (index + 1) * 20,
@@ -505,7 +498,7 @@ async function createPdfForm() {
   // English Language Section
   page2.drawText('English Language', {
     x: 50,
-    y: height2 - 242,
+    y: height2 - 252,
     size: 16,
     font: fontBold,
   });
@@ -514,7 +507,7 @@ async function createPdfForm() {
     'If English is not your first language, do you have an English language qualification?',
     {
       x: 50,
-      y: height2 - 260,
+      y: height2 - 270,
       size: fontSize,
     }
   );
@@ -523,7 +516,7 @@ async function createPdfForm() {
     'If so, please provide details below (title of qualification, level, awarding body, etc.)',
     {
       x: 50,
-      y: height2 - 275,
+      y: height2 - 285,
       size: fontSize,
     }
   );
@@ -533,15 +526,18 @@ async function createPdfForm() {
   );
   englishLanguageField.addToPage(page2, {
     x: 50,
-    y: height2 - 300,
+    y: height2 - 380,
     width: 500,
-    height: 18,
+    height: 80,
   });
+
+  englishLanguageField.setFontSize(12);
+  englishLanguageField.enableMultiline();
 
   // Work Experience Section
   page2.drawText('Work Experience', {
     x: 50,
-    y: height2 - 340,
+    y: height2 - 410,
     size: 16,
     font: fontBold,
   });
@@ -550,38 +546,38 @@ async function createPdfForm() {
     'Please provide details of all work experience undertaken including outside of UK',
     {
       x: 50,
-      y: height2 - 360,
+      y: height2 - 425,
       size: fontSize,
     }
   );
 
   page2.drawText('From', {
     x: 50,
-    y: height2 - 380,
+    y: height2 - 445,
     size: fontSize,
   });
 
   page2.drawText('To', {
     x: 130,
-    y: height2 - 380,
+    y: height2 - 445,
     size: fontSize,
   });
 
   page2.drawText('Name of Employer', {
     x: 230,
-    y: height2 - 380,
+    y: height2 - 445,
     size: fontSize,
   });
 
   page2.drawText('Position', {
     x: 370,
-    y: height2 - 380,
+    y: height2 - 445,
     size: fontSize,
   });
 
   page2.drawText('Brief Description', {
     x: 470,
-    y: height2 - 380,
+    y: height2 - 445,
     size: fontSize,
   });
 
@@ -590,7 +586,7 @@ async function createPdfForm() {
     const fromField = form.createTextField(`from${index}`);
     fromField.addToPage(page2, {
       x: 50,
-      y: height2 - 400 - (index + 1) * 20,
+      y: height2 - 465 - (index + 1) * 20,
       width: 70,
       height: 18,
     });
@@ -598,7 +594,7 @@ async function createPdfForm() {
     const toField = form.createTextField(`to${index}`);
     toField.addToPage(page2, {
       x: 130,
-      y: height2 - 400 - (index + 1) * 20,
+      y: height2 - 465 - (index + 1) * 20,
       width: 70,
       height: 18,
     });
@@ -606,7 +602,7 @@ async function createPdfForm() {
     const employerField = form.createTextField(`employer${index}`);
     employerField.addToPage(page2, {
       x: 230,
-      y: height2 - 400 - (index + 1) * 20,
+      y: height2 - 465 - (index + 1) * 20,
       width: 70,
       height: 18,
     });
@@ -614,7 +610,7 @@ async function createPdfForm() {
     const positionField = form.createTextField(`position${index}`);
     positionField.addToPage(page2, {
       x: 370,
-      y: height2 - 400 - (index + 1) * 20,
+      y: height2 - 465 - (index + 1) * 20,
       width: 80,
       height: 18,
     });
@@ -624,7 +620,7 @@ async function createPdfForm() {
     );
     responsibilitiesField.addToPage(page2, {
       x: 470,
-      y: height2 - 400 - (index + 1) * 20,
+      y: height2 - 465 - (index + 1) * 20,
       width: 80,
       height: 18,
     });
@@ -633,7 +629,7 @@ async function createPdfForm() {
   // Reference Details
   page2.drawText('Reference Details', {
     x: 50,
-    y: height2 - 500,
+    y: height2 - 550,
     size: 16,
     font: fontBold,
   });
@@ -642,7 +638,7 @@ async function createPdfForm() {
     'Please provide name and contact details (company email) for most recent/last employer',
     {
       x: 50,
-      y: height2 - 520,
+      y: height2 - 565,
       size: fontSize,
     }
   );
@@ -650,15 +646,18 @@ async function createPdfForm() {
   const referenceDetailsField = form.createTextField('referenceDetails');
   referenceDetailsField.addToPage(page2, {
     x: 50,
-    y: height2 - 550,
+    y: height2 - 660,
     width: 500,
-    height: 20,
+    height: 80,
   });
+
+  referenceDetailsField.setFontSize(12);
+  referenceDetailsField.enableMultiline();
 
   // Personal Statement
   page2.drawText('Personal Statement', {
     x: 50,
-    y: height2 - 590,
+    y: height2 - 690,
     size: 16,
     font: fontBold,
   });
@@ -667,7 +666,7 @@ async function createPdfForm() {
     'Please include details such as why you wish to study the course/ subject, how your ',
     {
       x: 50,
-      y: height2 - 610,
+      y: height2 - 705,
       size: fontSize,
     }
   );
@@ -675,110 +674,127 @@ async function createPdfForm() {
     'qualifications and/or work experience has helped you prepare for the course',
     {
       x: 50,
-      y: height2 - 625,
+      y: height2 - 720,
       size: fontSize,
     }
   );
 
   page2.drawText('and what are your future aspirations?', {
     x: 50,
-    y: height2 - 640,
+    y: height2 - 735,
     size: fontSize,
   });
 
   const personalStatementField = form.createTextField('personalStatement');
   personalStatementField.addToPage(page2, {
     x: 50,
-    y: height2 - 660,
+    y: height2 - 830,
     width: 500,
-    height: 18,
+    height: 80,
   });
 
-  page2.drawText('Declaration', {
+  personalStatementField.setFontSize(12);
+  personalStatementField.enableMultiline();
+
+  page2.drawText('2 of 3', {
+    x: 520,
+    y: height - 870,
+    size: 14,
+  });
+
+  let page3 = pdfDoc.addPage([600, 900]);
+  const { height: height3 } = page2.getSize();
+
+  // Declaration section
+  page3.drawText('Declaration', {
     x: 50,
-    y: height2 - 700,
+    y: height2 - 80,
     size: 16,
     font: fontBold,
   });
 
-  page2.drawText(
+  page3.drawText(
     'By ticking the check box below, I agree to Stratford College London processing personal',
     {
       x: 50,
-      y: height2 - 720,
+      y: height2 - 100,
       size: fontSize,
     }
   );
 
-  page2.drawText(
+  page3.drawText(
     'data contained in this from or other data which the College may obtain from me or other',
     {
       x: 40,
-      y: height2 - 740,
+      y: height2 - 120,
       size: fontSize,
     }
   );
 
-  page2.drawText(
+  page3.drawText(
     'people. I agree to the processing of such data for any purpose connected with my',
     {
       x: 40,
-      y: height2 - 760,
+      y: height2 - 140,
       size: fontSize,
     }
   );
 
-  page2.drawText(
+  page3.drawText(
     'studies (including UCAS via the RPA data transfer) or my health and safety whilst on the',
     {
       x: 40,
-      y: height2 - 780,
+      y: height2 - 160,
       size: fontSize,
     }
   );
 
-  page2.drawText(
+  page3.drawText(
     'premises or for any legitimate reason including communication with me following the',
     {
       x: 40,
-      y: height2 - 800,
+      y: height2 - 180,
       size: fontSize,
     }
   );
 
-  page2.drawText(
+  page3.drawText(
     'completion of my studies. In addition, I agree to the College processing personal data',
     {
       x: 40,
-      y: height2 - 820,
+      y: height2 - 200,
       size: fontSize,
     }
   );
 
-  page2.drawText(
+  page3.drawText(
     'described as “Sensitive Data” within the meaning of the United Kingdom Data Protection',
     {
       x: 40,
-      y: height2 - 840,
+      y: height2 - 220,
       size: fontSize,
     }
   );
 
-  page2.drawText(
-    'Act 2018,such processing to be undertaken for any purposes as indicated in the declaration.',
+  page3.drawText(
+    'Act 2018, such processing to be undertaken for any purposes as indicated in the',
     {
       x: 40,
-      y: height2 - 860,
+      y: height2 - 240,
       size: fontSize,
     }
   );
-  let page3 = pdfDoc.addPage([600, 900]);
-  const { height: height3 } = page2.getSize();
+  page3.drawText('declaration.', {
+    x: 40,
+    y: height2 - 260,
+    size: fontSize,
+  });
+
   page3.drawText(
     'The organisation is committed to preserving the privacy of its students and employees',
     {
       x: 40,
-      y: height3 - 80,
+      y: height2 - 280,
       size: fontSize,
     }
   );
@@ -786,7 +802,7 @@ async function createPdfForm() {
     'and to complying with the requirements of the General Data Protection Regulations',
     {
       x: 40,
-      y: height3 - 100,
+      y: height2 - 300,
       size: fontSize,
     }
   );
@@ -794,28 +810,30 @@ async function createPdfForm() {
     '(GDPR) 2018. To achieve this commitment information about our students, employees',
     {
       x: 40,
-      y: height3 - 120,
+      y: height2 - 320,
       size: fontSize,
     }
   );
+
   page3.drawText(
     'and other clients and contacts must be collected and used fairly, stored safely and not',
     {
       x: 40,
-      y: height3 - 140,
+      y: height2 - 340,
       size: fontSize,
     }
   );
+
   page3.drawText('unlawfully disclosed to any other person.', {
     x: 40,
-    y: height3 - 160,
+    y: height2 - 360,
     size: fontSize,
   });
   page3.drawText(
     'I confirm that the information provided on this application form is true, complete and',
     {
       x: 40,
-      y: height3 - 180,
+      y: height2 - 380,
       size: fontSize,
     }
   );
@@ -823,7 +841,7 @@ async function createPdfForm() {
     'accurate to the best of my knowledge. I understand that if I am offered a place on a',
     {
       x: 40,
-      y: height3 - 200,
+      y: height2 - 400,
       size: fontSize,
     }
   );
@@ -831,7 +849,7 @@ async function createPdfForm() {
     'course with Stratford College London (SCL), if any information is found to be incorrect,',
     {
       x: 40,
-      y: height3 - 220,
+      y: height2 - 420,
       size: fontSize,
     }
   );
@@ -839,36 +857,61 @@ async function createPdfForm() {
     'SCL or Canterbury Christchurch University (CCCU) may take appropriate action which',
     {
       x: 40,
-      y: height3 - 240,
+      y: height2 - 440,
       size: fontSize,
     }
   );
   page3.drawText('could result in withdrawal from the course.', {
     x: 40,
-    y: height3 - 260,
+    y: height2 - 460,
     size: fontSize,
   });
   page3.drawText('I have read, understood and agree to the above', {
     x: 40,
-    y: height3 - 280,
+    y: height2 - 480,
     size: fontSize,
   });
 
   const declarationCheckbox = form.createCheckBox('declaration');
   declarationCheckbox.addToPage(page3, {
     x: 50,
-    y: height3 - 310,
+    y: height2 - 515,
     width: 20,
     height: 20,
   });
 
+  page3.drawText('Date:', {
+    x: 350,
+    y: height3 - 515,
+    size: fontSize,
+    font,
+  });
   const declarationDate = form.createTextField('declarationDate');
 
   declarationDate.addToPage(page3, {
     x: 350,
-    y: height3 - 310,
+    y: height3 - 540,
     width: 200,
     height: 20,
+  });
+
+  const footerBytes = await fetch(
+    `${process.env.PUBLIC_URL}/scl_logo_ai.png`
+  ).then((res) => res.arrayBuffer());
+
+  const footerImage = await pdfDoc.embedPng(footerBytes);
+
+  page3.drawImage(footerImage, {
+    x: 60,
+    y: height - 875,
+    width: 450,
+    height: 30,
+  });
+
+  page3.drawText('3 of 3', {
+    x: 520,
+    y: height - 870,
+    size: 14,
   });
 
   const pdfBytes = await pdfDoc.save();
