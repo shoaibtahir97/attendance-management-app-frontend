@@ -2,7 +2,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 async function createPdfForm() {
   const pdfDoc = await PDFDocument.create();
-  let page = pdfDoc.addPage([600, 900]);
+  let page = pdfDoc.addPage([595.28, 841.89]);
 
   const form = pdfDoc.getForm();
   const { height } = page.getSize();
@@ -20,7 +20,7 @@ async function createPdfForm() {
 
   page.drawImage(headerLeftImage, {
     x: 480,
-    y: height - 90,
+    y: height - 86,
     width: 80,
     height: 80,
   });
@@ -52,7 +52,7 @@ async function createPdfForm() {
   courseField.addToPage(page, {
     x: 180,
     y: height - 104,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -72,7 +72,7 @@ async function createPdfForm() {
   intakeDropdown.addToPage(page, {
     x: 180,
     y: height - 124,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -93,7 +93,7 @@ async function createPdfForm() {
   pointOfEntryDropdown.addToPage(page, {
     x: 180,
     y: height - 144,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -115,7 +115,7 @@ async function createPdfForm() {
   firstNameField.addToPage(page, {
     x: 180,
     y: height - 204,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -129,7 +129,7 @@ async function createPdfForm() {
   lastNameField.addToPage(page, {
     x: 180,
     y: height - 224,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -143,7 +143,7 @@ async function createPdfForm() {
   DOBField.addToPage(page, {
     x: 180,
     y: height - 244,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -158,7 +158,7 @@ async function createPdfForm() {
   genderDropdown.addToPage(page, {
     x: 180,
     y: height - 264,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -186,7 +186,7 @@ async function createPdfForm() {
   ethnicityDropdown.addToPage(page, {
     x: 180,
     y: height - 284,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -203,7 +203,7 @@ async function createPdfForm() {
   emailField.addToPage(page, {
     x: 180,
     y: height - 344,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -217,7 +217,7 @@ async function createPdfForm() {
   phoneField.addToPage(page, {
     x: 180,
     y: height - 364,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -231,7 +231,7 @@ async function createPdfForm() {
   postcodeField.addToPage(page, {
     x: 180,
     y: height - 384,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -245,7 +245,7 @@ async function createPdfForm() {
   countyField.addToPage(page, {
     x: 180,
     y: height - 404,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -259,7 +259,7 @@ async function createPdfForm() {
   homeAddressField.addToPage(page, {
     x: 180,
     y: height - 424,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -275,7 +275,7 @@ async function createPdfForm() {
   countryOfBirthField.addToPage(page, {
     x: 180,
     y: height - 484,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -289,7 +289,7 @@ async function createPdfForm() {
   legalNationalityField.addToPage(page, {
     x: 180,
     y: height - 504,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -303,7 +303,7 @@ async function createPdfForm() {
   dualNationalityField.addToPage(page, {
     x: 180,
     y: height - 524,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -318,7 +318,7 @@ async function createPdfForm() {
   nationalityField.addToPage(page, {
     x: 180,
     y: height - 544,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -336,7 +336,7 @@ async function createPdfForm() {
   disabilityDropdown.addToPage(page, {
     x: 180,
     y: height - 604,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -350,7 +350,7 @@ async function createPdfForm() {
   additionalSupportDropdown.addToPage(page, {
     x: 180,
     y: height - 624,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
@@ -388,17 +388,17 @@ async function createPdfForm() {
   feeStatusDropdown.addToPage(page, {
     x: 180,
     y: height - 700,
-    width: 250,
+    width: 400,
     height: 18,
   });
 
   page.drawText('1 of 3', {
     x: 520,
-    y: height - 870,
+    y: height - 820,
     size: 14,
   });
 
-  let page2 = pdfDoc.addPage([600, 900]);
+  let page2 = pdfDoc.addPage([595.28, 841.89]);
   const { height: height2 } = page2.getSize();
 
   // Qualifications Section
@@ -654,41 +654,43 @@ async function createPdfForm() {
   referenceDetailsField.setFontSize(12);
   referenceDetailsField.enableMultiline();
 
+  let page3 = pdfDoc.addPage([595.28, 841.89]);
+  const { height: height3 } = page2.getSize();
   // Personal Statement
-  page2.drawText('Personal Statement', {
+  page3.drawText('Personal Statement', {
     x: 50,
-    y: height2 - 690,
+    y: height - 80,
     size: 16,
     font: fontBold,
   });
 
-  page2.drawText(
+  page3.drawText(
     'Please include details such as why you wish to study the course/ subject, how your ',
     {
       x: 50,
-      y: height2 - 705,
+      y: height3 - 100,
       size: fontSize,
     }
   );
-  page2.drawText(
+  page3.drawText(
     'qualifications and/or work experience has helped you prepare for the course',
     {
       x: 50,
-      y: height2 - 720,
+      y: height3 - 120,
       size: fontSize,
     }
   );
 
-  page2.drawText('and what are your future aspirations?', {
+  page3.drawText('and what are your future aspirations?', {
     x: 50,
-    y: height2 - 735,
+    y: height3 - 140,
     size: fontSize,
   });
 
   const personalStatementField = form.createTextField('personalStatement');
-  personalStatementField.addToPage(page2, {
+  personalStatementField.addToPage(page3, {
     x: 50,
-    y: height2 - 830,
+    y: height3 - 235,
     width: 500,
     height: 80,
   });
@@ -698,62 +700,59 @@ async function createPdfForm() {
 
   page2.drawText('2 of 3', {
     x: 520,
-    y: height - 870,
+    y: height - 820,
     size: 14,
   });
-
-  let page3 = pdfDoc.addPage([600, 900]);
-  const { height: height3 } = page2.getSize();
 
   // Declaration section
   page3.drawText('Declaration', {
     x: 50,
-    y: height2 - 80,
+    y: height2 - 270,
     size: 16,
     font: fontBold,
   });
 
   page3.drawText(
-    'By ticking the check box below, I agree to Stratford College London processing personal',
+    'By ticking the check box below, I agree to Stratford College London processing ',
     {
       x: 50,
-      y: height2 - 100,
+      y: height2 - 290,
       size: fontSize,
     }
   );
 
   page3.drawText(
-    'data contained in this from or other data which the College may obtain from me or other',
+    'personal data contained in this from or other data which the College may obtain from me ',
     {
       x: 40,
-      y: height2 - 120,
+      y: height2 - 310,
       size: fontSize,
     }
   );
 
   page3.drawText(
-    'people. I agree to the processing of such data for any purpose connected with my',
+    'or other people. I agree to the processing of such data for any purpose connected with',
     {
       x: 40,
-      y: height2 - 140,
+      y: height2 - 330,
       size: fontSize,
     }
   );
 
   page3.drawText(
-    'studies (including UCAS via the RPA data transfer) or my health and safety whilst on the',
+    'my studies (including UCAS via the RPA data transfer) or my health and safety whilst on',
     {
       x: 40,
-      y: height2 - 160,
+      y: height2 - 350,
       size: fontSize,
     }
   );
 
   page3.drawText(
-    'premises or for any legitimate reason including communication with me following the',
+    'the premises or for any legitimate reason including communication with me following the',
     {
       x: 40,
-      y: height2 - 180,
+      y: height2 - 370,
       size: fontSize,
     }
   );
@@ -762,7 +761,7 @@ async function createPdfForm() {
     'completion of my studies. In addition, I agree to the College processing personal data',
     {
       x: 40,
-      y: height2 - 200,
+      y: height2 - 390,
       size: fontSize,
     }
   );
@@ -771,7 +770,7 @@ async function createPdfForm() {
     'described as “Sensitive Data” within the meaning of the United Kingdom Data Protection',
     {
       x: 40,
-      y: height2 - 220,
+      y: height2 - 410,
       size: fontSize,
     }
   );
@@ -780,13 +779,13 @@ async function createPdfForm() {
     'Act 2018, such processing to be undertaken for any purposes as indicated in the',
     {
       x: 40,
-      y: height2 - 240,
+      y: height2 - 430,
       size: fontSize,
     }
   );
   page3.drawText('declaration.', {
     x: 40,
-    y: height2 - 260,
+    y: height2 - 450,
     size: fontSize,
   });
 
@@ -794,7 +793,7 @@ async function createPdfForm() {
     'The organisation is committed to preserving the privacy of its students and employees',
     {
       x: 40,
-      y: height2 - 280,
+      y: height2 - 470,
       size: fontSize,
     }
   );
@@ -802,7 +801,7 @@ async function createPdfForm() {
     'and to complying with the requirements of the General Data Protection Regulations',
     {
       x: 40,
-      y: height2 - 300,
+      y: height2 - 490,
       size: fontSize,
     }
   );
@@ -810,7 +809,7 @@ async function createPdfForm() {
     '(GDPR) 2018. To achieve this commitment information about our students, employees',
     {
       x: 40,
-      y: height2 - 320,
+      y: height2 - 510,
       size: fontSize,
     }
   );
@@ -819,21 +818,21 @@ async function createPdfForm() {
     'and other clients and contacts must be collected and used fairly, stored safely and not',
     {
       x: 40,
-      y: height2 - 340,
+      y: height2 - 530,
       size: fontSize,
     }
   );
 
   page3.drawText('unlawfully disclosed to any other person.', {
     x: 40,
-    y: height2 - 360,
+    y: height2 - 550,
     size: fontSize,
   });
   page3.drawText(
     'I confirm that the information provided on this application form is true, complete and',
     {
       x: 40,
-      y: height2 - 380,
+      y: height2 - 570,
       size: fontSize,
     }
   );
@@ -841,7 +840,7 @@ async function createPdfForm() {
     'accurate to the best of my knowledge. I understand that if I am offered a place on a',
     {
       x: 40,
-      y: height2 - 400,
+      y: height2 - 590,
       size: fontSize,
     }
   );
@@ -849,7 +848,7 @@ async function createPdfForm() {
     'course with Stratford College London (SCL), if any information is found to be incorrect,',
     {
       x: 40,
-      y: height2 - 420,
+      y: height2 - 610,
       size: fontSize,
     }
   );
@@ -857,32 +856,32 @@ async function createPdfForm() {
     'SCL or Canterbury Christchurch University (CCCU) may take appropriate action which',
     {
       x: 40,
-      y: height2 - 440,
+      y: height2 - 630,
       size: fontSize,
     }
   );
   page3.drawText('could result in withdrawal from the course.', {
     x: 40,
-    y: height2 - 460,
+    y: height2 - 650,
     size: fontSize,
   });
   page3.drawText('I have read, understood and agree to the above', {
     x: 40,
-    y: height2 - 480,
+    y: height2 - 670,
     size: fontSize,
   });
 
   const declarationCheckbox = form.createCheckBox('declaration');
   declarationCheckbox.addToPage(page3, {
     x: 50,
-    y: height2 - 515,
+    y: height2 - 705,
     width: 20,
     height: 20,
   });
 
   page3.drawText('Date:', {
     x: 350,
-    y: height3 - 515,
+    y: height3 - 740,
     size: fontSize,
     font,
   });
@@ -890,7 +889,22 @@ async function createPdfForm() {
 
   declarationDate.addToPage(page3, {
     x: 350,
-    y: height3 - 540,
+    y: height3 - 765,
+    width: 200,
+    height: 20,
+  });
+
+  page3.drawText('Name (as Signature)', {
+    x: 50,
+    y: height3 - 740,
+    size: fontSize,
+    font,
+  });
+  const signature = form.createTextField('signature');
+
+  signature.addToPage(page3, {
+    x: 50,
+    y: height3 - 765,
     width: 200,
     height: 20,
   });
@@ -901,16 +915,30 @@ async function createPdfForm() {
 
   const footerImage = await pdfDoc.embedPng(footerBytes);
 
+  page.drawImage(footerImage, {
+    x: 60,
+    y: height - 825,
+    width: 450,
+    height: 28,
+  });
+
+  page2.drawImage(footerImage, {
+    x: 60,
+    y: height - 825,
+    width: 450,
+    height: 28,
+  });
+
   page3.drawImage(footerImage, {
     x: 60,
-    y: height - 875,
+    y: height - 825,
     width: 450,
-    height: 30,
+    height: 28,
   });
 
   page3.drawText('3 of 3', {
     x: 520,
-    y: height - 870,
+    y: height - 820,
     size: 14,
   });
 
