@@ -496,7 +496,7 @@ async function createPdfForm() {
   });
 
   // English Language Section
-  page2.drawText('English Language', {
+  page2.drawText('English Language (up to 1600 characters)', {
     x: 50,
     y: height2 - 252,
     size: 16,
@@ -533,6 +533,7 @@ async function createPdfForm() {
 
   englishLanguageField.setFontSize(12);
   englishLanguageField.enableMultiline();
+  englishLanguageField.setMaxLength(1630);
 
   // Work Experience Section
   page2.drawText('Work Experience', {
@@ -630,7 +631,7 @@ async function createPdfForm() {
   const { height: height3 } = page2.getSize();
 
   // Reference Details
-  page3.drawText('Reference Details', {
+  page3.drawText('Reference Details (up to 800 characters)', {
     x: 50,
     y: height2 - 80,
     size: 16,
@@ -656,9 +657,10 @@ async function createPdfForm() {
 
   referenceDetailsField.setFontSize(12);
   referenceDetailsField.enableMultiline();
+  referenceDetailsField.setMaxLength(800);
 
   // Personal Statement
-  page3.drawText('Personal Statement', {
+  page3.drawText('Personal Statement (up to 1600 characters)', {
     x: 50,
     y: height - 240,
     size: 16,
@@ -692,6 +694,7 @@ async function createPdfForm() {
 
   personalStatementField.setFontSize(12);
   personalStatementField.enableMultiline();
+  personalStatementField.setMaxLength(1630);
 
   page2.drawText('2 of 3', {
     x: 520,
