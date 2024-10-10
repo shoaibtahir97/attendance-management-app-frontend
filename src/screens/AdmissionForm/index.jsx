@@ -114,69 +114,13 @@ const defaultValues = {
   declarationDate: null,
 };
 
-// const defaultValues = {
-//   course: 'BS Computer Science',
-//   intake: 'January 2024',
-//   pointOfEntry: 0,
-//   firstName: 'John',
-//   lastName: 'Doe',
-//   gender: 'man',
-//   DOB: '27-10-1997',
-//   ethnicity: 'Asian - Pakistani',
-//   email: 'john@doe.com',
-//   contactNumber: '70690',
-//   homeAddress: 'R-461, Block 19 FB Area, Karachi',
-//   postcode: '75950',
-//   county: 'Yorkshire',
-//   countryOfBirth: 'Pakistan',
-//   legalNationality: 'Pakistan',
-//   dualNationality: 'Pakistan',
-//   countryOfResidence: 'Pakistan',
-//   disability: 'no',
-//   additionalSupport: 'no',
-//   feePaymentMethod: 'Private finance',
-//   englishQualificationLevel: `Intermediate`,
-//   qualifications: [
-//     {
-//       institute: 'Saint Patricks High School',
-//       qualification: 'Matric',
-//       subject: 'Science',
-//       country: 'Pakistan',
-//       dateOfCompletion: '01-01-2013',
-//     },
-//     {
-//       institute: 'Saint Patricks High School',
-//       qualification: 'Matric',
-//       subject: 'Science',
-//       country: 'Pakistan',
-//       dateOfCompletion: '01-01-2013',
-//     },
-//   ],
-//   workExperience: [
-//     {
-//       from: '01-06-2021',
-//       to: '01-06-2022',
-//       employer: 'Abbott',
-//       position: 'Production Supervisor',
-//       responsibilities: '',
-//     },
-//   ],
-//   referenceDetails: '',
-//   personalStatement: '',
-//   declaration: false,
-//   declarationDate: null,
-// };
-
 const intakes = [
-  'JAN 25',
-  'JUN 25',
-  'SEP 25',
-  'JAN 26',
-  'JUN 26',
-  'SEP 26',
-  'JAN 27',
-  ' JUN 27',
-  ' SEP 27',
+  { label: 'January 2024', value: 'January 2024' },
+  { label: 'June 2024', value: 'June 2024' },
+  { label: 'September 2024', value: 'September 2024' },
+  { label: 'January 2025', value: 'January 2025' },
+  { label: 'June 2025', value: 'June 2025' },
+  { label: 'September 2025', value: 'September 2025' },
 ];
 
 const AdmissionForm = () => {
