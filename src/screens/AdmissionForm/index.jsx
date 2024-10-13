@@ -96,7 +96,7 @@ const defaultValues = {
       institute: '',
       awardingBody: '',
       level: '',
-      dateOfCompletion: null,
+      completionDate: null,
     },
   ],
   qualifications: [
@@ -105,7 +105,7 @@ const defaultValues = {
       qualification: '',
       subject: '',
       country: '',
-      dateOfCompletion: null,
+      completionDate: null,
     },
   ],
   workExperience: [
