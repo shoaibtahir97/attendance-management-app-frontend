@@ -90,6 +90,14 @@ const defaultValues = {
   disability: '',
   additionalSupport: '',
   feePaymentMethod: '',
+  englishQualifications: [
+    {
+      institute: '',
+      awardingBody: '',
+      level: '',
+      dateOfCompletion: null,
+    },
+  ],
   qualifications: [
     {
       institute: '',
@@ -152,7 +160,14 @@ const AdmissionForm = () => {
     disability: Yup.string(),
     additionalSupport: Yup.string(),
     feePaymentMethod: Yup.string().required('Fee payment method is required'),
-    englishQualificationLevel: Yup.string(),
+    englishQualifications: Yup.array().of(
+      Yup.object().shape({
+        institute: Yup.string(),
+        awardingBody: Yup.string(),
+        level: Yup.string(),
+        completionDate: Yup.date(),
+      })
+    ),
     qualifications: Yup.array()
       .of(
         Yup.object().shape({
@@ -219,6 +234,15 @@ const AdmissionForm = () => {
   });
 
   const {
+    fields: EnglishQualificationsFields,
+    append: EnglishQualificationsAppend,
+    remove: EnglishQualificationsRemove,
+  } = useFieldArray({
+    name: 'englishQualifications',
+    control,
+  });
+
+  const {
     fields: WorkExperienceFields,
     append: WorkExperienceAppend,
     remove: WorkExperienceRemove,
@@ -229,9 +253,12 @@ const AdmissionForm = () => {
 
   const submitApplication = async (data) => {
     const formData = new FormData();
-
     for (const [key, value] of Object.entries(data)) {
-      if (key === 'workExperience' || key === 'qualifications') {
+      if (
+        key === 'workExperience' ||
+        key === 'qualifications' ||
+        key === 'englishQualifications'
+      ) {
         value?.forEach((item, index) => {
           for (const [arrKey, arrVal] of Object.entries(item)) {
             if (arrVal) {
@@ -501,12 +528,15 @@ const AdmissionForm = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Stack direction="row" justifyContent="space-between">
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center">
                     <Typography variant="body1">
                       Please list all qualifications obtained, including any
                       non-UK qualifications.
                     </Typography>
-                    <Tooltip title="Add module" placement="top">
+                    <Tooltip title="Add Qualification" placement="top">
                       <IconButton
                         onClick={() =>
                           QualificationAppend({
@@ -585,20 +615,86 @@ const AdmissionForm = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body1">
-                    If English is not your first language, do you have an
-                    English language qualification? If so, please provide
-                    details below (title of qualification, level, awarding body,
-                    etc.)
-                  </Typography>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center">
+                    <Typography variant="body1">
+                      If English is not your first language, do you have an
+                      English language qualification? If so, please provide
+                      details below (title of qualification, level, awarding
+                      body, etc.)
+                    </Typography>
+                    <Tooltip title="Add English Qualification" placement="top">
+                      <IconButton
+                        onClick={() =>
+                          EnglishQualificationsAppend({
+                            institute: '',
+                            awardingBody: '',
+                            level: '',
+                            dateOfCompletion: null,
+                          })
+                        }>
+                        <IoIosAddCircleOutline />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
                 </Grid>
-                <Grid item xs={6}>
-                  <RHFTextField
-                    name="englishQualificationLevel"
-                    multiline
-                    rows={4}
-                    sx={{ width: '100%' }}
-                  />
+                <Grid item xs={12}>
+                  {EnglishQualificationsFields?.map(
+                    (englishQualification, index) => (
+                      <Grid
+                        key={englishQualification.id}
+                        container
+                        item
+                        xs={12}
+                        spacing={1}
+                        sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Grid item xs={12} sm={3}>
+                          <RHFTextField
+                            name={`englishQualifications[${index}].institute`}
+                            label={index === 0 ? 'Institution' : ''}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <RHFTextField
+                            name={`englishQualifications[${index}].awardingBody`}
+                            label={index === 0 ? 'Awarding body' : ''}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <RHFTextField
+                            name={`englishQualifications[${index}].level`}
+                            label={index === 0 ? 'Level' : ''}
+                            multiple={true}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={2}>
+                          <RHFDatePicker
+                            name={`qualifications[${index}].dateOfCompletion`}
+                            label={index === 0 ? 'Date of Completion' : ''}
+                            sx={{ width: '100%' }}
+                          />
+                        </Grid>
+
+                        <Grid
+                          item
+                          xs={1}
+                          sm={1}
+                          sx={{ mt: index === 0 ? 5 : 2 }}>
+                          {EnglishQualificationsFields?.length > 1 && (
+                            <IconButton
+                              type="button"
+                              onClick={() =>
+                                EnglishQualificationsRemove(index)
+                              }>
+                              <MdOutlineDelete />
+                            </IconButton>
+                          )}
+                        </Grid>
+                      </Grid>
+                    )
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12}>
@@ -608,7 +704,10 @@ const AdmissionForm = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Stack direction="row" justifyContent="space-between">
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center">
                     <Typography variant="body1">
                       Please provide details of all work experience undertaken
                       including outside of UK
