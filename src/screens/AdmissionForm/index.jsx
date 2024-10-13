@@ -37,6 +37,7 @@ import useNotification from '../../hooks/useNotification';
 import { usePostAdmissionFormMutation } from '../../redux/slices/apiSlices/admissionsApiSlice';
 import createPdfForm from '../../utils/createPdfForm';
 import { Checkmark } from 'react-checkmark';
+import dayjs from 'dayjs';
 
 export const ethnicities = [
   'White Gypsy',
@@ -119,16 +120,19 @@ const defaultValues = {
   referenceDetails: '',
   personalStatement: '',
   declaration: false,
-  declarationDate: null,
+  declarationDate: dayjs(),
 };
 
 const intakes = [
-  { label: 'January 2024', value: 'January 2024' },
-  { label: 'June 2024', value: 'June 2024' },
-  { label: 'September 2024', value: 'September 2024' },
-  { label: 'January 2025', value: 'January 2025' },
-  { label: 'June 2025', value: 'June 2025' },
-  { label: 'September 2025', value: 'September 2025' },
+  'JAN 25',
+  'JUN 25',
+  'SEP 25',
+  'JAN 26',
+  'JUN 26',
+  'SEP 26',
+  'JAN 27',
+  ' JUN 27',
+  ' SEP 27',
 ];
 
 const AdmissionForm = () => {
@@ -175,7 +179,7 @@ const AdmissionForm = () => {
           qualification: Yup.string(),
           subject: Yup.string(),
           country: Yup.string(),
-          dateOfCompletion: Yup.date().nullable(),
+          completionDate: Yup.date().nullable(),
         })
       )
       .min(1, 'Minimum one qualification is required'),
@@ -589,7 +593,7 @@ const AdmissionForm = () => {
                       </Grid>
                       <Grid item xs={12} sm={2}>
                         <RHFDatePicker
-                          name={`qualifications[${index}].dateOfCompletion`}
+                          name={`qualifications[${index}].completionDate`}
                           label={index === 0 ? 'Date of Completion' : ''}
                           sx={{ width: '100%' }}
                         />
@@ -671,7 +675,7 @@ const AdmissionForm = () => {
                         </Grid>
                         <Grid item xs={12} sm={2}>
                           <RHFDatePicker
-                            name={`qualifications[${index}].dateOfCompletion`}
+                            name={`englishQualifications[${index}].completionDate`}
                             label={index === 0 ? 'Date of Completion' : ''}
                             sx={{ width: '100%' }}
                           />
@@ -889,7 +893,11 @@ const AdmissionForm = () => {
                   justifyContent="space-between"
                   alignItems="center">
                   <Box>
-                    <RHFDatePicker label="Date" name="declarationDate" />
+                    <RHFDatePicker
+                      label="Date"
+                      name="declarationDate"
+                      disabled={true}
+                    />
                   </Box>
 
                   <Button
