@@ -37,6 +37,7 @@ import useNotification from '../../hooks/useNotification';
 import { usePostAdmissionFormMutation } from '../../redux/slices/apiSlices/admissionsApiSlice';
 import createPdfForm from '../../utils/createPdfForm';
 import { Checkmark } from 'react-checkmark';
+import dayjs from 'dayjs';
 
 export const ethnicities = [
   'White Gypsy',
@@ -90,6 +91,14 @@ const defaultValues = {
   disability: '',
   additionalSupport: '',
   feePaymentMethod: '',
+  englishQualifications: [
+    {
+      institute: '',
+      awardingBody: '',
+      level: '',
+      dateOfCompletion: null,
+    },
+  ],
   qualifications: [
     {
       institute: '',
@@ -111,61 +120,8 @@ const defaultValues = {
   referenceDetails: '',
   personalStatement: '',
   declaration: false,
-  declarationDate: null,
+  declarationDate: dayjs(),
 };
-
-// const defaultValues = {
-//   course: 'BS Computer Science',
-//   intake: 'January 2024',
-//   pointOfEntry: 0,
-//   firstName: 'John',
-//   lastName: 'Doe',
-//   gender: 'man',
-//   DOB: '27-10-1997',
-//   ethnicity: 'Asian - Pakistani',
-//   email: 'john@doe.com',
-//   contactNumber: '70690',
-//   homeAddress: 'R-461, Block 19 FB Area, Karachi',
-//   postcode: '75950',
-//   county: 'Yorkshire',
-//   countryOfBirth: 'Pakistan',
-//   legalNationality: 'Pakistan',
-//   dualNationality: 'Pakistan',
-//   countryOfResidence: 'Pakistan',
-//   disability: 'no',
-//   additionalSupport: 'no',
-//   feePaymentMethod: 'Private finance',
-//   englishQualificationLevel: `Intermediate`,
-//   qualifications: [
-//     {
-//       institute: 'Saint Patricks High School',
-//       qualification: 'Matric',
-//       subject: 'Science',
-//       country: 'Pakistan',
-//       dateOfCompletion: '01-01-2013',
-//     },
-//     {
-//       institute: 'Saint Patricks High School',
-//       qualification: 'Matric',
-//       subject: 'Science',
-//       country: 'Pakistan',
-//       dateOfCompletion: '01-01-2013',
-//     },
-//   ],
-//   workExperience: [
-//     {
-//       from: '01-06-2021',
-//       to: '01-06-2022',
-//       employer: 'Abbott',
-//       position: 'Production Supervisor',
-//       responsibilities: '',
-//     },
-//   ],
-//   referenceDetails: '',
-//   personalStatement: '',
-//   declaration: false,
-//   declarationDate: null,
-// };
 
 const intakes = [
   'JAN 25',
@@ -208,7 +164,14 @@ const AdmissionForm = () => {
     disability: Yup.string(),
     additionalSupport: Yup.string(),
     feePaymentMethod: Yup.string().required('Fee payment method is required'),
-    englishQualificationLevel: Yup.string(),
+    englishQualifications: Yup.array().of(
+      Yup.object().shape({
+        institute: Yup.string(),
+        awardingBody: Yup.string(),
+        level: Yup.string(),
+        completionDate: Yup.date(),
+      })
+    ),
     qualifications: Yup.array()
       .of(
         Yup.object().shape({
@@ -216,7 +179,7 @@ const AdmissionForm = () => {
           qualification: Yup.string(),
           subject: Yup.string(),
           country: Yup.string(),
-          dateOfCompletion: Yup.date().nullable(),
+          completionDate: Yup.date().nullable(),
         })
       )
       .min(1, 'Minimum one qualification is required'),
@@ -275,6 +238,15 @@ const AdmissionForm = () => {
   });
 
   const {
+    fields: EnglishQualificationsFields,
+    append: EnglishQualificationsAppend,
+    remove: EnglishQualificationsRemove,
+  } = useFieldArray({
+    name: 'englishQualifications',
+    control,
+  });
+
+  const {
     fields: WorkExperienceFields,
     append: WorkExperienceAppend,
     remove: WorkExperienceRemove,
@@ -285,9 +257,12 @@ const AdmissionForm = () => {
 
   const submitApplication = async (data) => {
     const formData = new FormData();
-
     for (const [key, value] of Object.entries(data)) {
-      if (key === 'workExperience' || key === 'qualifications') {
+      if (
+        key === 'workExperience' ||
+        key === 'qualifications' ||
+        key === 'englishQualifications'
+      ) {
         value?.forEach((item, index) => {
           for (const [arrKey, arrVal] of Object.entries(item)) {
             if (arrVal) {
@@ -557,12 +532,15 @@ const AdmissionForm = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Stack direction="row" justifyContent="space-between">
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center">
                     <Typography variant="body1">
                       Please list all qualifications obtained, including any
                       non-UK qualifications.
                     </Typography>
-                    <Tooltip title="Add module" placement="top">
+                    <Tooltip title="Add Qualification" placement="top">
                       <IconButton
                         onClick={() =>
                           QualificationAppend({
@@ -615,7 +593,7 @@ const AdmissionForm = () => {
                       </Grid>
                       <Grid item xs={12} sm={2}>
                         <RHFDatePicker
-                          name={`qualifications[${index}].dateOfCompletion`}
+                          name={`qualifications[${index}].completionDate`}
                           label={index === 0 ? 'Date of Completion' : ''}
                           sx={{ width: '100%' }}
                         />
@@ -641,20 +619,86 @@ const AdmissionForm = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body1">
-                    If English is not your first language, do you have an
-                    English language qualification? If so, please provide
-                    details below (title of qualification, level, awarding body,
-                    etc.)
-                  </Typography>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center">
+                    <Typography variant="body1">
+                      If English is not your first language, do you have an
+                      English language qualification? If so, please provide
+                      details below (title of qualification, level, awarding
+                      body, etc.)
+                    </Typography>
+                    <Tooltip title="Add English Qualification" placement="top">
+                      <IconButton
+                        onClick={() =>
+                          EnglishQualificationsAppend({
+                            institute: '',
+                            awardingBody: '',
+                            level: '',
+                            dateOfCompletion: null,
+                          })
+                        }>
+                        <IoIosAddCircleOutline />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
                 </Grid>
-                <Grid item xs={6}>
-                  <RHFTextField
-                    name="englishQualificationLevel"
-                    multiline
-                    rows={4}
-                    sx={{ width: '100%' }}
-                  />
+                <Grid item xs={12}>
+                  {EnglishQualificationsFields?.map(
+                    (englishQualification, index) => (
+                      <Grid
+                        key={englishQualification.id}
+                        container
+                        item
+                        xs={12}
+                        spacing={1}
+                        sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Grid item xs={12} sm={3}>
+                          <RHFTextField
+                            name={`englishQualifications[${index}].institute`}
+                            label={index === 0 ? 'Institution' : ''}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <RHFTextField
+                            name={`englishQualifications[${index}].awardingBody`}
+                            label={index === 0 ? 'Awarding body' : ''}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <RHFTextField
+                            name={`englishQualifications[${index}].level`}
+                            label={index === 0 ? 'Level' : ''}
+                            multiple={true}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={2}>
+                          <RHFDatePicker
+                            name={`englishQualifications[${index}].completionDate`}
+                            label={index === 0 ? 'Date of Completion' : ''}
+                            sx={{ width: '100%' }}
+                          />
+                        </Grid>
+
+                        <Grid
+                          item
+                          xs={1}
+                          sm={1}
+                          sx={{ mt: index === 0 ? 5 : 2 }}>
+                          {EnglishQualificationsFields?.length > 1 && (
+                            <IconButton
+                              type="button"
+                              onClick={() =>
+                                EnglishQualificationsRemove(index)
+                              }>
+                              <MdOutlineDelete />
+                            </IconButton>
+                          )}
+                        </Grid>
+                      </Grid>
+                    )
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12}>
@@ -664,7 +708,10 @@ const AdmissionForm = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Stack direction="row" justifyContent="space-between">
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center">
                     <Typography variant="body1">
                       Please provide details of all work experience undertaken
                       including outside of UK
@@ -846,7 +893,11 @@ const AdmissionForm = () => {
                   justifyContent="space-between"
                   alignItems="center">
                   <Box>
-                    <RHFDatePicker label="Date" name="declarationDate" />
+                    <RHFDatePicker
+                      label="Date"
+                      name="declarationDate"
+                      disabled={true}
+                    />
                   </Box>
 
                   <Button
