@@ -486,7 +486,6 @@ async function createPdfForm() {
     const dateOfCompletionField = form.createTextField(
       `dateOfCompletion${index}`
     );
-
     dateOfCompletionField.addToPage(page2, {
       x: 470,
       y: height2 - 127 - (index + 1) * 20,
@@ -496,7 +495,7 @@ async function createPdfForm() {
   });
 
   // English Language Section
-  page2.drawText('English Language (up to 1600 characters)', {
+  page2.drawText('English Language', {
     x: 50,
     y: height2 - 252,
     size: 16,
@@ -521,19 +520,99 @@ async function createPdfForm() {
     }
   );
 
-  const englishLanguageField = form.createTextField(
-    'englishQualificationLevel'
+  page2.drawText('Institute', {
+    x: 50,
+    y: height2 - 305,
+    size: fontSize,
+  });
+
+  page2.drawText('Awarding body', {
+    x: 200,
+    y: height2 - 305,
+    size: fontSize,
+  });
+
+  page2.drawText('Level', {
+    x: 360,
+    y: height2 - 305,
+    size: fontSize,
+  });
+
+  page2.drawText('Date of Completion', {
+    x: 470,
+    y: height2 - 305,
+    size: fontSize,
+  });
+
+  const englishQualificationsArray = [0, 1, 2];
+
+  englishQualificationsArray?.forEach((qualification, index) => {
+    const englishInstituteField = form.createTextField(
+      `englishInstitute${index}`
+    );
+    englishInstituteField.addToPage(page2, {
+      x: 50,
+      y: height2 - 308 - (index + 1) * 20,
+      width: 125,
+      height: 18,
+    });
+
+    const awardingBodyField = form.createTextField(`awardingBody${index}`);
+    awardingBodyField.addToPage(page2, {
+      x: 200,
+      y: height2 - 308 - (index + 1) * 20,
+      width: 130,
+      height: 18,
+    });
+
+    const levelField = form.createTextField(`level${index}`);
+    levelField.addToPage(page2, {
+      x: 360,
+      y: height2 - 308 - (index + 1) * 20,
+      width: 80,
+      height: 18,
+    });
+
+    const englishDateOfCompletionField = form.createTextField(
+      `englishDateOfCompletion${index}`
+    );
+
+    englishDateOfCompletionField.addToPage(page2, {
+      x: 470,
+      y: height2 - 308 - (index + 1) * 20,
+      width: 80,
+      height: 18,
+    });
+  });
+
+  // Reference Details
+  page2.drawText('Reference Details (up to 800 characters)', {
+    x: 50,
+    y: height2 - 400,
+    size: 16,
+    font: fontBold,
+  });
+
+  page2.drawText(
+    'Please provide name and contact details (company email) for most recent/last employer',
+    {
+      x: 50,
+      y: height2 - 420,
+      size: fontSize,
+    }
   );
-  englishLanguageField.addToPage(page2, {
+
+  const referenceDetailsField = form.createTextField('referenceDetails');
+  referenceDetailsField.addToPage(page2, {
     x: 50,
     y: height2 - 550,
     width: 500,
-    height: 250,
+    height: 120,
   });
 
-  englishLanguageField.setFontSize(12);
-  englishLanguageField.enableMultiline();
-  englishLanguageField.setMaxLength(1630);
+  referenceDetailsField.setFontSize(12);
+  referenceDetailsField.enableMultiline();
+  referenceDetailsField.setMaxLength(800);
 
   // Work Experience Section
   page2.drawText('Work Experience', {
@@ -554,31 +633,31 @@ async function createPdfForm() {
 
   page2.drawText('From', {
     x: 50,
-    y: height2 - 625,
+    y: height2 - 630,
     size: fontSize,
   });
 
   page2.drawText('To', {
     x: 130,
-    y: height2 - 625,
+    y: height2 - 630,
     size: fontSize,
   });
 
   page2.drawText('Name of Employer', {
-    x: 230,
-    y: height2 - 625,
+    x: 215,
+    y: height2 - 630,
     size: fontSize,
   });
 
   page2.drawText('Position', {
-    x: 370,
-    y: height2 - 625,
+    x: 330,
+    y: height2 - 630,
     size: fontSize,
   });
 
   page2.drawText('Brief Description', {
-    x: 470,
-    y: height2 - 625,
+    x: 425,
+    y: height2 - 630,
     size: fontSize,
   });
 
@@ -602,15 +681,15 @@ async function createPdfForm() {
 
     const employerField = form.createTextField(`employer${index}`);
     employerField.addToPage(page2, {
-      x: 230,
+      x: 215,
       y: height2 - 635 - (index + 1) * 20,
-      width: 90,
+      width: 100,
       height: 18,
     });
 
     const positionField = form.createTextField(`position${index}`);
     positionField.addToPage(page2, {
-      x: 370,
+      x: 330,
       y: height2 - 635 - (index + 1) * 20,
       width: 80,
       height: 18,
@@ -620,9 +699,9 @@ async function createPdfForm() {
       `responsibilities${index}`
     );
     responsibilitiesField.addToPage(page2, {
-      x: 470,
+      x: 425,
       y: height2 - 635 - (index + 1) * 20,
-      width: 80,
+      width: 125,
       height: 18,
     });
   });
@@ -630,39 +709,10 @@ async function createPdfForm() {
   let page3 = pdfDoc.addPage([595.28, 841.89]);
   const { height: height3 } = page2.getSize();
 
-  // Reference Details
-  page3.drawText('Reference Details (up to 800 characters)', {
-    x: 50,
-    y: height2 - 80,
-    size: 16,
-    font: fontBold,
-  });
-
-  page3.drawText(
-    'Please provide name and contact details (company email) for most recent/last employer',
-    {
-      x: 50,
-      y: height2 - 95,
-      size: fontSize,
-    }
-  );
-
-  const referenceDetailsField = form.createTextField('referenceDetails');
-  referenceDetailsField.addToPage(page3, {
-    x: 50,
-    y: height2 - 220,
-    width: 500,
-    height: 120,
-  });
-
-  referenceDetailsField.setFontSize(12);
-  referenceDetailsField.enableMultiline();
-  referenceDetailsField.setMaxLength(800);
-
   // Personal Statement
-  page3.drawText('Personal Statement (up to 1600 characters)', {
+  page3.drawText('Personal Statement (up to 2700 characters)', {
     x: 50,
-    y: height - 240,
+    y: height - 80,
     size: 16,
     font: fontBold,
   });
@@ -671,7 +721,7 @@ async function createPdfForm() {
     'Please include details such as why you wish to study the course/ subject, how your qualifications ',
     {
       x: 50,
-      y: height3 - 252,
+      y: height3 - 100,
       size: fontSize,
     }
   );
@@ -679,7 +729,7 @@ async function createPdfForm() {
     'and/or work experience has helped you prepare for the course and what are your future aspirations',
     {
       x: 50,
-      y: height3 - 264,
+      y: height3 - 115,
       size: fontSize,
     }
   );
@@ -689,12 +739,12 @@ async function createPdfForm() {
     x: 50,
     y: height3 - 520,
     width: 500,
-    height: 250,
+    height: 400,
   });
 
   personalStatementField.setFontSize(12);
   personalStatementField.enableMultiline();
-  personalStatementField.setMaxLength(1630);
+  personalStatementField.setMaxLength(2700);
 
   page2.drawText('2 of 3', {
     x: 520,
