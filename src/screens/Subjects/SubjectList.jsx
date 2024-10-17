@@ -85,6 +85,7 @@ const SubjectsList = () => {
 
   const {
     handleSubmit,
+    getValues,
     formState: { isSubmitting },
   } = methods;
 
@@ -92,10 +93,10 @@ const SubjectsList = () => {
     await getSubjects(query)
       .unwrap()
       .then((res) => {
-        const { subjects, totalRecordsCount, filteredRecordsCount } = res;
+        const { subjects, totalSubjects, filteredSubjects } = res;
         setDataSource({
           subjects: subjects,
-          totalRecords: filteredRecordsCount,
+          totalRecords: filteredSubjects,
         });
       });
   };
@@ -198,17 +199,21 @@ const SubjectsList = () => {
                         itemRender: itemRender,
                         onChange: (page, pageSize) => {
                           setSubjectsQuery({
-                            ...studentsQuery,
+                            ...subjectsQuery,
                             page,
                             recordsPerPage: pageSize,
                           });
-                          fetchSubjects({ page, recordsPerPage: pageSize });
+                          fetchSubjects({
+                            page,
+                            recordsPerPage: pageSize,
+                            ...getValues(),
+                          });
                         },
                       }}
                       columns={column}
                       dataSource={dataSource.subjects}
                       rowSelection={rowSelection}
-                      rowKey={(record) => record.id}
+                      rowKey={(record) => record._id}
                     />
                   </div>
                 )}
