@@ -67,17 +67,18 @@ const AddCourse = () => {
     modules: Yup.array()
       .of(
         Yup.object().shape({
-          year: Yup.number().required('Year is required'),
+          year: Yup.number(),
+          // .required('Year is required'),
           // cohortStartDate: Yup.date().required('Cohort start date is required'),
           // cohortEndDate: Yup.date().required('Cohort start date is required'),
           subjects: Yup.array()
             .of(Yup.string())
-            .min(1, 'Minimum one subject is required')
-            .max(3, 'Minimum three subjects are allowed'),
-          moduleLead: Yup.string().required('Module Lead is required'),
-          groups: Yup.array()
-            .of(Yup.string())
-            .min(1, 'Minimum one group is required'),
+            .min(1, 'Minimum one subject is required'),
+          // .max(3, 'Minimum three subjects are allowed'),
+          moduleLead: Yup.string(),
+          // .required('Module Lead is required'),
+          groups: Yup.array().of(Yup.string()),
+          // .min(1, 'Minimum one group is required'),
         })
       )
       .min(1),
