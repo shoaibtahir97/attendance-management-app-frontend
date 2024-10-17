@@ -43,6 +43,7 @@ export default function RHFSelect({
                 fullWidth
                 error={!!error}
                 size="small"
+                value={field?.value || ''}
                 {...field}
                 {...other}>
                 {options?.map((option) => (

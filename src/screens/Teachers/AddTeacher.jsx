@@ -20,8 +20,8 @@ export const genders = [
   { value: '', label: 'Select Gender' },
   { value: 'man', label: 'Man' },
   { value: 'woman', label: 'Woman' },
-  { value: 'I prefer another term', label: 'Others' },
-  { value: 'I prefer not to say', label: 'Prefer not to say' },
+  { value: 'others', label: 'others' },
+  { value: 'prefer_not_to_say', label: 'Prefer not to say' },
 ];
 const AddTeacher = () => {
   const { openNotification } = useNotification();

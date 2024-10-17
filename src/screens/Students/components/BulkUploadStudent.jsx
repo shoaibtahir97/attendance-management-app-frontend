@@ -200,7 +200,7 @@ const BulkUploadStudent = (props) => {
               size="large"
               style={{ marginLeft: '5px' }}
               disabled={loadingUploadBulkStudents}>
-              Close
+              Cancel
             </Button>
           </Stack>
         </FormProvider>
