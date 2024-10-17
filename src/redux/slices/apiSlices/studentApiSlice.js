@@ -68,6 +68,14 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       transformResponse: (res) => res?.data,
       keepUnusedDataFor: 5,
     }),
+    deleteStudents: builder.mutation({
+      query: (payload) => ({
+        url: `${STUDENTS_URL}`,
+        method: 'DELETE',
+        body: payload,
+        credentials: 'include',
+      }),
+    }),
   }),
 });
 
@@ -78,4 +86,5 @@ export const {
   useUploadBulkStudentsMutation,
   useUpdateStudentDetailsMutation,
   useGetStudentsListQuery,
+  useDeleteStudentsMutation,
 } = studentApiSlice;
