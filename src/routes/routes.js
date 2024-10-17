@@ -41,6 +41,9 @@ import EditGroup from '../screens/Groups/EditGroups';
 import Calendar from '../screens/Calendar';
 import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
 import AdmissionForm from '../screens/AdmissionForm';
+import UsersList from '../screens/Users/UsersList';
+import AddUser from '../screens/Users/AddUser';
+import EditUser from '../screens/Users/EditUser';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -93,6 +96,16 @@ const router = createHashRouter(
           <Route
             path={`${PATH_DASHBOARD.teacherEdit}/:id`}
             element={<EditTeacher />}
+          />
+
+          {/* Users */}
+
+          <Route path={PATH_DASHBOARD.users} element={<UsersList />} />
+          {/* <Route path={PATH_DASHBOARD.userProfile} element={<UserProfile />} /> */}
+          <Route path={PATH_DASHBOARD.userAdd} element={<AddUser />} />
+          <Route
+            path={`${PATH_DASHBOARD.userEdit}/:id`}
+            element={<EditUser />}
           />
 
           {/* Courses */}

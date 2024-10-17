@@ -51,10 +51,10 @@ const navConfig = [
     icon: <PiStudent />,
     role: ['admin'],
   },
-  // Teachers
+  // Users
   {
-    title: 'Teachers',
-    path: PATH_DASHBOARD.teachers,
+    title: 'Users',
+    path: PATH_DASHBOARD.users,
     icon: <PiChalkboardTeacherLight />,
     role: ['admin'],
   },
