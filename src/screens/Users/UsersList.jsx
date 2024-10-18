@@ -21,13 +21,14 @@ import { SKELETON } from '../Students/StudentsList';
 import TableSkeleton from '../../components/TableSkeleton';
 import BulkUploadTeacher from './components/BulkUploadTeacher';
 
+export const roles = [
+  { value: '', label: 'Select Role' },
+  { value: 'admin', label: 'Admin' },
+  { value: 'teacher', label: 'Teacher' },
+];
+
 const UsersList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const roles = [
-    { value: '', label: 'Select Role' },
-    { value: 'admin', label: 'Admin' },
-    { value: 'teacher', label: 'Teacher' },
-  ];
 
   const onSelectChange = (newSelectedRowKeys) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -69,6 +70,11 @@ const UsersList = () => {
       title: 'Gender',
       dataIndex: 'gender',
       sorter: (a, b) => a.gender.length - b.gender.length,
+    },
+    {
+      title: 'Role',
+      dataIndex: 'role',
+      sorter: (a, b) => a.role.length - b.role.length,
     },
     {
       title: 'Action',
@@ -163,10 +169,10 @@ const UsersList = () => {
     <div className="content container-fluid">
       {/* Page Header */}
       <PageHeader
-        currentSection="All Teachers"
-        pageTitle="Teachers"
-        parentRoute={PATH_DASHBOARD.teachers}
-        parentSection="Teacher"
+        currentSection="All Users"
+        pageTitle="Users"
+        parentRoute={PATH_DASHBOARD.users}
+        parentSection="User"
       />
       {/* /Page Header */}
       {isBulkTeacherUploadModalVisible && (
@@ -230,14 +236,14 @@ const UsersList = () => {
               {/* Page Header */}
               <div className="page-header">
                 <div className="row align-items-center">
-                  <div className="col">
-                    <h3 className="page-title">Teachers</h3>
-                  </div>
+                  {/* <div className="col">
+                    <h3 className="page-title">Users</h3>
+                  </div> */}
                   <div className="col-auto text-end float-end ms-auto download-grp">
-                    <Tooltip title="Add Teacher" placement="top">
+                    <Tooltip title="Add User" placement="top">
                       <Link
                         // onClick={openAddUserPopover}
-                        to={PATH_DASHBOARD.teacherAdd}
+                        to={PATH_DASHBOARD.userAdd}
                         className="btn btn-primary">
                         <i className="fas fa-plus" />
                       </Link>
@@ -255,7 +261,7 @@ const UsersList = () => {
                           closeAddUserPopover();
                           navigate(PATH_DASHBOARD.teacherAdd);
                         }}>
-                        Add Teacher
+                        Add User
                       </MenuItem>
                       <MenuItem
                         onClick={() => {

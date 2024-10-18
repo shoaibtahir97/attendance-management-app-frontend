@@ -15,6 +15,7 @@ import { Button, Typography } from 'antd';
 import PageHeader from '../../components/PageHeader';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
+import { roles } from './UsersList';
 
 export const genders = [
   { value: '', label: 'Select Gender' },
@@ -37,7 +38,7 @@ const AddUser = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'teacher',
+    role: '',
     phone: '',
     subjects: [],
   };
@@ -59,9 +60,20 @@ const AddUser = () => {
     ),
     role: Yup.string().required(),
     phone: Yup.string().required('Phone number is required'),
-    subjects: Yup.array()
-      .of(Yup.string())
-      .min(1, 'Please select at least one subject'),
+    subjects: Yup.array().test(
+      'subject_is_required',
+      'Subject is required',
+      function (value, context) {
+        if (context.parent.role === 'teacher') {
+          if (!value || value.length === 0) {
+            return this.createError({
+              message: 'Please select at least one subject',
+            });
+          }
+        }
+        return true;
+      }
+    ),
   });
 
   const methods = useForm({
@@ -69,10 +81,10 @@ const AddUser = () => {
     defaultValues,
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, watch } = methods;
 
   const registerUserData = async (data) => {
-    registerUser(data)
+    sendUserInvite(data)
       .unwrap()
       .then((res) => {
         openNotification('success', res?.message);
@@ -82,7 +94,7 @@ const AddUser = () => {
           email: '',
           password: '',
           confirmPassword: '',
-          role: 'teacher',
+          role: '',
           phone: '',
           subjects: [],
         });
@@ -92,14 +104,16 @@ const AddUser = () => {
       );
   };
 
+  const roleField = watch('role');
+
   return (
     <div className="content container-fluid">
       {/* Page Header */}
       <PageHeader
-        currentSection="Register Teacher"
-        pageTitle="Register Teacher"
-        parentRoute={PATH_DASHBOARD.teachers}
-        parentSection="Teacher"
+        currentSection="Register User"
+        pageTitle="Register User"
+        parentRoute={PATH_DASHBOARD.users}
+        parentSection="User"
       />
       {/* /Page Header */}
       <div className="row">
@@ -133,37 +147,28 @@ const AddUser = () => {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFAutocomplete
-                      multiple
-                      options={subjectsList}
-                      name="subjects"
-                      label="Subjects"
-                      sx={{ width: '100%' }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sx={{ mt: 4 }}>
-                    <h5 className="form-title" style={{ marginBottom: '-5px' }}>
-                      Login Details
-                    </h5>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
                     <RHFTextField name="email" label="Email Address" />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>
-                    <RHFTextField name="password" label="Password" />
+                    <RHFSelect name="role" label="Role" options={roles} />
                   </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
-                    <RHFTextField
-                      name="confirmPassword"
-                      label="Confirm Password"
-                    />
-                  </Grid>
+                  {roleField === 'teacher' && (
+                    <Grid item xs={12} sm={6} md={4}>
+                      <RHFAutocomplete
+                        multiple
+                        options={subjectsList}
+                        name="subjects"
+                        label="Subjects"
+                        sx={{ width: '100%' }}
+                      />
+                    </Grid>
+                  )}
                   <Grid item xs={12}>
                     <Button
                       type="primary"
                       htmlType="submit"
                       loading={loadingRegister}>
-                      Save
+                      Send invite
                     </Button>
                   </Grid>
                 </Grid>

@@ -78,6 +78,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
+    sendUserInvite: builder.mutation({
+      query: (payload) => ({
+        url: `${USERS_URL}/invite`,
+        method: 'POST',
+        body: payload,
+        credentials: 'include',
+      }),
+    }),
   }),
 });
 
@@ -90,4 +98,5 @@ export const {
   useGetUsersDetailsQuery,
   useUpdateUserDetailsMutation,
   useUploadBulkUsersMutation,
+  useSendUserInviteMutation,
 } = usersApiSlice;
