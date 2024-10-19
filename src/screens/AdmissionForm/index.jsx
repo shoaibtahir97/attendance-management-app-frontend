@@ -1,9 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import {
-  admissionFormImageLeft,
-  admissionFormImageRight,
-} from '../../components/imagepath';
-import {
   Box,
   Card,
   Grid,
@@ -16,17 +12,14 @@ import {
 import { useFieldArray, useForm } from 'react-hook-form';
 import {
   FormProvider,
-  RHFAutocomplete,
   RHFCheckbox,
   RHFCountries,
   RHFDatePicker,
   RHFSelect,
   RHFTextField,
-  RHFUploadMultiFile,
 } from '../../components/HookForm';
 import { countries } from '../../utils/countries';
 import { Button } from 'antd';
-import { genders } from '../Teachers/AddTeacher';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { IoIosAddCircleOutline } from 'react-icons/io';
@@ -39,9 +32,17 @@ import createPdfForm from '../../utils/createPdfForm';
 import { Checkmark } from 'react-checkmark';
 import dayjs from 'dayjs';
 
+export const genders = [
+  { value: '', label: 'Select Gender' },
+  { value: 'man', label: 'Man' },
+  { value: 'woman', label: 'Woman' },
+  { value: 'prefer_another_term', label: 'Prefer another term' },
+  { value: 'prefer_not_to_say', label: 'Prefer not to say' },
+];
+
 export const ethnicities = [
-  'White Gypsy',
-  'Traveller or Irish Traveller',
+  'White',
+  'Gypsy, Traveller or Irish Traveller',
   'Black - Caribbean',
   'Black - African',
   'Black - Other',
@@ -77,6 +78,7 @@ const defaultValues = {
   firstName: '',
   lastName: '',
   gender: '',
+  otherGender: '',
   DOB: null,
   ethnicity: '',
   email: '',
@@ -148,6 +150,18 @@ const AdmissionForm = () => {
     firstName: Yup.string().required('First name is required'),
     lastName: Yup.string().required('Last name is required'),
     gender: Yup.string().required('Gender is required'),
+    otherGender: Yup.string().test(
+      'otherGender_test',
+      'Other gender is required',
+      function (value, context) {
+        if (context.parent.gender === 'prefer_another_term') {
+          if (!value) {
+            return false;
+          }
+        }
+        return true;
+      }
+    ),
     DOB: Yup.date().required('Date of birth is required'),
     ethnicity: Yup.string().required('Ethnicity is required'),
     email: Yup.string().email().required('Email address is required'),
@@ -225,6 +239,7 @@ const AdmissionForm = () => {
   const {
     handleSubmit,
     control,
+    watch,
     formState: { isSubmitting, isSubmitSuccessful },
   } = methods;
 
@@ -299,6 +314,8 @@ const AdmissionForm = () => {
     link.click();
     document.body.removeChild(link);
   };
+
+  const genderField = watch('gender');
 
   return (
     <div className="main-wrapper login-body mt-4">
@@ -385,9 +402,6 @@ const AdmissionForm = () => {
                   <RHFTextField name="lastName" label={'Last Name'} />
                 </Grid>{' '}
                 <Grid item xs={12} sm={6} md={3}>
-                  <RHFSelect name="gender" label="Gender" options={genders} />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
                   <RHFDatePicker
                     name="DOB"
                     label="Date of Birth"
@@ -403,6 +417,14 @@ const AdmissionForm = () => {
                       value: ethnicity,
                     }))}
                   />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <RHFSelect name="gender" label="Gender" options={genders} />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  {genderField === 'prefer_another_term' && (
+                    <RHFTextField label="Other Gender" name="otherGender" />
+                  )}
                 </Grid>
               </Grid>
               <Grid container item spacing={1}>

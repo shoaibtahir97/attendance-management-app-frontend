@@ -147,26 +147,11 @@ async function createPdfForm() {
     height: 18,
   });
 
-  page.drawText('Gender', { x: 50, y: height - 280, size: fontSize });
-  const genderDropdown = form.createDropdown('gender');
-  genderDropdown.setOptions([
-    'man',
-    'woman',
-    'I prefer another term',
-    'I prefer not to say',
-  ]);
-  genderDropdown.addToPage(page, {
-    x: 180,
-    y: height - 284,
-    width: 400,
-    height: 18,
-  });
-
-  page.drawText('Ethnicity', { x: 50, y: height - 300, size: fontSize, font });
+  page.drawText('Ethnicity', { x: 50, y: height - 280, size: fontSize, font });
   const ethnicityDropdown = form.createDropdown('ethnicity');
   ethnicityDropdown.setOptions([
-    'White Gypsy',
-    'Traveller or Irish Traveller',
+    'White',
+    'Gypsy, Traveller or Irish Traveller',
     'Black - Caribbean',
     'Black - African',
     'Black - Other',
@@ -185,7 +170,31 @@ async function createPdfForm() {
   ]);
   ethnicityDropdown.addToPage(page, {
     x: 180,
+    y: height - 284,
+    width: 400,
+    height: 18,
+  });
+
+  page.drawText('Gender', { x: 50, y: height - 300, size: fontSize });
+  const genderDropdown = form.createDropdown('gender');
+  genderDropdown.setOptions([
+    'man',
+    'woman',
+    'I prefer another term',
+    'I prefer not to say',
+  ]);
+  genderDropdown.addToPage(page, {
+    x: 180,
     y: height - 304,
+    width: 400,
+    height: 18,
+  });
+
+  page.drawText('Other gender', { x: 50, y: height - 320, size: fontSize });
+  const otherGenderField = form.createTextField('otherGender');
+  otherGenderField.addToPage(page, {
+    x: 180,
+    y: height - 324,
     width: 400,
     height: 18,
   });
