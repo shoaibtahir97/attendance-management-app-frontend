@@ -41,6 +41,7 @@ import EditGroup from '../screens/Groups/EditGroups';
 import Calendar from '../screens/Calendar';
 import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
 import AdmissionForm from '../screens/AdmissionForm';
+import Notices from '../screens/Notices';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -131,24 +132,8 @@ const router = createHashRouter(
           {/* Reports */}
           <Route path={PATH_DASHBOARD.reports} element={<Reports />} />
 
-          {/* Invoices */}
-          {/* <Route path='/dashboard/invoicegrid' element={<InvoiceGrid />} />
-        <Route path='/dashboard/invoicepaid' element={<InvoicePaid />} />
-        <Route path='/dashboard/invoiceoverdue' element={<InvoiceOverdue />} />
-        <Route path='/dashboard/invoicedraft' element={<InvoiceDraft />} />
-        <Route
-          path='/dashboard/invoicerecurring'
-          element={<InvoiceRecurring />}
-        />
-        <Route
-          path='/dashboard/invoicecancelled'
-          element={<InvoiceCancelled />}
-        />
-        <Route path='/dashboard/addinvoice' element={<AddInvoice />} />
-        <Route path='/dashboard/editinvoice' element={<EditInvoice />} />
-        <Route path='/dashboard/viewinvoice' element={<ViewInvoice />} />
-        <Route path='/dashboard/invoicesetting' element={<InvoiceSettings />} />
-        <Route path='/dashboard/invoicelist' element={<InvoiceList />} /> */}
+          {/* Notices */}
+          <Route path={PATH_DASHBOARD.notices} element={<Notices />} />
 
           {/* Reports */}
           <Route
