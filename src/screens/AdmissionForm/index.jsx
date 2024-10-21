@@ -36,6 +36,13 @@ export const genders = [
   { value: '', label: 'Select Gender' },
   { value: 'man', label: 'Man' },
   { value: 'woman', label: 'Woman' },
+  { value: 'Non-binary', label: 'Non-binary' },
+  { value: 'Genderqueer', label: 'Genderqueer' },
+  { value: 'Genderfluid', label: 'Genderfluid' },
+  { value: 'Transgender Man', label: 'Transgender Man' },
+  { value: 'Transgender Woman', label: 'Transgender Woman' },
+  { value: 'Agender', label: 'Agender' },
+  { value: 'Two-Spirit', label: 'Two-Spirit' },
   { value: 'prefer_another_term', label: 'Prefer another term' },
   { value: 'prefer_not_to_say', label: 'Prefer not to say' },
 ];
@@ -196,7 +203,7 @@ const AdmissionForm = () => {
         institute: Yup.string(),
         awardingBody: Yup.string(),
         level: Yup.string(),
-        completionDate: Yup.date(),
+        completionDate: Yup.date().nullable(),
       })
     ),
     qualifications: Yup.array()
@@ -253,6 +260,7 @@ const AdmissionForm = () => {
     handleSubmit,
     control,
     watch,
+    errors,
     formState: { isSubmitting, isSubmitSuccessful },
   } = methods;
 
@@ -897,18 +905,19 @@ const AdmissionForm = () => {
                   employees and other clients and contacts must be collected and
                   used fairly, stored safely and not unlawfully disclosed to any
                   other person.
-                  <br />
-                  I confirm that the information provided on this application
-                  form is true, complete and accurate to the best of my
-                  knowledge. I understand that if I am offered a place on a
+                  <br />I confirm that the information provided on this
+                  application form is true, complete and accurate to the best of
+                  my knowledge. I understand that if I am offered a place on a
                   course with Stratford College London (SCL), if any information
                   is found to be incorrect, SCL or Canterbury Christchurch
                   University (CCCU) may take appropriate action which could
                   result in withdrawal from the course.
-                  <br />I have read, understood and agree to the above
                 </Typography>
                 <Box>
-                  <RHFCheckbox name="declaration" />
+                  <RHFCheckbox
+                    name="declaration"
+                    label="I have read, understood and agree to the above"
+                  />
                 </Box>
               </Grid>
               <Grid item xs={12} sx={{ mb: 2 }}>

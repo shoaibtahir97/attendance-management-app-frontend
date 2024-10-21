@@ -1,6 +1,6 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { countries } from './countries';
-import { disabilities } from '../screens/AdmissionForm';
+import { disabilities, genders } from '../screens/AdmissionForm';
 
 async function createPdfForm() {
   const pdfDoc = await PDFDocument.create();
@@ -170,6 +170,7 @@ async function createPdfForm() {
     'Other',
     'Not given',
   ]);
+
   ethnicityDropdown.addToPage(page, {
     x: 180,
     y: height - 284,
@@ -179,12 +180,7 @@ async function createPdfForm() {
 
   page.drawText('Gender', { x: 50, y: height - 300, size: fontSize });
   const genderDropdown = form.createDropdown('gender');
-  genderDropdown.setOptions([
-    'man',
-    'woman',
-    'I prefer another term',
-    'I prefer not to say',
-  ]);
+  genderDropdown.setOptions(genders.map((gender) => gender.label));
   genderDropdown.addToPage(page, {
     x: 180,
     y: height - 304,
