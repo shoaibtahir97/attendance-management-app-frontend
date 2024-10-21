@@ -503,8 +503,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { getDayOfWeek } from '../../../utils/formatDateTime';
-import { getDaysInMonth, isDate } from 'date-fns';
-import dayjs from 'dayjs';
+import { getDate } from 'date-fns';
 
 const renderEventComponent = (props) => {
   const { event, timeText } = props;
@@ -546,30 +545,23 @@ const TeacherDashboard = () => {
   const [events, setEvents] = useState([]);
 
   const handleEventClick = (eventInfo) => {
-    console.log('eventInfo', eventInfo);
     const event = eventInfo.event;
-    console.log(
-      dayjs().get('date', new Date(event._instance.range.start)),
-      dayjs().get('date', new Date())
-    );
-    // if (
-    //   dayjs().get('date', new Date(event._instance.range.start)) ===
-    //   dayjs().get('date', new Date())
-    // ) {
-    //   navigate(PATH_DASHBOARD.markattendance, {
-    //     state: {
-    //       group: event.extendedProps.group.name,
-    //       groupId: event.extendedProps.group.id,
-    //       startTime: event._instance.range.start.toISOString(),
-    //       endTime: event._instance.range.end.toISOString(),
-    //       teacher: `${event.extendedProps.teacher.firstName} ${event.extendedProps.teacher.lastName}`,
-    //       subject: event.extendedProps.subject.name,
-    //       subjectId: event.extendedProps.subject.id,
-    //     },
-    //   });
-    // } else {
-    //   openNotification('error', 'Access denied');
-    // }
+
+    if (getDate(event._instance.range.start) === getDate(new Date())) {
+      navigate(PATH_DASHBOARD.markattendance, {
+        state: {
+          group: event.extendedProps.group.name,
+          groupId: event.extendedProps.group.id,
+          startTime: event._instance.range.start.toISOString(),
+          endTime: event._instance.range.end.toISOString(),
+          teacher: `${event.extendedProps.teacher.firstName} ${event.extendedProps.teacher.lastName}`,
+          subject: event.extendedProps.subject.name,
+          subjectId: event.extendedProps.subject.id,
+        },
+      });
+    } else {
+      openNotification('error', 'Access denied');
+    }
   };
 
   const fetchTeacherTimeTable = async () => {
