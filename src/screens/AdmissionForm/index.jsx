@@ -71,6 +71,19 @@ export const feeStatuses = [
   'Not known',
 ];
 
+export const disabilities = [
+  'A - No disability',
+  'B - Autistic disorder',
+  'C - Blind/partial sight',
+  'D - Deaf/partial hearing',
+  'E - Long standing illness',
+  'F - Mental health',
+  'G - Learning difficulty',
+  'H - Wheelchair/mobility',
+  'I - Other disability',
+  'J - Multiple disabilities',
+];
+
 const defaultValues = {
   course: '',
   intake: '',
@@ -504,20 +517,16 @@ const AdmissionForm = () => {
                   <RHFSelect
                     name="disability"
                     label={'Disability'}
-                    options={[
-                      { label: 'Yes', value: 'yes' },
-                      { label: 'No', value: 'no' },
-                    ]}
+                    options={disabilities?.map((disability) => ({
+                      label: disability,
+                      value: disability,
+                    }))}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                  <RHFSelect
+                  <RHFTextField
                     name="additionalSupport"
                     label={'Additional Support'}
-                    options={[
-                      { label: 'Yes', value: 'yes' },
-                      { label: 'No', value: 'no' },
-                    ]}
                   />
                 </Grid>
               </Grid>

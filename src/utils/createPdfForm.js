@@ -1,4 +1,6 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { countries } from './countries';
+import { disabilities } from '../screens/AdmissionForm';
 
 async function createPdfForm() {
   const pdfDoc = await PDFDocument.create();
@@ -280,7 +282,8 @@ async function createPdfForm() {
     font: fontBold,
   });
   page.drawText('Country of Birth', { x: 50, y: height - 500, size: fontSize });
-  const countryOfBirthField = form.createTextField('countryOfBirth');
+  const countryOfBirthField = form.createDropdown('countryOfBirth');
+  countryOfBirthField.setOptions(countries?.map((country) => country?.label));
   countryOfBirthField.addToPage(page, {
     x: 180,
     y: height - 504,
@@ -294,7 +297,8 @@ async function createPdfForm() {
     size: fontSize,
     font,
   });
-  const legalNationalityField = form.createTextField('legalNationality');
+  const legalNationalityField = form.createDropdown('legalNationality');
+  legalNationalityField.setOptions(countries?.map((country) => country?.label));
   legalNationalityField.addToPage(page, {
     x: 180,
     y: height - 524,
@@ -308,7 +312,8 @@ async function createPdfForm() {
     size: fontSize,
     font,
   });
-  const dualNationalityField = form.createTextField('dualNationality');
+  const dualNationalityField = form.createDropdown('dualNationality');
+  dualNationalityField.setOptions(countries?.map((country) => country?.label));
   dualNationalityField.addToPage(page, {
     x: 180,
     y: height - 544,
@@ -323,7 +328,8 @@ async function createPdfForm() {
     font,
   });
 
-  const nationalityField = form.createTextField('Country of Residence');
+  const nationalityField = form.createDropdown('Country of Residence');
+  nationalityField.setOptions(countries?.map((country) => country?.label));
   nationalityField.addToPage(page, {
     x: 180,
     y: height - 564,
@@ -341,7 +347,7 @@ async function createPdfForm() {
 
   page.drawText('Disability', { x: 50, y: height - 620, size: fontSize });
   const disabilityDropdown = form.createDropdown('disability');
-  disabilityDropdown.setOptions(['Yes', 'No']);
+  disabilityDropdown.setOptions(disabilities);
   disabilityDropdown.addToPage(page, {
     x: 180,
     y: height - 624,
@@ -354,8 +360,8 @@ async function createPdfForm() {
     y: height - 640,
     size: fontSize,
   });
-  const additionalSupportDropdown = form.createDropdown('additionalSupport');
-  additionalSupportDropdown.setOptions(['Yes', 'No']);
+
+  const additionalSupportDropdown = form.createTextField('additionalSupport');
   additionalSupportDropdown.addToPage(page, {
     x: 180,
     y: height - 644,
@@ -597,7 +603,7 @@ async function createPdfForm() {
   // Reference Details
   page2.drawText('Reference Details (up to 800 characters)', {
     x: 50,
-    y: height2 - 400,
+    y: height2 - 590,
     size: 16,
     font: fontBold,
   });
@@ -606,7 +612,7 @@ async function createPdfForm() {
     'Please provide name and contact details (company email) for most recent/last employer',
     {
       x: 50,
-      y: height2 - 420,
+      y: height2 - 610,
       size: fontSize,
     }
   );
@@ -614,7 +620,7 @@ async function createPdfForm() {
   const referenceDetailsField = form.createTextField('referenceDetails');
   referenceDetailsField.addToPage(page2, {
     x: 50,
-    y: height2 - 550,
+    y: height2 - 740,
     width: 500,
     height: 120,
   });
@@ -626,7 +632,7 @@ async function createPdfForm() {
   // Work Experience Section
   page2.drawText('Work Experience', {
     x: 50,
-    y: height2 - 590,
+    y: height2 - 400,
     size: 16,
     font: fontBold,
   });
@@ -635,38 +641,38 @@ async function createPdfForm() {
     'Please provide details of all work experience undertaken including outside of UK',
     {
       x: 50,
-      y: height2 - 610,
+      y: height2 - 420,
       size: fontSize,
     }
   );
 
   page2.drawText('From', {
     x: 50,
-    y: height2 - 630,
+    y: height2 - 440,
     size: fontSize,
   });
 
   page2.drawText('To', {
     x: 130,
-    y: height2 - 630,
+    y: height2 - 440,
     size: fontSize,
   });
 
   page2.drawText('Name of Employer', {
     x: 215,
-    y: height2 - 630,
+    y: height2 - 440,
     size: fontSize,
   });
 
   page2.drawText('Position', {
     x: 330,
-    y: height2 - 630,
+    y: height2 - 440,
     size: fontSize,
   });
 
   page2.drawText('Brief Description', {
     x: 425,
-    y: height2 - 630,
+    y: height2 - 440,
     size: fontSize,
   });
 
@@ -675,7 +681,7 @@ async function createPdfForm() {
     const fromField = form.createTextField(`from${index}`);
     fromField.addToPage(page2, {
       x: 50,
-      y: height2 - 635 - (index + 1) * 20,
+      y: height2 - 445 - (index + 1) * 20,
       width: 70,
       height: 18,
     });
@@ -683,7 +689,7 @@ async function createPdfForm() {
     const toField = form.createTextField(`to${index}`);
     toField.addToPage(page2, {
       x: 130,
-      y: height2 - 635 - (index + 1) * 20,
+      y: height2 - 445 - (index + 1) * 20,
       width: 70,
       height: 18,
     });
@@ -691,7 +697,7 @@ async function createPdfForm() {
     const employerField = form.createTextField(`employer${index}`);
     employerField.addToPage(page2, {
       x: 215,
-      y: height2 - 635 - (index + 1) * 20,
+      y: height2 - 445 - (index + 1) * 20,
       width: 100,
       height: 18,
     });
@@ -699,7 +705,7 @@ async function createPdfForm() {
     const positionField = form.createTextField(`position${index}`);
     positionField.addToPage(page2, {
       x: 330,
-      y: height2 - 635 - (index + 1) * 20,
+      y: height2 - 445 - (index + 1) * 20,
       width: 80,
       height: 18,
     });
@@ -709,7 +715,7 @@ async function createPdfForm() {
     );
     responsibilitiesField.addToPage(page2, {
       x: 425,
-      y: height2 - 635 - (index + 1) * 20,
+      y: height2 - 445 - (index + 1) * 20,
       width: 125,
       height: 18,
     });
