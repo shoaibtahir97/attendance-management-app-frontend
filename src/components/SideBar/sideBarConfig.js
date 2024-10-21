@@ -11,6 +11,7 @@ import { IoCalendarNumberOutline } from 'react-icons/io5';
 import { PiChalkboardTeacherLight } from 'react-icons/pi';
 import { IoMailOpenOutline } from 'react-icons/io5';
 import { MdOutlineGroups } from 'react-icons/md';
+import { GrAnnounce } from 'react-icons/gr';
 const navConfig = [
   // Dashboard
   {
@@ -79,12 +80,18 @@ const navConfig = [
     role: ['admin'],
   },
 
-  // Calendar
+  // Timetable
   {
-    title: 'Calendar',
+    title: 'Timetable',
     icon: <IoCalendarNumberOutline />,
     path: PATH_DASHBOARD.calendar,
-    role: ['admin', 'teacher'],
+    role: ['admin'],
+  },
+  {
+    title: 'Notices',
+    icon: <GrAnnounce />,
+    path: PATH_DASHBOARD.notices,
+    role: ['admin'],
   },
   {
     title: 'Mails',

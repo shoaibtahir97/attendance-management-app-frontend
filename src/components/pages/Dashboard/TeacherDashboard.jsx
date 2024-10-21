@@ -1,21 +1,3 @@
-// import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
-// import ProgressBar from 'react-customizable-progressbar';
-// import Header from '../../Header/Header';
-// import SideBar from '../../SideBar/SideBar';
-// import Chart from 'react-apexcharts';
-// import Calendar from 'react-calendar';
-// import FeatherIcon from 'feather-icons-react';
-// // import SimpleReactCalendar from 'simple-react-calendar'
-// import {
-//   dashicon01,
-//   teachericon01,
-//   teachericon02,
-//   teachericon03,
-// } from '../../imagepath';
-// import 'react-calendar/dist/Calendar.css';
-// import { useSelector } from 'react-redux';
-
 // const TeacherDashboard = () => {
 //   const { userInfo } = useSelector((state) => state.auth);
 //   const [date, setDate] = useState(new Date());
@@ -72,7 +54,7 @@
 //         </div>
 //         {/* /Page Header */}
 //         {/* Overview Section */}
-//         <div className="row">
+//         {/* <div className="row">
 //           <div className="col-xl-3 col-sm-6 col-12 d-flex">
 //             <div className="card bg-comman w-100">
 //               <div className="card-body">
@@ -133,7 +115,7 @@
 //               </div>
 //             </div>
 //           </div>
-//         </div>
+//         </div> */}
 //         {/* /Overview Section */}
 //         {/* Teacher Dashboard */}
 //         <div className="row">
@@ -494,12 +476,226 @@
 // };
 
 // export default TeacherDashboard;
-import React from 'react'
+
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import ProgressBar from 'react-customizable-progressbar';
+import Chart from 'react-apexcharts';
+import Calendar from 'react-calendar';
+import FeatherIcon from 'feather-icons-react';
+// import SimpleReactCalendar from 'simple-react-calendar'
+import {
+  dashicon01,
+  teachericon01,
+  teachericon02,
+  teachericon03,
+} from '../../imagepath';
+import 'react-calendar/dist/Calendar.css';
+import { useSelector } from 'react-redux';
+import { Alert, Card } from 'antd';
+import { useGetDashboardQuery } from '../../../redux/slices/apiSlices/dashboardApiSlice';
+import { useLazyGetTeacherTimeTableQuery } from '../../../redux/slices/apiSlices/timetableApiSlice';
+import { Box, Grid, Stack, Typography } from '@mui/material';
+import FullCalendar from '@fullcalendar/react';
+import { PATH_DASHBOARD } from '../../../routes/paths';
+import useNotification from '../../../hooks/useNotification';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { getDayOfWeek } from '../../../utils/formatDateTime';
+import { getDate } from 'date-fns';
+
+const renderEventComponent = (props) => {
+  const { event, timeText } = props;
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box
+          sx={{
+            // width: 10,
+            height: 10,
+            backgroundColor: event.color,
+            borderRadius: '50%',
+            marginRight: 1,
+            py: 2,
+          }}
+        />
+        <Stack>
+          <Typography sx={{ fontWeight: 'bold', color: '#8d8d8b' }}>
+            {timeText}
+          </Typography>
+          <Typography sx={{ fontWeight: 'bold', color: '#40403f ' }}>
+            {event.extendedProps.group?.name} -{' '}
+            {event.extendedProps.subject.code}
+          </Typography>
+        </Stack>
+      </Box>
+    </Box>
+  );
+};
 
 const TeacherDashboard = () => {
-  return (
-    <div></div>
-  )
-}
+  const { userInfo } = useSelector((state) => state.auth);
+  const [getTeacherTimetable, { isLoading, error }] =
+    useLazyGetTeacherTimeTableQuery();
+  const navigate = useNavigate();
+  const calendarRef = useRef();
+  const { openNotification } = useNotification();
 
-export default TeacherDashboard
+  const [events, setEvents] = useState([]);
+
+  const handleEventClick = (eventInfo) => {
+    const event = eventInfo.event;
+
+    if (getDate(event._instance.range.start) === getDate(new Date())) {
+      navigate(PATH_DASHBOARD.markattendance, {
+        state: {
+          group: event.extendedProps.group.name,
+          groupId: event.extendedProps.group.id,
+          startTime: event._instance.range.start.toISOString(),
+          endTime: event._instance.range.end.toISOString(),
+          teacher: `${event.extendedProps.teacher.firstName} ${event.extendedProps.teacher.lastName}`,
+          subject: event.extendedProps.subject.name,
+          subjectId: event.extendedProps.subject.id,
+        },
+      });
+    } else {
+      openNotification('error', 'Access denied');
+    }
+  };
+
+  const fetchTeacherTimeTable = async () => {
+    await getTeacherTimetable()
+      .unwrap()
+      .then((res) => {
+        const events = [];
+        res.data.forEach((item) => {
+          item.entries.forEach((entry) => {
+            events.push({
+              startTime: `${entry.startTime}:00`,
+              endTime: `${entry.endTime}:00`,
+              group: {
+                name: item.group.name,
+                id: item.group._id,
+              },
+              subject: {
+                code: entry.subject.code,
+                name: entry.subject.name,
+                id: entry.subject._id,
+              },
+              color:
+                entry.subject.code === 'CAS'
+                  ? '#fef4e6'
+                  : entry.subject.code === 'CIA'
+                    ? '#e8fee7'
+                    : entry.subject.code === 'IND PRO'
+                      ? '#e6f1ff'
+                      : '#faeaeb',
+              teacher: {
+                firstName: entry.teacher.firstName,
+                lastName: entry.teacher.lastName,
+                id: entry.teacher._id,
+              },
+              allDay: false,
+              daysOfWeek: [`${getDayOfWeek(entry.dayOfWeek)}`],
+            });
+          });
+        });
+        setEvents(events);
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message || err?.error);
+      });
+  };
+
+  useEffect(() => {
+    fetchTeacherTimeTable();
+  }, []);
+
+  return (
+    <div className="content container-fluid">
+      <div className="page-header">
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="page-sub-header">
+              <h3 className="page-title">Welcome {userInfo.firstName}!</h3>
+              <ul className="breadcrumb">
+                <li className="breadcrumb-item">
+                  <Link to="/admindashboard">Home</Link>
+                </li>
+                <li className="breadcrumb-item active">Teacher</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {isLoading ? (
+        <>Loading...</>
+      ) : error ? (
+        <Alert
+          message="Error"
+          description={
+            error?.data?.message || teacherTimetableError.data.message
+          }
+          type="error"
+          showIcon
+        />
+      ) : (
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={9}>
+            <Card>
+              <FullCalendar
+                ref={calendarRef}
+                editable
+                selectable
+                events={events}
+                eventClick={handleEventClick}
+                eventContent={renderEventComponent}
+                eventStartEditable={false}
+                eventDurationEditable={false}
+                headerToolbar={{
+                  left: 'today prev next title',
+                  center: '',
+                  right: 'dayGridMonth timeGridWeek timeGridDay',
+                }}
+                titleFormat={{ year: 'numeric', month: 'long' }}
+                allDaySlot={false}
+                viewHeight={'100vh'}
+                eventTimeFormat={{
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                }}
+                slotLabelFormat={{
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false, // Set to false for 24-hour format
+                }}
+                slotMinTime="09:30:00"
+                slotMaxTime="22:00:00"
+                slotDuration="01:00:00"
+                weekends={true}
+                dayHeaderFormat={{
+                  weekday: 'short',
+                  day: 'numeric',
+                  omitCommas: true,
+                }}
+                plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
+                views={['dayGridMonth', 'timeGridWeek', 'timeGridDay']}
+              />
+            </Card>
+          </Grid>
+          <Grid item xs={3}>
+            <Card>
+              <Typography fontSize={'1.75em'} fontWeight={700}>
+                Announcements
+              </Typography>
+            </Card>
+          </Grid>
+        </Grid>
+      )}
+    </div>
+  );
+};
+
+export default TeacherDashboard;

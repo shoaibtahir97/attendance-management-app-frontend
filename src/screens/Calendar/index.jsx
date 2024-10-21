@@ -262,6 +262,7 @@ const Calendar = () => {
             }}
             titleFormat={{ year: 'numeric', month: 'long' }}
             allDaySlot={false}
+            initialView="dayGridMonth"
             viewHeight={'100vh'}
             eventTimeFormat={{
               hour: '2-digit',
@@ -501,22 +502,6 @@ const EventDialog = (props) => {
         </DialogActions>
       </FormProvider>
     </Dialog>
-  );
-};
-
-const CustomEvent = ({ event }) => {
-  const { title, extendedProps } = event;
-  return (
-    <div
-      style={{
-        padding: '5px',
-        backgroundColor: '#dfe7fd',
-        borderRadius: '4px',
-      }}>
-      <strong>{title}</strong>
-      <div>Group: {extendedProps.groupName}</div>
-      <div>Teacher: {extendedProps.teacherName}</div>
-    </div>
   );
 };
 
