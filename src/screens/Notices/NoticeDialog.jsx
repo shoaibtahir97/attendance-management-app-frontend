@@ -4,6 +4,7 @@ import {
   RHFCheckbox,
   RHFDatePicker,
   RHFSelect,
+  RHFSwitch,
   RHFTextField,
   RHFTimePicker,
 } from '../../components/HookForm';
@@ -18,81 +19,101 @@ import {
   Typography,
 } from '@mui/material';
 import { MdClose } from 'react-icons/md';
-import { getDay } from 'date-fns';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { Button } from 'antd';
+import {
+  useCreateNoticeMutation,
+  useUpdateNoticeMutation,
+} from '../../redux/slices/apiSlices/noticesApiSlice';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import useNotification from '../../hooks/useNotification';
+
+const defaultValues = {
+  title: '',
+  description: '',
+  date: dayjs(),
+  isActive: true,
+};
 
 const NoticeDialog = (props) => {
   const {
     isShowModal,
     showModalMethod,
-    currentEvent,
-    setEvents,
-    events: createdEvents,
+    currentNotice = defaultValues,
+    setCurrentNotice,
+    fetchNotices,
   } = props;
-
-  const repeat = [
-    { value: '', label: 'Does not repeat' },
-    { value: '', label: 'Daily' },
-    { value: '', label: `Weekly on ${getDay(currentEvent?.startStr)}` },
-    { value: '', label: 'Every weekday' },
-  ];
+  const [createNotice, { isLoading: createNoticeLoading }] =
+    useCreateNoticeMutation();
+  const [updateNotice, { isLoading: updateNoticeLoading }] =
+    useUpdateNoticeMutation();
+  const { openNotification } = useNotification();
 
   const closeModal = () => {
+    reset(defaultValues);
     showModalMethod();
-    reset({}, { keepValues: false });
+    setCurrentNotice(null);
   };
 
-  const defaultValues = {
-    title: '',
-    description: '',
-    start: dayjs(currentEvent?.startStr),
-    startTime: dayjs(currentEvent?.start),
-    endTime: dayjs(currentEvent?.end),
-    allDay: currentEvent?.allDay,
-    repeat: '',
-  };
-
-  const methods = useForm({
-    defaultValues,
+  const addNoticeSchema = Yup.object().shape({
+    title: Yup.string().required('Title is required'),
+    description: Yup.string(),
+    date: Yup.date().required('Start date is required'),
+    isActive: Yup.boolean(),
   });
 
-  const { watch, handleSubmit, reset, getValues } = methods;
-  const eventType = watch('eventType');
+  const methods = useForm({
+    defaultValues: {
+      title: currentNotice?.title,
+      description: currentNotice?.description,
+      isActive: currentNotice?.isActive,
+      date: currentNotice?.date,
+    },
+    resolver: yupResolver(addNoticeSchema),
+  });
 
-  const addEvent = (data) => {
-    console.log('data', data);
-    const newEvent = {
-      id: (Math.random() + 1).toString(36).substring(2),
-      start: data.startTime.$d, // Use the formatted start date
-      end: data.endTime.$d, // Use the formatted end date
-      title: data.title,
-      allDay: data.allDay,
-    };
+  const { handleSubmit, reset } = methods;
 
-    setEvents([...createdEvents, newEvent]);
-    localStorage.setItem(
-      'events',
-      JSON.stringify([...createdEvents, { ...newEvent }])
-    );
-    closeModal();
-  };
-
-  useEffect(() => {
-    if (currentEvent) {
-      const newDefaultValues = {
-        title: currentEvent.title || '',
-        description: currentEvent.description || '',
-        start: dayjs(currentEvent.startStr),
-        startTime: dayjs(currentEvent.start),
-        endTime: dayjs(currentEvent.end),
-        allDay: currentEvent.allDay || false,
-        repeat: currentEvent.repeat || '',
-      };
-      reset(newDefaultValues);
+  const addEvent = async (data) => {
+    const { title, description, date, isActive } = data;
+    if (currentNotice) {
+      await updateNotice({
+        title,
+        description,
+        date,
+        isActive,
+        id: currentNotice?._id,
+      })
+        .unwrap()
+        .then((res) => {
+          openNotification('success', res?.message);
+          fetchNotices({
+            page: 1,
+            recordsPerPage: 10,
+          });
+          closeModal();
+        })
+        .catch((err) => {
+          openNotification('error', err.data?.message || err.error);
+        });
+    } else {
+      await createNotice({ title, description, date, isActive })
+        .unwrap()
+        .then((res) => {
+          openNotification('success', res?.message);
+          closeModal();
+          fetchNotices({
+            page: 1,
+            recordsPerPage: 10,
+          });
+        })
+        .catch((err) => {
+          openNotification('error', err.data?.message || err.error);
+        });
     }
-  }, [currentEvent, reset]);
+  };
 
   return (
     <Dialog open={isShowModal} onClose={closeModal} maxWidth="sm" fullWidth>
@@ -128,12 +149,11 @@ const NoticeDialog = (props) => {
               alignItems="center"
               justifyContent="space-between"
               spacing={1}>
-              <RHFDatePicker name="start" label="Date" />
-              <RHFTimePicker name="startTime" label="Start time" />
-              <RHFTimePicker name="endTime" label="End time" />
+              <RHFDatePicker name="date" label="Date" width="100%" />
             </Stack>
-
-            <RHFCheckbox name="allDay" label="All day" />
+            <Stack>
+              <RHFSwitch name="isActive" label="Status" />
+            </Stack>
           </Stack>
         </DialogContent>
         <DialogActions>
@@ -143,8 +163,11 @@ const NoticeDialog = (props) => {
             </Button>
 
             <Box sx={{ ml: 1 }}>
-              <Button type="primary" htmlType="submit">
-                Save
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={createNoticeLoading || updateNoticeLoading}>
+                {currentNotice ? 'Update' : 'Create'}
               </Button>
             </Box>
           </Box>
