@@ -504,6 +504,17 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { getDayOfWeek } from '../../../utils/formatDateTime';
 import { getDate } from 'date-fns';
+import { useGetNoticesQuery } from '../../../redux/slices/apiSlices/noticesApiSlice';
+import NoticeCard from '../../noticeCard';
+
+const noticeColors = [
+  '#ebe9fc',
+  '#fad5b8',
+  '#d7ffb3',
+  '#b9ebf8',
+  '#b9f1f8',
+  '#c3bcf5',
+];
 
 const renderEventComponent = (props) => {
   const { event, timeText } = props;
@@ -538,6 +549,8 @@ const TeacherDashboard = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [getTeacherTimetable, { isLoading, error }] =
     useLazyGetTeacherTimeTableQuery();
+  const { data: notices } = useGetNoticesQuery();
+
   const navigate = useNavigate();
   const calendarRef = useRef();
   const { openNotification } = useNotification();
@@ -642,7 +655,7 @@ const TeacherDashboard = () => {
         />
       ) : (
         <Grid container spacing={1}>
-          <Grid item xs={12} md={9}>
+          <Grid item xs={12} lg={9}>
             <Card>
               <FullCalendar
                 ref={calendarRef}
@@ -685,11 +698,27 @@ const TeacherDashboard = () => {
               />
             </Card>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={12} lg={3}>
             <Card>
               <Typography fontSize={'1.75em'} fontWeight={700}>
-                Announcements
+                Notice
               </Typography>
+              <Box>
+                {notices?.data?.map((notice, index) => {
+                  if (notice.isActive) {
+                    return (
+                      <NoticeCard
+                        key={notice._id}
+                        title={notice.title}
+                        description={notice.description}
+                        startDate={notice.startDate}
+                        endDate={notice.endDate}
+                        color={noticeColors[index]}
+                      />
+                    );
+                  }
+                })}
+              </Box>
             </Card>
           </Grid>
         </Grid>
