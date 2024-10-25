@@ -10,6 +10,7 @@ const MAIL_URL = '/api/v1/mail';
 const TIMETABLE_URL = '/api/v1/timetable';
 const REPORTS_URL = '/api/v1/reports';
 const ADMISSIONS_URL = '/api/v1/admissions';
+const NOTICES_URL = '/api/v1/notice';
 
 export {
   BASE_URL,
@@ -23,4 +24,5 @@ export {
   TIMETABLE_URL,
   REPORTS_URL,
   ADMISSIONS_URL,
+  NOTICES_URL,
 };

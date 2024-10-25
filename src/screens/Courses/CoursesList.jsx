@@ -12,7 +12,6 @@ import TableSkeleton from '../../components/TableSkeleton';
 import useNotification from '../../hooks/useNotification';
 import { FiEye } from 'react-icons/fi';
 import { FiEdit } from 'react-icons/fi';
-import dayjs from 'dayjs';
 import { formatDate } from 'date-fns';
 import { getFormattedDate } from '../../utils/formatDateTime';
 
