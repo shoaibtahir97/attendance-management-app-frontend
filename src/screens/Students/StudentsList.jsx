@@ -4,7 +4,10 @@ import { Alert, Button, Table, Tooltip } from 'antd';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { onShowSizeChange, itemRender } from '../../components/Pagination';
 import { useState } from 'react';
-import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
+import {
+  useDeleteStudentsMutation,
+  useLazyGetStudentsQuery,
+} from '../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import PageHeader from '../../components/PageHeader';
 import { apiSlice } from '../../redux/slices/apiSlices/apiSlice';
@@ -14,6 +17,7 @@ import {
   RHFAutocomplete,
   RHFTextField,
 } from '../../components/HookForm';
+import { MdDelete } from 'react-icons/md';
 import {
   Box,
   Grid,
@@ -32,6 +36,9 @@ import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
 import { useSelector } from 'react-redux';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
+import useNotification from '../../hooks/useNotification';
+import { X } from 'react-feather';
 
 export const column = [
   {
@@ -120,9 +127,11 @@ export const SKELETON = ['', '', '', '', ''];
 
 const Students = () => {
   const navigate = useNavigate();
+  const { openNotification } = useNotification();
   const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
   const { data: groupsList, isLoading: loadingGroups } =
     useGetGroupsListQuery();
+  const [deleteStudents, { loading: isDeleting }] = useDeleteStudentsMutation();
 
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
@@ -138,11 +147,18 @@ const Students = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isBulkStudentUploadModalVisible, setIsBulkStudentUploadModalVisible] =
     useState(false);
+  const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
+    useState(false);
+
+  const openDeleteConfirmationDialog = () => {
+    setIsDeleteConfirmDialogOpen(!isDeleteConfirmDialogOpen);
+  };
+
   const open = Boolean(anchorEl);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
   };
 
   const openAddStudentPopover = (event) => {
@@ -164,7 +180,7 @@ const Students = () => {
   const studentQuerySchema = Yup.object().shape({
     studentId: Yup.string().trim(),
     name: Yup.string().trim(),
-    group: Yup.string().trim(),
+    group: Yup.string().trim().nullable(),
   });
 
   const methods = useForm({
@@ -190,7 +206,20 @@ const Students = () => {
   };
 
   const fetchStudentsByQuery = (data) => {
-    fetchStudents({ ...data, ...studentsQuery });
+    fetchStudents({ ...data });
+  };
+
+  const handleDeleteStudents = async () => {
+    await deleteStudents({ studentIds: [...selectedRowKeys] })
+      .unwrap()
+      .then(() => {
+        openNotification('success', 'Student(s) deleted successfully');
+        fetchStudents(studentsQuery);
+        openDeleteConfirmationDialog();
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message || err?.error);
+      });
   };
 
   useEffect(() => {
@@ -199,6 +228,15 @@ const Students = () => {
 
   return (
     <>
+      <DeleteConfirmationDialog
+        isShowModal={isDeleteConfirmDialogOpen}
+        showModalMethod={openDeleteConfirmationDialog}
+        dialogTitle="Delete Student"
+        // deleteEntity="Student(s)"
+        deleteWarning="Are you sure you want to delete the selected student(s)?, once deleted, it cannot be undone."
+        deleteLoader={isDeleting}
+        handleDelete={handleDeleteStudents}
+      />
       <div className="content container-fluid">
         {/* Page Header  */}
         <PageHeader
@@ -259,13 +297,6 @@ const Students = () => {
                       <h3 className="page-title">Students</h3>
                     </div>
                     <div className="col-auto text-end float-end ms-auto download-grp">
-                      {dataSource.students.length ? (
-                        <Link to="#" className="btn btn-outline-primary me-2">
-                          <i className="fas fa-download" /> Download
-                        </Link>
-                      ) : (
-                        <></>
-                      )}
                       <Tooltip title="Register Student">
                         <Link
                           onClick={openAddStudentPopover}
@@ -313,6 +344,17 @@ const Students = () => {
                   />
                 ) : (
                   <div className="table-responsive">
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <Tooltip title="Delete Student(s)">
+                        <IconButton
+                          type="primary"
+                          onClick={openDeleteConfirmationDialog}
+                          disabled={selectedRowKeys.length === 0} // Disable if no rows selected
+                        >
+                          <MdDelete />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                     <Table
                       pagination={{
                         total: dataSource?.totalRecords,
@@ -338,7 +380,7 @@ const Students = () => {
                       columns={column}
                       dataSource={dataSource.students}
                       rowSelection={rowSelection}
-                      rowKey={(record) => record.id}
+                      rowKey={(record) => record._id}
                     />
                   </div>
                 )}

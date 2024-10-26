@@ -108,7 +108,7 @@ const GroupsList = () => {
       .then((res) => {
         setDataSource({
           groups: res.groups,
-          totalRecords: res.filteredRecordsCount,
+          totalRecords: res.filteredGroups,
         });
       })
       .catch((err) => {

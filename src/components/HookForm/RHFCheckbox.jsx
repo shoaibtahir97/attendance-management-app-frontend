@@ -7,6 +7,9 @@ import {
   FormControlLabel,
   FormGroup,
   FormControlLabelProps,
+  Stack,
+  FormHelperText,
+  Box,
 } from '@mui/material';
 
 // ----------------------------------------------------------------------
@@ -24,7 +27,22 @@ export function RHFCheckbox({ name, ...other }) {
         <Controller
           name={name}
           control={control}
-          render={({ field }) => <Checkbox {...field} checked={field?.value} />}
+          render={({ field, fieldState: { error } }) => (
+            <Stack direction="column">
+              <Box>
+                <Checkbox {...field} checked={field?.value} />
+              </Box>
+              <Box>
+                {error && (
+                  <Box>
+                    <FormHelperText error sx={{ textAlign: 'left', ml: 2 }}>
+                      {error.message}
+                    </FormHelperText>
+                  </Box>
+                )}
+              </Box>
+            </Stack>
+          )}
         />
       }
       {...other}

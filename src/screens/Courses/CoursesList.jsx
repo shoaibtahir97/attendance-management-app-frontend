@@ -12,6 +12,8 @@ import TableSkeleton from '../../components/TableSkeleton';
 import useNotification from '../../hooks/useNotification';
 import { FiEye } from 'react-icons/fi';
 import { FiEdit } from 'react-icons/fi';
+import { formatDate } from 'date-fns';
+import { getFormattedDate } from '../../utils/formatDateTime';
 
 const SKELETON = ['', '', '', '', ''];
 
@@ -34,9 +36,12 @@ const CoursesList = () => {
       render: (text, record) => <h2 className="table-avatar">{text}</h2>,
     },
     {
-      title: 'Groups',
-      dataIndex: 'groups',
-      sorter: (a, b) => a.groups.length - b.groups.length,
+      title: 'Cohort',
+      dataIndex: 'cohort',
+      sorter: (a, b) => a.cohort.length - b.cohort.length,
+      render: (text, record) => {
+        return <div>{getFormattedDate(text)}</div>;
+      },
     },
     {
       title: 'Action',

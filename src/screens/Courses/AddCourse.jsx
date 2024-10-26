@@ -32,10 +32,11 @@ export const moduleYears = [
 const defaultValues = {
   name: '',
   code: '',
+  cohort: null,
   modules: [
     {
-      cohortStartDate: null,
-      cohortEndDate: null,
+      // cohortStartDate: null,
+      // cohortEndDate: null,
       groups: [],
       moduleLead: '',
       subjects: [],
@@ -48,8 +49,9 @@ const AddCourse = () => {
   const { data: subjectsList, isLoading: loadingSubjects } =
     useGetSubjectsListQuery();
 
-  const { data: groupsList, isLoading: loadingGroups } =
-    useGetGroupsListQuery();
+  const { data: groupsList, isLoading: loadingGroups } = useGetGroupsListQuery({
+    course: null,
+  });
 
   const { data: teachersList, isLoading: loadingTeachers } =
     useGetUsersListQuery({ role: 'teacher' });
@@ -61,24 +63,25 @@ const AddCourse = () => {
   const courseSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     code: Yup.string().required('Code is required'),
+    cohort: Yup.date().required('Cohort date is required'),
     modules: Yup.array()
       .of(
         Yup.object().shape({
-          year: Yup.number().required('Year is required'),
-          cohortStartDate: Yup.date().required('Cohort start date is required'),
-          cohortEndDate: Yup.date().required('Cohort start date is required'),
+          year: Yup.number(),
+          // .required('Year is required'),
+          // cohortStartDate: Yup.date().required('Cohort start date is required'),
+          // cohortEndDate: Yup.date().required('Cohort start date is required'),
           subjects: Yup.array()
             .of(Yup.string())
-            .min(1, 'Minimum one subject is required')
-            .max(3, 'Minimum three subjects are allowed'),
-          moduleLead: Yup.string().required('Module Lead is required'),
-          groups: Yup.array()
-            .of(Yup.string())
-            .min(1, 'Minimum one group is required'),
+            .min(1, 'Minimum one subject is required'),
+          // .max(3, 'Minimum three subjects are allowed'),
+          moduleLead: Yup.string(),
+          // .required('Module Lead is required'),
+          groups: Yup.array().of(Yup.string()),
+          // .min(1, 'Minimum one group is required'),
         })
       )
-      .min(1)
-      .max(4),
+      .min(1),
   });
 
   const methods = useForm({
@@ -149,11 +152,18 @@ const AddCourse = () => {
                         />
                       )}
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={4}>
                       <RHFTextField name="name" label="Course Name" />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={4}>
                       <RHFTextField name="code" label="Course code" />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <RHFDatePicker
+                        name="cohort"
+                        label="Cohort date"
+                        sx={{ width: '100%' }}
+                      />
                     </Grid>
                     <Grid
                       item
@@ -171,7 +181,7 @@ const AddCourse = () => {
                           onClick={() =>
                             ModulesAppend({
                               year: null,
-                              cohortStartDate: null,
+                              // cohortStartDate: null,
                               groups: [],
                               moduleLead: '',
                               subjects: [],
@@ -190,14 +200,14 @@ const AddCourse = () => {
                         xs={12}
                         spacing={1}
                         sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Grid item xs={12} sm={2}>
+                        <Grid item xs={12} sm={3}>
                           <RHFSelect
                             name={`modules[${index}].year`}
                             label="Year"
                             options={moduleYears}
                           />
                         </Grid>
-                        <Grid item xs={12} sm={2}>
+                        {/* <Grid item xs={12} sm={2}>
                           <RHFDatePicker
                             name={`modules[${index}].cohortStartDate`}
                             label="Cohort Start Date"
@@ -210,8 +220,8 @@ const AddCourse = () => {
                             label="Cohort End Date"
                             sx={{ width: '100%' }}
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={2}>
+                        </Grid> */}
+                        <Grid item xs={12} sm={3}>
                           <RHFAutocomplete
                             name={`modules[${index}].moduleLead`}
                             label="Module Lead"
@@ -231,7 +241,7 @@ const AddCourse = () => {
                         </Grid>
 
                         <Grid item container xs={12} sm={3}>
-                          <Grid item xs={11}>
+                          <Grid item xs={12} sm={11}>
                             <RHFAutocomplete
                               name={`modules[${index}].subjects`}
                               multiple={true}
@@ -240,7 +250,7 @@ const AddCourse = () => {
                               label="Subjects"
                             />
                           </Grid>
-                          <Grid item xs={1} sx={{ mt: 5 }}>
+                          <Grid item xs={12} sm={1} sx={{ mt: 5 }}>
                             {ModulesFields?.length > 1 && (
                               <IconButton
                                 type="button"

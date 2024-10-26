@@ -38,7 +38,7 @@ const RHFAutocomplete = (props) => {
                   ? options?.filter((option) =>
                       value?.includes(option.value)
                     ) || []
-                  : options?.find((option) => option.value === value) || null
+                  : options?.find((option) => option.value === value) || ''
               }
               onChange={(event, newValue) => {
                 if (multiple) {
@@ -46,7 +46,7 @@ const RHFAutocomplete = (props) => {
                     newValue?.map((option) => option.value) || [];
                   onChange(selectedValues);
                 } else {
-                  onChange(newValue?.value || null);
+                  onChange(newValue?.value || '');
                 }
               }}
               loading={loading}

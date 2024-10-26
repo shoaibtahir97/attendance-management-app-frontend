@@ -6,6 +6,7 @@ const PATH_AUTH = {
   login: '/',
   register: '/register',
   forgotPassword: '/forgotpassword',
+  admissionForm: '/admissionform',
 };
 
 const PATH_DASHBOARD = {
@@ -34,6 +35,7 @@ const PATH_DASHBOARD = {
   teacherEdit: path(ROOTS_DASHBOARD, '/editteacher'),
   teacherProfile: path(ROOTS_DASHBOARD, '/teachersprofile'),
   viewattendance: path(ROOTS_DASHBOARD, '/viewattendance'),
+  notices: path(ROOTS_DASHBOARD, '/notices'),
   // studentReports: path(ROOTS_DASHBOARD, '/studentReports'),
   // tutorReports: path(ROOTS_DASHBOARD, '/attendanceReports'),
 };

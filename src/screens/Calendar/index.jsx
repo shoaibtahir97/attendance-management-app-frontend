@@ -148,22 +148,22 @@ const Calendar = () => {
     await getTimetable()
       .unwrap()
       .then((res) => {
-        const events = [];
-        res.data.forEach((item) => {
-          item.entries.forEach((entry) => {
-            events.push({
-              title: `Group: ${item.group.name} \n Subject: ${entry.subject.name} \n Teacher: ${entry.teacher.firstName} ${entry.teacher.lastName}`,
-              startTime: `${entry.startTime}:00`,
-              endTime: `${entry.endTime}:00`,
-              groupId: item.group._id,
-              subjectId: entry.subject._id,
+        const updatedEvents = [];
+        res?.data?.forEach((item) => {
+          item?.entries?.forEach((entry) => {
+            updatedEvents.push({
+              title: `Group: ${item?.group?.name} \n Subject: ${entry?.subject?.name} \n Teacher: ${entry?.teacher?.firstName} ${entry?.teacher?.lastName}`,
+              startTime: `${entry?.startTime}:00`,
+              endTime: `${entry?.endTime}:00`,
+              groupId: item?.group?._id,
+              subjectId: entry?.subject?._id,
               allDay: false,
-              daysOfWeek: [`${getDayOfWeek(entry.dayOfWeek)}`],
+              daysOfWeek: [`${getDayOfWeek(entry?.dayOfWeek)}`],
             });
           });
         });
-
-        setEvents(events);
+        console.log('updatedEvents', updatedEvents);
+        setEvents(updatedEvents);
       })
       .catch((err) => {
         openNotification('error', err?.data?.message || err?.error);
@@ -204,9 +204,6 @@ const Calendar = () => {
     }
   }, []);
 
-  // const renderEventContent = (eventInfo) => {
-  //   return <CustomEvent event={eventInfo.event} />;
-  // };
   return (
     <div className="content container-fluid">
       <div className="page-header">
@@ -265,6 +262,7 @@ const Calendar = () => {
             }}
             titleFormat={{ year: 'numeric', month: 'long' }}
             allDaySlot={false}
+            initialView="dayGridMonth"
             viewHeight={'100vh'}
             eventTimeFormat={{
               hour: '2-digit',
@@ -279,7 +277,7 @@ const Calendar = () => {
             slotMinTime="09:30:00"
             slotMaxTime="22:00:00"
             slotDuration="01:00:00"
-            weekends={false}
+            weekends={true}
             dayHeaderFormat={{
               weekday: 'short',
               day: 'numeric',
@@ -504,22 +502,6 @@ const EventDialog = (props) => {
         </DialogActions>
       </FormProvider>
     </Dialog>
-  );
-};
-
-const CustomEvent = ({ event }) => {
-  const { title, extendedProps } = event;
-  return (
-    <div
-      style={{
-        padding: '5px',
-        backgroundColor: '#dfe7fd',
-        borderRadius: '4px',
-      }}>
-      <strong>{title}</strong>
-      <div>Group: {extendedProps.groupName}</div>
-      <div>Teacher: {extendedProps.teacherName}</div>
-    </div>
   );
 };
 

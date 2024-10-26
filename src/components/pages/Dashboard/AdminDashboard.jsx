@@ -26,19 +26,34 @@ import Footer from '../../Footer/Footer';
 import { useSelector } from 'react-redux';
 import PageHeader from '../../PageHeader';
 import {
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import { Button } from 'antd';
 import { IoMdCheckmark } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
+import { useGetNoticesQuery } from '../../../redux/slices/apiSlices/noticesApiSlice';
+import NoticeCard from '../../noticeCard';
+import { PATH_DASHBOARD } from '../../../routes/paths';
+
+const noticeColors = [
+  '#ebe9fc',
+  '#fad5b8',
+  '#d7ffb3',
+  '#b9ebf8',
+  '#b9f1f8',
+  '#c3bcf5',
+];
 
 const AdminDashboard = () => {
   const { userInfo } = useSelector((state) => state.auth);
+  const { data: notices } = useGetNoticesQuery();
   const groups = [
     {
       group: 'A',
@@ -203,19 +218,31 @@ const AdminDashboard = () => {
             <div className="card-header">
               <div className="row align-items-center">
                 <div className="col-12">
-                  <h5 className="card-title">Notices</h5>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center">
+                    <Typography fontSize={'1.75em'} fontWeight={700}>
+                      Notice
+                    </Typography>
+                    <Link to={PATH_DASHBOARD.notices}>View All</Link>
+                  </Stack>
                 </div>
                 <div className="col-12">
-                  <TableContainer>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          Assignment Submission date extended to 24-09-2024
-                        </TableRow>
-                        <TableRow>Friday 27-09-2024 is public holiday</TableRow>
-                      </TableHead>
-                    </Table>
-                  </TableContainer>
+                  {notices?.data?.map((notice, index) => {
+                    if (notice.isActive) {
+                      return (
+                        <NoticeCard
+                          key={notice._id}
+                          title={notice.title}
+                          description={notice.description}
+                          startDate={notice.startDate}
+                          endDate={notice.endDate}
+                          color={noticeColors[index]}
+                        />
+                      );
+                    }
+                  })}
                 </div>
               </div>
             </div>

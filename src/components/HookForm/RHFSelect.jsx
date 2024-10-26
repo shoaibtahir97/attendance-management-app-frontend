@@ -28,7 +28,6 @@ export default function RHFSelect({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
-        console.log('field', field);
         return (
           <>
             <Stack
@@ -44,6 +43,7 @@ export default function RHFSelect({
                 fullWidth
                 error={!!error}
                 size="small"
+                value={field?.value || ''}
                 {...field}
                 {...other}>
                 {options?.map((option) => (

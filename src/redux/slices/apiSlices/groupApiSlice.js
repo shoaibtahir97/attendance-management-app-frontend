@@ -13,8 +13,9 @@ export const groupApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
     }),
     getGroupsList: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: `${GROUPS_URL}/list`,
+        params,
         credentials: 'include',
       }),
       transformResponse: (res) => res?.data,
