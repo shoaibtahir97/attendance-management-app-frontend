@@ -162,7 +162,6 @@ const Calendar = () => {
             });
           });
         });
-        console.log('updatedEvents', updatedEvents);
         setEvents(updatedEvents);
       })
       .catch((err) => {
