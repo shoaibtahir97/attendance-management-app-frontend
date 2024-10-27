@@ -20,6 +20,15 @@ const attendanceSlice = createSlice({
         state.attendanceRecords.push(action.payload);
       }
     },
+    addAbsentReason: (state, action) => {
+      const attendance = state.attendanceRecords.find(
+        (attendance) => attendance.studentId === action.payload.studentId
+      );
+
+      if (attendance) {
+        attendance.reason = action.payload.reason;
+      }
+    },
     resetAttendanceRecord: (state, action) => {
       localStorage.removeItem('attendanceRecords');
       state.attendanceRecords = [];
@@ -27,7 +36,7 @@ const attendanceSlice = createSlice({
   },
 });
 
-export const { markAttendance, resetAttendanceRecord } =
+export const { markAttendance, resetAttendanceRecord, addAbsentReason } =
   attendanceSlice.actions;
 
 export default attendanceSlice.reducer;
