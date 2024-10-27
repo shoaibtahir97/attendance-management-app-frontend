@@ -9,8 +9,6 @@ import {
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import dayjs from 'dayjs';
-import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import { useSelector } from 'react-redux';
 import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { Alert, Button, Table } from 'antd';
@@ -21,8 +19,8 @@ import { useDispatch } from 'react-redux';
 import { IoMdCheckmark } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
 import { GoClock } from 'react-icons/go';
-import { getFormattedDate, getFormattedTime } from '../../utils/formatDateTime';
-import { Box, Grid, Stack, TextField } from '@mui/material';
+import { getFormattedDate } from '../../utils/formatDateTime';
+import { Autocomplete, Box, Grid, Stack, TextField } from '@mui/material';
 import {
   useLazyGetAttendanceQuery,
   useMarkAttendanceMutation,
@@ -31,13 +29,10 @@ import useNotification from '../../hooks/useNotification';
 import {
   markAttendance,
   resetAttendanceRecord,
+  addAbsentReason,
 } from '../../redux/slices/attendanceSlice';
 import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
-import { render } from '@fullcalendar/core/preact.js';
-import UnMarkedAttendance from './components/UnMarkedAttendance';
-import { getTime, set } from 'date-fns';
-
 const status = [
   { label: 'Present', value: 'present' },
   { label: 'Absent', value: 'absent' },
@@ -61,12 +56,25 @@ const timeSlotOptions = [
 
 export const SKELETON = ['', '', '', '', ''];
 
+const attendanceReasons = [
+  'Call sick',
+  'GP Appointment',
+  'Dentist Appointment',
+  'Hospital Appointment',
+  'Child Sick',
+  'Holidays',
+];
+
 const MarkAttendanceScreen = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [groupId, setGroupId] = useState(state?.groupId);
+  const [subjectId, setSubjectId] = useState(state?.subjectId);
+  const [startTime, setStartTime] = useState(state?.startTime);
+  const [endTime, setEndTime] = useState(state?.endTime);
+  const [subject, setSubject] = useState(state?.subject);
+  const [group, setGroup] = useState(state?.group);
 
-  // const { group, groupId, startTime, endTime, subject, teacher, subjectId } =
-  //   state;
   const { openNotification } = useNotification();
   const dispatch = useDispatch();
   const [isAttendanceMarked, setIsAttendanceMarked] = useState(false);
@@ -94,7 +102,6 @@ const MarkAttendanceScreen = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -103,10 +110,13 @@ const MarkAttendanceScreen = () => {
       title: 'ID',
       dataIndex: 'studentId',
       sorter: (a, b) => a.studentId.length - b.studentId.length,
+      width: '10%',
     },
     {
       title: 'Name',
       dataIndex: 'name',
+      width: '20%',
+
       sorter: (a, b) => a.name.length - b.name.length,
       render: (text, record) => (
         <>
@@ -117,6 +127,7 @@ const MarkAttendanceScreen = () => {
     {
       title: 'Status',
       dataIndex: 'status',
+      width: '30%',
       render: (text, record) => (
         <div role="group" aria-label="Basic mixed styles example">
           {status?.map((status, index) => {
@@ -128,7 +139,7 @@ const MarkAttendanceScreen = () => {
               <Button
                 disabled={
                   userInfo.role === 'teacher' &&
-                  new Date() >= new Date(state?.startTime)
+                  new Date() >= new Date(startTime)
                 }
                 key={index}
                 type="primary"
@@ -181,37 +192,50 @@ const MarkAttendanceScreen = () => {
         </div>
       ),
     },
-    // {
-    //   title: 'Reason',
-    //   dataIndex: 'reason',
-    //   render: (text, record) => {
-    //     const attendanceStatus = attendanceRecords.find(
-    //       (attendanceRecord) => attendanceRecord.studentId === record.studentId
-    //     );
-    //     return (
-    //       <div>
-    //         <TextField
-    //           value={record.reason}
-    //           variant="outlined"
-    //           size="small"
-    //           multiline
-    //           maxRows={2}
-    //           onChange={(event) => {
-    //             setTimeout(() => {
-    //               dispatch(
-    //                 markAttendance({
-    //                   studentId: record.studentId,
-    //                   reason: event.target.value,
-    //                   status: attendanceStatus?.status,
-    //                 })
-    //               );
-    //             }, 1000);
-    //           }}
-    //         />
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      title: 'Reason',
+      dataIndex: 'reason',
+      render: (text, record) => {
+        const attendanceStatus = attendanceRecords?.find(
+          (attendanceRecord) => attendanceRecord.studentId == record.id
+        );
+        return (
+          <div>
+            <Autocomplete
+              value={attendanceStatus?.reason || ''}
+              variant="outlined"
+              size="small"
+              freeSolo
+              disabled={
+                attendanceStatus?.status === 'present' ||
+                attendanceStatus === undefined
+              }
+              options={attendanceReasons}
+              onBlur={(event) => {
+                dispatch(
+                  addAbsentReason({
+                    studentId: record?.id,
+                    reason: event.target.value,
+                  })
+                );
+              }}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  {...params}
+                  slotProps={{
+                    input: {
+                      ...params.InputProps,
+                      type: 'search',
+                    },
+                  }}
+                />
+              )}
+            />
+          </div>
+        );
+      },
+    },
   ];
 
   const rowSelection = {
@@ -245,7 +269,7 @@ const MarkAttendanceScreen = () => {
   const fetchStudents = async (data) => {
     const { date, ...query } = { ...data };
 
-    await getStudents({ ...query })
+    await getStudents({ ...query, recordsPerPage: 100, page: 1 })
       .unwrap()
       .then((res) => {
         const { students, totalRecords, filteredRecordsCount } = res;
@@ -269,12 +293,12 @@ const MarkAttendanceScreen = () => {
       ...getValues(),
     };
     const payload = {
-      subject: state?.subjectId,
-      group: state?.groupId,
-      date: new Date(state?.startTime),
+      subject: subjectId,
+      group: groupId,
+      date: new Date(startTime),
       teacher: userInfo._id,
-      startTime: state?.startTime,
-      endTime: state?.endTime,
+      startTime,
+      endTime,
       attendanceRecords,
     };
 
@@ -297,9 +321,11 @@ const MarkAttendanceScreen = () => {
 
   async function fetchAttendanceRecords() {
     const data = {
-      date: state?.startTime,
-      group: state?.groupId,
-      subject: state?.subjectId,
+      date: startTime,
+      group: groupId,
+      subject: subjectId,
+      page: 1,
+      recordsPerPage: 100,
     };
     await getAttendance({ ...data })
       .unwrap()
@@ -309,6 +335,7 @@ const MarkAttendanceScreen = () => {
             markAttendance({
               studentId: record?.studentId?._id,
               status: record?.status,
+              reason: record?.reason ?? '',
             })
           );
         });
@@ -327,7 +354,7 @@ const MarkAttendanceScreen = () => {
       })
       .catch((err) => {
         if (err?.data?.status === 400) {
-          fetchStudents({ group: state?.groupId });
+          fetchStudents({ group: groupId });
         }
       });
   }
@@ -449,10 +476,8 @@ const MarkAttendanceScreen = () => {
                       spacing={1}
                       alignItems="left"
                       justifyContent="center">
-                      <p className="fs-6">Subject:{state?.subject}</p>
-                      <p className="fs-6 text-secondary">
-                        Group:{state?.group}
-                      </p>
+                      <p className="fs-6">Subject: {subject}</p>
+                      <p className="fs-6 text-secondary">Group: {group}</p>
                     </Stack>
                   </Grid>
                   <Grid
@@ -466,10 +491,10 @@ const MarkAttendanceScreen = () => {
                       alignItems="left"
                       justifyContent="center">
                       <p className="fs-6">
-                        Time: {getFormattedTime(state?.startTime)}
+                        Time: {startTime?.split('T')[1]?.split('.')[0]}
                       </p>
                       <p className="fs-6 text-secondary">
-                        Date: {getFormattedDate(state?.startTime)}
+                        Date: {getFormattedDate(startTime)}
                       </p>
                     </Stack>
                   </Grid>
@@ -483,7 +508,7 @@ const MarkAttendanceScreen = () => {
                         onClick={handleMarkAttendance}
                         disabled={
                           userInfo.role === 'teacher' &&
-                          new Date() > new Date(state?.startTime)
+                          new Date() > new Date(startTime)
                         }
                         type="primary"
                         size="large"
@@ -512,18 +537,7 @@ const MarkAttendanceScreen = () => {
                       total: dataSource?.totalRecords,
                       showTotal: (total, range) =>
                         `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                      showSizeChanger: true,
-
-                      onShowSizeChange: onShowSizeChange,
-                      itemRender: itemRender,
-                      onChange: (page, pageSize) => {
-                        if (isAttendanceMarked) return;
-                        fetchStudents({
-                          page,
-                          recordsPerPage: pageSize,
-                          group: state?.groupId,
-                        });
-                      },
+                      defaultPageSize: 100,
                     }}
                     columns={column}
                     dataSource={dataSource.students}
