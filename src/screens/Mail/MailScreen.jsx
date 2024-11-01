@@ -135,7 +135,6 @@ const MailScreen = () => {
                             variant="subtitle1"
                             fontWeight="bold"
                             color="#2361CF">
-                            {' '}
                             {typeof attachment === 'string'
                               ? attachment
                               : attachment
