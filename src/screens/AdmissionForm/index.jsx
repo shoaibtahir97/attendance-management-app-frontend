@@ -32,7 +32,7 @@ import createPdfForm from '../../utils/createPdfForm';
 import { Checkmark } from 'react-checkmark';
 import dayjs from 'dayjs';
 
-export const genders = [
+export const studentGenders = [
   { value: '', label: 'Select Gender' },
   { value: 'man', label: 'Man' },
   { value: 'woman', label: 'Woman' },
@@ -440,7 +440,11 @@ const AdmissionForm = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                  <RHFSelect name="gender" label="Gender" options={genders} />
+                  <RHFSelect
+                    name="gender"
+                    label="Gender"
+                    options={studentGenders}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
                   {genderField === 'prefer_another_term' && (
