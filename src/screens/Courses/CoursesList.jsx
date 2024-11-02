@@ -36,10 +36,10 @@ const CoursesList = () => {
     },
     {
       title: 'Cohort',
-      dataIndex: 'cohort',
-      sorter: (a, b) => a.cohort.length - b.cohort.length,
+      dataIndex: 'cohortStartDate',
+      sorter: (a, b) => a.cohortStartDate.length - b.cohortStartDate.length,
       render: (text, record) => {
-        return <div>{format(text, 'MMM yy')}</div>;
+        return <div>{text ? format(text, 'MMM yy') : '-'}</div>;
       },
     },
     {
