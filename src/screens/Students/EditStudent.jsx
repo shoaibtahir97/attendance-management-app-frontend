@@ -29,16 +29,21 @@ import useNotification from '../../hooks/useNotification';
 import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
 import { moduleYears } from '../Courses/AddCourse';
 import { countries } from '../../utils/countries';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import { studentGenders } from '../AdmissionForm';
 
 const EditStudent = () => {
   const { openNotification } = useNotification();
 
   const { id: studentId } = useParams();
 
-  const { data, isLoading, error } = useGetStudentDetailsQuery(studentId);
-
   const { data: coursesList, isLoading: loadingCourses } =
     useGetCoursesListQuery();
+
+  const { data: groupsList, isLoading: loadingGroups } =
+    useGetGroupsListQuery();
+
+  const { data, isLoading, error } = useGetStudentDetailsQuery(studentId);
 
   const [updateStudentDetails, { isLoading: loadingUpdate }] =
     useUpdateStudentDetailsMutation();
@@ -53,6 +58,18 @@ const EditStudent = () => {
     nationality: Yup.string().required(),
     group: Yup.string().required(),
     gender: Yup.string().required(),
+    otherGender: Yup.string().test(
+      'otherGender_test',
+      'Other gender is required',
+      function (value, context) {
+        if (context.parent.gender === 'prefer_another_term') {
+          if (!value) {
+            return false;
+          }
+        }
+        return true;
+      }
+    ),
     courseName: Yup.string().required(),
     year: Yup.number().required(),
   });
@@ -61,7 +78,7 @@ const EditStudent = () => {
     resolver: yupResolver(studentSchema),
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, watch } = methods;
 
   const updateStudentData = async (data) => {
     updateStudentDetails(data)
@@ -71,6 +88,7 @@ const EditStudent = () => {
         openNotification('error', err?.data?.message || err?.error)
       );
   };
+  const genderField = watch('gender');
 
   useEffect(() => {
     reset(data);
@@ -90,7 +108,7 @@ const EditStudent = () => {
         <div className="col-sm-12">
           <div className="card comman-shadow">
             <div className="card-body">
-              {isLoading ? (
+              {isLoading || loadingCourses || loadingGroups ? (
                 <EditStudentSkeleton />
               ) : error ? (
                 <Alert
@@ -125,8 +143,17 @@ const EditStudent = () => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
-                      <RHFTextField name="group" label="Group" />
+                      <RHFAutocomplete
+                        name="gender"
+                        label="Gender"
+                        options={studentGenders}
+                      />
                     </Grid>
+                    {genderField === 'prefer_another_term' && (
+                      <Grid item xs={12} sm={6} md={4}>
+                        <RHFTextField label="Other Gender" name="otherGender" />
+                      </Grid>
+                    )}
                     <Grid item xs={12} sm={6} md={4}>
                       <RHFTextField name="phone" label="Phone" />
                     </Grid>
@@ -145,6 +172,13 @@ const EditStudent = () => {
                         name="courseName"
                         label="Course Name"
                         options={coursesList}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                      <RHFAutocomplete
+                        name="group"
+                        label="Group"
+                        options={groupsList}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
