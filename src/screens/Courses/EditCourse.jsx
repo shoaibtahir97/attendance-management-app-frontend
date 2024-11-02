@@ -57,8 +57,7 @@ const EditCourse = () => {
           // cohortStartDate: Yup.date().required('Cohort start date is required'),
           subjects: Yup.array()
             .of(Yup.string())
-            .min(1, 'Minimum one subject is required')
-            .max(3, 'Minimum three subjects are allowed'),
+            .min(1, 'Minimum one subject is required'),
           moduleLead: Yup.string().required('Module Lead is required'),
           groups: Yup.array()
             .of(Yup.string())
@@ -204,7 +203,7 @@ const EditCourse = () => {
                         item
                         xs={12}
                         spacing={1}
-                        sx={{ display: 'flex', alignItems: 'center' }}>
+                        sx={{ display: 'flex' }}>
                         <Grid item xs={12} sm={2}>
                           <RHFSelect
                             name={`modules[${index}].year`}
