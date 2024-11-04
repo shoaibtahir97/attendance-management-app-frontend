@@ -48,7 +48,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
     }),
     updateStudentDetails: builder.mutation({
       query: (payload) => ({
-        url: `${STUDENTS_URL}/${payload.id}`,
+        url: `${STUDENTS_URL}/${payload._id}`,
         method: 'PUT',
         body: payload,
         header: {

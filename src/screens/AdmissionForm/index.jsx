@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
   Card,
@@ -9,7 +9,14 @@ import {
   Typography,
   Zoom,
 } from '@mui/material';
+import { Button } from 'antd';
+import dayjs from 'dayjs';
+import React, { useCallback, useState } from 'react';
+import { Checkmark } from 'react-checkmark';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import { MdOutlineDelete } from 'react-icons/md';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFCheckbox,
@@ -18,19 +25,12 @@ import {
   RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
-import { countries } from '../../utils/countries';
-import { Button } from 'antd';
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { MdOutlineDelete } from 'react-icons/md';
 import { UploadMultiFile } from '../../components/upload';
-import { moduleYears } from '../Courses/AddCourse';
 import useNotification from '../../hooks/useNotification';
 import { usePostAdmissionFormMutation } from '../../redux/slices/apiSlices/admissionsApiSlice';
+import { countries } from '../../utils/countries';
 import createPdfForm from '../../utils/createPdfForm';
-import { Checkmark } from 'react-checkmark';
-import dayjs from 'dayjs';
+import { moduleYears } from '../Courses/AddCourse';
 
 export const studentGenders = [
   { value: '', label: 'Select Gender' },

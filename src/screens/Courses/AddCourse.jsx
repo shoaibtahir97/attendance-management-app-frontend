@@ -1,6 +1,11 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Alert, Button } from 'antd';
 import React from 'react';
-import PageHeader from '../../components/PageHeader';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import { MdOutlineDelete } from 'react-icons/md';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
@@ -8,18 +13,13 @@ import {
   RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import PageHeader from '../../components/PageHeader';
+import useNotification from '../../hooks/useNotification';
+import { useCreateCourseMutation } from '../../redux/slices/apiSlices/courseApiSlice';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
-import { Alert, Button } from 'antd';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { MdOutlineDelete } from 'react-icons/md';
 import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
 import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice';
-import { useCreateCourseMutation } from '../../redux/slices/apiSlices/courseApiSlice';
-import useNotification from '../../hooks/useNotification';
+import { PATH_DASHBOARD } from '../../routes/paths';
 import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
 
 export const moduleYears = [
@@ -209,7 +209,7 @@ const AddCourse = () => {
                         item
                         xs={12}
                         spacing={1}
-                        sx={{ display: 'flex', alignItems: 'center' }}>
+                        sx={{ display: 'flex' }}>
                         <Grid item xs={12} sm={2}>
                           <RHFSelect
                             name={`modules[${index}].year`}

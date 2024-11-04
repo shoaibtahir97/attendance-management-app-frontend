@@ -1,20 +1,20 @@
-import React from 'react';
-import useNotification from '../../hooks/useNotification';
-import { useRegisterUserMutation } from '../../redux/slices/apiSlices/usersApiSlice';
-import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid } from '@mui/material';
+import { Button } from 'antd';
+import React from 'react';
 import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
   RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
-import { Grid } from '@mui/material';
-import { Button, Typography } from 'antd';
 import PageHeader from '../../components/PageHeader';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import useNotification from '../../hooks/useNotification';
 import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
+import { useRegisterUserMutation } from '../../redux/slices/apiSlices/usersApiSlice';
+import { PATH_DASHBOARD } from '../../routes/paths';
 
 export const genders = [
   { value: '', label: 'Select Gender' },
