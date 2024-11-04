@@ -1,9 +1,8 @@
 import { FormControl, FormHelperText } from '@mui/material';
 import { DateCalendar } from '@mui/x-date-pickers';
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import dayjs, { Dayjs } from 'dayjs';
 
 const RHFDateCalendar = (props) => {
   const { name, label, ...other } = props;
