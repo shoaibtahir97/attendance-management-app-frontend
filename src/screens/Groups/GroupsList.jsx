@@ -20,6 +20,7 @@ import useNotification from '../../hooks/useNotification';
 import { FiEye } from 'react-icons/fi';
 import { FiEdit } from 'react-icons/fi';
 import { useLazyGetGroupsQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import { format } from 'date-fns';
 
 const SKELETON = ['', '', '', '', ''];
 
@@ -49,6 +50,12 @@ const GroupsList = () => {
       sorter: (a, b) => a.course.length - b.course.length,
     },
     {
+      title: 'Cohort',
+      dataIndex: 'cohort',
+      sorter: (a, b) => a.cohort.length - b.course.length,
+      render: (text, record) => <p>{text ? format(text, 'MMM yy') : '-'}</p>,
+    },
+    {
       title: 'Action',
       dataIndex: 'Action',
       render: (text, record) => {
@@ -58,11 +65,6 @@ const GroupsList = () => {
         return (
           <>
             <div className="actions">
-              {/* <Tooltip title="View Group" placement="top">
-                <IconButton>
-                  <FiEye size="14px" />
-                </IconButton>
-              </Tooltip> */}
               <Tooltip title="Edit Group" placement="top">
                 <IconButton onClick={onEditGroup}>
                   <FiEdit size="14px" />
@@ -96,11 +98,7 @@ const GroupsList = () => {
     totalRecords: 0,
   });
 
-  const {
-    handleSubmit,
-    getValues,
-    formState: { isSubmitting },
-  } = methods;
+  const { handleSubmit, getValues } = methods;
 
   const fetchGroups = async (query) => {
     await getGroups(query)

@@ -479,32 +479,21 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ProgressBar from 'react-customizable-progressbar';
-import Chart from 'react-apexcharts';
-import Calendar from 'react-calendar';
-import FeatherIcon from 'feather-icons-react';
 // import SimpleReactCalendar from 'simple-react-calendar'
-import {
-  dashicon01,
-  teachericon01,
-  teachericon02,
-  teachericon03,
-} from '../../imagepath';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import FullCalendar from '@fullcalendar/react';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Alert, Card } from 'antd';
+import { getDate } from 'date-fns';
 import 'react-calendar/dist/Calendar.css';
 import { useSelector } from 'react-redux';
-import { Alert, Card } from 'antd';
-import { useGetDashboardQuery } from '../../../redux/slices/apiSlices/dashboardApiSlice';
-import { useLazyGetTeacherTimeTableQuery } from '../../../redux/slices/apiSlices/timetableApiSlice';
-import { Box, Grid, Stack, Typography } from '@mui/material';
-import FullCalendar from '@fullcalendar/react';
-import { PATH_DASHBOARD } from '../../../routes/paths';
 import useNotification from '../../../hooks/useNotification';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import { getDayOfWeek } from '../../../utils/formatDateTime';
-import { getDate } from 'date-fns';
 import { useGetNoticesQuery } from '../../../redux/slices/apiSlices/noticesApiSlice';
+import { useLazyGetTeacherTimeTableQuery } from '../../../redux/slices/apiSlices/timetableApiSlice';
+import { PATH_DASHBOARD } from '../../../routes/paths';
+import { getDayOfWeek } from '../../../utils/formatDateTime';
 import NoticeCard from '../../noticeCard';
 
 const noticeColors = [
@@ -611,6 +600,8 @@ const TeacherDashboard = () => {
               },
               allDay: false,
               daysOfWeek: [`${getDayOfWeek(entry.dayOfWeek)}`],
+              startRecur: item?.group?.course?.cohortStartDate,
+              endRecur: item?.group.course.cohortEndDate,
             });
           });
         });

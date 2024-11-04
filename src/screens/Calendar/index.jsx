@@ -1,53 +1,42 @@
-import React, { useEffect, useRef, useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import './calendar.css';
+import FullCalendar from '@fullcalendar/react';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import {
-  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
-  Menu,
-  MenuItem,
-  Select,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
-import {
-  RHFTextField,
-  FormProvider,
-  RHFChipSelect,
-  RHFSelect,
-  RHFDatePicker,
-  RHFTimePicker,
-  RHFCheckbox,
-  RHFAutocomplete,
-} from '../../components/HookForm';
+import { Alert, Button } from 'antd';
+import dayjs from 'dayjs';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
-  getDay,
-  getDayOfWeek,
-  getFormattedDate,
-  getFormattedTime,
-} from '../../utils/formatDateTime';
-import dayjs from 'dayjs';
-import { Alert, Button } from 'antd';
-import UploadTimetableModal from './components/UploadTimetableModal';
+  FormProvider,
+  RHFAutocomplete,
+  RHFCheckbox,
+  RHFDatePicker,
+  RHFSelect,
+  RHFTextField,
+  RHFTimePicker,
+} from '../../components/HookForm';
+import useNotification from '../../hooks/useNotification';
 import {
   useLazyGetTeacherTimeTableQuery,
   useLazyGetTimetableQuery,
 } from '../../redux/slices/apiSlices/timetableApiSlice';
-import { useSelector } from 'react-redux';
-import useNotification from '../../hooks/useNotification';
-import CalendarSkeleton from './components/CalendarSkeleton';
-import { useNavigate } from 'react-router-dom';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import { getDay, getDayOfWeek } from '../../utils/formatDateTime';
+import './calendar.css';
+import CalendarSkeleton from './components/CalendarSkeleton';
+import UploadTimetableModal from './components/UploadTimetableModal';
 
 const Calendar = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -64,7 +53,7 @@ const Calendar = () => {
   const [getTimetable, { data, isLoading, error }] = useLazyGetTimetableQuery();
   const calendarRef = useRef();
   const [events, setEvents] = useState([]);
-  const [currentEvent, setCurrentEvent] = useState();
+  // const [currentEvent, setCurrentEvent] = useState();
 
   const [isAddEventDialogOpen, setIsAddEventDialogOpen] = useState(false);
   const [isUploadTimetableModalVisible, setIsUploadTimetableModalVisible] =
@@ -73,48 +62,28 @@ const Calendar = () => {
     useState(false);
   const showModalMethod = () => setIsAddEventDialogOpen(!isAddEventDialogOpen);
 
-  const handleSelect = (info) => {
-    setCurrentEvent(info);
-    const calendarApi = calendarRef.current.getApi();
-    showModalMethod();
-  };
+  // const handleSelect = (info) => {
+  //   setCurrentEvent(info);
+  //   const calendarApi = calendarRef.current.getApi();
+  //   showModalMethod();
+  // };
 
   const handleEventClick = (eventInfo) => {
     const event = eventInfo.event;
 
     const [group, subject, teacher] = event.title.split('\n');
 
-    if (
-      event.title.startsWith('Group') &&
-      userInfo.role === 'teacher' &&
-      new Date(event._instance.range.start) == new Date()
-    ) {
-      navigate(PATH_DASHBOARD.markattendance, {
-        state: {
-          group: group.split(':')[1],
-          groupId: event.groupId,
-          startTime: event._instance.range.start.toISOString(),
-          endTime: event._instance.range.end.toISOString(),
-          subject: subject.split(':')[1],
-          teacher: teacher.split(':')[1],
-          subjectId: event.extendedProps.subjectId,
-        },
-      });
-    } else if (event.title.startsWith('Group') && userInfo.role === 'admin') {
-      navigate(PATH_DASHBOARD.markattendance, {
-        state: {
-          group: group.split(':')[1],
-          groupId: event.groupId,
-          startTime: event._instance.range.start.toISOString(),
-          endTime: event._instance.range.end.toISOString(),
-          subject: subject.split(':')[1],
-          teacher: teacher.split(':')[1],
-          subjectId: event.extendedProps.subjectId,
-        },
-      });
-    } else {
-      openNotification('error', 'Access denied');
-    }
+    navigate(PATH_DASHBOARD.markattendance, {
+      state: {
+        group: group.split(':')[1],
+        groupId: event.groupId,
+        startTime: event._instance.range.start.toISOString(),
+        endTime: event._instance.range.end.toISOString(),
+        subject: subject.split(':')[1],
+        teacher: teacher.split(':')[1],
+        subjectId: event.extendedProps.subjectId,
+      },
+    });
   };
 
   const handleShowUploadTimetableModal = () =>
@@ -150,6 +119,7 @@ const Calendar = () => {
       .then((res) => {
         const updatedEvents = [];
         res?.data?.forEach((item) => {
+          console.log('item', item);
           item?.entries?.forEach((entry) => {
             updatedEvents.push({
               title: `Group: ${item?.group?.name} \n Subject: ${entry?.subject?.name} \n Teacher: ${entry?.teacher?.firstName} ${entry?.teacher?.lastName}`,
@@ -159,50 +129,53 @@ const Calendar = () => {
               subjectId: entry?.subject?._id,
               allDay: false,
               daysOfWeek: [`${getDayOfWeek(entry?.dayOfWeek)}`],
+              startRecur: item?.group?.course?.cohortStartDate,
+              endRecur: item?.group.course.cohortEndDate,
             });
           });
         });
         setEvents(updatedEvents);
       })
       .catch((err) => {
-        openNotification('error', err?.data?.message || err?.error);
+        // openNotification('error', err?.data?.message ?? err?.error);
       });
   };
 
   // Single Time Table for Teacher
-  const fetchTeacherTimeTable = async () => {
-    await getTeacherTimetable()
-      .unwrap()
-      .then((res) => {
-        const events = [];
-        res.data.forEach((item) => {
-          item.entries.forEach((entry) => {
-            events.push({
-              title: `Group: ${item.group.name} \n Subject: ${entry.subject.name} \n Teacher: ${entry.teacher.firstName} ${entry.teacher.lastName}`,
-              startTime: `${entry.startTime}:00`,
-              endTime: `${entry.endTime}:00`,
-              groupId: item.group._id,
-              subjectId: entry.subject._id,
-              allDay: false,
-              daysOfWeek: [`${getDayOfWeek(entry.dayOfWeek)}`],
-            });
-          });
-        });
-        setEvents(events);
-      })
-      .catch((err) => {
-        openNotification('error', err?.data?.message || err?.error);
-      });
-  };
+  // const fetchTeacherTimeTable = async () => {
+  //   await getTeacherTimetable()
+  //     .unwrap()
+  //     .then((res) => {
+  //       const events = [];
+  //       res.data.forEach((item) => {
+  //         item.entries.forEach((entry) => {
+  //           events.push({
+  //             title: `Group: ${item.group.name} \n Subject: ${entry.subject.name} \n Teacher: ${entry.teacher.firstName} ${entry.teacher.lastName}`,
+  //             startTime: `${entry.startTime}:00`,
+  //             endTime: `${entry.endTime}:00`,
+  //             groupId: item.group._id,
+  //             subjectId: entry.subject._id,
+  //             allDay: false,
+  //             daysOfWeek: [`${getDayOfWeek(entry.dayOfWeek)}`],
+  //             startRecur: item?.group?.course?.cohortStartDate,
+  //             endRecur: item?.group.course.cohortEndDate,
+  //           });
+  //         });
+  //       });
+  //       setEvents(events);
+  //     })
+  //     .catch((err) => {
+  //       openNotification('error', err?.data?.message || err?.error);
+  //     });
+  // };
 
   useEffect(() => {
     if (userInfo.role === 'admin') {
       fetchAllTimeTables();
-    } else {
-      fetchTeacherTimeTable();
     }
   }, []);
 
+  console.log('events', events);
   return (
     <div className="content container-fluid">
       <div className="page-header">
@@ -215,7 +188,6 @@ const Calendar = () => {
                   <Button
                     type="primary"
                     size="large"
-                    loading={false}
                     onClick={handleShowUploadTimetableModal}>
                     Upload Timetable
                   </Button>
@@ -251,7 +223,7 @@ const Calendar = () => {
             editable
             selectable
             events={events}
-            select={handleSelect}
+            // select={handleSelect}
             eventClick={handleEventClick}
             // eventContent={renderEventComponent}
             headerToolbar={{
@@ -288,7 +260,7 @@ const Calendar = () => {
         )}
       </div>
       <div>
-        {currentEvent && (
+        {/* {currentEvent && (
           <EventDialog
             isShowModal={isAddEventDialogOpen}
             showModalMethod={showModalMethod}
@@ -296,7 +268,7 @@ const Calendar = () => {
             setEvents={setEvents}
             events={events}
           />
-        )}
+        )} */}
       </div>
     </div>
   );
@@ -381,22 +353,22 @@ const EventDialog = (props) => {
     closeModal();
   };
 
-  useEffect(() => {
-    if (currentEvent) {
-      const newDefaultValues = {
-        title: currentEvent.title || '',
-        eventType: currentEvent.eventType || '',
-        start: dayjs(currentEvent.startStr),
-        startTime: dayjs(currentEvent.start),
-        endTime: dayjs(currentEvent.end),
-        allDay: currentEvent.allDay || false,
-        teacher: currentEvent.teacher || '',
-        group: currentEvent.group || '',
-        repeat: currentEvent.repeat || '',
-      };
-      reset(newDefaultValues); // Reset the form with the new values
-    }
-  }, [currentEvent, reset]);
+  // useEffect(() => {
+  //   if (currentEvent) {
+  //     const newDefaultValues = {
+  //       title: currentEvent.title || '',
+  //       eventType: currentEvent.eventType || '',
+  //       start: dayjs(currentEvent.startStr),
+  //       startTime: dayjs(currentEvent.start),
+  //       endTime: dayjs(currentEvent.end),
+  //       allDay: currentEvent.allDay || false,
+  //       teacher: currentEvent.teacher || '',
+  //       group: currentEvent.group || '',
+  //       repeat: currentEvent.repeat || '',
+  //     };
+  //     reset(newDefaultValues); // Reset the form with the new values
+  //   }
+  // }, [reset]);
 
   return (
     <Dialog open={isShowModal} onClose={closeModal} maxWidth="sm" fullWidth>

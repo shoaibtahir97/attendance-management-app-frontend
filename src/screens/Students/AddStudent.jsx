@@ -22,6 +22,7 @@ import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlic
 import { moduleYears } from '../Courses/AddCourse';
 import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
 import { countries } from '../../utils/countries';
+import { studentGenders } from '../AdmissionForm';
 
 const AddStudent = () => {
   const { openNotification } = useNotification();
@@ -45,6 +46,19 @@ const AddStudent = () => {
     nationality: Yup.string().required(),
     group: Yup.string().required(),
     courseName: Yup.string().required(),
+    gender: Yup.string().required(),
+    otherGender: Yup.string().test(
+      'otherGender_test',
+      'Other gender is required',
+      function (value, context) {
+        if (context.parent.gender === 'prefer_another_term') {
+          if (!value) {
+            return false;
+          }
+        }
+        return true;
+      }
+    ),
     year: Yup.string().required(),
   });
 
@@ -52,7 +66,7 @@ const AddStudent = () => {
     resolver: yupResolver(studentSchema),
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, watch } = methods;
 
   const registerStudentData = async (data) => {
     registerStudent(data)
@@ -66,6 +80,8 @@ const AddStudent = () => {
           group: '',
           phone: '',
           email: '',
+          gender: '',
+          otherGender: '',
           DOB: '',
           courseName: '',
           nationality: '',
@@ -76,6 +92,8 @@ const AddStudent = () => {
         openNotification('error', err?.data?.message || err?.error)
       );
   };
+
+  const genderField = watch('gender');
 
   return (
     <div className="content container-fluid">
@@ -116,6 +134,18 @@ const AddStudent = () => {
                       sx={{ width: '100%' }}
                     />
                   </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <RHFAutocomplete
+                      name="gender"
+                      label="Gender"
+                      options={studentGenders}
+                    />
+                  </Grid>
+                  {genderField === 'prefer_another_term' && (
+                    <Grid item xs={12} sm={6} md={4}>
+                      <RHFTextField label="Other Gender" name="otherGender" />
+                    </Grid>
+                  )}
                   <Grid item xs={12} sm={6} md={4}>
                     <RHFTextField name="phone" label="Phone " />
                   </Grid>

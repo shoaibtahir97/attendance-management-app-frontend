@@ -21,6 +21,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store.js';
 import 'dayjs/locale/en-gb';
 import { NotificationProvider } from './contexts/NotificationContext.js';
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

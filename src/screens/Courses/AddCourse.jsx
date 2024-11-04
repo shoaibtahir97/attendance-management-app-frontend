@@ -1,6 +1,11 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Alert, Button } from 'antd';
 import React from 'react';
-import PageHeader from '../../components/PageHeader';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import { MdOutlineDelete } from 'react-icons/md';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
@@ -8,18 +13,13 @@ import {
   RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import PageHeader from '../../components/PageHeader';
+import useNotification from '../../hooks/useNotification';
+import { useCreateCourseMutation } from '../../redux/slices/apiSlices/courseApiSlice';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
-import { Alert, Button } from 'antd';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { MdOutlineDelete } from 'react-icons/md';
 import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
 import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice';
-import { useCreateCourseMutation } from '../../redux/slices/apiSlices/courseApiSlice';
-import useNotification from '../../hooks/useNotification';
+import { PATH_DASHBOARD } from '../../routes/paths';
 import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
 
 export const moduleYears = [
@@ -32,7 +32,8 @@ export const moduleYears = [
 const defaultValues = {
   name: '',
   code: '',
-  cohort: null,
+  cohortStartDate: null,
+  cohortEndDate: null,
   modules: [
     {
       // cohortStartDate: null,
@@ -63,7 +64,8 @@ const AddCourse = () => {
   const courseSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     code: Yup.string().required('Code is required'),
-    cohort: Yup.date().required('Cohort date is required'),
+    cohortStartDate: Yup.date().required('Cohort date is required'),
+    cohortEndDate: Yup.date().required('Cohort date is required'),
     modules: Yup.array()
       .of(
         Yup.object().shape({
@@ -152,16 +154,24 @@ const AddCourse = () => {
                         />
                       )}
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={3}>
                       <RHFTextField name="name" label="Course Name" />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={3}>
                       <RHFTextField name="code" label="Course code" />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={3}>
                       <RHFDatePicker
-                        name="cohort"
-                        label="Cohort date"
+                        name="cohortStartDate"
+                        label="Cohort start date"
+                        sx={{ width: '100%' }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <RHFDatePicker
+                        name="cohortEndDate"
+                        label="Cohort end date"
                         sx={{ width: '100%' }}
                       />
                     </Grid>
@@ -199,29 +209,15 @@ const AddCourse = () => {
                         item
                         xs={12}
                         spacing={1}
-                        sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Grid item xs={12} sm={3}>
+                        sx={{ display: 'flex' }}>
+                        <Grid item xs={12} sm={2}>
                           <RHFSelect
                             name={`modules[${index}].year`}
                             label="Year"
                             options={moduleYears}
                           />
                         </Grid>
-                        {/* <Grid item xs={12} sm={2}>
-                          <RHFDatePicker
-                            name={`modules[${index}].cohortStartDate`}
-                            label="Cohort Start Date"
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid>
                         <Grid item xs={12} sm={2}>
-                          <RHFDatePicker
-                            name={`modules[${index}].cohortEndDate`}
-                            label="Cohort End Date"
-                            sx={{ width: '100%' }}
-                          />
-                        </Grid> */}
-                        <Grid item xs={12} sm={3}>
                           <RHFAutocomplete
                             name={`modules[${index}].moduleLead`}
                             label="Module Lead"
@@ -230,34 +226,35 @@ const AddCourse = () => {
                             sx={{ width: '100%' }}
                           />
                         </Grid>
-                        <Grid item xs={12} sm={3}>
-                          <RHFAutocomplete
-                            name={`modules[${index}].groups`}
-                            multiple={true}
-                            options={groupsList}
-                            loading={loadingGroups}
-                            label="Groups"
-                          />
-                        </Grid>
-
-                        <Grid item container xs={12} sm={3}>
-                          <Grid item xs={12} sm={11}>
+                        <Grid item xs={12} sm={8} container spacing={1}>
+                          <Grid item xs={12} sm={6}>
                             <RHFAutocomplete
-                              name={`modules[${index}].subjects`}
+                              name={`modules[${index}].groups`}
                               multiple={true}
-                              options={subjectsList}
-                              loading={loadingSubjects}
-                              label="Subjects"
+                              options={groupsList}
+                              loading={loadingGroups}
+                              label="Groups"
                             />
                           </Grid>
-                          <Grid item xs={12} sm={1} sx={{ mt: 5 }}>
-                            {ModulesFields?.length > 1 && (
-                              <IconButton
-                                type="button"
-                                onClick={() => ModulesRemove(index)}>
-                                <MdOutlineDelete />
-                              </IconButton>
-                            )}
+                          <Grid item container xs={12} sm={6}>
+                            <Grid item xs={11}>
+                              <RHFAutocomplete
+                                name={`modules[${index}].subjects`}
+                                multiple={true}
+                                options={subjectsList}
+                                loading={loadingSubjects}
+                                label="Subjects"
+                              />
+                            </Grid>
+                            <Grid item xs={1} sm={1} sx={{ mt: 5 }}>
+                              {ModulesFields?.length > 1 && (
+                                <IconButton
+                                  type="button"
+                                  onClick={() => ModulesRemove(index)}>
+                                  <MdOutlineDelete />
+                                </IconButton>
+                              )}
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>

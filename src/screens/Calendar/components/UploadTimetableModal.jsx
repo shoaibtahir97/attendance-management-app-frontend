@@ -1,25 +1,23 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
   Stack,
   Typography,
 } from '@mui/material';
+import { Button } from 'antd';
 import React, { useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { MdClose, MdDownload } from 'react-icons/md';
+import * as XLSX from 'xlsx';
+import * as Yup from 'yup';
 import { FormProvider } from '../../../components/HookForm';
 import { RHFUploadSingleFile } from '../../../components/HookForm/RHFUpload';
-import { Button } from 'antd';
 import useNotification from '../../../hooks/useNotification';
 import { useUploadTimetableMutation } from '../../../redux/slices/apiSlices/timetableApiSlice';
-import * as Yup from 'yup';
-import * as XLSX from 'xlsx';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { MdClose } from 'react-icons/md';
-import { MdDownload } from 'react-icons/md';
 
 const UploadTimetableModal = (props) => {
   const { showModalMethod, isShowModal, fetchAllTimeTables } = props;
@@ -40,7 +38,11 @@ const UploadTimetableModal = (props) => {
     },
   });
 
-  const { setValue, handleSubmit } = methods;
+  const {
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -79,6 +81,7 @@ const UploadTimetableModal = (props) => {
       'subject',
       'startTime',
       'endTime',
+      'room',
     ];
 
     const worksheet = XLSX.utils.aoa_to_sheet([headers]);
@@ -133,7 +136,7 @@ const UploadTimetableModal = (props) => {
           alignItems: 'center',
         }}>
         <Typography variant="h6">Upload Timetable</Typography>
-        <IconButton onClick={showModalMethod}>
+        <IconButton disabled={isSubmitting} onClick={showModalMethod}>
           <MdClose />
         </IconButton>
       </DialogTitle>
@@ -181,7 +184,7 @@ const UploadTimetableModal = (props) => {
               variant="contained"
               htmlType="submit"
               type="primary"
-              loading={loadingUploadTimetable}
+              loading={isSubmitting}
               size="large">
               Upload
             </Button>
@@ -189,6 +192,7 @@ const UploadTimetableModal = (props) => {
               onClick={showModalMethod}
               type="default"
               size="large"
+              disable={isSubmitting}
               style={{ marginLeft: '5px' }}>
               Close
             </Button>

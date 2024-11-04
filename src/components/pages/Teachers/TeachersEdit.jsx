@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker";
-import { Link } from "react-router-dom";
-import Header from "../../Header/Header";
-import SideBar from "../../SideBar/SideBar";
-import Select from "react-select";
+import React, { useState } from 'react';
+import 'react-datepicker';
+import DatePicker from 'react-datepicker';
+import { Link } from 'react-router-dom';
+import Select from 'react-select';
 
 const TeachersEdit = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -12,9 +10,9 @@ const TeachersEdit = () => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const options = [
-    { value: 1, label: "Male" },
-    { value: 2, label: "Female" },
-    { value: 3, label: "Others" },
+    { value: 1, label: 'Male' },
+    { value: 2, label: 'Female' },
+    { value: 3, label: 'Others' },
   ];
 
   const handleOptionChange = (selectedOption) => {
