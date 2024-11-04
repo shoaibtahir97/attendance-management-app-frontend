@@ -1,6 +1,12 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Alert, Button } from 'antd';
 import React, { useEffect } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import { MdOutlineDelete } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
@@ -8,24 +14,18 @@ import {
   RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
-import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
-import { Alert, Button } from 'antd';
-import { Grid, IconButton, Tooltip } from '@mui/material';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import PageHeader from '../../components/PageHeader';
+import useNotification from '../../hooks/useNotification';
 import {
   useGetCourseDetailsQuery,
   useUpdateCourseDetailsMutation,
 } from '../../redux/slices/apiSlices/courseApiSlice';
-import * as Yup from 'yup';
-import PageHeader from '../../components/PageHeader';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { moduleYears } from './AddCourse';
-import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
 import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice';
-import { MdOutlineDelete } from 'react-icons/md';
-import useNotification from '../../hooks/useNotification';
+import { PATH_DASHBOARD } from '../../routes/paths';
+import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
+import { moduleYears } from './AddCourse';
 
 const EditCourse = () => {
   const { openNotification } = useNotification();
@@ -61,7 +61,6 @@ const EditCourse = () => {
           moduleLead: Yup.string().required('Module Lead is required'),
           groups: Yup.array()
             .of(Yup.string())
-            .min(1, 'Minimum one group is required'),
         })
       )
       .min(1),
