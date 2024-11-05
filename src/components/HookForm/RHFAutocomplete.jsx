@@ -34,19 +34,29 @@ const RHFAutocomplete = (props) => {
               freeSolo={!!freeSolo}
               options={options || []}
               value={
-                multiple
-                  ? options?.filter((option) =>
-                      value?.includes(option.value)
-                    ) || []
-                  : options?.find((option) => option.value === value) || ''
+                freeSolo
+                  ? value
+                  : multiple
+                    ? options?.filter((option) =>
+                        value?.includes(option.value)
+                      ) || []
+                    : options?.find((option) => option.value === value) ||
+                      value ||
+                      ''
               }
               onChange={(event, newValue) => {
                 if (multiple) {
                   const selectedValues =
-                    newValue?.map((option) => option.value) || [];
+                    newValue?.map((option) =>
+                      typeof option === 'string' ? option : option.value
+                    ) || [];
                   onChange(selectedValues);
                 } else {
-                  onChange(newValue?.value || '');
+                  onChange(
+                    typeof newValue === 'string'
+                      ? newValue
+                      : newValue?.value || ''
+                  );
                 }
               }}
               loading={loading}
