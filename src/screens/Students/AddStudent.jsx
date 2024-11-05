@@ -1,7 +1,11 @@
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid } from '@mui/material';
+import { Button } from 'antd';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
@@ -10,19 +14,15 @@ import {
   RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from 'antd';
-import { Grid } from '@mui/material';
-import { useRegisterStudentMutation } from '../../redux/slices/apiSlices/studentApiSlice';
-import useNotification from '../../hooks/useNotification';
 import PageHeader from '../../components/PageHeader';
-import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
-import { moduleYears } from '../Courses/AddCourse';
+import useNotification from '../../hooks/useNotification';
 import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import { useRegisterStudentMutation } from '../../redux/slices/apiSlices/studentApiSlice';
+import { PATH_DASHBOARD } from '../../routes/paths';
 import { countries } from '../../utils/countries';
 import { studentGenders } from '../AdmissionForm';
+import { moduleYears } from '../Courses/AddCourse';
 
 const AddStudent = () => {
   const { openNotification } = useNotification();
@@ -47,18 +47,6 @@ const AddStudent = () => {
     group: Yup.string().required(),
     courseName: Yup.string().required(),
     gender: Yup.string().required(),
-    otherGender: Yup.string().test(
-      'otherGender_test',
-      'Other gender is required',
-      function (value, context) {
-        if (context.parent.gender === 'prefer_another_term') {
-          if (!value) {
-            return false;
-          }
-        }
-        return true;
-      }
-    ),
     year: Yup.string().required(),
   });
 
@@ -81,7 +69,6 @@ const AddStudent = () => {
           phone: '',
           email: '',
           gender: '',
-          otherGender: '',
           DOB: '',
           courseName: '',
           nationality: '',
@@ -92,8 +79,6 @@ const AddStudent = () => {
         openNotification('error', err?.data?.message || err?.error)
       );
   };
-
-  const genderField = watch('gender');
 
   return (
     <div className="content container-fluid">
@@ -139,13 +124,9 @@ const AddStudent = () => {
                       name="gender"
                       label="Gender"
                       options={studentGenders}
+                      freeSolo
                     />
                   </Grid>
-                  {genderField === 'prefer_another_term' && (
-                    <Grid item xs={12} sm={6} md={4}>
-                      <RHFTextField label="Other Gender" name="otherGender" />
-                    </Grid>
-                  )}
                   <Grid item xs={12} sm={6} md={4}>
                     <RHFTextField name="phone" label="Phone " />
                   </Grid>

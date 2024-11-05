@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid } from '@mui/material';
+import { Button } from 'antd';
+import React, { useEffect } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import Select from 'react-select';
-import PageHeader from '../../components/PageHeader';
-import { PATH_DASHBOARD } from '../../routes/paths';
-import {
-  useGetStudentDetailsQuery,
-  useUpdateStudentDetailsMutation,
-} from '../../redux/slices/apiSlices/studentApiSlice';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import * as Yup from 'yup';
+import Alert from '../../components/Alert';
 import {
   FormProvider,
   RHFAutocomplete,
@@ -19,18 +15,19 @@ import {
   RHFSelect,
   RHFTextField,
 } from '../../components/HookForm/index';
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Grid } from '@mui/material';
-import { Button } from 'antd';
-import EditStudentSkeleton from './components/EditStudentSkeleton';
-import Alert from '../../components/Alert';
+import PageHeader from '../../components/PageHeader';
 import useNotification from '../../hooks/useNotification';
 import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
-import { moduleYears } from '../Courses/AddCourse';
-import { countries } from '../../utils/countries';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import {
+  useGetStudentDetailsQuery,
+  useUpdateStudentDetailsMutation,
+} from '../../redux/slices/apiSlices/studentApiSlice';
+import { PATH_DASHBOARD } from '../../routes/paths';
+import { countries } from '../../utils/countries';
 import { studentGenders } from '../AdmissionForm';
+import { moduleYears } from '../Courses/AddCourse';
+import EditStudentSkeleton from './components/EditStudentSkeleton';
 
 const EditStudent = () => {
   const { openNotification } = useNotification();
@@ -58,18 +55,6 @@ const EditStudent = () => {
     nationality: Yup.string().required(),
     group: Yup.string().required(),
     gender: Yup.string().required(),
-    otherGender: Yup.string().test(
-      'otherGender_test',
-      'Other gender is required',
-      function (value, context) {
-        if (context.parent.gender === 'prefer_another_term') {
-          if (!value) {
-            return false;
-          }
-        }
-        return true;
-      }
-    ),
     courseName: Yup.string().required(),
     year: Yup.number().required(),
   });
@@ -88,7 +73,6 @@ const EditStudent = () => {
         openNotification('error', err?.data?.message || err?.error)
       );
   };
-  const genderField = watch('gender');
 
   useEffect(() => {
     reset(data);
@@ -147,13 +131,9 @@ const EditStudent = () => {
                         name="gender"
                         label="Gender"
                         options={studentGenders}
+                        freeSolo
                       />
                     </Grid>
-                    {genderField === 'prefer_another_term' && (
-                      <Grid item xs={12} sm={6} md={4}>
-                        <RHFTextField label="Other Gender" name="otherGender" />
-                      </Grid>
-                    )}
                     <Grid item xs={12} sm={6} md={4}>
                       <RHFTextField name="phone" label="Phone" />
                     </Grid>

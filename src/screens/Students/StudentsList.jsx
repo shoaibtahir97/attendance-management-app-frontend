@@ -1,44 +1,31 @@
-import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, IconButton, Menu, MenuItem, Stack } from '@mui/material';
 import { Alert, Button, Table, Tooltip } from 'antd';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import { onShowSizeChange, itemRender } from '../../components/Pagination';
-import { useState } from 'react';
-import {
-  useDeleteStudentsMutation,
-  useLazyGetStudentsQuery,
-} from '../../redux/slices/apiSlices/studentApiSlice';
-import { PATH_DASHBOARD } from '../../routes/paths';
-import PageHeader from '../../components/PageHeader';
-import { apiSlice } from '../../redux/slices/apiSlices/apiSlice';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { MdDelete } from 'react-icons/md';
+import { Link, useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 import {
   FormProvider,
   RHFAutocomplete,
   RHFTextField,
 } from '../../components/HookForm';
-import { MdDelete } from 'react-icons/md';
-import {
-  Box,
-  Grid,
-  IconButton,
-  Menu,
-  MenuItem,
-  Popover,
-  Stack,
-} from '@mui/material';
+import PageHeader from '../../components/PageHeader';
+import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { formatDate } from 'date-fns';
+import useNotification from '../../hooks/useNotification';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import {
+  useDeleteStudentsMutation,
+  useLazyGetStudentsQuery,
+} from '../../redux/slices/apiSlices/studentApiSlice';
+import { PATH_DASHBOARD } from '../../routes/paths';
 import { getFormattedDate } from '../../utils/formatDateTime';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
-import { useSelector } from 'react-redux';
-import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
-import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
-import useNotification from '../../hooks/useNotification';
-import { X } from 'react-feather';
 
 export const column = [
   {
@@ -70,14 +57,19 @@ export const column = [
     sorter: (a, b) => a.group.length - b.group.length,
   },
   {
-    title: 'Phone ',
+    title: 'Phone',
     dataIndex: 'phone',
     sorter: (a, b) => a.phone.length - b.phone.length,
   },
   {
-    title: 'Email ',
+    title: 'Email',
     dataIndex: 'email',
     sorter: (a, b) => a.email.length - b.email.length,
+  },
+  {
+    title: 'Gender',
+    dataIndex: 'gender',
+    sorter: (a, b) => a.gender.length - b.gender.length,
   },
   {
     title: 'DOB',
