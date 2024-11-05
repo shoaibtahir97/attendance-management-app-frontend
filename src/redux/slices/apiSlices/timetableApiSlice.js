@@ -1,5 +1,5 @@
-import { apiSlice } from './apiSlice';
 import { TIMETABLE_URL } from '../../../constants';
+import { apiSlice } from './apiSlice';
 
 export const timetableApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,8 +17,9 @@ export const timetableApiSlice = apiSlice.injectEndpoints({
       },
     }),
     getTimetable: builder.query({
-      query: () => ({
+      query: (payload) => ({
         url: TIMETABLE_URL,
+        params: payload,
         credentials: 'include',
         method: 'GET',
       }),
@@ -40,5 +41,6 @@ export const timetableApiSlice = apiSlice.injectEndpoints({
 export const {
   useUploadTimetableMutation,
   useLazyGetTimetableQuery,
+  useGetTimetableQuery,
   useLazyGetTeacherTimeTableQuery,
 } = timetableApiSlice;
