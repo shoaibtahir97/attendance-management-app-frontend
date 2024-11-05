@@ -43,8 +43,8 @@ export const studentGenders = [
   { value: 'Transgender Woman', label: 'Transgender Woman' },
   { value: 'Agender', label: 'Agender' },
   { value: 'Two-Spirit', label: 'Two-Spirit' },
-  { value: 'prefer_another_term', label: 'Prefer another term' },
-  { value: 'prefer_not_to_say', label: 'Prefer not to say' },
+  { value: 'Prefer another term', label: 'Prefer another term' },
+  { value: 'Prefer not to say', label: 'Prefer not to say' },
 ];
 
 export const ethnicities = [
