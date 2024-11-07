@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NoticeCard from '../../components/noticeCard';
 import PageHeader from '../../components/PageHeader';
+import useNotification from '../../hooks/useNotification';
 import { useGetNoticesQuery } from '../../redux/slices/apiSlices/noticesApiSlice';
 import { useLazyGetTimetableQuery } from '../../redux/slices/apiSlices/timetableApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -25,6 +26,7 @@ const noticeColors = [
 
 const AdminDashboard = () => {
   const { userInfo } = useSelector((state) => state.auth);
+  const { openNotification } = useNotification();
   const { data: notices } = useGetNoticesQuery();
   const [date, setDate] = useState(new Date());
   const [classDetails, setClassDetails] = useState({});
@@ -52,6 +54,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchTodayClasses();
   }, []);
+
   return (
     <div className="content container-fluid">
       {/* Page Header */}
@@ -94,7 +97,7 @@ const AdminDashboard = () => {
                 }}>
                 <table className="table table-center">
                   <tbody>
-                    {todayClasses.map((lesson, index) => {
+                    {todayClasses?.map((lesson, index) => {
                       const {
                         endTime,
                         group,
@@ -113,7 +116,7 @@ const AdminDashboard = () => {
                                 <b
                                   style={{
                                     fontSize: '12px',
-                                  }}>{`${teacher.firstName} ${teacher.lastName}`}</b>
+                                  }}>{`${teacher?.firstName} ${teacher?.lastName}`}</b>
                               </div>
 
                               <ul className="teacher-date-list">
@@ -142,7 +145,7 @@ const AdminDashboard = () => {
                               <Link to="#">Confirmed</Link>
                             </div>
 
-                            <button
+                            {/* <button
                               type="submit"
                               onClick={() => {
                                 setClassDetails(lesson);
@@ -150,7 +153,7 @@ const AdminDashboard = () => {
                               }}
                               className="btn btn-info">
                               Reschedule
-                            </button>
+                            </button> */}
                           </td>
                         </tr>
                       );
