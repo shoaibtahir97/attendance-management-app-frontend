@@ -35,6 +35,14 @@ export const timetableApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       providesTags: ['Timetable'],
     }),
+    assignCoverTeacher: builder.mutation({
+      query: (payload) => ({
+        url: `${TIMETABLE_URL}/coverteacher`,
+        body: payload,
+        method: 'POST',
+        credentials: 'include',
+      }),
+    }),
   }),
 });
 
@@ -43,4 +51,5 @@ export const {
   useLazyGetTimetableQuery,
   useGetTimetableQuery,
   useLazyGetTeacherTimeTableQuery,
+  useAssignCoverTeacherMutation,
 } = timetableApiSlice;
