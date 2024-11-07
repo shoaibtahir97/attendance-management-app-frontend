@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
   Dialog,
@@ -8,18 +9,16 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { useState, useCallback } from 'react';
-import { FormProvider } from '../../../components/HookForm';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { IoCloseCircleOutline } from 'react-icons/io5';
-import { RHFUploadSingleFile } from '../../../components/HookForm/RHFUpload';
-import * as Yup from 'yup';
 import { Button } from 'antd';
-import * as XLSX from 'xlsx';
-import { useUploadBulkStudentsMutation } from '../../../redux/slices/apiSlices/studentApiSlice';
-import useNotification from '../../../hooks/useNotification';
+import React, { useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { MdClose, MdDownload } from 'react-icons/md';
+import * as XLSX from 'xlsx';
+import * as Yup from 'yup';
+import { FormProvider } from '../../../components/HookForm';
+import { RHFUploadSingleFile } from '../../../components/HookForm/RHFUpload';
+import useNotification from '../../../hooks/useNotification';
+import { useUploadBulkStudentsMutation } from '../../../redux/slices/apiSlices/studentApiSlice';
 
 const BulkUploadStudent = (props) => {
   const { open, handleClose, fetchStudents } = props;
@@ -62,6 +61,7 @@ const BulkUploadStudent = (props) => {
       'DOB',
       'Phone',
       'Email',
+      'Gender',
       'Nationality',
       'Group',
       'Course',
