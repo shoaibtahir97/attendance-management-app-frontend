@@ -76,16 +76,15 @@ const AdminDashboard = () => {
         <div className="col-12 col-lg-8 col-xl-8 d-flex">
           <div className="card flex-fill comman-shadow">
             <div className="card-header">
-              <div className="row align-items-center">
-                <div className="col-6">
-                  <h5 className="card-title">Upcoming Lesson</h5>
-                </div>
-                <div className="col-6">
-                  <span className="float-end view-link">
-                    <Link to={PATH_DASHBOARD.calendar}>View All Lessons</Link>
-                  </span>
-                </div>
-              </div>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center">
+                <Typography fontSize={'1.70em'} fontWeight={700}>
+                  Notice
+                </Typography>
+                <Link to={PATH_DASHBOARD.calendar}>View All Lessons</Link>
+              </Stack>
             </div>
             <div className="pt-3 pb-3">
               <div
