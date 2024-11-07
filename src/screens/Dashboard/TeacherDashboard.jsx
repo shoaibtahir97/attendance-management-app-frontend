@@ -485,8 +485,10 @@ import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Box, Grid, Stack, Typography } from '@mui/material';
+import { DateCalendar } from '@mui/x-date-pickers';
 import { Alert, Card } from 'antd';
 import { getDate } from 'date-fns';
+import dayjs from 'dayjs';
 import 'react-calendar/dist/Calendar.css';
 import { useSelector } from 'react-redux';
 import NoticeCard from '../../components/noticeCard';
@@ -691,28 +693,35 @@ const TeacherDashboard = () => {
               />
             </Card>
           </Grid>
-          <Grid item xs={12} lg={3}>
-            <Card>
-              <Typography fontSize={'1.75em'} fontWeight={700}>
-                Notice
-              </Typography>
-              <Box>
-                {notices?.data?.map((notice, index) => {
-                  if (notice.isActive) {
-                    return (
-                      <NoticeCard
-                        key={notice._id}
-                        title={notice.title}
-                        description={notice.description}
-                        startDate={notice.startDate}
-                        endDate={notice.endDate}
-                        color={noticeColors[index]}
-                      />
-                    );
-                  }
-                })}
-              </Box>
-            </Card>
+          <Grid container item xs={12} lg={3} spacing={2}>
+            <Grid item xs={12}>
+              <Card>
+                <Typography fontSize={'1.75em'} fontWeight={700}>
+                  Notice
+                </Typography>
+                <Box>
+                  {notices?.data?.map((notice, index) => {
+                    if (notice.isActive) {
+                      return (
+                        <NoticeCard
+                          key={notice._id}
+                          title={notice.title}
+                          description={notice.description}
+                          startDate={notice.startDate}
+                          endDate={notice.endDate}
+                          color={noticeColors[index]}
+                        />
+                      );
+                    }
+                  })}
+                </Box>
+              </Card>
+            </Grid>
+            <Grid item xs={12}>
+              <Card>
+                <DateCalendar defaultValue={dayjs(new Date())} />
+              </Card>
+            </Grid>
           </Grid>
         </Grid>
       )}
