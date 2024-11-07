@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from 'react';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import React, { useEffect, useState } from 'react';
 import { logo } from '../components/imagepath';
 // import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'react-feather/dist';
 
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
 import { IconButton, InputAdornment, Stack, Typography } from '@mui/material';
-import { FormProvider, RHFTextField } from '../components/HookForm';
-import { PATH_DASHBOARD } from '../routes/paths';
 import { Alert, Button } from 'antd';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import { FormProvider, RHFTextField } from '../components/HookForm';
 import { useAuthUserMutation } from '../redux/slices/apiSlices/usersApiSlice';
 import { setCredentials } from '../redux/slices/authSlice';
-import { useNavigate } from 'react-router-dom';
-import { setSubjects } from '../redux/slices/subjectSlice';
-import { setGroups } from '../redux/slices/groupSlice';
+import { PATH_AUTH, PATH_DASHBOARD } from '../routes/paths';
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -185,6 +182,7 @@ const LoginScreen = () => {
                       </Button>
                     </Stack>
                   </FormProvider>
+                  <Link to={PATH_AUTH.forgotPassword}>Forgot Password?</Link>
                   {/* /Form */}
                   {/* <div className="login-or">
                     <span className="or-line" />
