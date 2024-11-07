@@ -81,7 +81,7 @@ const AdminDashboard = () => {
                 justifyContent="space-between"
                 alignItems="center">
                 <Typography fontSize={'1.70em'} fontWeight={700}>
-                  Notice
+                  Upcoming Lessons
                 </Typography>
                 <Link to={PATH_DASHBOARD.calendar}>View All Lessons</Link>
               </Stack>
