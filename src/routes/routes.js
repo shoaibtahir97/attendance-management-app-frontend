@@ -1,47 +1,43 @@
 import React from 'react';
 import {
-  createBrowserRouter,
   createHashRouter,
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
 import AuthLayout from '../components/Layouts/AuthLayout.t';
 import DashboardLayout from '../components/Layouts/DashboardLayout';
+import ForgotPassword from '../components/pages/Authentication/ForgotPassword';
 import Register from '../components/pages/Authentication/Register';
-import AdminDashboard from '../components/pages/Dashboard/AdminDashboard';
-import TeacherDashboard from '../components/pages/Dashboard/TeacherDashboard';
-import StudentsDashboard from '../components/pages/Dashboard/StudentsDashboard';
-import Students from '../screens/Students/StudentsList';
+import Reports from '../components/pages/Reports/Reports';
+import TeachersProfile from '../components/pages/Teachers/TeachersProfile';
 import AddStudent from '../screens/Students/AddStudent';
 import EditStudent from '../screens/Students/EditStudent';
-import TeachersProfile from '../components/pages/Teachers/TeachersProfile';
-import ForgotPassword from '../components/pages/Authentication/ForgotPassword';
+import Students from '../screens/Students/StudentsList';
 import ProtectedRoute from './ProtectedRoute';
 import { PATH_AUTH, PATH_DASHBOARD } from './paths';
-import Reports from '../components/pages/Reports/Reports';
-import AttendanceReports from '../components/pages/Reports/AttendanceReports';
 
-import LoginScreen from '../screens/LoginScreen';
-import AddTeacher from '../screens/Teachers/AddTeacher';
-import EditTeacher from '../screens/Teachers/EditTeacher';
+import AdmissionForm from '../screens/AdmissionForm';
 import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
+import ViewAttendanceScreen from '../screens/Attendance/ViewAttendanceScreen';
+import Calendar from '../screens/Calendar';
 import AddCourse from '../screens/Courses/AddCourse';
-import EditCourse from '../screens/Courses/EditCourse';
 import CoursesList from '../screens/Courses/CoursesList';
+import EditCourse from '../screens/Courses/EditCourse';
+import AdminDashboard from '../screens/Dashboard/AdminDashboard';
+import TeacherDashboard from '../screens/Dashboard/TeacherDashboard';
+import AddGroup from '../screens/Groups/AddGroup';
+import EditGroup from '../screens/Groups/EditGroups';
+import GroupsList from '../screens/Groups/GroupsList';
+import LoginScreen from '../screens/LoginScreen';
+import MailScreen from '../screens/Mail/MailScreen';
+import Notices from '../screens/Notices';
+import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
 import AddSubject from '../screens/Subjects/AddSubject';
 import EditSubject from '../screens/Subjects/EditSubject';
 import SubjectsList from '../screens/Subjects/SubjectList';
+import AddTeacher from '../screens/Teachers/AddTeacher';
+import EditTeacher from '../screens/Teachers/EditTeacher';
 import TeachersList from '../screens/Teachers/TeachersList';
-import ViewAttendanceScreen from '../screens/Attendance/ViewAttendanceScreen';
-import ContactScreen from '../screens/Mail/MailScreen';
-import MailScreen from '../screens/Mail/MailScreen';
-import GroupsList from '../screens/Groups/GroupsList';
-import AddGroup from '../screens/Groups/AddGroup';
-import EditGroup from '../screens/Groups/EditGroups';
-import Calendar from '../screens/Calendar';
-import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
-import AdmissionForm from '../screens/AdmissionForm';
-import Notices from '../screens/Notices';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -69,10 +65,10 @@ const router = createHashRouter(
             path={PATH_DASHBOARD.teacherDashboard}
             element={<TeacherDashboard />}
           />
-          <Route
+          {/* <Route
             path={PATH_DASHBOARD.studentDashboard}
             element={<StudentsDashboard />}
-          />
+          /> */}
           {/* Students */}
 
           <Route path={PATH_DASHBOARD.students} element={<Students />} />

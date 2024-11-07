@@ -1,24 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
+import { Alert, Button } from 'antd';
+import React, { useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
   RHFEditor,
   RHFTextField,
 } from '../../components/HookForm';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
 import PageHeader from '../../components/PageHeader';
-import { PATH_DASHBOARD } from '../../routes/paths';
-import { Alert, Button, Tag } from 'antd';
-import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice';
-import { useGetStudentsListQuery } from '../../redux/slices/apiSlices/studentApiSlice';
-import { Box, Chip, Grid, IconButton, Stack, Typography } from '@mui/material';
-import getFileData from '../../utils/getFileData';
-import { fData } from '../../utils/formatNumber';
-import { IoClose } from 'react-icons/io5';
-import { useSendMailMutation } from '../../redux/slices/apiSlices/mailApiSlice';
 import useNotification from '../../hooks/useNotification';
+import { useSendMailMutation } from '../../redux/slices/apiSlices/mailApiSlice';
+import { useGetStudentsListQuery } from '../../redux/slices/apiSlices/studentApiSlice';
+import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice';
+import { PATH_DASHBOARD } from '../../routes/paths';
+import { fData } from '../../utils/formatNumber';
+import getFileData from '../../utils/getFileData';
+import MailSkeleton from './MailSkeleton';
 const MailScreen = () => {
   const { openNotification } = useNotification();
 
@@ -35,7 +35,7 @@ const MailScreen = () => {
   } = useGetStudentsListQuery({ filter: 'email' });
   const fileInputRef = useRef(null);
 
-  const [sendMail, { isLoading }] = useSendMailMutation();
+  const [sendMail] = useSendMailMutation();
 
   const mailSchema = Yup.object().shape({
     subject: Yup.string().required('Subject is required'),
@@ -98,63 +98,68 @@ const MailScreen = () => {
       <div className="row">
         <div className="col-sm-12">
           <div className="d-flex justify-content-center mb-4 ">
-            {loadingStudents || loadingTeachers ? (
-              <>Loading...</>
-            ) : studentsError || teachersError ? (
-              <Alert
-                message="Error"
-                type="error"
-                style={{ width: '60%' }}
-                description={
-                  studentsError.data?.message || teachersError.data?.message
-                }
-              />
-            ) : (
-              <FormProvider
-                methods={methods}
-                onSubmit={handleSubmit(handleSendMail)}>
-                <Box sx={{ maxWidth: '75vh' }}>
-                  <RHFAutocomplete
-                    name="recipients"
-                    multiple
-                    label="Recipients"
-                    options={[...teachersList, ...studentsList]}
+            <div className="card card-chart">
+              <div className="card-header">
+                {loadingStudents || loadingTeachers ? (
+                  <MailSkeleton />
+                ) : studentsError || teachersError ? (
+                  <Alert
+                    message="Error"
+                    type="error"
+                    style={{ width: '60%' }}
+                    description={
+                      studentsError.data?.message || teachersError.data?.message
+                    }
                   />
-                </Box>
-                <RHFTextField name="subject" label="Subject" />
-                <div className="mb-5">
-                  <RHFEditor simple name="body" label="Body" />
-                </div>
-                {attachment && (
-                  <Grid item xs={12} md={12}>
-                    <Chip
-                      sx={{ my: 1 }}
-                      label={
-                        <Stack direction="row" alignItems="center" spacing={1}>
-                          <Typography
-                            variant="subtitle1"
-                            fontWeight="bold"
-                            color="#2361CF">
-                            {typeof attachment === 'string'
-                              ? attachment
-                              : attachment
-                                ? getFileData(attachment)?.name
-                                : ''}
-                          </Typography>
-                          <Typography variant="subtitle2">
-                            (
-                            {typeof attachment === 'string'
-                              ? ''
-                              : attachment
-                                ? fData(getFileData(attachment)?.size || 0)
-                                : ''}
-                            )
-                          </Typography>
-                        </Stack>
-                      }
-                      onDelete={() => setValue('attachment', '')}
-                    />
-                    {/* <Tag
+                ) : (
+                  <FormProvider
+                    methods={methods}
+                    onSubmit={handleSubmit(handleSendMail)}>
+                    <Box sx={{ maxWidth: '75vh' }}>
+                      <RHFAutocomplete
+                        name="recipients"
+                        multiple
+                        label="Recipients"
+                        options={[...teachersList, ...studentsList]}
+                      />
+                    </Box>
+                    <RHFTextField name="subject" label="Subject" />
+                    <div className="mb-5">
+                      <RHFEditor simple name="body" label="Body" />
+                    </div>
+                    {attachment && (
+                      <Grid item xs={12} md={12}>
+                        <Chip
+                          sx={{ my: 1 }}
+                          label={
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              spacing={1}>
+                              <Typography
+                                variant="subtitle1"
+                                fontWeight="bold"
+                                color="#2361CF">
+                                {typeof attachment === 'string'
+                                  ? attachment
+                                  : attachment
+                                    ? getFileData(attachment)?.name
+                                    : ''}
+                              </Typography>
+                              <Typography variant="subtitle2">
+                                (
+                                {typeof attachment === 'string'
+                                  ? ''
+                                  : attachment
+                                    ? fData(getFileData(attachment)?.size || 0)
+                                    : ''}
+                                )
+                              </Typography>
+                            </Stack>
+                          }
+                          onDelete={() => setValue('attachment', '')}
+                        />
+                        {/* <Tag
                       closeIcon={<IoClose />}
                       onClose={() => setValue('attachment', '')}>
                       <Stack direction="row">
@@ -177,7 +182,7 @@ const MailScreen = () => {
                         </Typography>
                       </Stack>
                     </Tag> */}
-                    {/* <Box
+                        {/* <Box
                         sx={{
                           borderRadius: 0.75,
                           border: `solid 1px black`,
@@ -232,31 +237,36 @@ const MailScreen = () => {
                           </IconButton>
                         </Box>
                       </Box> */}
-                  </Grid>
-                )}
+                      </Grid>
+                    )}
 
-                <Button htmlType="submit" type="primary" loading={isSubmitting}>
-                  Send
-                </Button>
-                <Button
-                  htmlType="button"
-                  type="default"
-                  disabled={isSubmitting}
-                  style={{ marginLeft: '10px' }}
-                  onClick={() => {
-                    handleAttach();
-                  }}>
-                  Attachments
-                </Button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  id="attachment"
-                  onChange={changeHandler}
-                  style={{ display: 'none' }}
-                />
-              </FormProvider>
-            )}
+                    <Button
+                      htmlType="submit"
+                      type="primary"
+                      loading={isSubmitting}>
+                      Send
+                    </Button>
+                    <Button
+                      htmlType="button"
+                      type="default"
+                      disabled={isSubmitting}
+                      style={{ marginLeft: '10px' }}
+                      onClick={() => {
+                        handleAttach();
+                      }}>
+                      Attachments
+                    </Button>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      id="attachment"
+                      onChange={changeHandler}
+                      style={{ display: 'none' }}
+                    />
+                  </FormProvider>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
