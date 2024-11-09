@@ -86,6 +86,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    resetPassword: builder.mutation({
+      query: (payload) => ({
+        url: `${USERS_URL}/reset-password`,
+        method: 'POST',
+        body: payload,
+      }),
+    }),
   }),
 });
 
@@ -99,4 +106,5 @@ export const {
   useUpdateUserDetailsMutation,
   useUploadBulkUsersMutation,
   useResetPasswordRequestMutation,
+  useResetPasswordMutation,
 } = usersApiSlice;

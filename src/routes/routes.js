@@ -6,19 +6,16 @@ import {
 } from 'react-router-dom';
 import AuthLayout from '../components/Layouts/AuthLayout.t';
 import DashboardLayout from '../components/Layouts/DashboardLayout';
-import ForgotPassword from '../components/pages/Authentication/ForgotPassword';
+import Error404 from '../components/pages/Authentication/Error-404';
 import Register from '../components/pages/Authentication/Register';
 import Reports from '../components/pages/Reports/Reports';
 import TeachersProfile from '../components/pages/Teachers/TeachersProfile';
-import AddStudent from '../screens/Students/AddStudent';
-import EditStudent from '../screens/Students/EditStudent';
-import Students from '../screens/Students/StudentsList';
-import ProtectedRoute from './ProtectedRoute';
-import { PATH_AUTH, PATH_DASHBOARD } from './paths';
-
 import AdmissionForm from '../screens/AdmissionForm';
 import MarkAttendanceScreen from '../screens/Attendance/MarkAttendanceScreen';
 import ViewAttendanceScreen from '../screens/Attendance/ViewAttendanceScreen';
+import ForgotPassword from '../screens/Authentication/ForgotPassword';
+import LoginScreen from '../screens/Authentication/LoginScreen';
+import ResetPassword from '../screens/Authentication/ResetPassword';
 import Calendar from '../screens/Calendar';
 import AddCourse from '../screens/Courses/AddCourse';
 import CoursesList from '../screens/Courses/CoursesList';
@@ -28,16 +25,20 @@ import TeacherDashboard from '../screens/Dashboard/TeacherDashboard';
 import AddGroup from '../screens/Groups/AddGroup';
 import EditGroup from '../screens/Groups/EditGroups';
 import GroupsList from '../screens/Groups/GroupsList';
-import LoginScreen from '../screens/LoginScreen';
 import MailScreen from '../screens/Mail/MailScreen';
 import Notices from '../screens/Notices';
 import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
+import AddStudent from '../screens/Students/AddStudent';
+import EditStudent from '../screens/Students/EditStudent';
+import Students from '../screens/Students/StudentsList';
 import AddSubject from '../screens/Subjects/AddSubject';
 import EditSubject from '../screens/Subjects/EditSubject';
 import SubjectsList from '../screens/Subjects/SubjectList';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import EditTeacher from '../screens/Teachers/EditTeacher';
 import TeachersList from '../screens/Teachers/TeachersList';
+import ProtectedRoute from './ProtectedRoute';
+import { PATH_AUTH, PATH_DASHBOARD } from './paths';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -49,6 +50,11 @@ const router = createHashRouter(
           index={true}
           path={PATH_AUTH.forgotPassword}
           element={<ForgotPassword />}
+        />
+        <Route
+          index={true}
+          path={PATH_AUTH.resetPassword}
+          element={<ResetPassword />}
         />
 
         {/* Admission Form */}
@@ -148,6 +154,9 @@ const router = createHashRouter(
 
           {/* Mail */}
           <Route path={PATH_DASHBOARD.mail} element={<MailScreen />} />
+
+          {/* 404 Page not found */}
+          <Route element={<Error404 />} />
         </Route>
       </Route>
     </Route>

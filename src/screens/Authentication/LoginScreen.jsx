@@ -1,21 +1,19 @@
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
-import React, { useEffect, useState } from 'react';
-import { logo } from '../components/imagepath';
-// import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff } from 'react-feather/dist';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { IconButton, InputAdornment, Stack, Typography } from '@mui/material';
 import { Alert, Button } from 'antd';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+import React, { useEffect, useState } from 'react';
+import { Eye, EyeOff } from 'react-feather/dist';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { FormProvider, RHFTextField } from '../components/HookForm';
-import { useAuthUserMutation } from '../redux/slices/apiSlices/usersApiSlice';
-import { setCredentials } from '../redux/slices/authSlice';
-import { PATH_AUTH, PATH_DASHBOARD } from '../routes/paths';
+import { FormProvider, RHFTextField } from '../../components/HookForm';
+import { logo } from '../../components/imagepath';
+import { useAuthUserMutation } from '../../redux/slices/apiSlices/usersApiSlice';
+import { setCredentials } from '../../redux/slices/authSlice';
+import { PATH_AUTH, PATH_DASHBOARD } from '../../routes/paths';
 
 const LoginScreen = () => {
   const navigate = useNavigate();
