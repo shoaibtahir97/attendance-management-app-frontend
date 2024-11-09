@@ -176,6 +176,7 @@ const LoginScreen = () => {
                       </Button>
                     </Stack>
                   </FormProvider>
+                  <br />
                   <Link to={PATH_AUTH.forgotPassword}>Forgot Password?</Link>
                   {/* /Form */}
                   {/* <div className="login-or">
