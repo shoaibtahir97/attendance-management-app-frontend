@@ -18,12 +18,8 @@ import { PATH_AUTH, PATH_DASHBOARD } from '../../routes/paths';
 const LoginScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //   const { search } = useLocation();
   const { userInfo } = useSelector((state) => state.auth);
   const [authUser, { isLoading, error }] = useAuthUserMutation();
-
-  //   const searchParams = new URLSearchParams(search);
-  //   const redirect = searchParams.get('redirect');
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -180,6 +176,7 @@ const LoginScreen = () => {
                       </Button>
                     </Stack>
                   </FormProvider>
+                  <br />
                   <Link to={PATH_AUTH.forgotPassword}>Forgot Password?</Link>
                   {/* /Form */}
                   {/* <div className="login-or">

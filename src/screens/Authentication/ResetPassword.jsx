@@ -1,6 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { IconButton, InputAdornment } from '@mui/material';
 import { Button } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
+import { Eye, EyeOff } from 'react-feather/dist';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -15,6 +17,8 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const [resetPassword] = useResetPasswordMutation();
   const { openNotification } = useNotification();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const resetPasswordSchema = Yup.object().shape({
     email: Yup.string().required('Email is required'),
@@ -30,6 +34,14 @@ const ResetPassword = () => {
     ),
     resetToken: Yup.string().required(),
   });
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const methods = useForm({
     defaultValues: {
@@ -89,10 +101,67 @@ const ResetPassword = () => {
                     disabled
                     type="email"
                   />
-                  <RHFTextField name="password" label="Password" />
+                  <RHFTextField
+                    name="password"
+                    label="Password"
+                    type={passwordVisible ? 'text' : 'password'}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment
+                          position="end"
+                          sx={{
+                            marginLeft: -5,
+                          }}>
+                          {passwordVisible ? (
+                            <IconButton
+                              sx={{ zIndex: 1000 }}
+                              onClick={togglePasswordVisibility}>
+                              <Eye className="react-feather-custom" size={16} />
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              sx={{ zIndex: 1000 }}
+                              onClick={togglePasswordVisibility}>
+                              <EyeOff
+                                className="react-feather-custom"
+                                size={16}
+                              />
+                            </IconButton>
+                          )}
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
                   <RHFTextField
                     name="confirmPassword"
                     label="Confirm Password"
+                    type={confirmPasswordVisible ? 'text' : 'password'}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment
+                          position="end"
+                          sx={{
+                            marginLeft: -5,
+                          }}>
+                          {confirmPasswordVisible ? (
+                            <IconButton
+                              sx={{ zIndex: 1000 }}
+                              onClick={toggleConfirmPasswordVisibility}>
+                              <Eye className="react-feather-custom" size={16} />
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              sx={{ zIndex: 1000 }}
+                              onClick={toggleConfirmPasswordVisibility}>
+                              <EyeOff
+                                className="react-feather-custom"
+                                size={16}
+                              />
+                            </IconButton>
+                          )}
+                        </InputAdornment>
+                      ),
+                    }}
                   />
 
                   <Button
