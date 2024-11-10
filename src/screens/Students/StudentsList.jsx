@@ -1,9 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, IconButton, Menu, MenuItem, Stack } from '@mui/material';
-import { Alert, Button, Table, Tooltip } from 'antd';
-import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
+import { Alert, Button, Dropdown, Table, Tag, Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { IoMdMore } from 'react-icons/io';
 import { MdDelete } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -21,99 +21,12 @@ import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlic
 import {
   useDeleteStudentsMutation,
   useLazyGetStudentsQuery,
+  useToggleStudentStatusMutation,
 } from '../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { getFormattedDate } from '../../utils/formatDateTime';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
-
-export const column = [
-  {
-    title: 'Student ID',
-    dataIndex: 'studentId',
-    sorter: (a, b) => a.studentId.length - b.studentId.length,
-  },
-  {
-    title: 'First Name',
-    dataIndex: 'firstName',
-    sorter: (a, b) => a.firstName.length - b.firstName.length,
-    render: (text, record) => <h2 className="table-avatar">{text}</h2>,
-  },
-
-  {
-    title: 'Last Name',
-    dataIndex: 'lastName',
-    sorter: (a, b) => a.lastName.length - b.lastName.length,
-    render: (text, record) => <h2 className="table-avatar">{text}</h2>,
-  },
-  {
-    title: 'Course',
-    dataIndex: 'courseName',
-    sorter: (a, b) => a.courseName.length - b.courseName.length,
-  },
-  {
-    title: 'Group',
-    dataIndex: 'group',
-    sorter: (a, b) => a.group.length - b.group.length,
-  },
-  {
-    title: 'Phone',
-    dataIndex: 'phone',
-    sorter: (a, b) => a.phone.length - b.phone.length,
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    sorter: (a, b) => a.email.length - b.email.length,
-  },
-  {
-    title: 'Gender',
-    dataIndex: 'gender',
-    sorter: (a, b) => a.gender.length - b.gender.length,
-  },
-  {
-    title: 'DOB',
-    dataIndex: 'DOB',
-    sorter: (a, b) => a.DOB.length - b.DOB.length,
-    render: (text, record) => <p>{getFormattedDate(text, 'DD-MM-YYYY')}</p>,
-  },
-  {
-    title: 'Nationality',
-    dataIndex: 'nationality',
-    sorter: (a, b) => a.nationality.length - b.nationality.length,
-  },
-  {
-    title: 'Year',
-    dataIndex: 'year',
-    sorter: (a, b) => a.year.length - b.year.length,
-    render: (text, record) => (
-      <p>
-        {moduleYears.map((module) => {
-          if (module.value == text) {
-            return module.label;
-          }
-        })}
-      </p>
-    ),
-  },
-  {
-    title: 'Action',
-    dataIndex: 'Action',
-    render: (text, record) => (
-      <>
-        <div className="actions">
-          <Link
-            to={`${PATH_DASHBOARD.studentEdit}/${record._id}`}
-            className="btn btn-sm bg-danger-light">
-            <i className="feather-edit">
-              <FeatherIcon icon="edit" className="list-edit" />
-            </i>
-          </Link>
-        </div>
-      </>
-    ),
-  },
-];
 
 export const SKELETON = ['', '', '', '', ''];
 
@@ -124,7 +37,148 @@ const Students = () => {
   const { data: groupsList, isLoading: loadingGroups } =
     useGetGroupsListQuery();
   const [deleteStudents, { loading: isDeleting }] = useDeleteStudentsMutation();
+  const [toggleStudentStatus] = useToggleStudentStatusMutation();
 
+  const column = [
+    {
+      title: 'Student ID',
+      dataIndex: 'studentId',
+      sorter: (a, b) => a.studentId.length - b.studentId.length,
+    },
+    {
+      title: 'First Name',
+      dataIndex: 'firstName',
+      sorter: (a, b) => a.firstName.length - b.firstName.length,
+      render: (text, record) => <h2 className="table-avatar">{text}</h2>,
+    },
+
+    {
+      title: 'Last Name',
+      dataIndex: 'lastName',
+      sorter: (a, b) => a.lastName.length - b.lastName.length,
+      render: (text, record) => <h2 className="table-avatar">{text}</h2>,
+    },
+    {
+      title: 'Course',
+      dataIndex: 'courseName',
+      sorter: (a, b) => a.courseName.length - b.courseName.length,
+    },
+    {
+      title: 'Group',
+      dataIndex: 'group',
+      sorter: (a, b) => a.group.length - b.group.length,
+    },
+    {
+      title: 'Phone',
+      dataIndex: 'phone',
+      sorter: (a, b) => a.phone.length - b.phone.length,
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      sorter: (a, b) => a.email.length - b.email.length,
+    },
+    {
+      title: 'Gender',
+      dataIndex: 'gender',
+      sorter: (a, b) => a.gender.length - b.gender.length,
+    },
+    {
+      title: 'DOB',
+      dataIndex: 'DOB',
+      sorter: (a, b) => a.DOB.length - b.DOB.length,
+      render: (text, record) => <p>{getFormattedDate(text, 'DD-MM-YYYY')}</p>,
+    },
+    {
+      title: 'Nationality',
+      dataIndex: 'nationality',
+      sorter: (a, b) => a.nationality.length - b.nationality.length,
+    },
+    {
+      title: 'Year',
+      dataIndex: 'year',
+      sorter: (a, b) => a.year.length - b.year.length,
+      render: (text, record) => (
+        <p>
+          {moduleYears.map((module) => {
+            if (module.value == text) {
+              return module.label;
+            }
+          })}
+        </p>
+      ),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'isActive',
+      sorter: (a, b) => a.isActive.length - b.isActive.length,
+      render: (text, record) => (
+        <Box>
+          {text === true ? (
+            <Tag color="success">Active</Tag>
+          ) : (
+            <Tag color="error">Inactive</Tag>
+          )}
+        </Box>
+      ),
+    },
+    {
+      title: 'Action',
+      dataIndex: 'Action',
+      render: (text, record) => {
+        const handleToggleStudentStatus = async (data) => {
+          await toggleStudentStatus(data)
+            .unwrap()
+            .then((res) => {
+              openNotification('success', res?.message);
+              setDataSource({
+                ...dataSource,
+                students: dataSource.students.map((student) =>
+                  student._id === record._id
+                    ? { ...student, isActive: data.isActive }
+                    : student
+                ),
+              });
+            })
+            .catch((err) => {
+              openNotification('error', err?.data?.message ?? err?.error);
+            });
+        };
+        const items = [
+          {
+            key: 0,
+            label: (
+              <Link to={`${PATH_DASHBOARD.studentEdit}/${record._id}`}>
+                Edit Student
+              </Link>
+            ),
+          },
+          {
+            key: 1,
+            label: (
+              <a
+                onClick={() => {
+                  handleToggleStudentStatus({
+                    id: record?._id,
+                    isActive: !record?.isActive,
+                  });
+                }}>
+                {record.isActive ? 'Deactivate' : 'Activate'}
+              </a>
+            ),
+          },
+        ];
+
+        return (
+          <Dropdown menu={{ items }} trigger={['click']}>
+            <IconButton>
+              <IoMdMore />
+            </IconButton>
+          </Dropdown>
+        );
+      },
+    },
+  ];
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
     recordsPerPage: 10,
@@ -134,6 +188,7 @@ const Students = () => {
     students: [],
     totalRecords: 0,
   });
+  console.log('dataSource', dataSource);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -189,7 +244,7 @@ const Students = () => {
     await getStudents(query)
       .unwrap()
       .then((res) => {
-        const { students, totalRecordsCount, filteredRecordsCount } = res;
+        const { students, filteredRecordsCount } = res;
         setDataSource({
           students: students,
           totalRecords: filteredRecordsCount,

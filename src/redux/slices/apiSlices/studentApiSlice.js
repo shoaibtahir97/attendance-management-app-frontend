@@ -76,6 +76,14 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    toggleStudentStatus: builder.mutation({
+      query: (payload) => ({
+        url: `${STUDENTS_URL}/${payload.id}`,
+        method: 'PATCH',
+        body: payload,
+        credentials: 'include',
+      }),
+    }),
   }),
 });
 
@@ -87,4 +95,5 @@ export const {
   useUpdateStudentDetailsMutation,
   useGetStudentsListQuery,
   useDeleteStudentsMutation,
+  useToggleStudentStatusMutation,
 } = studentApiSlice;
