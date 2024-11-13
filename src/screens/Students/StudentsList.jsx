@@ -146,6 +146,14 @@ const Students = () => {
         };
         const items = [
           {
+            key: 2,
+            label: (
+              <Link to={`${PATH_DASHBOARD.studentProfile}/${record._id}`}>
+                View Student
+              </Link>
+            ),
+          },
+          {
             key: 0,
             label: (
               <Link to={`${PATH_DASHBOARD.studentEdit}/${record._id}`}>

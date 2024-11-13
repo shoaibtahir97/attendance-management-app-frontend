@@ -75,7 +75,12 @@ const EditStudent = () => {
   };
 
   useEffect(() => {
-    reset(data);
+    reset({
+      ...data,
+      courseName: data?.courseName?._id,
+      group: data?.group?._id,
+      year: data?.year,
+    });
   }, [data]);
 
   return (
