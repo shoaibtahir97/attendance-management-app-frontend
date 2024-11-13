@@ -96,4 +96,5 @@ export const {
   useGetStudentsListQuery,
   useDeleteStudentsMutation,
   useToggleStudentStatusMutation,
+  useLazyGetStudentDetailsQuery,
 } = studentApiSlice;
