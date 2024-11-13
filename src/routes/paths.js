@@ -32,11 +32,11 @@ const PATH_DASHBOARD = {
   studentAdd: path(ROOTS_DASHBOARD, '/addstudent'),
   studentEdit: path(ROOTS_DASHBOARD, '/editstudent'),
   studentDashboard: path(ROOTS_DASHBOARD, '/studentdashboard'),
+  studentProfile: path(ROOTS_DASHBOARD, '/studentsview'),
   //  Subjects
   subjects: path(ROOTS_DASHBOARD, '/subject'),
   subjectAdd: path(ROOTS_DASHBOARD, '/addsubject'),
   subjectEdit: path(ROOTS_DASHBOARD, '/editsubject'),
-  studentProfile: path(ROOTS_DASHBOARD, '/studentsview'),
   // Teachers
   teachers: path(ROOTS_DASHBOARD, '/teacherslist'),
   teacherAdd: path(ROOTS_DASHBOARD, '/addteacher'),

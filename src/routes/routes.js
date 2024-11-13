@@ -30,6 +30,7 @@ import Notices from '../screens/Notices';
 import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
 import AddStudent from '../screens/Students/AddStudent';
 import EditStudent from '../screens/Students/EditStudent';
+import StudentProfile from '../screens/Students/StudentProfile';
 import Students from '../screens/Students/StudentsList';
 import AddSubject from '../screens/Subjects/AddSubject';
 import EditSubject from '../screens/Subjects/EditSubject';
@@ -75,8 +76,8 @@ const router = createHashRouter(
             path={PATH_DASHBOARD.studentDashboard}
             element={<StudentsDashboard />}
           /> */}
-          {/* Students */}
 
+          {/* Students */}
           <Route path={PATH_DASHBOARD.students} element={<Students />} />
 
           <Route path={PATH_DASHBOARD.studentAdd} element={<AddStudent />} />
@@ -84,9 +85,12 @@ const router = createHashRouter(
             path={`${PATH_DASHBOARD.studentEdit}/:id`}
             element={<EditStudent />}
           />
+          <Route
+            path={`${PATH_DASHBOARD.studentProfile}/:id`}
+            element={<StudentProfile />}
+          />
 
           {/* Teachers */}
-
           <Route path={PATH_DASHBOARD.teachers} element={<TeachersList />} />
           <Route
             path={PATH_DASHBOARD.teacherProfile}
