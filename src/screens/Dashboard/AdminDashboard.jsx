@@ -179,19 +179,17 @@ const AdminDashboard = () => {
                   </Stack>
                 </div>
                 <div className="col-12">
-                  {notices?.data?.map((notice, index) => {
-                    if (notice.isActive) {
-                      return (
-                        <NoticeCard
-                          key={notice._id}
-                          title={notice.title}
-                          description={notice.description}
-                          date={notice.date}
-                          color={noticeColors[index]}
-                        />
-                      );
-                    }
-                  })}
+                  {notices?.data
+                    ?.filter((notice) => notice.isActive)
+                    .map((item, index) => (
+                      <NoticeCard
+                        key={item._id}
+                        title={item.title}
+                        description={item.description}
+                        date={item.date}
+                        color={noticeColors[index]}
+                      />
+                    ))}
                 </div>
               </div>
             </div>

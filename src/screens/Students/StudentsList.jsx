@@ -187,6 +187,7 @@ const Students = () => {
       },
     },
   ];
+
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
     recordsPerPage: 10,
@@ -254,7 +255,7 @@ const Students = () => {
       .then((res) => {
         const { students, filteredRecordsCount } = res;
         setDataSource({
-          students: students,
+          students,
           totalRecords: filteredRecordsCount,
         });
       });
