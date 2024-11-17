@@ -1,17 +1,17 @@
 import React from 'react';
-import { PATH_DASHBOARD } from '../../routes/paths';
-import { PiStudent } from 'react-icons/pi';
-import { PiBooksLight } from 'react-icons/pi';
-import { RxDashboard } from 'react-icons/rx';
-import { MdListAlt } from 'react-icons/md';
-import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
-import { PiBuildingOfficeLight } from 'react-icons/pi';
-import { TbPresentationAnalytics } from 'react-icons/tb';
-import { IoCalendarNumberOutline } from 'react-icons/io5';
-import { PiChalkboardTeacherLight } from 'react-icons/pi';
-import { IoMailOpenOutline } from 'react-icons/io5';
-import { MdOutlineGroups } from 'react-icons/md';
 import { GrAnnounce } from 'react-icons/gr';
+import { IoCalendarNumberOutline, IoMailOpenOutline } from 'react-icons/io5';
+import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
+import { MdListAlt, MdOutlineGroups } from 'react-icons/md';
+import {
+  PiBooksLight,
+  PiBuildingOfficeLight,
+  PiChalkboardTeacherLight,
+  PiStudent,
+} from 'react-icons/pi';
+import { RxDashboard } from 'react-icons/rx';
+import { TbPresentationAnalytics } from 'react-icons/tb';
+import { PATH_DASHBOARD } from '../../routes/paths';
 const navConfig = [
   // Dashboard
   {
@@ -111,11 +111,11 @@ const navConfig = [
         path: PATH_DASHBOARD.attendanceReports,
         role: ['teacher', 'admin'],
       },
-      // {
-      //   title: 'Teacher Reports',
-      //   path: '/dashboard/reports/teachers',
-      //   role: ['admin'],
-      // },
+      {
+        title: 'Warning Letter Reports',
+        path: PATH_DASHBOARD.warningLetterReport,
+        role: ['teacher', 'admin'],
+      },
       // {
       //   title: 'Group Reports',
       //   path: '/dashboard/reports/groups',

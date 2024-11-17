@@ -34,6 +34,23 @@ const reportApiSlice = apiSlice.injectEndpoints({
         responseHandler: (response) => response.blob(),
       }),
     }),
+    getWarningLettersReport: builder.query({
+      query: (params) => {
+        return {
+          url: `${REPORTS_URL}/warningletter`,
+          params: { ...params },
+          credentials: 'include',
+        };
+      },
+    }),
+    downloadWarningLettersReport: builder.query({
+      query: (params) => ({
+        url: `${REPORTS_URL}/warningletter/download`,
+        params,
+        credentials: 'include',
+        responseHandler: (response) => response.blob(),
+      }),
+    }),
   }),
 });
 
@@ -41,4 +58,6 @@ export const {
   useLazyGetAttendanceReportQuery,
   useLazyGetGroupAttendanceReportQuery,
   useLazyDownloadGroupAttendanceReportQuery,
+  useLazyGetWarningLettersReportQuery,
+  useLazyDownloadWarningLettersReportQuery,
 } = reportApiSlice;
