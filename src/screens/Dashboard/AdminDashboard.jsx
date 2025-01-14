@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { DateCalendar } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="content container-fluid">
+    <div className="container-fluid">
       {/* Page Header */}
       {classDetails && isRescheduleClassDialogVisible && (
         <RescheduleClassDialog
@@ -80,10 +80,12 @@ const AdminDashboard = () => {
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center">
-                <Typography fontSize={'1.70em'} fontWeight={700}>
-                  Upcoming Lessons
-                </Typography>
-                <Link to={PATH_DASHBOARD.calendar}>View All Lessons</Link>
+                {/* <Typography variant="h3">Upcoming Lessons</Typography> */}
+                <h2 className="page-title">Upcoming Lessons</h2>
+
+                {todayClasses.length > 0 && (
+                  <Link to={PATH_DASHBOARD.calendar}>View All Lessons</Link>
+                )}
               </Stack>
             </div>
             <div className="pt-3 pb-3">
@@ -96,55 +98,56 @@ const AdminDashboard = () => {
                 }}>
                 <table className="table table-center">
                   <tbody>
-                    {todayClasses?.map((lesson, index) => {
-                      const {
-                        endTime,
-                        group,
-                        room,
-                        startTime,
-                        subject,
-                        teacher,
-                        timetableEntryId,
-                      } = lesson;
-                      return (
-                        <tr key={timetableEntryId}>
-                          <td>
-                            <div className="date">
-                              <b>{subject}</b>
-                              <div>
-                                <b
-                                  style={{
-                                    fontSize: '12px',
-                                  }}>{`${teacher?.firstName} ${teacher?.lastName}`}</b>
+                    {todayClasses.length > 0 ? (
+                      todayClasses?.map((lesson, index) => {
+                        const {
+                          endTime,
+                          group,
+                          room,
+                          startTime,
+                          subject,
+                          teacher,
+                          timetableEntryId,
+                        } = lesson;
+                        return (
+                          <tr key={timetableEntryId}>
+                            <td>
+                              <div className="date">
+                                <b>{subject}</b>
+                                <div>
+                                  <b
+                                    style={{
+                                      fontSize: '12px',
+                                    }}>{`${teacher?.firstName} ${teacher?.lastName}`}</b>
+                                </div>
+
+                                <ul className="teacher-date-list">
+                                  <li
+                                    style={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                    }}>
+                                    <MdOutlineGroups size="1.5em" />
+                                    <p
+                                      style={{
+                                        marginLeft: '5px',
+                                      }}>{`${group} - ${room}`}</p>
+                                  </li>
+                                  <li>|</li>
+                                  <li>
+                                    <i className="fas fa-clock me-2" />
+                                    {startTime} - {endTime}
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+
+                            <td>
+                              <div className="lesson-confirm">
+                                <Link to="#">Confirmed</Link>
                               </div>
 
-                              <ul className="teacher-date-list">
-                                <li
-                                  style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                  }}>
-                                  <MdOutlineGroups size="1.5em" />
-                                  <p
-                                    style={{
-                                      marginLeft: '5px',
-                                    }}>{`${group} - ${room}`}</p>
-                                </li>
-                                <li>|</li>
-                                <li>
-                                  <i className="fas fa-clock me-2" />
-                                  {startTime} - {endTime}
-                                </li>
-                              </ul>
-                            </div>
-                          </td>
-
-                          <td>
-                            <div className="lesson-confirm">
-                              <Link to="#">Confirmed</Link>
-                            </div>
-
-                            {/* <button
+                              {/* <button
                               type="submit"
                               onClick={() => {
                                 setClassDetails(lesson);
@@ -153,10 +156,15 @@ const AdminDashboard = () => {
                               className="btn btn-info">
                               Reschedule
                             </button> */}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <Box sx={{ mx: 2 }}>
+                        <Typography variant="h6">No Lessons</Typography>
+                      </Box>
+                    )}
                   </tbody>
                 </table>
               </div>

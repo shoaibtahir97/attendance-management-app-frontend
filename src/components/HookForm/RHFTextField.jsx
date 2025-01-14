@@ -1,4 +1,10 @@
-import { FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
+import {
+  FormHelperText,
+  InputLabel,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -18,7 +24,7 @@ const RHFTextField = (props) => {
             spacing={2}
             sx={{ width: '100%' }}>
             <InputLabel variant="outlined" htmlFor="uncontrolled-native">
-              {label}
+              <Typography variant="subtitle2">{label}</Typography>
             </InputLabel>
             <TextField
               fullWidth

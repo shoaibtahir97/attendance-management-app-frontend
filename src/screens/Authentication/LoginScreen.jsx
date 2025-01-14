@@ -89,11 +89,7 @@ const LoginScreen = () => {
               </div>
               <div className="login-right">
                 <div className="login-right-wrap">
-                  <h1>Welcome to Stratford College London</h1>
-                  {/* <p className='account-subtitle'>
-                    Need an account? <Link to='/register'>Sign Up</Link>
-                </p> */}
-
+                  {/* <h2>Welcome to Stratford College London</h2> */}
                   {/* Form */}
                   <FormProvider
                     methods={methods}
@@ -167,7 +163,7 @@ const LoginScreen = () => {
                       />
 
                       <Button
-                        className="btn btn-primary btn-block"
+                        className="btn btn-primary btn-block "
                         type="primary"
                         htmlType="submit"
                         loading={isSubmitting}
