@@ -92,7 +92,6 @@ const Notes = (props) => {
                 overflow: 'auto',
                 maxHeight: '300px',
                 padding: '10px',
-                border: '1px solid #ddd',
               }}>
               {notes?.length > 0 ? (
                 notes?.map((note) => (
