@@ -9,6 +9,7 @@ import useNotification from '../../hooks/useNotification';
 import { useLazyGetStudentDetailsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { useIssueWarningLetterMutation } from '../../redux/slices/apiSlices/warningLetterApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import Notes from './components/Notes';
 import StudentProfileSkeleton from './components/StudentProfileSkeleton';
 
 const StudentProfile = () => {
@@ -203,6 +204,11 @@ const StudentProfile = () => {
                     </div>
                   </div>
                 </div>
+                <Notes
+                  notes={data?.notes}
+                  studentId={studentId}
+                  handleFetchStudentDetails={handleFetchStudentDetails}
+                />
               </div>
             </div>
           )}

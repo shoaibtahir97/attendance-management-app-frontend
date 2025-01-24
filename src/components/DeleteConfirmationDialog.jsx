@@ -1,5 +1,4 @@
 import {
-  Box,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -10,8 +9,8 @@ import {
 } from '@mui/material';
 import { Button } from 'antd';
 import React from 'react';
-import { MdClose } from 'react-icons/md';
-import { MdDelete } from 'react-icons/md';
+import { MdClose, MdDelete } from 'react-icons/md';
+
 const DeleteConfirmationDialog = (props) => {
   const {
     isShowModal,
@@ -52,7 +51,7 @@ const DeleteConfirmationDialog = (props) => {
           </Typography> */}
           <Typography
             variant="body2"
-            sx={{ color: 'text.primary', fontWeight: 'bold' }}
+            sx={{ color: 'text.primary' }}
             align="center">
             {deleteWarning}
           </Typography>
