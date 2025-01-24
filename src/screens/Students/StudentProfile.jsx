@@ -204,7 +204,11 @@ const StudentProfile = () => {
                     </div>
                   </div>
                 </div>
-                <Notes notes={data?.notes} />
+                <Notes
+                  notes={data?.notes}
+                  studentId={studentId}
+                  handleFetchStudentDetails={handleFetchStudentDetails}
+                />
               </div>
             </div>
           )}
