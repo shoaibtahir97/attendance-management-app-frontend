@@ -1,4 +1,4 @@
-import { Alert, Button, Timeline } from 'antd';
+import { Alert, Button, Empty, Timeline } from 'antd';
 import dayjs from 'dayjs';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import React, { useEffect } from 'react';
@@ -198,7 +198,7 @@ const StudentProfile = () => {
                             />
                           </div>
                         ) : (
-                          <div>No warning Letter Issued</div>
+                          <Empty />
                         )}
                       </div>
                     </div>
