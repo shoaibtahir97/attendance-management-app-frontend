@@ -46,6 +46,7 @@ const PATH_DASHBOARD = {
   teacherEdit: path(ROOTS_DASHBOARD, '/editteacher'),
   teacherProfile: path(ROOTS_DASHBOARD, '/teachersprofile'),
   notices: path(ROOTS_DASHBOARD, '/notices'),
+  templates: path(ROOTS_DASHBOARD, '/templates'),
   // studentReports: path(ROOTS_DASHBOARD, '/studentReports'),
   // tutorReports: path(ROOTS_DASHBOARD, '/attendanceReports'),
   warningLetterReport: path(ROOTS_DASHBOARD, '/reports/warningletter'),

@@ -39,6 +39,8 @@ import SubjectsList from '../screens/Subjects/SubjectList';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import EditTeacher from '../screens/Teachers/EditTeacher';
 import TeachersList from '../screens/Teachers/TeachersList';
+import Templates from '../screens/Templates';
+import AddTemplates from '../screens/Templates/AddTemplates';
 import ProtectedRoute from './ProtectedRoute';
 import { PATH_AUTH, PATH_DASHBOARD } from './paths';
 
@@ -136,6 +138,12 @@ const router = createHashRouter(
             element={<ViewAttendanceScreen />}
           />
 
+          {/* Templates */}
+          <Route path={PATH_DASHBOARD.templates} element={<Templates />} />
+          <Route
+            path={PATH_DASHBOARD.templates + '/add'}
+            element={<AddTemplates />}
+          />
           {/* Reports */}
           <Route path={PATH_DASHBOARD.reports} element={<Reports />} />
 
