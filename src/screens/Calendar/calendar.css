@@ -6,3 +6,7 @@
   display: inline;
   text-transform: capitalize;
 }
+
+.fc-daygrid-event-harness {
+  background-color: #79b3ed;
+}

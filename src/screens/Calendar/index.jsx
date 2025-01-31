@@ -114,12 +114,11 @@ const Calendar = () => {
   // All Time Tables for Admin
 
   const fetchAllTimeTables = async () => {
+    const updatedEvents = [];
     await getTimetable()
       .unwrap()
       .then((res) => {
-        const updatedEvents = [];
         res?.data?.forEach((item) => {
-          console.log('item', item);
           item?.entries?.forEach((entry) => {
             updatedEvents.push({
               title: `Group: ${item?.group?.name} \n Subject: ${entry?.subject?.name} \n Teacher: ${entry?.teacher?.firstName} ${entry?.teacher?.lastName}`,
@@ -134,11 +133,11 @@ const Calendar = () => {
             });
           });
         });
-        setEvents(updatedEvents);
       })
       .catch((err) => {
         // openNotification('error', err?.data?.message ?? err?.error);
       });
+    setEvents(updatedEvents);
   };
 
   // Single Time Table for Teacher
@@ -169,13 +168,13 @@ const Calendar = () => {
   //     });
   // };
 
+  console.log('events', events);
   useEffect(() => {
     if (userInfo.role === 'admin') {
       fetchAllTimeTables();
     }
   }, []);
 
-  console.log('events', events);
   return (
     <div className="content container-fluid">
       <div className="page-header">
