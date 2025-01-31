@@ -1,4 +1,5 @@
 import React from 'react';
+import { CgTemplate } from 'react-icons/cg';
 import { GrAnnounce } from 'react-icons/gr';
 import { IoCalendarNumberOutline, IoMailOpenOutline } from 'react-icons/io5';
 import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
@@ -9,6 +10,7 @@ import {
   PiChalkboardTeacherLight,
   PiStudent,
 } from 'react-icons/pi';
+
 import { RxDashboard } from 'react-icons/rx';
 import { TbPresentationAnalytics } from 'react-icons/tb';
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -85,6 +87,12 @@ const navConfig = [
     title: 'Timetable',
     icon: <IoCalendarNumberOutline />,
     path: PATH_DASHBOARD.calendar,
+    role: ['admin'],
+  },
+  {
+    title: 'Templates',
+    icon: <CgTemplate />,
+    path: PATH_DASHBOARD.templates,
     role: ['admin'],
   },
   {
