@@ -7,6 +7,7 @@ import {
   FormProvider,
   RHFAutocomplete,
   RHFEditor,
+  RHFSwitch,
   RHFTextField,
 } from '../../components/HookForm';
 import PageHeader from '../../components/PageHeader';
@@ -20,12 +21,14 @@ const AddTemplates = () => {
 
   const templateSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
+    isActive: Yup.boolean(),
     content: Yup.string().required('Content is required'),
     variables: Yup.array().of(Yup.string().required('Variable is required')),
   });
 
   const defaultValues = {
     name: '',
+    isActive: true,
     content: '',
     variables: [],
   };
@@ -37,7 +40,7 @@ const AddTemplates = () => {
 
   const {
     handleSubmit,
-    getValues,
+    reset,
     setError,
     formState: { isSubmitting },
   } = methods;
@@ -52,16 +55,13 @@ const AddTemplates = () => {
       await createTemplate(data)
         .unwrap()
         .then((res) => {
-          openNotification('success', 'Template created successfully');
-          console.log(res);
+          openNotification('success', res?.message);
         })
-        .catch((error) => {
-          openNotification('error', error.err);
+        .catch((err) => {
+          openNotification('error', err?.data?.message ?? err.error);
         });
     }
   };
-
-  console.log(getValues());
 
   return (
     <div className="content container-fluid">
@@ -85,9 +85,25 @@ const AddTemplates = () => {
                 <FormProvider
                   methods={methods}
                   onSubmit={handleSubmit(handleCreateTemplate)}>
-                  <div className="col-lg-6 col-md-12">
-                    <RHFTextField name="name" label="Name" />
+                  <div className="row align-items-center">
+                    <div className="col-lg-6 col-md-12">
+                      <RHFTextField name="name" label="Name" />
+                    </div>
+                    <div className="col-lg-6">
+                      <RHFSwitch name="isActive" label="Is Active" />
+                    </div>
                   </div>
+
+                  {/* <div className="col-lg-6 col-md-12">
+                    <RHFSelect
+                      name=""
+                      label="Send to"
+                      options={[
+                        { label: 'student', value: 'student' },
+                        { label: 'teacher', value: 'teacher' },
+                      ]}
+                    />
+                  </div> */}
                   <div>
                     <RHFAutocomplete
                       name="variables"

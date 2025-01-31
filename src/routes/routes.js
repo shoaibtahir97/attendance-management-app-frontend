@@ -41,6 +41,7 @@ import EditTeacher from '../screens/Teachers/EditTeacher';
 import TeachersList from '../screens/Teachers/TeachersList';
 import Templates from '../screens/Templates';
 import AddTemplates from '../screens/Templates/AddTemplates';
+import EditTemplate from '../screens/Templates/EditTemplate';
 import ProtectedRoute from './ProtectedRoute';
 import { PATH_AUTH, PATH_DASHBOARD } from './paths';
 
@@ -144,6 +145,11 @@ const router = createHashRouter(
             path={PATH_DASHBOARD.templates + '/add'}
             element={<AddTemplates />}
           />
+          <Route
+            path={`${PATH_DASHBOARD.templateEdit}/:id`}
+            element={<EditTemplate />}
+          />
+
           {/* Reports */}
           <Route path={PATH_DASHBOARD.reports} element={<Reports />} />
 
