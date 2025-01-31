@@ -3,7 +3,7 @@ import { CgTemplate } from 'react-icons/cg';
 import { GrAnnounce } from 'react-icons/gr';
 import { IoCalendarNumberOutline, IoMailOpenOutline } from 'react-icons/io5';
 import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
-import { MdOutlineGroups } from 'react-icons/md';
+import { MdListAlt, MdOutlineGroups } from 'react-icons/md';
 import {
   PiBooksLight,
   PiBuildingOfficeLight,
@@ -29,24 +29,24 @@ const navConfig = [
     role: ['teacher'],
   },
   // Attendance
-  // {
-  //   title: 'Attendance',
-  //   path: PATH_DASHBOARD.markattendance,
-  //   icon: <MdListAlt />,
-  //   role: ['admin'],
-  // children: [
-  //   {
-  //     title: 'Mark Attendance',
-  //     path: PATH_DASHBOARD.markattendance,
-  //     role: ['teacher', 'admin'],
-  //   },
-  //   {
-  //     title: 'View Attendance',
-  //     path: PATH_DASHBOARD.viewattendance,
-  //     role: ['teacher', 'admin'],
-  //   },
-  // ],
-  // },
+  {
+    title: 'Attendance',
+    path: PATH_DASHBOARD.markattendance,
+    icon: <MdListAlt />,
+    role: ['admin'],
+    // children: [
+    //   {
+    //     title: 'Mark Attendance',
+    //     path: PATH_DASHBOARD.markattendance,
+    //     role: ['teacher', 'admin'],
+    //   },
+    // {
+    //   title: 'View Attendance',
+    //   path: PATH_DASHBOARD.viewattendance,
+    //   role: ['teacher', 'admin'],
+    // },
+    // ],
+  },
   // Students
   {
     title: 'Students',
