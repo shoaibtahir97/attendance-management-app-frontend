@@ -53,6 +53,7 @@ const PATH_DASHBOARD = {
   // studentReports: path(ROOTS_DASHBOARD, '/studentReports'),
   // tutorReports: path(ROOTS_DASHBOARD, '/attendanceReports'),
   warningLetterReport: path(ROOTS_DASHBOARD, '/reports/warningletter'),
+  groupReport: path(ROOTS_DASHBOARD, '/reports/group'),
 };
 
 export { PATH_AUTH, PATH_DASHBOARD };

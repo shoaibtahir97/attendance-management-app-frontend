@@ -126,7 +126,7 @@ const navConfig = [
       },
       // {
       //   title: 'Group Reports',
-      //   path: '/dashboard/reports/groups',
+      //   path: PATH_DASHBOARD.groupReport,
       //   role: ['admin'],
       // },
     ],
