@@ -1,21 +1,21 @@
+import { Button, Table } from 'antd';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import {
   FormProvider,
   RHFAutocomplete,
   RHFDatePicker,
 } from '../../components/HookForm';
-import { useForm } from 'react-hook-form';
-import { Button, Table } from 'antd';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
+import useNotification from '../../hooks/useNotification';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 import {
   useLazyDownloadGroupAttendanceReportQuery,
+  useLazyDownloadGroupAttendanceReportV2Query,
   useLazyGetGroupAttendanceReportQuery,
 } from '../../redux/slices/apiSlices/reportApiSlice';
-import useNotification from '../../hooks/useNotification';
-import GroupAttendanceChart from './GroupAttendanceChart';
 import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
+import GroupAttendanceChart from './GroupAttendanceChart';
 
 export const attendanceStatusOptions = [
   { label: 'Present', value: 'present' },
@@ -58,6 +58,7 @@ const GroupReport = () => {
   const { handleSubmit, getValues } = methods;
   const { data: groupsList } = useGetGroupsListQuery();
   const { data: subjectsList } = useGetSubjectsListQuery();
+
   const [
     getGroupAttendanceReport,
     { isLoading: loadingGetGroupAttendanceReport },
@@ -68,11 +69,17 @@ const GroupReport = () => {
     { isLoading: loadingDownloadGroupAttendanceReport },
   ] = useLazyDownloadGroupAttendanceReportQuery();
 
+  const [
+    downloadGroupAttendanceReportV2,
+    { isLoading: loadingDownloadGroupAttendanceReportV2 },
+  ] = useLazyDownloadGroupAttendanceReportV2Query();
+
   const { openNotification } = useNotification();
 
   const [dataSource, setDataSource] = useState([]);
 
   const getGroupReports = async (data) => {
+    console.log(data);
     await getGroupAttendanceReport({
       ...data,
       startDate: new Date(data?.startDate),
@@ -114,6 +121,32 @@ const GroupReport = () => {
       .catch((err) => {
         openNotification('error', err?.data?.message || err?.error);
       });
+  };
+
+  const handleDownloadGroupAttendanceReportV2 = async () => {
+    const { group } = getValues();
+    console.log(group);
+    await downloadGroupAttendanceReportV2({ group })
+      .unwrap()
+      .then((res) => {
+        const url = window.URL.createObjectURL(res);
+
+        // Create a link element
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `attendance_report.xlsx`); // Specify the file name
+
+        // Append to the document and trigger the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up and remove the link
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((err) =>
+        openNotification('error', err?.data?.message || err?.error)
+      );
   };
 
   return (
@@ -179,9 +212,17 @@ const GroupReport = () => {
                       <Button
                         htmlType="button"
                         type="primary"
+                        style={{ marginRight: '5px' }}
                         loading={loadingDownloadGroupAttendanceReport}
                         onClick={handleDownloadGroupAttendanceReport}>
                         <i className="fas fa-download" /> Download
+                      </Button>
+                      <Button
+                        htmlType="button"
+                        type="primary"
+                        loading={loadingDownloadGroupAttendanceReportV2}
+                        onClick={handleDownloadGroupAttendanceReportV2}>
+                        <i className="fas fa-download" /> Download Excel
                       </Button>
                     </div>
                   </div>
