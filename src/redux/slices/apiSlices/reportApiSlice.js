@@ -64,6 +64,7 @@ const reportApiSlice = apiSlice.injectEndpoints({
         url: `${REPORTS_URL}/coursegroups`,
         params,
         credentials: 'include',
+        responseHandler: (response) => response.blob(),
       }),
     }),
     getCourseSubjectsAttendanceReport: builder.query({

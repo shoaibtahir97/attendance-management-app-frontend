@@ -46,13 +46,15 @@ const CourseReport = () => {
       await getCourseGroupsAttendanceReport({ courseId: course })
         .unwrap()
         .then((res) => {
-          console.log('res', res);
           const url = window.URL.createObjectURL(res);
 
           // Create a link element
           const link = document.createElement('a');
           link.href = url;
-          link.setAttribute('download', 'res'); // Specify the file name
+          link.setAttribute(
+            'download',
+            `report-course-group-${courseList.find((item) => item.value === course).label}`
+          ); // Specify the file name
 
           // Append to the document and trigger the download
           document.body.appendChild(link);
@@ -64,7 +66,7 @@ const CourseReport = () => {
         })
         .catch((err) => {
           console.log(err);
-          openNotification('error', err.data.message ?? err.error);
+          openNotification('error', err?.message ?? err.error);
         });
     }
   };
@@ -83,13 +85,15 @@ const CourseReport = () => {
       await getCourseSubjectsAttendanceReport({ courseId: course })
         .unwrap()
         .then((res) => {
-          console.log('res', res);
           const url = window.URL.createObjectURL(res);
 
           // Create a link element
           const link = document.createElement('a');
           link.href = url;
-          link.setAttribute('download', 'res'); // Specify the file name
+          link.setAttribute(
+            'download',
+            `report-course-subjects-${courseList.find((item) => item.value === course).label}`
+          ); // Specify the file name
 
           // Append to the document and trigger the download
           document.body.appendChild(link);
@@ -100,7 +104,7 @@ const CourseReport = () => {
           window.URL.revokeObjectURL(url);
         })
         .catch((err) => {
-          openNotification('error', err.message ?? err.error);
+          openNotification('error', err?.message ?? err.error);
         });
     }
   };
