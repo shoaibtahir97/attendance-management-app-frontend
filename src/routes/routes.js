@@ -28,7 +28,6 @@ import GroupsList from '../screens/Groups/GroupsList';
 import MailScreen from '../screens/Mail/MailScreen';
 import Notices from '../screens/Notices';
 import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
-import GroupReportV2 from '../screens/Reports/GroupReportV2';
 import WarningLetterReports from '../screens/Reports/WarningLetterReports';
 import AddStudent from '../screens/Students/AddStudent';
 import EditStudent from '../screens/Students/EditStudent';
@@ -165,10 +164,6 @@ const router = createHashRouter(
           <Route
             path={PATH_DASHBOARD.warningLetterReport}
             element={<WarningLetterReports />}
-          />
-          <Route
-            path={PATH_DASHBOARD.groupReport}
-            element={<GroupReportV2 />}
           />
 
           {/* <Route
