@@ -540,7 +540,7 @@ const MarkAttendanceScreen = () => {
                     }}
                     columns={column}
                     dataSource={dataSource.students}
-                    // rowSelection={rowSelection}
+                    rowSelection={rowSelection}
                     rowKey={(record) => record.id}
                   />
                 </div>
