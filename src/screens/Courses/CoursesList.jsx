@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import PageHeader from '../../components/PageHeader';
-import { PATH_DASHBOARD } from '../../routes/paths';
-import { FormProvider, RHFTextField } from '../../components/HookForm';
-import { useForm } from 'react-hook-form';
 import { Alert, Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { Button, Table } from 'antd';
-import { useLazyGetCoursesQuery } from '../../redux/slices/apiSlices/courseApiSlice';
+import { format } from 'date-fns';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FiEdit, FiEye } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
+import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
+import { FormProvider, RHFTextField } from '../../components/HookForm';
+import PageHeader from '../../components/PageHeader';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
 import useNotification from '../../hooks/useNotification';
-import { FiEye } from 'react-icons/fi';
-import { FiEdit } from 'react-icons/fi';
-import { format } from 'date-fns';
+import {
+  useDeleteCourseMutation,
+  useLazyGetCoursesQuery,
+} from '../../redux/slices/apiSlices/courseApiSlice';
+import { PATH_DASHBOARD } from '../../routes/paths';
 
 const SKELETON = ['', '', '', '', ''];
 
 const CoursesList = () => {
   const methods = useForm();
   const [getCourses, { data, isLoading, error }] = useLazyGetCoursesQuery();
+  const [deleteCourse, { isLoading: isDeleting }] = useDeleteCourseMutation();
   const { openNotification } = useNotification();
   const navigate = useNavigate();
 
@@ -84,10 +88,9 @@ const CoursesList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
-
+  console.log('selectedRowKeys', selectedRowKeys);
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -98,11 +101,17 @@ const CoursesList = () => {
     totalRecords: 0,
   });
 
+  const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
+    useState(false);
+
   const {
     handleSubmit,
     getValues,
     formState: { isSubmitting },
   } = methods;
+
+  const toggleDeleteConfirmationDialog = () =>
+    setIsDeleteConfirmDialogOpen(!isDeleteConfirmDialogOpen);
 
   const fetchCourses = async (query) => {
     await getCourses(query)
@@ -122,6 +131,20 @@ const CoursesList = () => {
     fetchCourses({ ...data, ...coursesQuery });
   };
 
+  const handleDeleteCourse = async () => {
+    await deleteCourse({ _id: selectedRowKeys[0] })
+      .unwrap()
+      .then((res) => {
+        openNotification('success', res?.message);
+        fetchCourses(coursesQuery);
+        toggleDeleteConfirmationDialog();
+        setSelectedRowKeys([]);
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message ?? err.error);
+      });
+  };
+
   useEffect(() => {
     fetchCourses(coursesQuery);
   }, []);
@@ -136,6 +159,17 @@ const CoursesList = () => {
         parentSection="Course"
       />
       {/* /Page Header */}
+      {/* Delete Course */}
+      <DeleteConfirmationDialog
+        isShowModal={isDeleteConfirmDialogOpen}
+        showModalMethod={toggleDeleteConfirmationDialog}
+        dialogTitle="Delete Course"
+        // deleteEntity="Student(s)"
+        deleteWarning="Are you sure you want to delete the selected course?, once deleted, its associated groups and students will be deleted"
+        deleteLoader={isDeleting}
+        handleDelete={handleDeleteCourse}
+      />{' '}
+      {/* Delete Course */}
       {/* Filters */}
       <FormProvider
         methods={methods}
@@ -209,6 +243,13 @@ const CoursesList = () => {
                 />
               ) : (
                 <div className="table-responsive">
+                  <Button
+                    type="primary"
+                    onClick={toggleDeleteConfirmationDialog}
+                    disabled={selectedRowKeys.length < 1}
+                    style={{ marginBottom: '10px' }}>
+                    Delete
+                  </Button>
                   <Table
                     pagination={{
                       total: dataSource?.totalRecords,
@@ -233,8 +274,8 @@ const CoursesList = () => {
                     }}
                     columns={column}
                     dataSource={dataSource.courses}
-                    rowSelection={rowSelection}
-                    rowKey={(record) => record.id}
+                    rowSelection={{ type: 'radio', ...rowSelection }}
+                    rowKey={(record) => record._id}
                   />
                 </div>
               )}

@@ -49,6 +49,16 @@ export const courseApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Course'],
     }),
+    deleteCourse: builder.mutation({
+      query: (payload) => ({
+        url: `${COURSES_URL}/${payload._id}`,
+        method: 'DELETE',
+        header: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        credentials: 'include',
+      }),
+    }),
   }),
 });
 
@@ -58,4 +68,5 @@ export const {
   useGetCourseDetailsQuery,
   useGetCoursesListQuery,
   useUpdateCourseDetailsMutation,
+  useDeleteCourseMutation,
 } = courseApiSlice;
