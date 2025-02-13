@@ -3,7 +3,7 @@ import { Button, Table } from 'antd';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FiEdit, FiEye } from 'react-icons/fi';
+import { FiEdit, FiTrash } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 import { FormProvider, RHFTextField } from '../../components/HookForm';
@@ -64,14 +64,18 @@ const CoursesList = () => {
         return (
           <>
             <div className="actions">
-              <Tooltip title="View Course" placement="top">
-                <IconButton>
-                  <FiEye size="14px" />
-                </IconButton>
-              </Tooltip>
               <Tooltip title="Edit Course" placement="top">
                 <IconButton onClick={onEditCourse}>
                   <FiEdit size="14px" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete Course" placement="top">
+                <IconButton
+                  onClick={() => {
+                    setSelectedRowKeys([record._id]);
+                    toggleDeleteConfirmationDialog();
+                  }}>
+                  <FiTrash fontSize={'14px'} />
                 </IconButton>
               </Tooltip>
             </div>
@@ -90,7 +94,7 @@ const CoursesList = () => {
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
-  console.log('selectedRowKeys', selectedRowKeys);
+
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -110,9 +114,12 @@ const CoursesList = () => {
     formState: { isSubmitting },
   } = methods;
 
-  const toggleDeleteConfirmationDialog = () =>
+  const toggleDeleteConfirmationDialog = () => {
+    if (isDeleteConfirmDialogOpen) {
+      setSelectedRowKeys([]);
+    }
     setIsDeleteConfirmDialogOpen(!isDeleteConfirmDialogOpen);
-
+  };
   const fetchCourses = async (query) => {
     await getCourses(query)
       .unwrap()
