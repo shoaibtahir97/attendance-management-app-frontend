@@ -265,6 +265,17 @@ const MarkAttendanceScreen = () => {
     formState: { isSubmitting },
   } = methods;
 
+  const markMultipleAttendance = () => {
+    selectedRowKeys.forEach((row, index) => {
+      dispatch(
+        markAttendance({
+          studentId: row,
+          status: 'present',
+        })
+      );
+    });
+  };
+
   const fetchStudents = async (data) => {
     const { date, ...query } = { ...data };
 
@@ -531,6 +542,14 @@ const MarkAttendanceScreen = () => {
                 />
               ) : (
                 <div className="table-responsive">
+                  <Button
+                    disabled={selectedRowKeys.length === 0}
+                    onClick={markMultipleAttendance}
+                    htmlType="button"
+                    style={{ marginTop: '10px', marginBottom: '10px' }}
+                    type="primary">
+                    Mark all as Preset
+                  </Button>
                   <Table
                     pagination={{
                       total: dataSource?.filteredRecordsCount,
