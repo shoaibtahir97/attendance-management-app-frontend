@@ -20,6 +20,7 @@ import useNotification from '../../hooks/useNotification';
 import {
   useLazyGetAttendanceQuery,
   useMarkAttendanceMutation,
+  useResetAttendanceMutation,
 } from '../../redux/slices/apiSlices/attendanceApiSlice';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
@@ -67,16 +68,16 @@ const attendanceReasons = [
 const MarkAttendanceScreen = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [groupId, setGroupId] = useState(state?.groupId);
-  const [subjectId, setSubjectId] = useState(state?.subjectId);
-  const [startTime, setStartTime] = useState(state?.startTime);
-  const [endTime, setEndTime] = useState(state?.endTime);
-  const [subject, setSubject] = useState(state?.subject);
-  const [group, setGroup] = useState(state?.group);
+  const [groupId] = useState(state?.groupId);
+  const [subjectId] = useState(state?.subjectId);
+  const [startTime] = useState(state?.startTime);
+  const [endTime] = useState(state?.endTime);
+  const [subject] = useState(state?.subject);
+  const [group] = useState(state?.group);
 
   const { openNotification } = useNotification();
   const dispatch = useDispatch();
-  const [isAttendanceMarked, setIsAttendanceMarked] = useState(false);
+  const [isAttendanceMarked, setIsAttendanceMarked] = useState('');
 
   const { data: groupsList, isLoading: loadingGroups } =
     useGetGroupsListQuery();
@@ -92,6 +93,8 @@ const MarkAttendanceScreen = () => {
     useMarkAttendanceMutation();
 
   const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
+  const [resetAttendance, { isLoading: isResettingAttendance }] =
+    useResetAttendanceMutation();
 
   const [dataSource, setDataSource] = useState({
     students: [],
@@ -360,7 +363,7 @@ const MarkAttendanceScreen = () => {
           students: attendanceRecords,
           totalRecords: attendanceRecords.length,
         });
-        setIsAttendanceMarked(true);
+        setIsAttendanceMarked(res._id);
       })
       .catch((err) => {
         if (err?.data?.status === 400) {
@@ -398,6 +401,18 @@ const MarkAttendanceScreen = () => {
       })
       .catch((err) => {
         openNotification('error', err?.data?.message || err?.error);
+      });
+  }
+
+  async function handleResetAttendance() {
+    await resetAttendance(isAttendanceMarked)
+      .unwrap()
+      .then((res) => {
+        openNotification('success', res?.message);
+        dispatch(resetAttendanceRecord());
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message || err.error);
       });
   }
 
@@ -525,6 +540,19 @@ const MarkAttendanceScreen = () => {
                         loading={loadingAttendance}>
                         Save Attendance
                       </Button>
+                      {isAttendanceMarked && (
+                        <Button
+                          onClick={handleResetAttendance}
+                          disabled={
+                            userInfo.role === 'teacher' &&
+                            new Date() > new Date(startTime)
+                          }
+                          type="default"
+                          size="large"
+                          loading={isResettingAttendance}>
+                          Reset Attendance
+                        </Button>
+                      )}
                     </Stack>
                   </Grid>
                 </Grid>
@@ -548,7 +576,7 @@ const MarkAttendanceScreen = () => {
                     htmlType="button"
                     style={{ marginTop: '10px', marginBottom: '10px' }}
                     type="primary">
-                    Mark all as Preset
+                    Mark all as Present
                   </Button>
                   <Table
                     pagination={{

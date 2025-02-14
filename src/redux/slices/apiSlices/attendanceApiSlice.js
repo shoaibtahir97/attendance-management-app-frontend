@@ -1,5 +1,5 @@
-import { apiSlice } from './apiSlice';
 import { ATTENDANCE_URL } from '../../../constants';
+import { apiSlice } from './apiSlice';
 
 export const attendanceApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,8 +21,21 @@ export const attendanceApiSlice = apiSlice.injectEndpoints({
       transformResponse: (res) => res?.data,
       keepUnusedDataFor: 5,
     }),
+    resetAttendance: builder.mutation({
+      query: (attendanceId) => {
+        console.log({ attendanceId });
+        return {
+          url: `${ATTENDANCE_URL}/${attendanceId}`,
+          method: 'DELETE',
+          credentials: 'include',
+        };
+      },
+    }),
   }),
 });
 
-export const { useMarkAttendanceMutation, useLazyGetAttendanceQuery } =
-  attendanceApiSlice;
+export const {
+  useMarkAttendanceMutation,
+  useLazyGetAttendanceQuery,
+  useResetAttendanceMutation,
+} = attendanceApiSlice;
