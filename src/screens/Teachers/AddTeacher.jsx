@@ -3,11 +3,13 @@ import { Grid } from '@mui/material';
 import { Button } from 'antd';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
   RHFSelect,
+  RHFSwitch,
   RHFTextField,
 } from '../../components/HookForm';
 import PageHeader from '../../components/PageHeader';
@@ -23,6 +25,7 @@ export const genders = [
 ];
 const AddTeacher = () => {
   const { openNotification } = useNotification();
+  const { navigate } = useNavigate();
   const { data: subjectsList, isLoading: loadingSubjects } =
     useGetSubjectsListQuery();
 
@@ -38,6 +41,7 @@ const AddTeacher = () => {
     role: 'teacher',
     phone: '',
     subjects: [],
+    isActive: true,
   };
 
   const studentSchema = Yup.object().shape({
@@ -60,6 +64,7 @@ const AddTeacher = () => {
     subjects: Yup.array()
       .of(Yup.string())
       .min(1, 'Please select at least one subject'),
+    isActive: Yup.boolean(),
   });
 
   const methods = useForm({
@@ -74,16 +79,8 @@ const AddTeacher = () => {
       .unwrap()
       .then((res) => {
         openNotification('success', res?.message);
-        reset({
-          firstName: '',
-          lastName: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-          role: 'teacher',
-          phone: '',
-          subjects: [],
-        });
+        reset({ ...defaultValues });
+        navigate(-1);
       })
       .catch((err) =>
         openNotification('error', err?.data?.message || err?.error)
@@ -144,17 +141,20 @@ const AddTeacher = () => {
                       Login Details
                     </h5>
                   </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
+                  <Grid item xs={12} sm={6} md={3}>
                     <RHFTextField name="email" label="Email Address" />
                   </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
+                  <Grid item xs={12} sm={6} md={3}>
                     <RHFTextField name="password" label="Password" />
                   </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
+                  <Grid item xs={12} sm={6} md={3}>
                     <RHFTextField
                       name="confirmPassword"
                       label="Confirm Password"
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={2} sx={{ mt: 2, ml: 2 }}>
+                    <RHFSwitch name="isActive" label="Is Active" />
                   </Grid>
                   <Grid item xs={12}>
                     <Button
