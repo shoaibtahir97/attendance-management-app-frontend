@@ -1,26 +1,27 @@
-import React, { useEffect } from 'react';
-import useNotification from '../../hooks/useNotification';
-import {
-  useGetUsersDetailsQuery,
-  useUpdateUserDetailsMutation,
-} from '../../redux/slices/apiSlices/usersApiSlice';
-import PageHeader from '../../components/PageHeader';
-import { PATH_DASHBOARD } from '../../routes/paths';
-import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid } from '@mui/material';
 import { Alert, Button } from 'antd';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
   RHFSelect,
+  RHFSwitch,
   RHFTextField,
 } from '../../components/HookForm';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useParams } from 'react-router-dom';
-import * as Yup from 'yup';
-import { Grid } from '@mui/material';
-import { genders } from './AddTeacher';
+import PageHeader from '../../components/PageHeader';
+import useNotification from '../../hooks/useNotification';
 import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
+import {
+  useGetUsersDetailsQuery,
+  useUpdateUserDetailsMutation,
+} from '../../redux/slices/apiSlices/usersApiSlice';
+import { PATH_DASHBOARD } from '../../routes/paths';
+import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
+import { genders } from './AddTeacher';
 
 const EditTeacher = () => {
   const { openNotification } = useNotification();
@@ -40,21 +41,12 @@ const EditTeacher = () => {
     lastName: Yup.string().required('Last name is required'),
     email: Yup.string().email().required('Email address is required'),
     gender: Yup.string().required('Gender is required'),
-    // password: Yup.string()
-    //   .required()
-    //   .matches(
-    //     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-    //     'Password must contain at least 8 characters, and contain an upper case letter, lower case letter, number, and symbol'
-    //   ),
-    // confirmPassword: Yup.string().oneOf(
-    //   [Yup.ref('password'), null],
-    //   'Passwords must match'
-    // ),
     role: Yup.string().required(),
     phone: Yup.string().required('Phone number is required'),
     subjects: Yup.array()
       .of(Yup.string())
       .min(1, 'Please select at least one subject'),
+    isActive: Yup.boolean(),
   });
 
   const methods = useForm({
@@ -64,8 +56,7 @@ const EditTeacher = () => {
   const { handleSubmit, reset } = methods;
 
   const updateUserData = async (data) => {
-    console.log('data', data);
-    updateUserDetails(data)
+    await updateUserDetails(data)
       .unwrap()
       .then((res) => openNotification('success', res?.message))
       .catch((err) =>
@@ -79,7 +70,6 @@ const EditTeacher = () => {
 
   return (
     <div className="content container-fluid">
-      {' '}
       <PageHeader
         currentSection="Edit Teacher"
         pageTitle="Edit Teacher"
@@ -127,7 +117,7 @@ const EditTeacher = () => {
                         sx={{ width: '100%' }}
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={8}>
                       <RHFAutocomplete
                         multiple
                         options={subjectsList}
@@ -146,15 +136,9 @@ const EditTeacher = () => {
                     <Grid item xs={12} sm={6} md={4}>
                       <RHFTextField name="email" label="Email Address" />
                     </Grid>
-                    {/* <Grid item xs={12} sm={6} md={4}>
-                      <RHFTextField name="password" label="Password" />
+                    <Grid item xs={12} sm={6} md={2} sx={{ mt: 2, ml: 2 }}>
+                      <RHFSwitch name="isActive" label="Is Active" />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
-                      <RHFTextField
-                        name="confirmPassword"
-                        label="Confirm Password"
-                      />
-                    </Grid> */}
                     <Grid item xs={12}>
                       <Button
                         type="primary"
