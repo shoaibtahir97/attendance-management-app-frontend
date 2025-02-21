@@ -7,11 +7,15 @@ import {
   Typography,
 } from '@mui/material';
 import { Button } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
 import * as Yup from 'yup';
-import { FormProvider, RHFTextField } from '../../../components/HookForm';
+import {
+  FormProvider,
+  RHFTextField,
+  RHFUploadSingleFile,
+} from '../../../components/HookForm';
 import useNotification from '../../../hooks/useNotification';
 import {
   useCreateNoteMutation,
@@ -27,13 +31,15 @@ const NotesModal = (props) => {
     currentNote,
     setCurrentNote,
   } = props;
-  console.log({ currentNote });
+
   const { openNotification } = useNotification();
   const [createNote] = useCreateNoteMutation();
   const [updateNote] = useUpdateNoteMutation();
+  const [fileName, setFileName] = useState('');
 
   const notesSchema = Yup.object().shape({
     note: Yup.string().required('Note is required'),
+    noteAttachment: Yup.mixed(),
   });
 
   const methods = useForm({
@@ -46,19 +52,36 @@ const NotesModal = (props) => {
 
   const {
     handleSubmit,
+    setValue,
     formState: { isSubmitting },
     reset,
   } = methods;
 
   const closeModal = () => {
+    reset({ note: '', noteAttachment: null });
     showModalMethod();
-    reset({ note: '' });
     setCurrentNote(null);
   };
 
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      setFileName(file.name);
+      if (file) {
+        setValue(
+          'noteAttachment',
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        );
+      }
+    },
+    [setValue]
+  );
+
   const onSubmit = async (data) => {
     if (currentNote) {
-      await updateNote({ note: data.note, _id: currentNote._id })
+      await updateNote({ _id: currentNote._id, ...data })
         .unwrap()
         .then((res) => {
           closeModal();
@@ -70,8 +93,8 @@ const NotesModal = (props) => {
         });
     } else {
       await createNote({
-        note: data.note,
         studentId,
+        ...data,
       })
         .unwrap()
         .then((res) => {
@@ -87,7 +110,8 @@ const NotesModal = (props) => {
 
   useEffect(() => {
     if (currentNote) {
-      methods.setValue('note', currentNote?.note);
+      setValue('note', currentNote?.note);
+      setValue('noteAttachment', currentNote?.noteAttachment);
     }
   }, [currentNote]);
 
@@ -95,7 +119,7 @@ const NotesModal = (props) => {
     <Dialog
       open={isShowModal}
       onClose={closeModal}
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth={true}>
       <DialogTitle
         sx={{
@@ -116,6 +140,11 @@ const NotesModal = (props) => {
             multiline
             minRows={4}
             placeholder="Add note here..."
+          />
+          <RHFUploadSingleFile
+            name="noteAttachment"
+            label="Attachment"
+            onDrop={handleDrop}
           />
           <div className="mt-3" style={{ textAlign: 'right' }}>
             <Button

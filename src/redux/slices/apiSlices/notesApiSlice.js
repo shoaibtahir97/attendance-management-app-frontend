@@ -4,24 +4,47 @@ import { apiSlice } from './apiSlice';
 const notesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createNote: builder.mutation({
-      query: (payload) => ({
-        url: NOTES_URL,
-        body: payload,
-        method: 'POST',
-        credentials: 'include',
-      }),
+      query: (payload) => {
+        const body = new FormData();
+
+        for (const [key, value] of Object.entries(payload)) {
+          if (key === 'noteAttachment') {
+            body.append(key, value, value?.name);
+          } else {
+            body.append(key, value);
+          }
+        }
+
+        return {
+          url: NOTES_URL,
+          body,
+          method: 'POST',
+          credentials: 'include',
+        };
+      },
     }),
     updateNote: builder.mutation({
-      query: (payload) => ({
-        url: `${NOTES_URL}/${payload._id}`,
-        method: 'PUT',
-        body: payload,
-        header: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        transformResponse: (res) => res?.data,
-        credentials: 'include',
-      }),
+      query: (payload) => {
+        console.log('payload', payload);
+        const body = new FormData();
+
+        for (const [key, value] of Object.entries(payload)) {
+          if (key === 'noteAttachment') {
+            body.append(key, value, value?.name);
+          } else {
+            body.append(key, value);
+          }
+        }
+        console.log('body', body);
+
+        return {
+          url: `${NOTES_URL}/${payload._id}`,
+          method: 'PUT',
+          body,
+          transformResponse: (res) => res?.data,
+          credentials: 'include',
+        };
+      },
       invalidatesTags: ['Note'],
     }),
     deleteNote: builder.mutation({

@@ -19,16 +19,12 @@ const Notes = (props) => {
     useState(false);
 
   const handleToggleNotesModal = (note) => {
-    if (note) {
-      setCurrentNote(note);
-    }
+    setCurrentNote(note);
     setIsNotesModalVisible(!isNotesModalVisible);
   };
 
   const handleShowDeleteNoteModal = (note) => {
-    if (note) {
-      setCurrentNote(note);
-    }
+    setCurrentNote(note);
     openDeleteConfirmationDialog();
   };
 
@@ -123,14 +119,27 @@ const Notes = (props) => {
                               display: 'flex',
                               justifyContent: 'space-between',
                             }}>
-                            <p>
-                              <b>Last Updated</b>:{' '}
-                              {dayjs(note?.createAt).format('DD-MM-YYYY')}
-                            </p>
-                            <p>
-                              <b>Created By</b>:{' '}
-                              {`${note.createdBy.firstName} ${note.createdBy.lastName}`}
-                            </p>
+                            <div>
+                              <p>
+                                <b>Last Updated</b>:{' '}
+                                {dayjs(note?.createAt).format('DD-MM-YYYY')}
+                              </p>
+                              <p>
+                                <b>Created By</b>:{' '}
+                                {`${note.createdBy.firstName} ${note.createdBy.lastName}`}
+                              </p>
+                            </div>
+                            {note.noteAttachment && (
+                              <div>
+                                <Button
+                                  variant="link"
+                                  onClick={() =>
+                                    window.open(note?.noteAttachment)
+                                  }>
+                                  View Attachment
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         }
                       />
