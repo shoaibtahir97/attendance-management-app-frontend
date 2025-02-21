@@ -24,7 +24,6 @@ import {
   useToggleStudentStatusMutation,
 } from '../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
-import { getFormattedDate } from '../../utils/formatDateTime';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
 
@@ -51,7 +50,6 @@ const Students = () => {
       sorter: (a, b) => a.firstName.length - b.firstName.length,
       render: (text, record) => <h2 className="table-avatar">{text}</h2>,
     },
-
     {
       title: 'Last Name',
       dataIndex: 'lastName',
@@ -67,32 +65,6 @@ const Students = () => {
       title: 'Group',
       dataIndex: 'group',
       sorter: (a, b) => a.group.length - b.group.length,
-    },
-    {
-      title: 'Phone',
-      dataIndex: 'phone',
-      sorter: (a, b) => a.phone.length - b.phone.length,
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      sorter: (a, b) => a.email.length - b.email.length,
-    },
-    {
-      title: 'Gender',
-      dataIndex: 'gender',
-      sorter: (a, b) => a.gender.length - b.gender.length,
-    },
-    {
-      title: 'DOB',
-      dataIndex: 'DOB',
-      sorter: (a, b) => a.DOB.length - b.DOB.length,
-      render: (text, record) => <p>{getFormattedDate(text, 'DD-MM-YYYY')}</p>,
-    },
-    {
-      title: 'Nationality',
-      dataIndex: 'nationality',
-      sorter: (a, b) => a.nationality.length - b.nationality.length,
     },
     {
       title: 'Year',
