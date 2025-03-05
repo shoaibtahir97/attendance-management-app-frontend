@@ -60,7 +60,7 @@ const RHFAutocomplete = (props) => {
                 }
               }}
               loading={loading}
-              isOptionEqualToValue={(option, value) => option.value === value} // ensures proper comparison
+              isOptionEqualToValue={(option, value) => option.value === value}
               getOptionLabel={(option) =>
                 typeof option === 'string' ? option : option.label
               }

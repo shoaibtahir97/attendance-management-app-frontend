@@ -1,36 +1,48 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from 'antd';
-import React from 'react';
+import { Chip, InputLabel } from '@mui/material';
+import { Button, Tooltip } from 'antd';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { IoIosInformationCircleOutline } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import {
   FormProvider,
-  RHFAutocomplete,
   RHFEditor,
+  RHFSelect,
   RHFSwitch,
   RHFTextField,
 } from '../../components/HookForm';
 import PageHeader from '../../components/PageHeader';
 import useNotification from '../../hooks/useNotification';
-import { useAddTemplateMutation } from '../../redux/slices/apiSlices/templateApiSlice';
+import {
+  useAddTemplateMutation,
+  useLazyGetTemplateVariablesQuery,
+} from '../../redux/slices/apiSlices/templateApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import TemplateView from './components/TemplateView';
 
 const AddTemplates = () => {
+  const navigate = useNavigate();
   const [createTemplate] = useAddTemplateMutation();
+  const [getTemplateVariables] = useLazyGetTemplateVariablesQuery();
   const { openNotification } = useNotification();
+  const [variableOptions, setVariableOptions] = useState(null);
+  const [isTemplateViewModalVisible, setIsTemplateViewModalVisible] =
+    useState(false);
 
   const templateSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     isActive: Yup.boolean(),
+    createdFor: Yup.string().required(),
     content: Yup.string().required('Content is required'),
-    variables: Yup.array().of(Yup.string().required('Variable is required')),
   });
 
   const defaultValues = {
     name: '',
     isActive: true,
+    createdFor: '',
     content: '',
-    variables: [],
   };
 
   const methods = useForm({
@@ -40,8 +52,8 @@ const AddTemplates = () => {
 
   const {
     handleSubmit,
-    reset,
     setError,
+    getValues,
     formState: { isSubmitting },
   } = methods;
 
@@ -56,11 +68,27 @@ const AddTemplates = () => {
         .unwrap()
         .then((res) => {
           openNotification('success', res?.message);
+          navigate(-1);
         })
         .catch((err) => {
           openNotification('error', err?.data?.message ?? err.error);
         });
     }
+  };
+
+  const fetchModelVariables = async (e) => {
+    await getTemplateVariables({ model: e.target.value })
+      .unwrap()
+      .then((res) => {
+        setVariableOptions(res.data);
+      })
+      .catch((err) => {
+        console.log('Error', err);
+      });
+  };
+
+  const handleViewTemplate = () => {
+    setIsTemplateViewModalVisible(!isTemplateViewModalVisible);
   };
 
   return (
@@ -71,6 +99,11 @@ const AddTemplates = () => {
         parentRoute={PATH_DASHBOARD.templates}
         parentSection="Templates"
       />
+      <TemplateView
+        isShowModal={isTemplateViewModalVisible}
+        closeModal={handleViewTemplate}
+        template={getValues('content')}
+      />
       <div className="row">
         <div className="col-sm-12"></div>
         <div className="card card-table comman-shadow">
@@ -79,6 +112,19 @@ const AddTemplates = () => {
               <div className="row align-items-center">
                 <div className="col">
                   <h3 className="page-title">Add Template</h3>
+                  <Tooltip
+                    title={
+                      <ul>
+                        <li>1. Select whom you want to send to </li>
+                        <li>
+                          2. Use the available variables in your template by
+                          enclosing in square brackets e.g [firstName].
+                        </li>
+                      </ul>
+                    }
+                    size="small">
+                    <IoIosInformationCircleOutline size={'1.5em'} />
+                  </Tooltip>
                 </div>
               </div>
               <div className="row">
@@ -86,32 +132,46 @@ const AddTemplates = () => {
                   methods={methods}
                   onSubmit={handleSubmit(handleCreateTemplate)}>
                   <div className="row align-items-center">
-                    <div className="col-lg-6 col-md-12">
+                    <div className="col-lg-4 col-md-12">
                       <RHFTextField name="name" label="Name" />
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-4">
+                      <RHFSelect
+                        name="createdFor"
+                        label="Created for"
+                        onChange={(e) => fetchModelVariables(e)}
+                        options={[
+                          { label: 'Teacher', value: 'teacher' },
+                          { label: 'Student', value: 'student' },
+                        ]}
+                      />
+                    </div>
+                    <div className="col-lg-4">
                       <RHFSwitch name="isActive" label="Is Active" />
                     </div>
                   </div>
 
-                  {/* <div className="col-lg-6 col-md-12">
-                    <RHFSelect
-                      name=""
-                      label="Send to"
-                      options={[
-                        { label: 'student', value: 'student' },
-                        { label: 'teacher', value: 'teacher' },
-                      ]}
-                    />
-                  </div> */}
-                  <div>
-                    <RHFAutocomplete
-                      name="variables"
-                      label="Variables"
-                      multiple
-                      freeSolo
-                    />
+                  <div className="row align-items-left">
+                    <div>
+                      <InputLabel
+                        variant="outlined"
+                        htmlFor="uncontrolled-native">
+                        Variables
+                      </InputLabel>
+                      <div style={{ margin: '2em' }}>
+                        {variableOptions && variableOptions.length > 0
+                          ? variableOptions.map((variable, index) => (
+                              <Chip
+                                key={index}
+                                label={variable}
+                                sx={{ mx: 0.2 }}
+                              />
+                            ))
+                          : 'No variables found'}
+                      </div>
+                    </div>
                   </div>
+
                   <div className="col-lg-12">
                     <RHFEditor name="content" label="Content" />
                   </div>
@@ -121,7 +181,14 @@ const AddTemplates = () => {
                       display: 'flex',
                       justifyContent: 'flex-end',
                       marginTop: '50px',
+                      gap: 10,
                     }}>
+                    <Button
+                      type="default"
+                      htmlType="button"
+                      onClick={handleViewTemplate}>
+                      Preview
+                    </Button>
                     <Button
                       type="primary"
                       htmlType="submit"

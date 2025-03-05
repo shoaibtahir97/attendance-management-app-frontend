@@ -55,6 +55,16 @@ const templateApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    getTemplateVariables: builder.query({
+      query: (params) => {
+        return {
+          url: `${TEMPLATES_URL}/variables`,
+          params,
+          keepUnusedDataFor: 5,
+          credentials: 'include',
+        };
+      },
+    }),
   }),
 });
 
@@ -64,4 +74,5 @@ export const {
   useGetTemplateDetailsQuery,
   useDeleteTemplateMutation,
   useUpdateTemplateDetailsMutation,
+  useLazyGetTemplateVariablesQuery,
 } = templateApiSlice;
