@@ -12,6 +12,15 @@ const templateApiSlice = apiSlice.injectEndpoints({
       transformResponse: (res) => res?.data,
       keepUnusedDataFor: 5,
     }),
+    getTemplateList: builder.query({
+      query: (params) => ({
+        url: `${TEMPLATES_URL}/list`,
+        params,
+        credentials: 'include',
+      }),
+      transformResponse: (res) => res?.data,
+      keepUnusedDataFor: 5,
+    }),
     addTemplate: builder.mutation({
       query: (payload) => ({
         url: TEMPLATES_URL,
@@ -70,6 +79,7 @@ const templateApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useLazyGetTemplatesQuery,
+  useGetTemplateListQuery,
   useAddTemplateMutation,
   useGetTemplateDetailsQuery,
   useDeleteTemplateMutation,
