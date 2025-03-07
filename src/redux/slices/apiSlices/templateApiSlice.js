@@ -12,6 +12,15 @@ const templateApiSlice = apiSlice.injectEndpoints({
       transformResponse: (res) => res?.data,
       keepUnusedDataFor: 5,
     }),
+    getTemplateList: builder.query({
+      query: (params) => ({
+        url: `${TEMPLATES_URL}/list`,
+        params,
+        credentials: 'include',
+      }),
+      transformResponse: (res) => res?.data,
+      keepUnusedDataFor: 5,
+    }),
     addTemplate: builder.mutation({
       query: (payload) => ({
         url: TEMPLATES_URL,
@@ -55,13 +64,25 @@ const templateApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    getTemplateVariables: builder.query({
+      query: (params) => {
+        return {
+          url: `${TEMPLATES_URL}/variables`,
+          params,
+          keepUnusedDataFor: 5,
+          credentials: 'include',
+        };
+      },
+    }),
   }),
 });
 
 export const {
   useLazyGetTemplatesQuery,
+  useGetTemplateListQuery,
   useAddTemplateMutation,
   useGetTemplateDetailsQuery,
   useDeleteTemplateMutation,
   useUpdateTemplateDetailsMutation,
+  useLazyGetTemplateVariablesQuery,
 } = templateApiSlice;

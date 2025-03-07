@@ -23,11 +23,9 @@ const Templates = () => {
   const fetchTemplates = async () => {
     await getTemplates(query)
       .unwrap()
-      .then((res) => {
-        console.log(res);
-      })
+      .then((res) => {})
       .catch((err) => {
-        console.log(err);
+        console.log('Error', err);
       });
   };
 

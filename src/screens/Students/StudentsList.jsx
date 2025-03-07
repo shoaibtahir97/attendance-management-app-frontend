@@ -23,9 +23,12 @@ import {
   useLazyGetStudentsQuery,
   useToggleStudentStatusMutation,
 } from '../../redux/slices/apiSlices/studentApiSlice';
+
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
+
+import SendWarningLetterDialog from './components/SendWarningLetterDialog';
 
 export const SKELETON = ['', '', '', '', ''];
 
@@ -169,7 +172,6 @@ const Students = () => {
     students: [],
     totalRecords: 0,
   });
-  console.log('dataSource', dataSource);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -177,10 +179,15 @@ const Students = () => {
     useState(false);
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
     useState(false);
+  const [isWarningLetterDialogOpen, setIsWarningLetterDialogOpen] =
+    useState(false);
 
   const openDeleteConfirmationDialog = () => {
     setIsDeleteConfirmDialogOpen(!isDeleteConfirmDialogOpen);
   };
+
+  const openSendWarningLetterDialog = () =>
+    setIsWarningLetterDialogOpen(!isWarningLetterDialogOpen);
 
   const open = Boolean(anchorEl);
 
@@ -265,6 +272,14 @@ const Students = () => {
         deleteLoader={isDeleting}
         handleDelete={handleDeleteStudents}
       />
+      {isWarningLetterDialogOpen && (
+        <SendWarningLetterDialog
+          isShowModal={isWarningLetterDialogOpen}
+          showModalMethod={openSendWarningLetterDialog}
+          studentIds={selectedRowKeys}
+          setSelectedRowKeys={setSelectedRowKeys}
+        />
+      )}
       <div className="content container-fluid">
         {/* Page Header  */}
         <PageHeader
@@ -372,7 +387,14 @@ const Students = () => {
                   />
                 ) : (
                   <div className="table-responsive">
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Box
+                      sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Button
+                        type="primary"
+                        onClick={openSendWarningLetterDialog}
+                        disabled={selectedRowKeys.length === 0}>
+                        Send Warning Letter
+                      </Button>
                       <Tooltip title="Delete Student(s)">
                         <IconButton
                           type="primary"

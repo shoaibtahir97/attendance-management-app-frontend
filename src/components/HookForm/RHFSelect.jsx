@@ -1,25 +1,23 @@
 import React from 'react';
 // form
-import { useFormContext, Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 // @mui
 import {
-  Box,
   FormHelperText,
   InputLabel,
   MenuItem,
+  Select,
   Stack,
-  TextField,
 } from '@mui/material';
-import { Select } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
 export default function RHFSelect({
   name,
   children,
-  onChange,
   label,
   options,
+  onChange: customOnChange,
   ...other
 }) {
   const { control } = useFormContext();
@@ -28,6 +26,13 @@ export default function RHFSelect({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
+        const handleChange = (event) => {
+          field.onChange(event);
+          if (customOnChange) {
+            customOnChange(event);
+          }
+        };
+
         return (
           <>
             <Stack
@@ -45,6 +50,7 @@ export default function RHFSelect({
                 size="small"
                 value={field?.value || ''}
                 {...field}
+                onChange={(event) => handleChange(event)}
                 {...other}>
                 {options?.map((option) => (
                   <MenuItem key={option.value} value={option.value}>

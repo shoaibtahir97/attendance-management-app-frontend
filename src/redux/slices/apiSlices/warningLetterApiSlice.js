@@ -11,7 +11,16 @@ const warningLetterApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    issueWarningLetters: builder.mutation({
+      query: (payload) => ({
+        url: WARNING_LETTER_URL,
+        body: payload,
+        method: 'POST',
+        credentials: 'include',
+      }),
+    }),
   }),
 });
 
-export const { useIssueWarningLetterMutation } = warningLetterApiSlice;
+export const { useIssueWarningLetterMutation, useIssueWarningLettersMutation } =
+  warningLetterApiSlice;
