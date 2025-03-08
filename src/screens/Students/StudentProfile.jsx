@@ -1,4 +1,4 @@
-import { Alert, Button, Timeline } from 'antd';
+import { Alert, Button, Empty, Timeline } from 'antd';
 import dayjs from 'dayjs';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
 import React, { useEffect } from 'react';
@@ -9,6 +9,7 @@ import useNotification from '../../hooks/useNotification';
 import { useLazyGetStudentDetailsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { useIssueWarningLetterMutation } from '../../redux/slices/apiSlices/warningLetterApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import Notes from './components/Notes';
 import StudentProfileSkeleton from './components/StudentProfileSkeleton';
 
 const StudentProfile = () => {
@@ -197,12 +198,17 @@ const StudentProfile = () => {
                             />
                           </div>
                         ) : (
-                          <div>No warning Letter Issued</div>
+                          <Empty />
                         )}
                       </div>
                     </div>
                   </div>
                 </div>
+                <Notes
+                  notes={data?.notes}
+                  studentId={studentId}
+                  handleFetchStudentDetails={handleFetchStudentDetails}
+                />
               </div>
             </div>
           )}

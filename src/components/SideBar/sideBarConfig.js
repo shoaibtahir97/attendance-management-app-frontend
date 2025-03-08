@@ -1,4 +1,5 @@
 import React from 'react';
+import { CgTemplate } from 'react-icons/cg';
 import { GrAnnounce } from 'react-icons/gr';
 import { IoCalendarNumberOutline, IoMailOpenOutline } from 'react-icons/io5';
 import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
@@ -9,6 +10,7 @@ import {
   PiChalkboardTeacherLight,
   PiStudent,
 } from 'react-icons/pi';
+
 import { RxDashboard } from 'react-icons/rx';
 import { TbPresentationAnalytics } from 'react-icons/tb';
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -38,11 +40,11 @@ const navConfig = [
     //     path: PATH_DASHBOARD.markattendance,
     //     role: ['teacher', 'admin'],
     //   },
-    //   {
-    //     title: 'View Attendance',
-    //     path: PATH_DASHBOARD.viewattendance,
-    //     role: ['teacher', 'admin'],
-    //   },
+    // {
+    //   title: 'View Attendance',
+    //   path: PATH_DASHBOARD.viewattendance,
+    //   role: ['teacher', 'admin'],
+    // },
     // ],
   },
   // Students
@@ -88,6 +90,12 @@ const navConfig = [
     role: ['admin'],
   },
   {
+    title: 'Templates',
+    icon: <CgTemplate />,
+    path: PATH_DASHBOARD.templates,
+    role: ['admin'],
+  },
+  {
     title: 'Notices',
     icon: <GrAnnounce />,
     path: PATH_DASHBOARD.notices,
@@ -118,7 +126,7 @@ const navConfig = [
       },
       // {
       //   title: 'Group Reports',
-      //   path: '/dashboard/reports/groups',
+      //   path: PATH_DASHBOARD.groupReport,
       //   role: ['admin'],
       // },
     ],

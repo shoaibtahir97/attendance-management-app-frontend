@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useRef } from 'react';
 // import styles from './styles.module.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -63,6 +63,7 @@ const Editor = ({
         onChange={onChange}
         formats={formats}
         modules={modules}
+        error={error}
         {...other}
         style={{
           minWidth: '100%',

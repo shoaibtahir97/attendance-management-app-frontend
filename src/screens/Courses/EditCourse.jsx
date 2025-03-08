@@ -59,8 +59,7 @@ const EditCourse = () => {
             .of(Yup.string())
             .min(1, 'Minimum one subject is required'),
           moduleLead: Yup.string().required('Module Lead is required'),
-          groups: Yup.array()
-            .of(Yup.string())
+          groups: Yup.array().of(Yup.string()),
         })
       )
       .min(1),
@@ -157,7 +156,7 @@ const EditCourse = () => {
                     <Grid item xs={12} sm={3}>
                       <RHFDatePicker
                         name="cohortStartDate"
-                        label="Cohort end date"
+                        label="Cohort start date"
                         sx={{ width: '100%' }}
                       />
                     </Grid>

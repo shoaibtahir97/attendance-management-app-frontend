@@ -1,14 +1,19 @@
 import { Tabs } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import CourseReport from './CourseReport';
 import GroupReport from './GroupReport';
 import StudentReport from './StudentReport';
 
 const AttendanceReportsV2 = () => {
   const items = [
     {
+      key: '0',
+      label: 'Course',
+      children: <CourseReport />,
+    },
+    {
       key: '1',
-      label: 'Group ',
+      label: 'Group',
       children: <GroupReport />,
     },
     {
@@ -35,7 +40,7 @@ const AttendanceReportsV2 = () => {
         <div className="col-xs-12">
           <div className="card p-3">
             <Tabs
-              defaultActiveKey="1"
+              defaultActiveKey="0"
               items={items}
               // onChange={onChange}
             />

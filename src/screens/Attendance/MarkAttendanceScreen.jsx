@@ -1,43 +1,43 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Autocomplete, Box, Grid, Stack, TextField } from '@mui/material';
+import { Alert, Button, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import PageHeader from '../../components/PageHeader';
+import { useForm } from 'react-hook-form';
+import { GoClock } from 'react-icons/go';
+import { IoMdCheckmark } from 'react-icons/io';
+import { RxCross2 } from 'react-icons/rx';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
   RHFDatePicker,
-  RHFSelect,
 } from '../../components/HookForm';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { useSelector } from 'react-redux';
-import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
-import { Alert, Button, Table } from 'antd';
-import { itemRender, onShowSizeChange } from '../../components/Pagination';
+import PageHeader from '../../components/PageHeader';
 import TableSkeleton from '../../components/TableSkeleton';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { IoMdCheckmark } from 'react-icons/io';
-import { RxCross2 } from 'react-icons/rx';
-import { GoClock } from 'react-icons/go';
-import { getFormattedDate } from '../../utils/formatDateTime';
-import { Autocomplete, Box, Grid, Stack, TextField } from '@mui/material';
+import useNotification from '../../hooks/useNotification';
 import {
   useLazyGetAttendanceQuery,
   useMarkAttendanceMutation,
+  useResetAttendanceMutation,
 } from '../../redux/slices/apiSlices/attendanceApiSlice';
-import useNotification from '../../hooks/useNotification';
+import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
+import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
 import {
+  addAbsentReason,
   markAttendance,
   resetAttendanceRecord,
-  addAbsentReason,
 } from '../../redux/slices/attendanceSlice';
-import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
-import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import { getFormattedDate } from '../../utils/formatDateTime';
 const status = [
   { label: 'Present', value: 'present' },
   { label: 'Absent', value: 'absent' },
   { label: 'Leave', value: 'leave' },
 ];
+
+const recordsPerPage = 1000;
 
 const timeSlotOptions = [
   {
@@ -68,16 +68,16 @@ const attendanceReasons = [
 const MarkAttendanceScreen = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [groupId, setGroupId] = useState(state?.groupId);
-  const [subjectId, setSubjectId] = useState(state?.subjectId);
-  const [startTime, setStartTime] = useState(state?.startTime);
-  const [endTime, setEndTime] = useState(state?.endTime);
-  const [subject, setSubject] = useState(state?.subject);
-  const [group, setGroup] = useState(state?.group);
+  const [groupId] = useState(state?.groupId);
+  const [subjectId] = useState(state?.subjectId);
+  const [startTime] = useState(state?.startTime);
+  const [endTime] = useState(state?.endTime);
+  const [subject] = useState(state?.subject);
+  const [group] = useState(state?.group);
 
   const { openNotification } = useNotification();
   const dispatch = useDispatch();
-  const [isAttendanceMarked, setIsAttendanceMarked] = useState(false);
+  const [isAttendanceMarked, setIsAttendanceMarked] = useState('');
 
   const { data: groupsList, isLoading: loadingGroups } =
     useGetGroupsListQuery();
@@ -93,6 +93,8 @@ const MarkAttendanceScreen = () => {
     useMarkAttendanceMutation();
 
   const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
+  const [resetAttendance, { isLoading: isResettingAttendance }] =
+    useResetAttendanceMutation();
 
   const [dataSource, setDataSource] = useState({
     students: [],
@@ -266,10 +268,21 @@ const MarkAttendanceScreen = () => {
     formState: { isSubmitting },
   } = methods;
 
+  const markMultipleAttendance = () => {
+    selectedRowKeys.forEach((row, index) => {
+      dispatch(
+        markAttendance({
+          studentId: row,
+          status: 'present',
+        })
+      );
+    });
+  };
+
   const fetchStudents = async (data) => {
     const { date, ...query } = { ...data };
 
-    await getStudents({ ...query, recordsPerPage: 100, page: 1 })
+    await getStudents({ ...query, recordsPerPage, page: 1 })
       .unwrap()
       .then((res) => {
         const { students, totalRecords, filteredRecordsCount } = res;
@@ -325,7 +338,7 @@ const MarkAttendanceScreen = () => {
       group: groupId,
       subject: subjectId,
       page: 1,
-      recordsPerPage: 100,
+      recordsPerPage,
     };
     await getAttendance({ ...data })
       .unwrap()
@@ -350,7 +363,7 @@ const MarkAttendanceScreen = () => {
           students: attendanceRecords,
           totalRecords: attendanceRecords.length,
         });
-        setIsAttendanceMarked(true);
+        setIsAttendanceMarked(res._id);
       })
       .catch((err) => {
         if (err?.data?.status === 400) {
@@ -388,6 +401,18 @@ const MarkAttendanceScreen = () => {
       })
       .catch((err) => {
         openNotification('error', err?.data?.message || err?.error);
+      });
+  }
+
+  async function handleResetAttendance() {
+    await resetAttendance(isAttendanceMarked)
+      .unwrap()
+      .then((res) => {
+        openNotification('success', res?.message);
+        dispatch(resetAttendanceRecord());
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message || err.error);
       });
   }
 
@@ -515,6 +540,19 @@ const MarkAttendanceScreen = () => {
                         loading={loadingAttendance}>
                         Save Attendance
                       </Button>
+                      {isAttendanceMarked && (
+                        <Button
+                          onClick={handleResetAttendance}
+                          disabled={
+                            userInfo.role === 'teacher' &&
+                            new Date() > new Date(startTime)
+                          }
+                          type="default"
+                          size="large"
+                          loading={isResettingAttendance}>
+                          Reset Attendance
+                        </Button>
+                      )}
                     </Stack>
                   </Grid>
                 </Grid>
@@ -532,12 +570,20 @@ const MarkAttendanceScreen = () => {
                 />
               ) : (
                 <div className="table-responsive">
+                  <Button
+                    disabled={selectedRowKeys.length === 0}
+                    onClick={markMultipleAttendance}
+                    htmlType="button"
+                    style={{ marginTop: '10px', marginBottom: '10px' }}
+                    type="primary">
+                    Mark all as Present
+                  </Button>
                   <Table
                     pagination={{
-                      total: dataSource?.totalRecords,
-                      showTotal: (total, range) =>
-                        `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                      defaultPageSize: 100,
+                      total: dataSource?.filteredRecordsCount,
+                      // showTotal: (total, range) =>
+                      //   `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                      defaultPageSize: recordsPerPage,
                     }}
                     columns={column}
                     dataSource={dataSource.students}
