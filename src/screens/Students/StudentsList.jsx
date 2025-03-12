@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { IoMdMore } from 'react-icons/io';
 import { MdDelete } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
+
 import * as Yup from 'yup';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 import {
@@ -28,6 +29,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
 
+import { format } from 'date-fns';
 import SendWarningLetterDialog from './components/SendWarningLetterDialog';
 
 export const SKELETON = ['', '', '', '', ''];
@@ -87,15 +89,19 @@ const Students = () => {
       title: 'Status',
       dataIndex: 'isActive',
       sorter: (a, b) => a.isActive.length - b.isActive.length,
-      render: (text, record) => (
-        <Box>
-          {text === true ? (
-            <Tag color="success">Active</Tag>
-          ) : (
-            <Tag color="error">Inactive</Tag>
-          )}
-        </Box>
-      ),
+      render: (text, record) => {
+        return (
+          <Box>
+            {text === true ? (
+              <Tag color="success">Active</Tag>
+            ) : (
+              <Tooltip title={format(record?.inActiveSince, 'dd MMMM yyyy')}>
+                <Tag color="error">Inactive</Tag>
+              </Tooltip>
+            )}
+          </Box>
+        );
+      },
     },
     {
       title: 'Action',
@@ -105,12 +111,17 @@ const Students = () => {
           await toggleStudentStatus(data)
             .unwrap()
             .then((res) => {
+              console.log('res', res.data.inActiveSince);
               openNotification('success', res?.message);
               setDataSource({
                 ...dataSource,
                 students: dataSource.students.map((student) =>
                   student._id === record._id
-                    ? { ...student, isActive: data.isActive }
+                    ? {
+                        ...student,
+                        isActive: data.isActive,
+                        inActiveSince: res.data.inActiveSince,
+                      }
                     : student
                 ),
               });
