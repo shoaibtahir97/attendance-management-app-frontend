@@ -1,12 +1,17 @@
 import { Alert, Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { Button, Table } from 'antd';
 import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
-import { FormProvider, RHFTextField } from '../../components/HookForm';
+import {
+  FormProvider,
+  RHFDatePicker,
+  RHFTextField,
+} from '../../components/HookForm';
 import PageHeader from '../../components/PageHeader';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
@@ -20,7 +25,12 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 const SKELETON = ['', '', '', '', ''];
 
 const CoursesList = () => {
-  const methods = useForm();
+  const methods = useForm({
+    defaultValues: {
+      name: '',
+      intake: null,
+    },
+  });
   const [getCourses, { data, isLoading, error }] = useLazyGetCoursesQuery();
   const [deleteCourse, { isLoading: isDeleting }] = useDeleteCourseMutation();
   const { openNotification } = useNotification();
@@ -28,22 +38,17 @@ const CoursesList = () => {
 
   const column = [
     {
-      title: 'Course code',
-      dataIndex: 'code',
-      sorter: (a, b) => a.code.length - b.code.length,
-    },
-    {
       title: 'Name',
       dataIndex: 'name',
       sorter: (a, b) => a.name.length - b.name.length,
       render: (text, record) => <h2 className="table-avatar">{text}</h2>,
     },
     {
-      title: 'Cohort',
-      dataIndex: 'cohortStartDate',
-      sorter: (a, b) => a.cohortStartDate.length - b.cohortStartDate.length,
+      title: 'Intake',
+      dataIndex: 'intake',
+      sorter: (a, b) => a.intake.length - b.intake.length,
       render: (text, record) => {
-        return <div>{text ? format(text, 'MMM yy') : '-'}</div>;
+        return <div>{text ? format(text, 'MMM yyyy') : '-'}</div>;
       },
     },
     {
@@ -135,7 +140,14 @@ const CoursesList = () => {
   };
 
   const fetchCoursesByQuery = (data) => {
-    fetchCourses({ ...data, ...coursesQuery });
+    console.log('data', data);
+    fetchCourses({
+      ...data,
+      ...coursesQuery,
+      intake: data.intake
+        ? dayjs(data.intake).startOf('month').format('YYYY-MM-DD')
+        : undefined,
+    });
   };
 
   const handleDeleteCourse = async () => {
@@ -188,13 +200,15 @@ const CoursesList = () => {
           spacing={2}
           sx={{ mb: 2 }}>
           <Box sx={{ width: '100%' }}>
-            <RHFTextField name="courseId" label="Course ID" />
+            <RHFTextField name="name" label="Course Name" />
           </Box>
           <Box sx={{ width: '100%' }}>
-            <RHFTextField name="courseName" label="Course Name" />
-          </Box>
-          <Box sx={{ width: '100%' }}>
-            <RHFTextField name="cohortStartDate" label="Cohort Start date" />
+            <RHFDatePicker
+              name="intake"
+              label="Intake"
+              views={['month', 'year']}
+              sx={{ width: '100%' }}
+            />
           </Box>
           <Box sx={{ width: '100%', mt: 1 }}>
             <Button

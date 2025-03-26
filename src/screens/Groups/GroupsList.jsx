@@ -1,26 +1,21 @@
+import { Alert, Box, IconButton, Stack, Tooltip } from '@mui/material';
+import { Button, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import PageHeader from '../../components/PageHeader';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { useForm } from 'react-hook-form';
+import { FiEdit } from 'react-icons/fi';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   FormProvider,
   RHFAutocomplete,
   RHFTextField,
 } from '../../components/HookForm';
-import { useForm } from 'react-hook-form';
-import { Alert, Box, IconButton, Stack, Tooltip } from '@mui/material';
-import { Button, Table } from 'antd';
-import {
-  useGetCoursesListQuery,
-  useLazyGetCoursesQuery,
-} from '../../redux/slices/apiSlices/courseApiSlice';
-import { Link, useNavigate } from 'react-router-dom';
+import PageHeader from '../../components/PageHeader';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
 import useNotification from '../../hooks/useNotification';
-import { FiEye } from 'react-icons/fi';
-import { FiEdit } from 'react-icons/fi';
+import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
 import { useLazyGetGroupsQuery } from '../../redux/slices/apiSlices/groupApiSlice';
-import { format } from 'date-fns';
+import { PATH_DASHBOARD } from '../../routes/paths';
 
 const SKELETON = ['', '', '', '', ''];
 
@@ -34,11 +29,6 @@ const GroupsList = () => {
 
   const column = [
     {
-      title: 'Group ID',
-      dataIndex: '_id',
-      sorter: (a, b) => a._id.length - b._id.length,
-    },
-    {
       title: 'Name',
       dataIndex: 'name',
       sorter: (a, b) => a.name.length - b.name.length,
@@ -50,10 +40,9 @@ const GroupsList = () => {
       sorter: (a, b) => a.course.length - b.course.length,
     },
     {
-      title: 'Cohort',
-      dataIndex: 'cohort',
-      sorter: (a, b) => a.cohort.length - b.course.length,
-      render: (text, record) => <p>{text ? format(text, 'MMM yy') : '-'}</p>,
+      title: 'Students',
+      dataIndex: 'students',
+      render: (text, record) => <p>{text}</p>,
     },
     {
       title: 'Action',
@@ -142,9 +131,6 @@ const GroupsList = () => {
           justifyContent="space-between"
           spacing={2}
           sx={{ mb: 2 }}>
-          <Box sx={{ width: '100%' }}>
-            <RHFTextField name="id" label="Group ID" />
-          </Box>
           <Box sx={{ width: '100%' }}>
             <RHFTextField name="name" label="Group Name" />
           </Box>

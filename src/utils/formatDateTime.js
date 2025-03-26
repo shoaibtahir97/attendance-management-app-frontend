@@ -30,4 +30,27 @@ const getDayOfWeek = (dayOfWeek) => {
   };
   return daysOfWeekMap[dayOfWeek];
 };
-export { getDay, getFormattedDate, getFormattedTime, getDayOfWeek };
+
+const formatDateToYearMonth = (value, originalValue) => {
+  if (
+    typeof originalValue === 'string' &&
+    /^\d{4}-\d{2}-\d{2}$/.test(originalValue)
+  ) {
+    return originalValue;
+  }
+  if (value instanceof Date) {
+    const year = value.getFullYear();
+    const month = String(value.getMonth() + 1).padStart(2, '0');
+    const day = String(value.getDate()).padStart(2, '0');
+    return `${year}-${month}`;
+  }
+  return value;
+};
+
+export {
+  formatDateToYearMonth,
+  getDay,
+  getDayOfWeek,
+  getFormattedDate,
+  getFormattedTime,
+};

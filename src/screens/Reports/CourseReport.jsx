@@ -12,10 +12,10 @@ import {
 
 const CourseReport = () => {
   const { data: courseList } = useGetCoursesListQuery();
-  const [getCourseGroupsAttendanceReport, { isLoadingGroups }] =
+  const [getCourseGroupsAttendanceReport, { isLoading: isLoadingGroups }] =
     useLazyGetCourseGroupsAttendanceReportQuery();
 
-  const [getCourseSubjectsAttendanceReport, { isLoadingSubjects }] =
+  const [getCourseSubjectsAttendanceReport, { isLoading: isLoadingSubjects }] =
     useLazyGetCourseSubjectsAttendanceReportQuery();
 
   const methods = useForm({
