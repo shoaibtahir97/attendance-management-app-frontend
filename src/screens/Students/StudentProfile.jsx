@@ -6,6 +6,7 @@ import { MdListAlt } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import PageHeader from '../../components/PageHeader';
 import useNotification from '../../hooks/useNotification';
+import { useLazyGetStudentReportQuery } from '../../redux/slices/apiSlices/reportApiSlice';
 import { useLazyGetStudentDetailsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { useIssueWarningLetterMutation } from '../../redux/slices/apiSlices/warningLetterApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -17,6 +18,9 @@ const StudentProfile = () => {
   const { openNotification } = useNotification();
   const [getStudentDetails, { data, isLoading, error }] =
     useLazyGetStudentDetailsQuery();
+  const [generateStudentReport, { isLoading: isGeneratingStudentReport }] =
+    useLazyGetStudentReportQuery();
+
   const [issueWarningLetter, { isLoading: isIssuingWarningLetter }] =
     useIssueWarningLetterMutation();
 
@@ -39,6 +43,34 @@ const StudentProfile = () => {
       });
   };
 
+  async function handleGenerateReport() {
+    await generateStudentReport({ studentId: data.studentId })
+      .unwrap()
+      .then((res) => {
+        const url = window.URL.createObjectURL(res);
+
+        // Create a link element
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute(
+          'download',
+          `${data.firstName}_${data.lastName}.xlsx`
+        ); // Specify the file name
+
+        // Append to the document and trigger the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up and remove the link
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((err) => {
+        console.log(err);
+        openNotification('error', err?.message ?? err.error);
+      });
+  }
+
   const handleFetchStudentDetails = async () => {
     await getStudentDetails(studentId);
   };
@@ -59,10 +91,19 @@ const StudentProfile = () => {
       <div className="card">
         <div className="card-body">
           <div className="row">
-            <div className="col-md-12">
+            <div className="col-md-6">
               <div className="about-info">
                 <h4>Profile </h4>
               </div>
+            </div>
+            <div className="col-md-6" style={{ textAlign: 'right' }}>
+              <Button
+                type="primary"
+                htmlType="button"
+                onClick={handleGenerateReport}
+                loading={isGeneratingStudentReport}>
+                Generate Report
+              </Button>
             </div>
           </div>
           {isLoading ? (

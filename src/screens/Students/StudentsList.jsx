@@ -132,7 +132,7 @@ const Students = () => {
         };
         const items = [
           {
-            key: 2,
+            key: 0,
             label: (
               <Link to={`${PATH_DASHBOARD.studentProfile}/${record._id}`}>
                 View Student
@@ -140,7 +140,7 @@ const Students = () => {
             ),
           },
           {
-            key: 0,
+            key: 1,
             label: (
               <Link to={`${PATH_DASHBOARD.studentEdit}/${record._id}`}>
                 Edit Student
@@ -148,7 +148,7 @@ const Students = () => {
             ),
           },
           {
-            key: 1,
+            key: 2,
             label: (
               <a
                 onClick={() => {
