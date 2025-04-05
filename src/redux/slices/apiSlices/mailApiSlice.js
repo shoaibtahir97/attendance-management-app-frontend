@@ -1,5 +1,5 @@
-import { apiSlice } from './apiSlice';
 import { MAIL_URL } from '../../../constants';
+import { apiSlice } from './apiSlice';
 
 export const mailApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -27,6 +27,7 @@ export const mailApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
+    sendDynamicMail: builder.mutation({}),
   }),
 });
 
