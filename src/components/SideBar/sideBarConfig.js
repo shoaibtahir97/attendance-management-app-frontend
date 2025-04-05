@@ -104,7 +104,7 @@ const navConfig = [
   {
     title: 'Mails',
     icon: <IoMailOpenOutline />,
-    path: PATH_DASHBOARD.mail,
+    path: PATH_DASHBOARD.mailv2,
     role: ['admin'],
   },
   // Reports
