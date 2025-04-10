@@ -26,6 +26,7 @@ import AddGroup from '../screens/Groups/AddGroup';
 import EditGroup from '../screens/Groups/EditGroups';
 import GroupsList from '../screens/Groups/GroupsList';
 import MailScreen from '../screens/Mail/MailScreen';
+import MailScreenv2 from '../screens/Mail/MailScreenv2';
 import Notices from '../screens/Notices';
 import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
 import WarningLetterReports from '../screens/Reports/WarningLetterReports';
@@ -177,6 +178,7 @@ const router = createHashRouter(
 
           {/* Mail */}
           <Route path={PATH_DASHBOARD.mail} element={<MailScreen />} />
+          <Route path={PATH_DASHBOARD.mailv2} element={<MailScreenv2 />} />
 
           {/* 404 Page not found */}
           <Route element={<Error404 />} />

@@ -24,6 +24,7 @@ const PATH_DASHBOARD = {
   groupEdit: path(ROOTS_DASHBOARD, '/editgroup'),
   // Mail
   mail: path(ROOTS_DASHBOARD, '/mail'),
+  mailv2: path(ROOTS_DASHBOARD, '/mailv2'),
   // Attendance
   markattendance: path(ROOTS_DASHBOARD, '/markattendance'),
   viewattendance: path(ROOTS_DASHBOARD, '/viewattendance'),
