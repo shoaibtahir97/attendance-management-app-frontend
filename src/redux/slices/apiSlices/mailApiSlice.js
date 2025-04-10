@@ -1,4 +1,4 @@
-import { MAIL_URL } from '../../../constants';
+import { MAIL_URL, MAIL_URL_v2 } from '../../../constants';
 import { apiSlice } from './apiSlice';
 
 export const mailApiSlice = apiSlice.injectEndpoints({
@@ -6,7 +6,6 @@ export const mailApiSlice = apiSlice.injectEndpoints({
     sendMail: builder.mutation({
       query: (payload) => {
         const body = new FormData();
-
         for (const [key, value] of Object.entries(payload)) {
           if (key === 'recipients') {
             value.forEach((recipient, index) => {
@@ -18,7 +17,6 @@ export const mailApiSlice = apiSlice.injectEndpoints({
             body.append(key, value);
           }
         }
-
         return {
           url: MAIL_URL,
           body: body,
@@ -27,8 +25,15 @@ export const mailApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    sendDynamicMail: builder.mutation({}),
+    sendMailV2: builder.mutation({
+      query: (payload) => ({
+        url: MAIL_URL_v2,
+        body: payload,
+        method: 'POST',
+        credentials: 'include',
+      }),
+    }),
   }),
 });
 
-export const { useSendMailMutation } = mailApiSlice;
+export const { useSendMailMutation, useSendMailV2Mutation } = mailApiSlice;

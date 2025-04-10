@@ -20,6 +20,7 @@ import PageHeader from '../../components/PageHeader';
 import useNotification from '../../hooks/useNotification';
 import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import { useSendMailV2Mutation } from '../../redux/slices/apiSlices/mailApiSlice';
 import { useGetStudentsListQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { useGetTemplateListQuery } from '../../redux/slices/apiSlices/templateApiSlice';
 import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice';
@@ -39,16 +40,17 @@ const MailScreenv2 = () => {
 
   const defaultValues = {
     recipientType: '',
-    recipient: '',
-    template: '',
+    recipientIds: [],
+    templateId: '',
   };
+
   const { openNotification } = useNotification();
 
   const { data: teachersList, isLoading: loadingTeachersList } =
-    useGetUsersListQuery({ role: 'teacher', filter: 'email' });
+    useGetUsersListQuery({ role: 'teacher', filter: '_id' });
 
   const { data: studentsList, isLoading: loadingStudentsList } =
-    useGetStudentsListQuery({ filter: 'email' });
+    useGetStudentsListQuery({ filter: '_id' });
 
   const { data: coursesList, isLoading: loadingCoursesList } =
     useGetCoursesListQuery();
@@ -58,21 +60,23 @@ const MailScreenv2 = () => {
 
   const { data: templateList, isLoading } = useGetTemplateListQuery();
 
+  const [sendMailV2] = useSendMailV2Mutation();
+
   const [activeStep, setActiveStep] = useState(0);
   const [recipientOptions, setRecipientOptions] = useState([]);
   const steps = getSteps();
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const sendMailSchema = [
     Yup.object({
       recipientType: Yup.string().required('Recipient type is required'),
     }),
     Yup.object({
-      recipient: Yup.string().required('Recipient is required'),
+      recipientIds: Yup.array()
+        .of(Yup.string())
+        .min(1, 'At least one recipient is required'),
     }),
     Yup.object({
-      template: Yup.string().required('Template is required'),
+      templateId: Yup.string().required('Template is required'),
     }),
   ];
 
@@ -92,7 +96,7 @@ const MailScreenv2 = () => {
     watch,
     getValues,
     reset,
-    // formState: { isSubmitting },
+    formState: { isSubmitting },
   } = methods;
 
   const handleNext = async () => {
@@ -122,15 +126,16 @@ const MailScreenv2 = () => {
       case 1:
         return (
           <RHFAutocomplete
-            name="recipient"
+            name="recipientIds"
             label="Recipient"
+            multiple
             options={recipientOptions}
           />
         );
       case 2:
         return (
           <RHFAutocomplete
-            name="template"
+            name="templateId"
             label="Template"
             options={templateList}
           />
@@ -143,12 +148,16 @@ const MailScreenv2 = () => {
   const recipientType = watch('recipientType');
 
   const handleSendMail = async (data) => {
-    setIsSubmitting(true);
-    console.log(data);
-    setTimeout(() => {
-      openNotification('success', 'Mail send successfully');
-      setIsSubmitting(false);
-    }, 5000);
+    console.log('data', data);
+    await sendMailV2({ ...data })
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        openNotification('success', res.message);
+      })
+      .catch((err) => {
+        openNotification('error', err?.data?.message || err?.error);
+      });
   };
 
   useEffect(() => {
@@ -171,7 +180,7 @@ const MailScreenv2 = () => {
       <div className="row">
         <div className="col-sm-12">
           <div className="d-flex justify-content-center mb-4 ">
-            <div className="card card-chart" style={{ width: '50%' }}>
+            <div className="card card-chart" style={{ width: '60%' }}>
               <div className="card-header">
                 <Stepper activeStep={activeStep} orientation="vertical">
                   {steps.map((step, index) => {

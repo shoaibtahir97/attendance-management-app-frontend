@@ -5,6 +5,7 @@ const BASE_URL = 'http://localhost:5000';
 const COURSES_URL = '/api/v1/courses';
 const GROUPS_URL = '/api/v1/groups';
 const MAIL_URL = '/api/v1/mail';
+const MAIL_URL_v2 = '/api/v2/mail';
 const NOTICES_URL = '/api/v1/notice';
 const REPORTS_URL = '/api/v1/reports';
 const STUDENTS_URL = '/api/v1/students';
@@ -22,6 +23,7 @@ export {
   COURSES_URL,
   GROUPS_URL,
   MAIL_URL,
+  MAIL_URL_v2,
   NOTES_URL,
   NOTICES_URL,
   REPORTS_URL,
