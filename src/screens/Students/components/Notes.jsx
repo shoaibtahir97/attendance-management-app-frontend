@@ -33,7 +33,7 @@ const Notes = (props) => {
   };
 
   const handleDeleteNote = async () => {
-    await deleteNote(currentNote?._id)
+    await deleteNote({ noteId: currentNote?._id, studentId })
       .unwrap()
       .then((res) => {
         openDeleteConfirmationDialog();
