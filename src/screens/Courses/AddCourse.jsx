@@ -16,6 +16,7 @@ import { MdExpandMore, MdOutlineDelete } from 'react-icons/md';
 
 import * as Yup from 'yup';
 
+import { useNavigate } from 'react-router-dom';
 import {
   FormProvider,
   RHFAutocomplete,
@@ -59,13 +60,9 @@ const defaultValues = {
 const AddCourse = () => {
   const { data: subjectsList, isLoading: loadingSubjects } =
     useGetSubjectsListQuery();
-
-  // const { data: groupsList, isLoading: loadingGroups } = useGetGroupsListQuery({
-  //   course: null,
-  // });
-
   const { data: teachersList, isLoading: loadingTeachers } =
     useGetUsersListQuery({ role: 'teacher' });
+  const navigate = useNavigate();
 
   const [createCourse] = useCreateCourseMutation();
 
@@ -89,12 +86,15 @@ const AddCourse = () => {
             moduleLead: Yup.string().required('Module lead is required'),
           })
         ),
-        breaks: Yup.array().of(
-          Yup.object().shape({
-            startDate: Yup.date().required('Start date is required'),
-            endDate: Yup.date().required('End date is required'),
-          })
-        ),
+        breaks: Yup.array()
+          .of(
+            Yup.object().shape({
+              startDate: Yup.date().required('Start date is required'),
+              endDate: Yup.date().required('End date is required'),
+              reason: Yup.string().required('Reason is required'),
+            })
+          )
+          .nullable(),
       })
     ),
   });
@@ -130,6 +130,9 @@ const AddCourse = () => {
       .unwrap()
       .then((res) => {
         openNotification('success', res?.message);
+        setTimeout(() => {
+          navigate(-1);
+        }, 2000);
       })
       .catch((err) => {
         openNotification('error', err?.data?.message || err?.error);
@@ -214,7 +217,7 @@ const AddCourse = () => {
                                 modules: [
                                   { name: '', credits: null, moduleLead: '' },
                                 ],
-                                breaks: null,
+                                breaks: [],
                               })
                             }
                             disabled={
@@ -295,7 +298,9 @@ const AddCourse = () => {
                                   sx={{ width: '100%' }}
                                 />
                               </Grid>
-
+                              <Grid item xs={12}>
+                                <Divider />
+                              </Grid>
                               <Grid container item xs={12}>
                                 <Module
                                   semesterIndex={index}
@@ -303,7 +308,9 @@ const AddCourse = () => {
                                   teachersList={teachersList}
                                 />
                               </Grid>
-
+                              <Grid item xs={12}>
+                                <Divider />
+                              </Grid>
                               <Grid container item xs={12}>
                                 <Breaks semesterIndex={index} />
                               </Grid>
@@ -433,6 +440,7 @@ const Breaks = ({ semesterIndex }) => {
               BreaksAppend({
                 startDate: null,
                 endDate: null,
+                reason: '',
               })
             }
             sx={{ mr: 3 }}>
@@ -444,6 +452,12 @@ const Breaks = ({ semesterIndex }) => {
         {BreaksFields?.length > 0 &&
           BreaksFields?.map((breakItem, breakIndex) => (
             <Grid key={breakItem.id} container item spacing={1}>
+              <Grid item xs={12} sm={7}>
+                <RHFTextField
+                  name={`semesters[${semesterIndex}].breaks[${breakIndex}].reason`}
+                  label="Reason"
+                />
+              </Grid>
               <Grid item xs={12} sm={4}>
                 <RHFDatePicker
                   name={`semesters[${semesterIndex}].breaks[${breakIndex}].startDate`}

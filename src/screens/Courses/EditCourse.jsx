@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Divider,
   Grid,
   IconButton,
   Tooltip,
@@ -13,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { MdExpandMore, MdOutlineDelete } from 'react-icons/md';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import {
   FormProvider,
@@ -37,6 +38,7 @@ import { moduleYears } from './AddCourse';
 
 const EditCourse = () => {
   const { openNotification } = useNotification();
+  const navigate = useNavigate();
 
   const { data: subjectsList, isLoading: loadingSubjects } =
     useGetSubjectsListQuery();
@@ -72,6 +74,7 @@ const EditCourse = () => {
           Yup.object().shape({
             startDate: Yup.date().required('Start date is required'),
             endDate: Yup.date().required('End date is required'),
+            reason: Yup.string().required('Reason is required'),
           })
         ),
       })
@@ -110,6 +113,9 @@ const EditCourse = () => {
       .unwrap()
       .then((res) => {
         openNotification('success', res?.message);
+        setTimeout(() => {
+          navigate(-1);
+        }, 2000);
       })
       .catch((err) => {
         openNotification('error', err?.data?.message || err?.error);
@@ -282,6 +288,10 @@ const EditCourse = () => {
                               />
                             </Grid>
 
+                            <Grid item xs={12}>
+                              <Divider />
+                            </Grid>
+
                             <Grid container item xs={12}>
                               <Module
                                 semesterIndex={index}
@@ -289,7 +299,9 @@ const EditCourse = () => {
                                 teachersList={teachersList}
                               />
                             </Grid>
-
+                            <Grid item xs={12}>
+                              <Divider />
+                            </Grid>
                             <Grid container item xs={12}>
                               <Breaks semesterIndex={index} />
                             </Grid>
@@ -418,6 +430,7 @@ const Breaks = ({ semesterIndex }) => {
               BreaksAppend({
                 startDate: null,
                 endDate: null,
+                reason: '',
               })
             }
             sx={{ mr: 3 }}>
@@ -429,7 +442,13 @@ const Breaks = ({ semesterIndex }) => {
         {BreaksFields?.length > 0 &&
           BreaksFields?.map((breakItem, breakIndex) => (
             <Grid key={breakItem.id} container item spacing={1}>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={5}>
+                <RHFTextField
+                  name={`semesters[${semesterIndex}].breaks[${breakIndex}].reason`}
+                  label="Reason"
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
                 <RHFDatePicker
                   name={`semesters[${semesterIndex}].breaks[${breakIndex}].startDate`}
                   label="Start Date"
