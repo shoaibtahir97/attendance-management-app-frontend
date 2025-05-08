@@ -33,10 +33,40 @@ const attendanceSlice = createSlice({
       localStorage.removeItem('attendanceRecords');
       state.attendanceRecords = [];
     },
+    addFirstIntervention: (state, action) => {
+      const attendance = state.attendanceRecords.find(
+        (record) => record.studentId === action.payload.studentId
+      );
+      if (attendance) {
+        attendance.firstIntervention = action.payload.firstIntervention;
+      }
+    },
+    addSecondIntervention: (state, action) => {
+      const attendance = state.attendanceRecords.find(
+        (record) => record.studentId === action.payload.studentId
+      );
+      if (attendance) {
+        attendance.secondIntervention = action.payload.secondIntervention;
+      }
+    },
+    addThirdIntervention: (state, action) => {
+      const attendance = state.attendanceRecords.find(
+        (record) => record.studentId === action.payload.studentId
+      );
+      if (attendance) {
+        attendance.thirdIntervention = action.payload.thirdIntervention;
+      }
+    },
   },
 });
 
-export const { markAttendance, resetAttendanceRecord, addAbsentReason } =
-  attendanceSlice.actions;
+export const {
+  markAttendance,
+  resetAttendanceRecord,
+  addAbsentReason,
+  addFirstIntervention,
+  addSecondIntervention,
+  addThirdIntervention,
+} = attendanceSlice.actions;
 
 export default attendanceSlice.reducer;
