@@ -27,10 +27,14 @@ import { useLazyGetStudentsQuery } from '../../redux/slices/apiSlices/studentApi
 import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
 import {
   addAbsentReason,
+  addFirstIntervention,
+  addSecondIntervention,
+  addThirdIntervention,
   markAttendance,
   resetAttendanceRecord,
 } from '../../redux/slices/attendanceSlice';
 import { getFormattedDate } from '../../utils/formatDateTime';
+
 const status = [
   { label: 'Present', value: 'present' },
   { label: 'Absent', value: 'absent' },
@@ -39,20 +43,23 @@ const status = [
 
 const recordsPerPage = 1000;
 
-const timeSlotOptions = [
-  {
-    label: '9:30 - 13:30',
-    value: '9:30 - 13:30',
-  },
-  {
-    label: '13:30 - 17:30',
-    value: '13:30 - 17:30',
-  },
-  {
-    label: '17:30 - 21:30',
-    value: '17:30 - 21:30',
-  },
-];
+// const useStyle = createStyles(({ css, token }) => {
+//   const { antCls } = token;
+//   return {
+//     customTable: css`
+//       ${antCls}-table {
+//         ${antCls}-table-container {
+//           ${antCls}-table-body,
+//           ${antCls}-table-content {
+//             scrollbar-width: thin;
+//             scrollbar-color: #eaeaea transparent;
+//             scrollbar-gutter: stable;
+//           }
+//         }
+//       }
+//     `,
+//   };
+// });
 
 export const SKELETON = ['', '', '', '', ''];
 
@@ -68,6 +75,7 @@ const attendanceReasons = [
 const MarkAttendanceScreen = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  // const { styles } = useStyle();
   const [groupId] = useState(state?.groupId);
   const [subjectId] = useState(state?.subjectId);
   const [startTime] = useState(state?.startTime);
@@ -113,12 +121,14 @@ const MarkAttendanceScreen = () => {
       dataIndex: 'studentId',
       sorter: (a, b) => a.studentId.length - b.studentId.length,
       width: '10%',
+      fixed: 'left',
     },
     {
       title: 'Name',
       dataIndex: 'name',
-      width: '20%',
+      width: '15%',
 
+      fixed: 'left',
       sorter: (a, b) => a.name.length - b.name.length,
       render: (text, record) => (
         <>
@@ -129,7 +139,9 @@ const MarkAttendanceScreen = () => {
     {
       title: 'Status',
       dataIndex: 'status',
-      width: '30%',
+
+      fixed: 'left',
+      width: '22%',
       render: (text, record) => (
         <div role="group" aria-label="Basic mixed styles example">
           {status?.map((status, index) => {
@@ -197,6 +209,7 @@ const MarkAttendanceScreen = () => {
     {
       title: 'Reason',
       dataIndex: 'reason',
+      width: '25%',
       render: (text, record) => {
         const attendanceStatus = attendanceRecords?.find(
           (attendanceRecord) => attendanceRecord.studentId == record.id
@@ -233,6 +246,85 @@ const MarkAttendanceScreen = () => {
                   }}
                 />
               )}
+            />
+          </div>
+        );
+      },
+    },
+    {
+      title: 'First Intervention',
+      dataIndex: 'firstIntervention',
+
+      render: (text, record) => {
+        const attendanceStatus = attendanceRecords?.find(
+          (attendanceRecord) => attendanceRecord.studentId == record.id
+        );
+        return (
+          <div>
+            <TextField
+              value={attendanceStatus?.firstIntervention}
+              variant="outlined"
+              size="small"
+              onMouseOut={(event) => {
+                dispatch(
+                  addFirstIntervention({
+                    studentId: record?.id,
+                    firstIntervention: event.target.value,
+                  })
+                );
+              }}
+            />
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Second Intervention',
+      dataIndex: 'secondIntervention',
+      render: (text, record) => {
+        const attendanceStatus = attendanceRecords?.find(
+          (attendanceRecord) => attendanceRecord.studentId == record.id
+        );
+        return (
+          <div>
+            <TextField
+              value={attendanceStatus?.secondIntervention}
+              variant="outlined"
+              size="small"
+              onMouseOut={(event) => {
+                dispatch(
+                  addSecondIntervention({
+                    studentId: record?.id,
+                    secondIntervention: event.target.value,
+                  })
+                );
+              }}
+            />
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Third Intervention',
+      dataIndex: 'thirdIntervention',
+      render: (text, record) => {
+        const attendanceStatus = attendanceRecords?.find(
+          (attendanceRecord) => attendanceRecord.studentId == record.id
+        );
+        return (
+          <div>
+            <TextField
+              value={attendanceStatus?.thirdIntervention}
+              variant="outlined"
+              size="small"
+              onMouseOut={(event) => {
+                dispatch(
+                  addThirdIntervention({
+                    studentId: record?.id,
+                    thirdIntervention: event.target.value,
+                  })
+                );
+              }}
             />
           </div>
         );
@@ -349,6 +441,9 @@ const MarkAttendanceScreen = () => {
               studentId: record?.studentId?._id,
               status: record?.status,
               reason: record?.reason ?? '',
+              firstIntervention: record.firstIntervention ?? '',
+              secondIntervention: record.secondIntervention ?? '',
+              thirdIntervention: record.thirdIntervention ?? '',
             })
           );
         });
@@ -579,6 +674,7 @@ const MarkAttendanceScreen = () => {
                     Mark all as Present
                   </Button>
                   <Table
+                    // className={styles.customTable}
                     pagination={{
                       total: dataSource?.filteredRecordsCount,
                       // showTotal: (total, range) =>
@@ -589,6 +685,7 @@ const MarkAttendanceScreen = () => {
                     dataSource={dataSource.students}
                     rowSelection={rowSelection}
                     rowKey={(record) => record.id}
+                    scroll={{ x: 'max-content' }}
                   />
                 </div>
               )}
