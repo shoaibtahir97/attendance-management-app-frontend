@@ -3,13 +3,14 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Divider,
   Grid,
   IconButton,
   Tooltip,
   Typography,
 } from '@mui/material';
 import { Button } from 'antd';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { MdExpandMore, MdOutlineDelete } from 'react-icons/md';
@@ -126,7 +127,23 @@ const AddCourse = () => {
   };
 
   const handleCreateCourse = async (data) => {
-    await createCourse({ ...data, intake: formatDateToYearMonth(data.intake) })
+    const updatedData = {
+      ...data,
+      intake: formatDateToYearMonth(data.intake),
+      semesters: data.semesters.map((sem) => ({
+        ...sem,
+        startDate: dayjs(sem.startDate).format('YYYY-MM-DD'),
+        endDate: dayjs(sem.endDate).format('YYYY-MM-DD'),
+        ...(sem.breaks.length > 0 && {
+          breaks: sem.breaks.map((brk) => ({
+            ...brk,
+            startDate: dayjs(brk.startDate).format('YYYY-MM-DD'),
+            endDate: dayjs(brk.endDate).format('YYYY-MM-DD'),
+          })),
+        }),
+      })),
+    };
+    await createCourse({ ...updatedData })
       .unwrap()
       .then((res) => {
         openNotification('success', res?.message);
