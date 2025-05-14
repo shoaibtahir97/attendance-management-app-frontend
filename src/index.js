@@ -15,6 +15,7 @@ import './assets/plugins/fontawesome/css/fontawesome.min.css';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en-gb';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 import { NotificationProvider } from './contexts/NotificationContext.js';
