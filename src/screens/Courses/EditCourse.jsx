@@ -10,7 +10,8 @@ import {
   Typography,
 } from '@mui/material';
 import { Alert, Button } from 'antd';
-import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { MdExpandMore, MdOutlineDelete } from 'react-icons/md';
@@ -109,7 +110,23 @@ const EditCourse = () => {
   };
 
   const handleUpdateCourse = async (data) => {
-    updateCourseDetails({ ...data, intake: formatDateToYearMonth(data.intake) })
+    const updatedData = {
+      ...data,
+      intake: formatDateToYearMonth(data.intake),
+      semesters: data.semesters.map((sem) => ({
+        ...sem,
+        startDate: dayjs(sem.startDate).format('YYYY-MM-DD'),
+        endDate: dayjs(sem.endDate).format('YYYY-MM-DD'),
+        ...(sem.breaks.length > 0 && {
+          breaks: sem.breaks.map((brk) => ({
+            ...brk,
+            startDate: dayjs(brk.startDate).format('YYYY-MM-DD'),
+            endDate: dayjs(brk.endDate).format('YYYY-MM-DD'),
+          })),
+        }),
+      })),
+    };
+    updateCourseDetails({ ...updatedData })
       .unwrap()
       .then((res) => {
         openNotification('success', res?.message);
