@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Button } from 'antd';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdClose, MdDownload } from 'react-icons/md';
 import * as XLSX from 'xlsx';
@@ -41,6 +41,7 @@ const UploadTimetableModal = (props) => {
   const {
     setValue,
     handleSubmit,
+    reset,
     formState: { isSubmitting },
   } = methods;
 
@@ -70,6 +71,8 @@ const UploadTimetableModal = (props) => {
       })
       .catch((err) => {
         openNotification('error', err?.data?.message);
+        reset();
+        setFileName('');
       });
   };
 

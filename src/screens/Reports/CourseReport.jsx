@@ -1,6 +1,5 @@
 import { Box, Stack } from '@mui/material';
 import { Button } from 'antd';
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FormProvider, RHFAutocomplete } from '../../components/HookForm';
 import useNotification from '../../hooks/useNotification';
@@ -23,6 +22,7 @@ const CourseReport = () => {
       course: '',
     },
   });
+
   const { openNotification } = useNotification();
 
   const {

@@ -1,8 +1,6 @@
 import { Tabs } from 'antd';
-import React from 'react';
 import CourseReport from './CourseReport';
-import GroupReport from './GroupReport';
-import StudentReport from './StudentReport';
+import GroupReportV2 from './GroupReportV2';
 
 const AttendanceReportsV2 = () => {
   const items = [
@@ -14,13 +12,13 @@ const AttendanceReportsV2 = () => {
     {
       key: '1',
       label: 'Group',
-      children: <GroupReport />,
+      children: <GroupReportV2 />,
     },
-    {
-      key: '2',
-      label: 'Student',
-      children: <StudentReport />,
-    },
+    // {
+    //   key: '2',
+    //   label: 'Student',
+    //   children: <StudentReport />,
+    // },
   ];
 
   return (
