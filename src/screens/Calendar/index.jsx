@@ -13,7 +13,8 @@ import {
 } from '@mui/material';
 import { Alert, Button } from 'antd';
 import dayjs from 'dayjs';
-import React, { useEffect, useRef, useState } from 'react';
+import randomColor from 'randomcolor';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
 import { useSelector } from 'react-redux';
@@ -53,20 +54,9 @@ const Calendar = () => {
   const [getTimetable, { data, isLoading, error }] = useLazyGetTimetableQuery();
   const calendarRef = useRef();
   const [events, setEvents] = useState([]);
-  // const [currentEvent, setCurrentEvent] = useState();
 
-  const [isAddEventDialogOpen, setIsAddEventDialogOpen] = useState(false);
   const [isUploadTimetableModalVisible, setIsUploadTimetableModalVisible] =
     useState(false);
-  const [isAttendanceModalVisible, setIsAttendanceModalVisible] =
-    useState(false);
-  const showModalMethod = () => setIsAddEventDialogOpen(!isAddEventDialogOpen);
-
-  // const handleSelect = (info) => {
-  //   setCurrentEvent(info);
-  //   const calendarApi = calendarRef.current.getApi();
-  //   showModalMethod();
-  // };
 
   const handleEventClick = (eventInfo) => {
     const event = eventInfo.event;
@@ -89,36 +79,40 @@ const Calendar = () => {
   const handleShowUploadTimetableModal = () =>
     setIsUploadTimetableModalVisible(!isUploadTimetableModalVisible);
 
-  // const getNextDayOfWeek = (dayOfWeek) => {
-  //   const daysOfWeekMap = {
-  //     Monday: 1,
-  //     Tuesday: 2,
-  //     Wednesday: 3,
-  //     Thursday: 4,
-  //     Friday: 5,
-  //     Saturday: 6,
-  //     Sunday: 0,
-  //   };
-
-  //   const today = new Date();
-  //   const currentDayOfWeek = today.getDay();
-  //   const targetDayOfWeek = daysOfWeekMap[dayOfWeek];
-  //   const differenceInDays = (targetDayOfWeek + 7 - currentDayOfWeek) % 7;
-
-  //   const nextDay = new Date();
-  //   nextDay.setDate(today.getDate() + differenceInDays);
-
-  //   return nextDay.toISOString().split('T')[0];
-  // };
-
-  // All Time Tables for Admin
-
   const fetchAllTimeTables = async () => {
     const updatedEvents = [];
+    const groupColorMap = {};
+    const colorPalette = [
+      '#1abc9c',
+      '#3498db',
+      '#9b59b6',
+      '#e67e22',
+      '#e74c3c',
+      '#2ecc71',
+      '#f39c12',
+      '#16a085',
+      '#27ae60',
+      '#2980b9',
+      '#8e44ad',
+      '#d35400',
+      '#c0392b',
+      '#7f8c8d',
+      '#2c3e50',
+    ];
+    let colorIndex = 0;
+
     await getTimetable()
       .unwrap()
       .then((res) => {
         res?.data?.forEach((item) => {
+          const groupId = item?.group?._id;
+
+          // Assign color if not already mapped
+          if (!groupColorMap[groupId]) {
+            groupColorMap[groupId] = randomColor({ luminosity: 'bright' });
+            colorIndex++;
+          }
+
           item?.entries?.forEach((entry) => {
             updatedEvents.push({
               title: `Group: ${item?.group?.name} \n Subject: ${entry?.subject?.name} \n Teacher: ${entry?.teacher?.firstName} ${entry?.teacher?.lastName}`,
@@ -128,8 +122,12 @@ const Calendar = () => {
               subjectId: entry?.subject?._id,
               allDay: false,
               daysOfWeek: [`${getDayOfWeek(entry?.dayOfWeek)}`],
-              startRecur: item?.group?.course?.cohortStartDate,
-              endRecur: item?.group.course.cohortEndDate,
+              startRecur: item?.group?.cohortStartDate,
+              endRecur: item?.group?.cohortEndDate,
+              backgroundColor: groupColorMap[groupId],
+              borderColor: groupColorMap[groupId],
+              textColor: '#fff',
+              color: groupColorMap[groupId],
             });
           });
         });
@@ -140,35 +138,6 @@ const Calendar = () => {
     setEvents(updatedEvents);
   };
 
-  // Single Time Table for Teacher
-  // const fetchTeacherTimeTable = async () => {
-  //   await getTeacherTimetable()
-  //     .unwrap()
-  //     .then((res) => {
-  //       const events = [];
-  //       res.data.forEach((item) => {
-  //         item.entries.forEach((entry) => {
-  //           events.push({
-  //             title: `Group: ${item.group.name} \n Subject: ${entry.subject.name} \n Teacher: ${entry.teacher.firstName} ${entry.teacher.lastName}`,
-  //             startTime: `${entry.startTime}:00`,
-  //             endTime: `${entry.endTime}:00`,
-  //             groupId: item.group._id,
-  //             subjectId: entry.subject._id,
-  //             allDay: false,
-  //             daysOfWeek: [`${getDayOfWeek(entry.dayOfWeek)}`],
-  //             startRecur: item?.group?.course?.cohortStartDate,
-  //             endRecur: item?.group.course.cohortEndDate,
-  //           });
-  //         });
-  //       });
-  //       setEvents(events);
-  //     })
-  //     .catch((err) => {
-  //       openNotification('error', err?.data?.message || err?.error);
-  //     });
-  // };
-
-  console.log('events', events);
   useEffect(() => {
     if (userInfo.role === 'admin') {
       fetchAllTimeTables();
@@ -230,6 +199,7 @@ const Calendar = () => {
               center: '',
               right: 'dayGridMonth timeGridWeek timeGridDay',
             }}
+            eventDisplay="block"
             titleFormat={{ year: 'numeric', month: 'long' }}
             allDaySlot={false}
             initialView="dayGridMonth"
