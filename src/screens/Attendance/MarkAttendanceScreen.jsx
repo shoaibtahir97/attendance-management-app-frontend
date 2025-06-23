@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Autocomplete, Box, Grid, Stack, TextField } from '@mui/material';
 import { Alert, Button, Table } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { GoClock } from 'react-icons/go';
 import { IoMdCheckmark } from 'react-icons/io';
@@ -440,10 +440,16 @@ const MarkAttendanceScreen = () => {
             markAttendance({
               studentId: record?.studentId?._id,
               status: record?.status,
-              reason: record?.reason ?? '',
-              firstIntervention: record.firstIntervention ?? '',
-              secondIntervention: record.secondIntervention ?? '',
-              thirdIntervention: record.thirdIntervention ?? '',
+              ...(record.reason && { reason: record?.reason }),
+              ...(record.firstIntervention && {
+                firstIntervention: record.firstIntervention,
+              }),
+              ...(record.secondIntervention && {
+                secondIntervention: record.secondIntervention,
+              }),
+              ...(record.thirdIntervention && {
+                thirdIntervention: record.thirdIntervention,
+              }),
             })
           );
         });
