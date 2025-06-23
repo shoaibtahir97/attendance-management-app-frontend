@@ -82,23 +82,7 @@ const Calendar = () => {
   const fetchAllTimeTables = async () => {
     const updatedEvents = [];
     const groupColorMap = {};
-    const colorPalette = [
-      '#1abc9c',
-      '#3498db',
-      '#9b59b6',
-      '#e67e22',
-      '#e74c3c',
-      '#2ecc71',
-      '#f39c12',
-      '#16a085',
-      '#27ae60',
-      '#2980b9',
-      '#8e44ad',
-      '#d35400',
-      '#c0392b',
-      '#7f8c8d',
-      '#2c3e50',
-    ];
+
     let colorIndex = 0;
 
     await getTimetable()
