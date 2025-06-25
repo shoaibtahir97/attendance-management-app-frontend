@@ -476,7 +476,7 @@ const MarkAttendanceScreen = () => {
   async function fetchAttendanceRecordsByDate(data) {
     await getAttendance({
       ...data,
-      date: new Date(data?.date),
+      date: getFormattedDate(data?.date, 'YYYY-MM-DD'),
     })
       .unwrap()
       .then((res) => {
