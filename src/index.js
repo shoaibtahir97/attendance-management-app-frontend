@@ -10,13 +10,13 @@ import './assets/plugins/bootstrap/js/bootstrap.bundle.min.js';
 import './assets/plugins/select2/css/select2.min.css';
 
 //Font Awesome
-import './assets/plugins/fontawesome/css/all.min.css';
-import './assets/plugins/fontawesome/css/fontawesome.min.css';
-
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en-gb';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
+import './assets/plugins/fontawesome/css/all.min.css';
+import './assets/plugins/fontawesome/css/fontawesome.min.css';
 import { NotificationProvider } from './contexts/NotificationContext.js';
 import './index.css';
 import store from './redux/store.js';
