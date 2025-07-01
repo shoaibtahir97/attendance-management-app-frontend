@@ -72,6 +72,7 @@ const Calendar = () => {
         subject: subject.split(':')[1],
         teacher: teacher.split(':')[1],
         subjectId: event.extendedProps.subjectId,
+        course: event.extendedProps.course,
       },
     });
   };
@@ -81,7 +82,7 @@ const Calendar = () => {
 
   const fetchAllTimeTables = async () => {
     const updatedEvents = [];
-    const groupColorMap = {};
+    const courseColorMap = {};
 
     let colorIndex = 0;
 
@@ -89,11 +90,13 @@ const Calendar = () => {
       .unwrap()
       .then((res) => {
         res?.data?.forEach((item) => {
-          const groupId = item?.group?._id;
+          const course = item?.group?.course;
 
           // Assign color if not already mapped
-          if (!groupColorMap[groupId]) {
-            groupColorMap[groupId] = randomColor({ luminosity: 'bright' });
+          if (!courseColorMap[course]) {
+            courseColorMap[course] = randomColor({
+              luminosity: 'dark',
+            });
             colorIndex++;
           }
 
@@ -108,10 +111,10 @@ const Calendar = () => {
               daysOfWeek: [`${getDayOfWeek(entry?.dayOfWeek)}`],
               startRecur: item?.group?.cohortStartDate,
               endRecur: item?.group?.cohortEndDate,
-              backgroundColor: groupColorMap[groupId],
-              borderColor: groupColorMap[groupId],
+              backgroundColor: courseColorMap[course],
+              borderColor: courseColorMap[course],
               textColor: '#fff',
-              color: groupColorMap[groupId],
+              color: courseColorMap[course],
             });
           });
         });
