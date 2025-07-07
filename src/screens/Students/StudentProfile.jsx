@@ -254,7 +254,7 @@ const StudentProfile = () => {
               </div>
               <div className="col-lg-12">
                 <RepeatingSubjects
-                  repeatingSubjects={data?.repeatingSubjects ?? null}
+                  studentData={data}
                   studentId={studentId}
                   handleFetchStudentDetails={handleFetchStudentDetails}
                 />

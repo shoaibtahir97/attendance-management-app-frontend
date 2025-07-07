@@ -1,9 +1,10 @@
-import { Button, Tooltip } from 'antd';
+import { Button, Table, Tooltip } from 'antd';
 import { useState } from 'react';
 import { FiDelete, FiEdit } from 'react-icons/fi';
+import RepeatSubjectDialog from './RepeatSubjectDialog';
 
 const RepeatingSubjects = (props) => {
-  const { repeatingSubjects, studentId, handleFetchStudentDetails } = props;
+  const { studentData, studentId, handleFetchStudentDetails } = props;
 
   const columns = [
     {
@@ -44,6 +45,7 @@ const RepeatingSubjects = (props) => {
       title: 'Action',
       key: 'action',
       render: (_, record) => {
+        const handleEditRepeatingSubject = () => {};
         return (
           <Space size="middle">
             <Tooltip title="Update">
@@ -51,6 +53,7 @@ const RepeatingSubjects = (props) => {
                 type="primary"
                 shape="circle"
                 icon={<FiEdit size="14px" />}
+                onClick={handleEditRepeatingSubject}
               />
             </Tooltip>
             <Tooltip title="Update">
@@ -90,16 +93,19 @@ const RepeatingSubjects = (props) => {
                 justifyContent: 'space-between',
                 alignItems: 'baseline',
               }}>
-              <h5>Repeating Subjects</h5>
-            </div>
-            <div>
+              <h5>Failed Subjects</h5>
               <Button
                 onClick={handleOpenAddRepeatSubjectDialog}
                 type="primary"
                 style={{ marginBottom: 16 }}>
-                Add a subject
+                Add subject
               </Button>
-              <Table columns={columns} dataSource={repeatingSubjects} />
+            </div>
+            <div>
+              <Table
+                columns={columns}
+                dataSource={studentData?.repeatingSubjects ?? null}
+              />
             </div>
           </div>
         </div>
