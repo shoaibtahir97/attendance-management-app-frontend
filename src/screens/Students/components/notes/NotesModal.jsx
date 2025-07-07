@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Button } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
 import * as Yup from 'yup';
@@ -15,12 +15,12 @@ import {
   FormProvider,
   RHFTextField,
   RHFUploadSingleFile,
-} from '../../../components/HookForm';
-import useNotification from '../../../hooks/useNotification';
+} from '../../../../components/HookForm';
+import useNotification from '../../../../hooks/useNotification';
 import {
   useCreateNoteMutation,
   useUpdateNoteMutation,
-} from '../../../redux/slices/apiSlices/notesApiSlice';
+} from '../../../../redux/slices/apiSlices/notesApiSlice';
 
 const NotesModal = (props) => {
   const {
