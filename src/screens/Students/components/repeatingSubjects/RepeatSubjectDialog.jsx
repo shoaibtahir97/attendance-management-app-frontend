@@ -14,19 +14,13 @@ import { Button } from 'antd';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
 import * as Yup from 'yup';
-import {
-  FormProvider,
-  RHFAutocomplete,
-  RHFTextField,
-} from '../../../../components/HookForm';
+import { FormProvider, RHFAutocomplete } from '../../../../components/HookForm';
 import { useGetGroupsListQuery } from '../../../../redux/slices/apiSlices/groupApiSlice';
 import { useGetSubjectsListQuery } from '../../../../redux/slices/apiSlices/subjectApiSlice';
 
 const defaultValues = {
   subject: '',
   group: '',
-  repeatYear: null,
-  repeatSemester: null,
 };
 
 const RepeatSubjectDialog = (props) => {
@@ -37,8 +31,6 @@ const RepeatSubjectDialog = (props) => {
   const repeatSubjectSchema = Yup.object().shape({
     subject: Yup.string().required('Subject is required'),
     group: Yup.string().required('Group is required'),
-    repeatYear: Yup.number().required('Year is required'),
-    repeatSemester: Yup.number().required('Semester is required'),
   });
 
   const methods = useForm({
@@ -97,12 +89,6 @@ const RepeatSubjectDialog = (props) => {
                 label="Group"
                 options={groupsList}
               />
-            </Grid>
-            <Grid item xs={6}>
-              <RHFTextField name="repeatYear" label="Year failed in" />
-            </Grid>
-            <Grid item xs={6}>
-              <RHFTextField name="repeatSemester" label="Semester failed in" />
             </Grid>
           </Grid>
         </DialogContent>

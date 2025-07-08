@@ -18,16 +18,6 @@ const RepeatingSubjects = (props) => {
       key: 'group',
     },
     {
-      title: 'Repeat year',
-      dataIndex: 'repeatYear',
-      key: 'repeatYear',
-    },
-    {
-      title: 'Repeat semester',
-      dataIndex: 'repeatSemester',
-      key: 'repeatSemester',
-    },
-    {
       title: 'Status',
       dataIndex: 'hasPassed',
       key: 'hasPassed',
