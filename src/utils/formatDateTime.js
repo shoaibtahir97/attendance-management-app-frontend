@@ -15,7 +15,10 @@ const getDay = (date) => days[dayjs(date).day()];
 const getFormattedDate = (date, format = 'DD/MM/YYYY') =>
   dayjs(date).format(format);
 
-const getFormattedTime = (date, format = 'HH:mm:ss') =>
+const getFormattedDateTime = (date, format = 'DD MMM YYYY h:mm A') =>
+  dayjs(date).format(format);
+
+const getFormattedTime = (date, format = 'h:mm:ss') =>
   dayjs(date).format(format);
 
 const getDayOfWeek = (dayOfWeek) => {
@@ -52,5 +55,6 @@ export {
   getDay,
   getDayOfWeek,
   getFormattedDate,
+  getFormattedDateTime,
   getFormattedTime,
 };
