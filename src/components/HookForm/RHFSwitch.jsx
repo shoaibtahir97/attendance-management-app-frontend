@@ -1,8 +1,7 @@
 // form
-import { useFormContext, Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 // @mui
-import { Switch, InputLabel, Box, FormControlLabel } from '@mui/material';
-import { Stack } from 'react-bootstrap';
+import { FormControlLabel, InputLabel, Stack, Switch } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -15,23 +14,32 @@ export default function RHFSwitch({ name, label, disabled, ...other }) {
       control={control}
       render={({ field, fieldState: { error } }) => (
         <>
-          <FormControlLabel
-            control={
-              <Switch
-                disabled={disabled}
-                checked={field.value}
-                onChange={field.onChange}
-                {...field}
-                size="small"
-              />
-            }
-            label={label}
-          />
-          {error && (
-            <FormHelperText error sx={{ textAlign: 'left', ml: 2 }}>
-              {error.message}
-            </FormHelperText>
-          )}
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+            sx={{ width: '100%' }}>
+            <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+              {label}
+            </InputLabel>
+            <FormControlLabel
+              control={
+                <Switch
+                  disabled={disabled}
+                  checked={field.value}
+                  onChange={field.onChange}
+                  {...field}
+                  size="small"
+                />
+              }
+            />
+            {error && (
+              <FormHelperText error sx={{ textAlign: 'left', ml: 2 }}>
+                {error.message}
+              </FormHelperText>
+            )}
+          </Stack>
         </>
       )}
     />

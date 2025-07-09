@@ -1,7 +1,7 @@
 import { Alert, Button, Empty, Timeline } from 'antd';
 import dayjs from 'dayjs';
 import FeatherIcon from 'feather-icons-react/build/FeatherIcon';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { MdListAlt } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import PageHeader from '../../components/PageHeader';
@@ -10,7 +10,8 @@ import { useLazyGetStudentReportQuery } from '../../redux/slices/apiSlices/repor
 import { useLazyGetStudentDetailsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { useIssueWarningLetterMutation } from '../../redux/slices/apiSlices/warningLetterApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
-import Notes from './components/Notes';
+import Notes from './components/notes/Notes';
+import RepeatingSubjects from './components/repeatingSubjects/RepeatingSubjects';
 import StudentProfileSkeleton from './components/StudentProfileSkeleton';
 
 const StudentProfile = () => {
@@ -247,6 +248,13 @@ const StudentProfile = () => {
                 </div>
                 <Notes
                   notes={data?.notes}
+                  studentId={studentId}
+                  handleFetchStudentDetails={handleFetchStudentDetails}
+                />
+              </div>
+              <div className="col-lg-12">
+                <RepeatingSubjects
+                  studentData={data}
                   studentId={studentId}
                   handleFetchStudentDetails={handleFetchStudentDetails}
                 />

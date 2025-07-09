@@ -1,12 +1,12 @@
 import { IconButton } from '@mui/material';
 import { Button, Card, Empty, Tooltip } from 'antd';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import { MdOutlineDelete } from 'react-icons/md';
-import DeleteConfirmationDialog from '../../../components/DeleteConfirmationDialog';
-import useNotification from '../../../hooks/useNotification';
-import { useDeleteNoteMutation } from '../../../redux/slices/apiSlices/notesApiSlice';
+import DeleteConfirmationDialog from '../../../../components/DeleteConfirmationDialog';
+import useNotification from '../../../../hooks/useNotification';
+import { useDeleteNoteMutation } from '../../../../redux/slices/apiSlices/notesApiSlice';
 import NotesModal from './NotesModal';
 
 const Notes = (props) => {

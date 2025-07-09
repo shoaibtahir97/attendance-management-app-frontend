@@ -84,6 +84,32 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    studentFailedSubjects: builder.mutation({
+      query: ({ subject, group, studentId, repeatSubjectId }) => ({
+        url: `${STUDENTS_URL}/${studentId}/repeatsubjects`,
+        method: repeatSubjectId ? 'PUT' : 'POST',
+        body: {
+          subject,
+          group,
+          ...(repeatSubjectId && { repeatId: repeatSubjectId }),
+        },
+        transformResponse: (res) => res?.data,
+        credentials: 'include',
+      }),
+      invalidatesTags: ['Student', 'Subject'],
+    }),
+    toggleFailedSubjectStatus: builder.mutation({
+      query: ({ studentId, hasPassed, repeatSubjectId }) => ({
+        url: `${STUDENTS_URL}/${studentId}/repeatsubjects/passed`,
+        method: 'PATCH',
+        body: {
+          hasPassed,
+          repeatSubjectId,
+        },
+        transformResponse: (res) => res?.data,
+        credentials: 'include',
+      }),
+    }),
   }),
 });
 
@@ -97,4 +123,6 @@ export const {
   useDeleteStudentsMutation,
   useToggleStudentStatusMutation,
   useLazyGetStudentDetailsQuery,
+  useStudentFailedSubjectsMutation,
+  useToggleFailedSubjectStatusMutation,
 } = studentApiSlice;
