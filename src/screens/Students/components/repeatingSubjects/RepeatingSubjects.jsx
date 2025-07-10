@@ -43,7 +43,7 @@ const RepeatingSubjects = (props) => {
           setSelectedRepeatSubject({
             ...record,
             group: record.group._id,
-            subject: record.group._id,
+            subject: record.subject._id,
           });
         };
 
