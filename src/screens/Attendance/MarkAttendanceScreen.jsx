@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Autocomplete, Box, Grid, Stack, TextField } from '@mui/material';
-import { Alert, Button, Table } from 'antd';
+import { Alert, Button, Table, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { GoClock } from 'react-icons/go';
@@ -130,11 +130,14 @@ const MarkAttendanceScreen = () => {
 
       fixed: 'left',
       sorter: (a, b) => a.name.length - b.name.length,
-      render: (text, record) => (
-        <>
-          <h2 className="table-avatar">{record.name}</h2>
-        </>
-      ),
+      render: (text, record) => {
+        return (
+          <>
+            <h2 className="table-avatar">{record.name}</h2>
+            {record?.isRepeating && <Tag color="error">Fail</Tag>}
+          </>
+        );
+      },
     },
     {
       title: 'Status',
@@ -383,6 +386,7 @@ const MarkAttendanceScreen = () => {
             studentId: student.studentId,
             id: student._id,
             name: `${student.firstName} ${student.lastName}`,
+            isRepeating: studentId.isRepeating,
           }));
           setDataSource({
             students: updatedStudents,
@@ -459,6 +463,7 @@ const MarkAttendanceScreen = () => {
           name:
             record?.studentId?.firstName + ' ' + record?.studentId?.lastName,
           id: record?.studentId?._id,
+          isRepeating: record?.studentId?.isRepeating,
         }));
         setDataSource({
           students: attendanceRecords,
@@ -468,7 +473,12 @@ const MarkAttendanceScreen = () => {
       })
       .catch((err) => {
         if (err?.data?.status === 400) {
-          fetchStudents({ group: groupId });
+          fetchStudents({
+            group: groupId,
+            isRepeating: true,
+            subject: subjectId,
+            hasPassed: false,
+          });
         }
       });
   }
