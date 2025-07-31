@@ -386,7 +386,7 @@ const MarkAttendanceScreen = () => {
             studentId: student.studentId,
             id: student._id,
             name: `${student.firstName} ${student.lastName}`,
-            isRepeating: studentId.isRepeating,
+            isRepeating: student.isRepeating,
           }));
           setDataSource({
             students: updatedStudents,
