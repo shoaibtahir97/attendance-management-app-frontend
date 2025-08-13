@@ -6,6 +6,7 @@ import useNotification from '../../hooks/useNotification';
 import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
 import {
   useLazyGetCourseGroupsAttendanceReportQuery,
+  useLazyGetCourseReportV2Query,
   useLazyGetCourseSubjectsAttendanceReportQuery,
 } from '../../redux/slices/apiSlices/reportApiSlice';
 
@@ -16,6 +17,9 @@ const CourseReport = () => {
 
   const [getCourseSubjectsAttendanceReport, { isLoading: isLoadingSubjects }] =
     useLazyGetCourseSubjectsAttendanceReportQuery();
+
+  const [getCourseAttendanceReportV2, { isLoading: isLoadingCourseReports }] =
+    useLazyGetCourseReportV2Query();
 
   const methods = useForm({
     defaultValues: {
@@ -109,6 +113,44 @@ const CourseReport = () => {
     }
   };
 
+  const handleGetCourseReportsV2 = async () => {
+    const { course } = getValues();
+    if (course === '') {
+      setError('course', {
+        type: 'manual',
+        message: 'Course is required',
+      });
+    } else {
+      if (errors.course) {
+        setError('course', null);
+      }
+      await getCourseAttendanceReportV2({ courseId: course })
+        .unwrap()
+        .then((res) => {
+          const url = window.URL.createObjectURL(res);
+
+          // Create a link element
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute(
+            'download',
+            `report-course-subjects-${courseList.find((item) => item.value === course).label}`
+          ); // Specify the file name
+
+          // Append to the document and trigger the download
+          document.body.appendChild(link);
+          link.click();
+
+          // Clean up and remove the link
+          link.parentNode.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        })
+        .catch((err) => {
+          openNotification('error', err?.message ?? err.error);
+        });
+    }
+  };
+
   return (
     <div>
       <FormProvider methods={methods}>
@@ -131,7 +173,7 @@ const CourseReport = () => {
           <Box>
             <Button
               loading={isLoadingGroups}
-              disabled={isLoadingSubjects}
+              disabled={isLoadingSubjects || isLoadingCourseReports}
               onClick={handleGetCourseGroupsReports}
               type="primary"
               size="large">
@@ -142,11 +184,22 @@ const CourseReport = () => {
           <Box>
             <Button
               loading={isLoadingSubjects}
-              disabled={isLoadingGroups}
+              disabled={isLoadingGroups || isLoadingCourseReports}
               onClick={handleGetCourseSubjectReports}
               type="primary"
               size="large">
               Generate Subject wise Report
+            </Button>
+          </Box>
+
+          <Box>
+            <Button
+              loading={isLoadingCourseReports}
+              disabled={isLoadingSubjects || isLoadingGroups}
+              onClick={handleGetCourseReportsV2}
+              type="primary"
+              size="large">
+              Generate Course Report V2
             </Button>
           </Box>
         </Stack>

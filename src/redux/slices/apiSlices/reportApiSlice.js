@@ -90,6 +90,15 @@ const reportApiSlice = apiSlice.injectEndpoints({
         responseHandler: (response) => response.blob(),
       }),
     }),
+
+    getCourseReportV2: builder.query({
+      query: (params) => ({
+        url: `${REPORTS_URL}/coursegroups/v2`,
+        params,
+        credentials: 'include',
+        responseHandler: (response) => response.blob(),
+      }),
+    }),
   }),
 });
 
@@ -102,6 +111,7 @@ export const {
   useLazyDownloadGroupAttendanceReportV2Query,
   useLazyGetCourseGroupsAttendanceReportQuery,
   useLazyGetCourseSubjectsAttendanceReportQuery,
+  useLazyGetCourseReportV2Query,
   useLazyGetStudentReportQuery,
   useLazyGetGroupReportQuery,
 } = reportApiSlice;
