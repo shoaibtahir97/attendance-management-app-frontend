@@ -17,19 +17,27 @@ import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 import './assets/plugins/fontawesome/css/all.min.css';
 import './assets/plugins/fontawesome/css/fontawesome.min.css';
+// CSS Baseline
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+
 import { NotificationProvider } from './contexts/NotificationContext.js';
 import './index.css';
 import store from './redux/store.js';
 import router from './routes/routes.js';
+import { theme } from './theme/index.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'en-gb'}>
-        <NotificationProvider>
-          <RouterProvider router={router} />
-        </NotificationProvider>
+        <ThemeProvider theme={theme}>
+          <NotificationProvider>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </NotificationProvider>
+        </ThemeProvider>
       </LocalizationProvider>
     </Provider>
   </React.StrictMode>

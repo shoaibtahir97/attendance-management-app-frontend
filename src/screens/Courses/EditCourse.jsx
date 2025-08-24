@@ -153,192 +153,195 @@ const EditCourse = () => {
         parentSection="Course"
       />
       {/* /Page Header */}
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="card comman-shadow">
-            <div className="card-body">
-              {isLoading || loadingSubjects || loadingTeachers ? (
-                <EditStudentSkeleton />
-              ) : error ? (
-                <Alert
-                  message="Error"
-                  type="error"
-                  description={error.data?.message}
-                />
-              ) : (
-                <FormProvider
-                  methods={methods}
-                  onSubmit={handleSubmit(handleUpdateCourse)}>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                      <h5 className="form-title student-info">
-                        Course Details
-                      </h5>
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                      <RHFTextField name="name" label="Course Name" />
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                      <RHFDatePicker
-                        name="intake"
-                        label="Intake"
-                        views={['month', 'year']}
-                        sx={{ width: '100%' }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                      <RHFSelect
-                        name="type"
-                        label="Type"
-                        options={[
-                          { label: 'BSc', value: 'BSc' },
-                          { label: 'HND', value: 'HND' },
-                        ]}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                      <RHFTextField
-                        name="duration"
-                        type="number"
-                        label="Duration (Years)"
-                      />
-                    </Grid>
-                    <Grid
-                      item
-                      xs={12}
-                      sx={{
-                        mt: 2,
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}>
-                      <h6 className="student-info">Semesters</h6>
 
-                      <Tooltip title="Add module" placement="top">
-                        <IconButton
-                          onClick={() =>
-                            SemestersAppend({
-                              year: null,
-                              semester: null,
-                              startDate: null,
-                              endDate: null,
-                              modules: [
-                                { name: '', credits: null, moduleLead: '' },
-                              ],
-                              breaks: null,
-                            })
-                          }
-                          disabled={SemestersFields.length < 4 ? false : true}>
-                          <IoIosAddCircleOutline />
-                        </IconButton>
-                      </Tooltip>
-                    </Grid>
+      <div className="card comman-shadow">
+        <div className="card-body">
+          {isLoading || loadingSubjects || loadingTeachers ? (
+            <EditStudentSkeleton />
+          ) : error ? (
+            <Alert
+              message="Error"
+              type="error"
+              description={error.data?.message}
+            />
+          ) : (
+            <FormProvider
+              methods={methods}
+              onSubmit={handleSubmit(handleUpdateCourse)}>
+              <div className="container ">
+                <div className="row">
+                  <h5 className="form-title student-info">Course Details</h5>
+                </div>
+                <div className="row">
+                  <div className="col-md-6 col-lg-5">
+                    <RHFTextField name="name" label="Course Name" />
+                  </div>
+                  <div className="col-md-6 col-lg-3">
+                    <RHFDatePicker
+                      name="intake"
+                      label="Intake"
+                      views={['month', 'year']}
+                      sx={{ width: '100%' }}
+                    />
+                  </div>
+                  <div className="col-md-6 col-lg-2">
+                    <RHFSelect
+                      name="type"
+                      label="Type"
+                      options={[
+                        { label: 'BSc', value: 'BSc' },
+                        { label: 'HND', value: 'HND' },
+                      ]}
+                    />
+                  </div>
+                  <div className="col-md-6 col-lg-2">
+                    <RHFTextField
+                      name="duration"
+                      type="number"
+                      label="Duration (Years)"
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <h6 className="student-info">Semesters</h6>
+                  </div>
+                  <div className="col">
+                    <Tooltip title="Add module" placement="top">
+                      <IconButton
+                        onClick={() =>
+                          SemestersAppend({
+                            year: null,
+                            semester: null,
+                            startDate: null,
+                            endDate: null,
+                            modules: [
+                              { name: '', credits: null, moduleLead: '' },
+                            ],
+                            breaks: null,
+                          })
+                        }
+                        disabled={SemestersFields.length < 4 ? false : true}>
+                        <IoIosAddCircleOutline />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                </div>
+              </div>
+              <Grid container spacing={1}>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    mt: 2,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}></Grid>
 
-                    {SemestersFields?.map((semester, index) => (
-                      <Accordion
-                        key={semester.id}
-                        expanded={semesterExpanded === `semester${index}`}
-                        onChange={handleChange(`semester${index}`)}>
-                        <AccordionSummary
-                          expandIcon={<MdExpandMore fontSize={'24px'} />}
-                          aria-controls={`panel${index}-content`}
-                          id={`panel${index}-header`}>
-                          <Grid container spacing={2}>
-                            <Grid item xs={11}>
-                              <Typography
-                                sx={{
-                                  width: '33%',
-                                  flexShrink: 0,
-                                }}
-                                variant="subtitle1">
-                                Semester {index + 1}
-                              </Typography>
-                            </Grid>
-                            {SemestersFields.length > 1 && (
-                              <Grid item xs={1}>
-                                <Tooltip title="Delete" placement="top">
-                                  <IconButton
-                                    onClick={() => SemestersRemove(index)}>
-                                    <MdOutlineDelete />
-                                  </IconButton>
-                                </Tooltip>
-                              </Grid>
-                            )}
+                {SemestersFields?.map((semester, index) => (
+                  <Accordion
+                    key={semester.id}
+                    expanded={semesterExpanded === `semester${index}`}
+                    onChange={handleChange(`semester${index}`)}>
+                    <AccordionSummary
+                      expandIcon={<MdExpandMore fontSize={'24px'} />}
+                      aria-controls={`panel${index}-content`}
+                      id={`panel${index}-header`}>
+                      <Grid container spacing={2}>
+                        <Grid item xs={11}>
+                          <Typography
+                            sx={{
+                              width: '33%',
+                              flexShrink: 0,
+                            }}
+                            variant="subtitle1">
+                            Semester {index + 1}
+                          </Typography>
+                        </Grid>
+                        {SemestersFields.length > 1 && (
+                          <Grid item xs={1}>
+                            <Tooltip title="Delete" placement="top">
+                              <IconButton
+                                onClick={() => SemestersRemove(index)}>
+                                <MdOutlineDelete />
+                              </IconButton>
+                            </Tooltip>
                           </Grid>
-                        </AccordionSummary>
+                        )}
+                      </Grid>
+                    </AccordionSummary>
 
-                        <AccordionDetails>
-                          <Grid
-                            container
-                            item
-                            xs={12}
-                            spacing={1}
-                            sx={{ display: 'flex' }}>
-                            <Grid item xs={12} sm={3}>
-                              <RHFTextField
-                                name={`semesters[${index}].year`}
-                                label="Year"
-                                type="number"
-                                options={moduleYears}
-                              />
-                            </Grid>
-                            <Grid item xs={12} sm={3}>
-                              <RHFTextField
-                                name={`semesters[${index}].semester`}
-                                label="Semester"
-                                type="number"
-                                sx={{ width: '100%' }}
-                              />
-                            </Grid>
-                            <Grid item xs={12} sm={3}>
-                              <RHFDatePicker
-                                name={`semesters[${index}].startDate`}
-                                sx={{ width: '100%' }}
-                                label="Start Date"
-                              />
-                            </Grid>
-                            <Grid item xs={12} sm={3}>
-                              <RHFDatePicker
-                                name={`semesters[${index}].endDate`}
-                                label="End Date"
-                                sx={{ width: '100%' }}
-                              />
-                            </Grid>
+                    <AccordionDetails>
+                      <Grid
+                        container
+                        item
+                        xs={12}
+                        spacing={1}
+                        sx={{ display: 'flex' }}>
+                        <Grid item xs={12} sm={3}>
+                          <RHFTextField
+                            name={`semesters[${index}].year`}
+                            label="Year"
+                            type="number"
+                            options={moduleYears}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <RHFTextField
+                            name={`semesters[${index}].semester`}
+                            label="Semester"
+                            type="number"
+                            sx={{ width: '100%' }}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <RHFDatePicker
+                            name={`semesters[${index}].startDate`}
+                            sx={{ width: '100%' }}
+                            label="Start Date"
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                          <RHFDatePicker
+                            name={`semesters[${index}].endDate`}
+                            label="End Date"
+                            sx={{ width: '100%' }}
+                          />
+                        </Grid>
 
-                            <Grid item xs={12}>
-                              <Divider />
-                            </Grid>
+                        <Grid item xs={12}>
+                          <Divider />
+                        </Grid>
 
-                            <Grid container item xs={12}>
-                              <Module
-                                semesterIndex={index}
-                                subjectsList={subjectsList}
-                                teachersList={teachersList}
-                              />
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Divider />
-                            </Grid>
-                            <Grid container item xs={12}>
-                              <Breaks semesterIndex={index} />
-                            </Grid>
-                          </Grid>
-                        </AccordionDetails>
-                      </Accordion>
-                    ))}
-                    <Grid item xs={12}>
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        loading={isSubmitting}>
-                        Save
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </FormProvider>
-              )}
-            </div>
-          </div>
+                        <Grid container item xs={12}>
+                          <Module
+                            semesterIndex={index}
+                            subjectsList={subjectsList}
+                            teachersList={teachersList}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Divider />
+                        </Grid>
+                        <Grid container item xs={12}>
+                          <Breaks semesterIndex={index} />
+                        </Grid>
+                      </Grid>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+                <Grid item xs={12}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={isSubmitting}>
+                    Save
+                  </Button>
+                </Grid>
+              </Grid>
+            </FormProvider>
+          )}
         </div>
       </div>
     </div>
