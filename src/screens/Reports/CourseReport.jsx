@@ -8,6 +8,7 @@ import {
   useLazyGetCourseGroupsAttendanceReportQuery,
   useLazyGetCourseReportV2Query,
   useLazyGetCourseSubjectsAttendanceReportQuery,
+  useLazyGetFailedStudentsReportQuery,
 } from '../../redux/slices/apiSlices/reportApiSlice';
 
 const CourseReport = () => {
@@ -20,6 +21,11 @@ const CourseReport = () => {
 
   const [getCourseAttendanceReportV2, { isLoading: isLoadingCourseReports }] =
     useLazyGetCourseReportV2Query();
+
+  const [
+    getFailedStudentsReport,
+    { isLoading: isLoadingFailedStudentsReports },
+  ] = useLazyGetFailedStudentsReportQuery();
 
   const methods = useForm({
     defaultValues: {
@@ -151,6 +157,44 @@ const CourseReport = () => {
     }
   };
 
+  const handleGetFailedStudentsReports = async () => {
+    const { course } = getValues();
+    if (course === '') {
+      setError('course', {
+        type: 'manual',
+        message: 'Course is required',
+      });
+    } else {
+      if (errors.course) {
+        setError('course', null);
+      }
+      await getFailedStudentsReport({ courseId: course })
+        .unwrap()
+        .then((res) => {
+          const url = window.URL.createObjectURL(res);
+
+          // Create a link element
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute(
+            'download',
+            `failed-students-${courseList.find((item) => item.value === course).label}`
+          ); // Specify the file name
+
+          // Append to the document and trigger the download
+          document.body.appendChild(link);
+          link.click();
+
+          // Clean up and remove the link
+          link.parentNode.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        })
+        .catch((err) => {
+          openNotification('error', err?.message ?? err.error);
+        });
+    }
+  };
+
   return (
     <div>
       <FormProvider methods={methods}>
@@ -173,7 +217,11 @@ const CourseReport = () => {
           <Box>
             <Button
               loading={isLoadingGroups}
-              disabled={isLoadingSubjects || isLoadingCourseReports}
+              disabled={
+                isLoadingSubjects ||
+                isLoadingCourseReports ||
+                isLoadingFailedStudentsReports
+              }
               onClick={handleGetCourseGroupsReports}
               type="primary"
               size="large">
@@ -184,7 +232,11 @@ const CourseReport = () => {
           <Box>
             <Button
               loading={isLoadingSubjects}
-              disabled={isLoadingGroups || isLoadingCourseReports}
+              disabled={
+                isLoadingGroups ||
+                isLoadingCourseReports ||
+                isLoadingFailedStudentsReports
+              }
               onClick={handleGetCourseSubjectReports}
               type="primary"
               size="large">
@@ -195,11 +247,27 @@ const CourseReport = () => {
           <Box>
             <Button
               loading={isLoadingCourseReports}
-              disabled={isLoadingSubjects || isLoadingGroups}
+              disabled={
+                isLoadingSubjects ||
+                isLoadingGroups ||
+                isLoadingFailedStudentsReports
+              }
               onClick={handleGetCourseReportsV2}
               type="primary"
               size="large">
               Generate Course Report V2
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              loading={isLoadingFailedStudentsReports}
+              disabled={
+                isLoadingSubjects || isLoadingGroups || isLoadingCourseReports
+              }
+              onClick={handleGetFailedStudentsReports}
+              type="primary"
+              size="large">
+              Generate Failed Student Course Report
             </Button>
           </Box>
         </Stack>
