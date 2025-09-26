@@ -1,7 +1,6 @@
 import { FormHelperText, InputLabel, Stack } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 const RHFDatePicker = (props) => {
@@ -27,11 +26,15 @@ const RHFDatePicker = (props) => {
             <DatePicker
               value={dayjs(field.value) || dayjs(new Date())}
               onChange={(date, event) => {
+                console.log('date', date);
                 field.onChange(date);
               }}
               error={!!error}
               {...other}
-              slotProps={{ textField: { size: 'small', error: !!error } }}
+              slotProps={{
+                textField: { size: 'small', error: !!error },
+                field: { clearable: true },
+              }}
             />
           </Stack>
           {error && (

@@ -268,7 +268,7 @@ const MarkAttendanceScreen = () => {
               value={attendanceStatus?.firstIntervention}
               variant="outlined"
               size="small"
-              onMouseOut={(event) => {
+              onChange={(event) => {
                 dispatch(
                   addFirstIntervention({
                     studentId: record?.id,
@@ -294,7 +294,7 @@ const MarkAttendanceScreen = () => {
               value={attendanceStatus?.secondIntervention}
               variant="outlined"
               size="small"
-              onMouseOut={(event) => {
+              onChange={(event) => {
                 dispatch(
                   addSecondIntervention({
                     studentId: record?.id,
@@ -320,7 +320,8 @@ const MarkAttendanceScreen = () => {
               value={attendanceStatus?.thirdIntervention}
               variant="outlined"
               size="small"
-              onMouseOut={(event) => {
+              onChange={(event) => {
+                console.log('value', event.target.value);
                 dispatch(
                   addThirdIntervention({
                     studentId: record?.id,
