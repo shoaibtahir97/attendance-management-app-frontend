@@ -2,7 +2,7 @@ import { Alert, Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { Button, Table } from 'antd';
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ const CoursesList = () => {
   const methods = useForm({
     defaultValues: {
       name: '',
-      intake: null,
+      intake: '',
     },
   });
   const [getCourses, { data, isLoading, error }] = useLazyGetCoursesQuery();
@@ -140,13 +140,15 @@ const CoursesList = () => {
   };
 
   const fetchCoursesByQuery = (data) => {
-    console.log('data', data);
+    const intake =
+      data.intake === null
+        ? ''
+        : dayjs(data.intake).startOf('month').format('YYYY-MM-DD');
+
     fetchCourses({
       ...data,
       ...coursesQuery,
-      intake: data.intake
-        ? dayjs(data.intake).startOf('month').format('YYYY-MM-DD')
-        : undefined,
+      intake,
     });
   };
 
@@ -163,6 +165,8 @@ const CoursesList = () => {
         openNotification('error', err?.data?.message ?? err.error);
       });
   };
+
+  console.log('values', getValues());
 
   useEffect(() => {
     fetchCourses(coursesQuery);
@@ -282,11 +286,10 @@ const CoursesList = () => {
                       itemRender: itemRender,
                       onChange: (page, pageSize) => {
                         setCoursesQuery({
-                          ...coursesQuery,
                           page,
                           recordsPerPage: pageSize,
                         });
-                        fetchCourses({
+                        fetchCoursesByQuery({
                           page,
                           recordsPerPage: pageSize,
                           ...getValues(),
