@@ -23,13 +23,13 @@ const getFormattedTime = (date, format = 'h:mm:ss') =>
 
 const getDayOfWeek = (dayOfWeek) => {
   const daysOfWeekMap = {
-    Monday: 1,
-    Tuesday: 2,
-    Wednesday: 3,
-    Thursday: 4,
-    Friday: 5,
-    Saturday: 6,
-    Sunday: 0,
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+    sunday: 0,
   };
   return daysOfWeekMap[dayOfWeek];
 };
