@@ -108,7 +108,7 @@ const Calendar = () => {
               groupId: item?.group?._id,
               subjectId: entry?.subject?._id,
               allDay: false,
-              daysOfWeek: [`${getDayOfWeek(entry?.dayOfWeek)}`],
+              daysOfWeek: [`${getDayOfWeek(entry?.dayOfWeek?.toLowerCase())}`],
               startRecur: item?.group?.cohortStartDate,
               endRecur: item?.group?.cohortEndDate,
               backgroundColor: courseColorMap[course],
