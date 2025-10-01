@@ -140,10 +140,9 @@ const CoursesList = () => {
   };
 
   const fetchCoursesByQuery = (data) => {
-    const intake =
-      data.intake === null
-        ? ''
-        : dayjs(data.intake).startOf('month').format('YYYY-MM-DD');
+    const intake = dayjs(data.intake).isValid()
+      ? dayjs(data.intake).startOf('month').format('YYYY-MM-DD')
+      : undefined;
 
     fetchCourses({
       ...data,
