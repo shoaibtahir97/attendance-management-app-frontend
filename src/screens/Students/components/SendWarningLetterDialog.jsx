@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 import { Button } from 'antd';
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
 import * as Yup from 'yup';
