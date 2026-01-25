@@ -76,10 +76,10 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
-    toggleStudentStatus: builder.mutation({
+    updateStudentStatus: builder.mutation({
       query: (payload) => ({
-        url: `${STUDENTS_URL}/${payload.id}`,
-        method: 'PATCH',
+        url: `${STUDENTS_URL}/status`,
+        method: 'PUT',
         body: payload,
         credentials: 'include',
       }),
@@ -121,7 +121,7 @@ export const {
   useUpdateStudentDetailsMutation,
   useGetStudentsListQuery,
   useDeleteStudentsMutation,
-  useToggleStudentStatusMutation,
+  useUpdateStudentStatusMutation,
   useLazyGetStudentDetailsQuery,
   useStudentFailedSubjectsMutation,
   useToggleFailedSubjectStatusMutation,

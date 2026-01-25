@@ -5,7 +5,6 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 const RHFAutocomplete = (props) => {
@@ -60,7 +59,11 @@ const RHFAutocomplete = (props) => {
                 }
               }}
               loading={loading}
-              isOptionEqualToValue={(option, value) => option.value === value}
+              isOptionEqualToValue={(option, value) =>
+                typeof value === 'string'
+                  ? option.value === value
+                  : option.value === value?.value
+              }
               getOptionLabel={(option) =>
                 typeof option === 'string' ? option : option.label
               }
