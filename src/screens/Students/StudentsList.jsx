@@ -1,12 +1,19 @@
+import { EllipsisOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, IconButton, Menu, MenuItem, Stack } from '@mui/material';
-import { Alert, Button, Dropdown, Table, Tag, Tooltip } from 'antd';
-import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from '@mui/material';
+import { Alert, Button, Dropdown, Space, Table, Tag, Tooltip } from 'antd';
+import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoMdMore } from 'react-icons/io';
-import { MdDelete } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
-
 import * as Yup from 'yup';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
 import {
@@ -22,26 +29,38 @@ import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlic
 import {
   useDeleteStudentsMutation,
   useLazyGetStudentsQuery,
-  useToggleStudentStatusMutation,
+  useUpdateStudentStatusMutation,
 } from '../../redux/slices/apiSlices/studentApiSlice';
-
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
-
-import { format } from 'date-fns';
 import SendWarningLetterDialog from './components/SendWarningLetterDialog';
+import { UpdateStatusDialog, studentStatusOptions } from './UpdateStatusDialog';
 
 export const SKELETON = ['', '', '', '', ''];
 
 const Students = () => {
   const navigate = useNavigate();
   const { openNotification } = useNotification();
-  const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
-  const { data: groupsList, isLoading: loadingGroups } =
-    useGetGroupsListQuery();
+  const [getStudents, { isLoading, error }] = useLazyGetStudentsQuery();
+  const { data: groupsList } = useGetGroupsListQuery();
+  const [updateStudentStatus] = useUpdateStudentStatusMutation();
   const [deleteStudents, { loading: isDeleting }] = useDeleteStudentsMutation();
-  const [toggleStudentStatus] = useToggleStudentStatusMutation();
+
+  const setTagColor = (status) => {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return 'success';
+      case 'inactive':
+        return 'error';
+      case 'suspended':
+        return 'warning';
+      case 'graduated':
+        return 'blue';
+      default:
+        return 'default';
+    }
+  };
 
   const column = [
     {
@@ -87,17 +106,31 @@ const Students = () => {
     },
     {
       title: 'Status',
-      dataIndex: 'isActive',
-      sorter: (a, b) => a.isActive.length - b.isActive.length,
+      dataIndex: 'status',
+      sorter: (a, b) => a.status.length - b.status.length,
       render: (text, record) => {
         return (
           <Box>
-            {text === true ? (
-              <Tag color="success">Active</Tag>
-            ) : (
-              <Tooltip title={format(record?.inActiveSince, 'dd MMMM yyyy')}>
-                <Tag color="error">Inactive</Tag>
+            {text ? (
+              <Tooltip
+                title={
+                  <Box>
+                    {record?.updatedBy && (
+                      <Typography variant="subtitle2" color="white">
+                        Updated by: {record?.updatedBy}
+                      </Typography>
+                    )}
+                    {record?.updatedOn && (
+                      <Typography variant="subtitle2" color="white">
+                        Updated on: {format(record?.updatedOn, 'dd MMMM yyyy')}
+                      </Typography>
+                    )}
+                  </Box>
+                }>
+                <Tag color={setTagColor(text)}>{text}</Tag>
               </Tooltip>
+            ) : (
+              <></>
             )}
           </Box>
         );
@@ -106,30 +139,9 @@ const Students = () => {
     {
       title: 'Action',
       dataIndex: 'Action',
+      fixed: 'end',
+      width: 100,
       render: (text, record) => {
-        const handleToggleStudentStatus = async (data) => {
-          await toggleStudentStatus(data)
-            .unwrap()
-            .then((res) => {
-              console.log('res', res.data.inActiveSince);
-              openNotification('success', res?.message);
-              setDataSource({
-                ...dataSource,
-                students: dataSource.students.map((student) =>
-                  student._id === record._id
-                    ? {
-                        ...student,
-                        isActive: data.isActive,
-                        inActiveSince: res.data.inActiveSince,
-                      }
-                    : student
-                ),
-              });
-            })
-            .catch((err) => {
-              openNotification('error', err?.data?.message ?? err?.error);
-            });
-        };
         const items = [
           {
             key: 0,
@@ -152,12 +164,10 @@ const Students = () => {
             label: (
               <a
                 onClick={() => {
-                  handleToggleStudentStatus({
-                    id: record?._id,
-                    isActive: !record?.isActive,
-                  });
+                  setSelectedRowKeys([record?._id]);
+                  openUpdateStatusDialog();
                 }}>
-                {record.isActive ? 'Deactivate' : 'Activate'}
+                Update Status
               </a>
             ),
           },
@@ -192,9 +202,15 @@ const Students = () => {
     useState(false);
   const [isWarningLetterDialogOpen, setIsWarningLetterDialogOpen] =
     useState(false);
+  const [isUpdateStatusDialogOpen, setIsUpdateStatusDialogOpen] =
+    useState(false);
 
   const openDeleteConfirmationDialog = () => {
     setIsDeleteConfirmDialogOpen(!isDeleteConfirmDialogOpen);
+  };
+
+  const openUpdateStatusDialog = () => {
+    setIsUpdateStatusDialogOpen(!isUpdateStatusDialogOpen);
   };
 
   const openSendWarningLetterDialog = () =>
@@ -204,7 +220,6 @@ const Students = () => {
 
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
   };
 
   const openAddStudentPopover = (event) => {
@@ -268,6 +283,61 @@ const Students = () => {
       });
   };
 
+  const handleUpdateStatus = async (data) => {
+    await updateStudentStatus({ ...data })
+      .unwrap()
+      .then((res) => {
+        openNotification('success', res?.message);
+        setSelectedRowKeys([]);
+        fetchStudents(studentsQuery);
+        openUpdateStatusDialog();
+      })
+      .catch((err) => {
+        console.log('err', err);
+        openNotification('error', err?.data?.message ?? err?.error);
+      });
+  };
+
+  const studentBulkOptions = [
+    {
+      label: (
+        <a
+          onClick={openSendWarningLetterDialog}
+          target="_ blank"
+          rel="noopener noreferrer">
+          Send Warning Letter
+        </a>
+      ),
+      key: '2',
+    },
+    {
+      label: (
+        <a
+          onClick={openUpdateStatusDialog}
+          target="_ blank"
+          rel="noopener noreferrer">
+          Update Status
+        </a>
+      ),
+      key: '1',
+    },
+    {
+      label: (
+        <a
+          onClick={openDeleteConfirmationDialog}
+          target="_ blank"
+          rel="noopener noreferrer">
+          Delete
+        </a>
+      ),
+      key: '0',
+    },
+  ];
+
+  const menuProps = {
+    items: studentBulkOptions,
+  };
+
   useEffect(() => {
     fetchStudents(studentsQuery);
   }, []);
@@ -278,7 +348,6 @@ const Students = () => {
         isShowModal={isDeleteConfirmDialogOpen}
         showModalMethod={openDeleteConfirmationDialog}
         dialogTitle="Delete Student"
-        // deleteEntity="Student(s)"
         deleteWarning="Are you sure you want to delete the selected student(s)?, once deleted, it cannot be undone."
         deleteLoader={isDeleting}
         handleDelete={handleDeleteStudents}
@@ -291,6 +360,13 @@ const Students = () => {
           setSelectedRowKeys={setSelectedRowKeys}
         />
       )}
+      <UpdateStatusDialog
+        isShowModal={isUpdateStatusDialogOpen}
+        showModalMethod={setIsUpdateStatusDialogOpen}
+        studentIds={selectedRowKeys}
+        setSelectedRowKeys={setSelectedRowKeys}
+        handleUpdateStatus={handleUpdateStatus}
+      />
       <div className="content container-fluid">
         {/* Page Header  */}
         <PageHeader
@@ -326,6 +402,14 @@ const Students = () => {
                 name="group"
                 label="Group"
                 options={groupsList}
+              />
+            </Box>
+
+            <Box sx={{ width: '100%' }}>
+              <RHFAutocomplete
+                name="status"
+                label="Status"
+                options={studentStatusOptions}
               />
             </Box>
             <Box sx={{ width: '100%', mt: 1 }}>
@@ -397,29 +481,33 @@ const Students = () => {
                     showIcon
                   />
                 ) : (
-                  <div className="table-responsive">
-                    <Box
-                      sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Button
-                        type="primary"
-                        onClick={openSendWarningLetterDialog}
-                        disabled={selectedRowKeys.length === 0}>
-                        Send Warning Letter
-                      </Button>
-                      <Tooltip title="Delete Student(s)">
-                        <IconButton
-                          type="primary"
-                          onClick={openDeleteConfirmationDialog}
-                          disabled={selectedRowKeys.length === 0} // Disable if no rows selected
-                        >
-                          <MdDelete />
-                        </IconButton>
-                      </Tooltip>
+                  <div>
+                    <Box sx={{ display: 'flex', justifyContent: 'end', mb: 2 }}>
+                      <Space wrap>
+                        <Space.Compact>
+                          <Button
+                            type="primary"
+                            size="large"
+                            disabled={selectedRowKeys.length === 0}>
+                            Actions
+                          </Button>
+                          <Dropdown
+                            menu={menuProps}
+                            placement="bottomRight"
+                            trigger={['click']}>
+                            <Button
+                              size="large"
+                              type="primary"
+                              disabled={selectedRowKeys.length === 0}
+                              icon={<EllipsisOutlined />}
+                            />
+                          </Dropdown>
+                        </Space.Compact>
+                      </Space>
                     </Box>
                     <Table
                       pagination={{
                         total: dataSource?.totalRecords,
-
                         showTotal: (total, range) =>
                           `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                         showSizeChanger: true,
@@ -442,6 +530,7 @@ const Students = () => {
                       dataSource={dataSource.students}
                       rowSelection={rowSelection}
                       rowKey={(record) => record._id}
+                      scroll={{ x: 'max-content' }}
                     />
                   </div>
                 )}

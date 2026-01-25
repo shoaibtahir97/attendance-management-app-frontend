@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,85 +10,86 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Button } from 'antd';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdClose } from 'react-icons/md';
 import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
-  RHFSelect,
-} from '../../../components/HookForm';
-import useNotification from '../../../hooks/useNotification';
-import { useGetTemplateListQuery } from '../../../redux/slices/apiSlices/templateApiSlice';
-import { useIssueWarningLettersMutation } from '../../../redux/slices/apiSlices/warningLetterApiSlice';
+  RHFTextField,
+} from '../../components/HookForm';
 
-const warningLettersType = [
-  { label: '1st', value: '1st' },
-  { label: '2nd', value: '2nd' },
-  { label: '3rd', value: '3rd' },
+export const studentStatusOptions = [
+  { label: 'Active', value: 'active' },
+  { label: 'Inactive', value: 'inactive' },
+  { label: 'Suspended', value: 'suspended' },
+  { label: 'Dropped', value: 'dropped' },
+  { label: 'Withdrawn', value: 'withdrawn' },
+  { label: 'Graduated', value: 'graduated' },
 ];
 
-const SendWarningLetterDialog = (props) => {
+const defaultValues = {
+  studentIds: [],
+  status: '',
+  reason: '',
+};
+
+export const UpdateStatusDialog = (props) => {
   const {
     isShowModal,
     showModalMethod,
-    dialogTitle,
     studentIds,
     setSelectedRowKeys,
+    handleUpdateStatus,
   } = props;
-  const { data: templateList, isLoading } = useGetTemplateListQuery();
-  const [sendWarningLetter] = useIssueWarningLettersMutation();
-  const { openNotification } = useNotification();
 
-  const defaultValues = {
-    studentIds,
-    warningLetterType: '',
-    templateId: '',
-  };
-
-  const sendWarningLetterSchema = Yup.object().shape({
-    studentIds: Yup.array().of(Yup.string()),
-    warningLetterType: Yup.string().required(
-      'Type of warning letter is required'
-    ),
-    templateId: Yup.string().required('Template is required'),
+  const updateStatusSchema = Yup.object().shape({
+    studentIds: Yup.array()
+      .of(Yup.string())
+      .min(1, 'At least one student must be selected'),
+    status: Yup.string().required('Status is required'),
+    reason: Yup.string().when('status', (status, schema) => {
+      const needsReason =
+        status === 'inactive' ||
+        status === 'suspended' ||
+        status === 'dropped' ||
+        status === 'withdrawn';
+      return needsReason
+        ? schema.required('Reason is required for this status')
+        : schema.notRequired();
+    }),
   });
 
   const methods = useForm({
-    resolver: yupResolver(sendWarningLetterSchema),
     defaultValues,
+    resolver: yupResolver(updateStatusSchema),
   });
 
   const {
     handleSubmit,
-    formState: { isSubmitting, reset },
+    reset,
+    getValues,
+    formState: { isSubmitting, errors },
   } = methods;
 
   const closeModal = () => {
+    reset();
     setSelectedRowKeys([]);
     showModalMethod();
   };
 
-  const handleSendWarningLetter = async (data) => {
-    await sendWarningLetter({ ...data })
-      .unwrap()
-      .then((res) => {
-        console.log('res', res);
-        openNotification('success', res?.message);
-      })
-      .catch((err) => {
-        console.log('err', err);
-        openNotification('error', err?.data?.message ?? err?.error);
-      });
-  };
+  useEffect(() => {
+    reset({ ...defaultValues, studentIds });
+  }, [studentIds]);
 
   return (
     <Dialog open={isShowModal} onClose={closeModal} fullWidth maxWidth="sm">
       <FormProvider
         methods={methods}
-        onSubmit={handleSubmit(handleSendWarningLetter)}>
+        onSubmit={handleSubmit(handleUpdateStatus)}>
         <DialogTitle id="scroll-dialog-title">
+          {console.log(getValues(), errors)}
           <Box
             sx={{
               display: 'flex',
@@ -96,7 +98,7 @@ const SendWarningLetterDialog = (props) => {
               mb: 1,
             }}>
             <Typography variant="h6" sx={{ textAlign: 'left', my: 1 }}>
-              Send Warning Letter
+              Update Student Status
             </Typography>
             <IconButton onClick={closeModal}>
               <MdClose />
@@ -104,18 +106,14 @@ const SendWarningLetterDialog = (props) => {
           </Box>
         </DialogTitle>
         <DialogContent>
-          <RHFSelect
-            name="warningLetterType"
-            label="Warning Letter Type"
-            options={warningLettersType}
-          />
           <RHFAutocomplete
-            name="templateId"
-            label="Template"
+            name="status"
+            label="Status"
             sx={{ width: '100%' }}
             size="small"
-            options={templateList}
+            options={studentStatusOptions}
           />
+          <RHFTextField name="reason" label="Reason" multiline rows={4} />
         </DialogContent>
         <DialogActions>
           <Stack
@@ -130,11 +128,11 @@ const SendWarningLetterDialog = (props) => {
               type="primary"
               loading={isSubmitting}
               size="large">
-              Send
+              Update
             </Button>
             <Button
               onClick={closeModal}
-              type="default"
+              type="outlined"
               size="large"
               disable={isSubmitting}
               style={{ marginLeft: '5px' }}>
@@ -146,5 +144,3 @@ const SendWarningLetterDialog = (props) => {
     </Dialog>
   );
 };
-
-export default SendWarningLetterDialog;
