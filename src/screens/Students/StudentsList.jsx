@@ -35,16 +35,15 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
 import SendWarningLetterDialog from './components/SendWarningLetterDialog';
-import UpdateStatusDialog from './UpdateStatusDialog';
+import { UpdateStatusDialog, studentStatusOptions } from './UpdateStatusDialog';
 
 export const SKELETON = ['', '', '', '', ''];
 
 const Students = () => {
   const navigate = useNavigate();
   const { openNotification } = useNotification();
-  const [getStudents, { data, isLoading, error }] = useLazyGetStudentsQuery();
-  const { data: groupsList, isLoading: loadingGroups } =
-    useGetGroupsListQuery();
+  const [getStudents, { isLoading, error }] = useLazyGetStudentsQuery();
+  const { data: groupsList } = useGetGroupsListQuery();
   const [updateStudentStatus] = useUpdateStudentStatusMutation();
   const [deleteStudents, { loading: isDeleting }] = useDeleteStudentsMutation();
 
@@ -143,29 +142,6 @@ const Students = () => {
       fixed: 'end',
       width: 100,
       render: (text, record) => {
-        const handleToggleStudentStatus = async (data) => {
-          await toggleStudentStatus(data)
-            .unwrap()
-            .then((res) => {
-              console.log('res', res.data.inActiveSince);
-              openNotification('success', res?.message);
-              setDataSource({
-                ...dataSource,
-                students: dataSource.students.map((student) =>
-                  student._id === record._id
-                    ? {
-                        ...student,
-                        isActive: data.isActive,
-                        inActiveSince: res.data.inActiveSince,
-                      }
-                    : student
-                ),
-              });
-            })
-            .catch((err) => {
-              openNotification('error', err?.data?.message ?? err?.error);
-            });
-        };
         const items = [
           {
             key: 0,
@@ -244,7 +220,6 @@ const Students = () => {
 
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
   };
 
   const openAddStudentPopover = (event) => {
@@ -429,6 +404,14 @@ const Students = () => {
                 options={groupsList}
               />
             </Box>
+
+            <Box sx={{ width: '100%' }}>
+              <RHFAutocomplete
+                name="status"
+                label="Status"
+                options={studentStatusOptions}
+              />
+            </Box>
             <Box sx={{ width: '100%', mt: 1 }}>
               <Button
                 loading={isSubmitting}
@@ -506,7 +489,7 @@ const Students = () => {
                             type="primary"
                             size="large"
                             disabled={selectedRowKeys.length === 0}>
-                            Options
+                            Actions
                           </Button>
                           <Dropdown
                             menu={menuProps}

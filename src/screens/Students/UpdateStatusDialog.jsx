@@ -20,7 +20,7 @@ import {
   RHFTextField,
 } from '../../components/HookForm';
 
-const studentStatusOptions = [
+export const studentStatusOptions = [
   { label: 'Active', value: 'active' },
   { label: 'Inactive', value: 'inactive' },
   { label: 'Suspended', value: 'suspended' },
@@ -35,7 +35,7 @@ const defaultValues = {
   reason: '',
 };
 
-const UpdateStatusDialog = (props) => {
+export const UpdateStatusDialog = (props) => {
   const {
     isShowModal,
     showModalMethod,
@@ -144,5 +144,3 @@ const UpdateStatusDialog = (props) => {
     </Dialog>
   );
 };
-
-export default UpdateStatusDialog;
