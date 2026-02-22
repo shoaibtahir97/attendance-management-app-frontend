@@ -14,13 +14,13 @@ const RepeatingSubjects = (props) => {
       title: 'Subject',
       dataIndex: 'subject',
       key: 'subject',
-      render: (text) => <p>{text.name}</p>,
+      render: (text) => <p>{text?.name}</p>,
     },
     {
       title: 'Group',
       dataIndex: 'group',
       key: 'group',
-      render: (text) => <p>{text.name}</p>,
+      render: (text) => <p>{text?.name}</p>,
     },
     {
       title: 'Status',
