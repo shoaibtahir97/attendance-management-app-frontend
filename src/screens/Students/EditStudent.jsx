@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 import { Button } from 'antd';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -56,7 +56,7 @@ const EditStudent = () => {
     group: Yup.string().required(),
     gender: Yup.string().required(),
     courseName: Yup.string().required(),
-    year: Yup.number().required(),
+    currentYear: Yup.number().required(),
   });
 
   const methods = useForm({
@@ -75,12 +75,15 @@ const EditStudent = () => {
   };
 
   useEffect(() => {
-    reset({
-      ...data,
-      courseName: data?.courseName?._id,
-      group: data?.group?._id,
-      year: data?.year,
-    });
+    if (data) {
+      console.log('data', data);
+      reset({
+        ...data,
+        courseName: data?.courseName?._id,
+        group: data?.group?._id,
+        currentYear: data?.currentYear,
+      });
+    }
   }, [data]);
 
   return (
@@ -168,7 +171,7 @@ const EditStudent = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                       <RHFSelect
-                        name="year"
+                        name="currentYear"
                         label="Year"
                         options={moduleYears}
                       />
