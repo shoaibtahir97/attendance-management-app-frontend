@@ -165,8 +165,6 @@ const CoursesList = () => {
       });
   };
 
-  console.log('values', getValues());
-
   useEffect(() => {
     fetchCourses(coursesQuery);
   }, []);
