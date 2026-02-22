@@ -1,4 +1,3 @@
-import React from 'react';
 // form
 import { Controller, useFormContext } from 'react-hook-form';
 // @mui
@@ -21,15 +20,17 @@ export default function RHFSelect({
   ...other
 }) {
   const { control } = useFormContext();
+
   return (
     <Controller
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
         const handleChange = (event) => {
-          field.onChange(event);
+          const value = event?.target ? event.target.value : event;
+          field.onChange(value);
           if (customOnChange) {
-            customOnChange(event);
+            customOnChange(value);
           }
         };
 
@@ -48,10 +49,9 @@ export default function RHFSelect({
                 fullWidth
                 error={!!error}
                 size="small"
-                value={field?.value || ''}
                 {...field}
-                onChange={(event) => handleChange(event)}
-                {...other}>
+                value={field.value ?? ''}
+                onChange={handleChange}>
                 {options?.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
