@@ -185,7 +185,6 @@ const Students = () => {
   ];
 
   const [studentsQuery, setStudentsQuery] = useState({
-    status: 'active',
     page: 1,
     recordsPerPage: 10,
   });

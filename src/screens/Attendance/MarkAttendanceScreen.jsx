@@ -479,6 +479,7 @@ const MarkAttendanceScreen = () => {
             isRepeating: true,
             subject: subjectId,
             hasPassed: false,
+            status: 'active',
           });
         }
       });
