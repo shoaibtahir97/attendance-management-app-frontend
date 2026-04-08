@@ -14,13 +14,13 @@ const RepeatingSubjects = (props) => {
       title: 'Subject',
       dataIndex: 'subject',
       key: 'subject',
-      render: (text) => <p>{text.name}</p>,
+      render: (text) => <p>{text?.name ? text?.name : '-'}</p>,
     },
     {
       title: 'Group',
       dataIndex: 'group',
       key: 'group',
-      render: (text) => <p>{text.name}</p>,
+      render: (text) => <p>{text?.name ? text?.name : '-'}</p>,
     },
     {
       title: 'Status',
@@ -42,8 +42,8 @@ const RepeatingSubjects = (props) => {
         const handleEditRepeatingSubject = () => {
           setSelectedRepeatSubject({
             ...record,
-            group: record.group._id,
-            subject: record.subject._id,
+            group: record?.group?._id,
+            subject: record?.subject?._id,
           });
         };
 
