@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoMdMore } from 'react-icons/io';
+import { PiExport } from 'react-icons/pi';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
@@ -26,6 +27,7 @@ import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
 import useNotification from '../../hooks/useNotification';
 import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
+import { useLazyGetStudentResultReportQuery } from '../../redux/slices/apiSlices/reportApiSlice';
 import {
   useDeleteStudentsMutation,
   useLazyGetStudentsQuery,
@@ -43,6 +45,7 @@ const Students = () => {
   const navigate = useNavigate();
   const { openNotification } = useNotification();
   const [getStudents, { isLoading, error }] = useLazyGetStudentsQuery();
+  const [getStudentResultReport] = useLazyGetStudentResultReportQuery();
   const { data: groupsList } = useGetGroupsListQuery();
   const [updateStudentStatus] = useUpdateStudentStatusMutation();
   const [deleteStudents, { loading: isDeleting }] = useDeleteStudentsMutation();
@@ -298,6 +301,30 @@ const Students = () => {
       });
   };
 
+  const handleGenerateStudentResultReport = async () => {
+    await getStudentResultReport({
+      ...getValues(),
+    })
+      .unwrap()
+      .then((res) => {
+        const url = window.URL.createObjectURL(res);
+        // Create a link element
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `StudentResultReport.xlsx`);
+
+        document.body.appendChild(link);
+        link.click();
+
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((err) => {
+        console.log('err', err);
+        openNotification('error', 'Failed to fetch data');
+      });
+  };
+
   const studentBulkOptions = [
     {
       label: (
@@ -428,13 +455,21 @@ const Students = () => {
           <div className="col-sm-12">
             <div className="card card-table comman-shadow">
               <div className="card-body">
-                {/* Page Header */}
                 <div className="page-header">
                   <div className="row align-items-center">
                     <div className="col">
                       <h3 className="page-title">Students</h3>
                     </div>
-                    <div className="col-auto text-end float-end ms-auto download-grp">
+                    <div className="col-auto text-end float-end ms-auto download-grp ">
+                      <Tooltip title="Export Result Report">
+                        <Link
+                          onClick={handleGenerateStudentResultReport}
+                          className="btn btn-primary"
+                          style={{ marginRight: '10px' }}>
+                          <PiExport size={20} />
+                        </Link>
+                      </Tooltip>
+
                       <Tooltip title="Register Student">
                         <Link
                           onClick={openAddStudentPopover}
