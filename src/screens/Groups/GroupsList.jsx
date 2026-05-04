@@ -1,6 +1,6 @@
 import { Alert, Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { Button, Table } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,8 +16,11 @@ import useNotification from '../../hooks/useNotification';
 import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
 import { useLazyGetGroupsQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import { MergeGroupsDialog } from './MergeGroupsDialog';
 
 const SKELETON = ['', '', '', '', ''];
+
+const getGroupRowKey = (record) => record?._id || record?.id;
 
 const GroupsList = () => {
   const methods = useForm();
@@ -71,19 +74,29 @@ const GroupsList = () => {
     recordsPerPage: 10,
   });
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRowNames, setSelectedRowNames] = useState([]);
+  const [isMergeGroupsDialogOpen, setIsMergeGroupsDialogOpen] = useState(false);
 
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys.slice(-2));
+    const selectedNames = dataSource.groups
+      .filter((group) => newSelectedRowKeys.includes(group._id))
+      .map((group) => group.name);
+    setSelectedRowNames(selectedNames);
   };
 
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
+    getCheckboxProps: (record) => ({
+      disabled:
+        selectedRowKeys.length >= 2 &&
+        !selectedRowKeys.includes(getGroupRowKey(record)),
+    }),
   };
 
   const [dataSource, setDataSource] = useState({
-    courses: [],
+    groups: [],
     totalRecords: 0,
   });
 
@@ -107,12 +120,29 @@ const GroupsList = () => {
     fetchGroups({ ...data, ...groupsQuery });
   };
 
+  const handleReset = () => {
+    setSelectedRowKeys([]);
+    toggleMergeGroupsDialog();
+    fetchGroups({ ...groupsQuery, ...getValues() });
+  };
+
+  const toggleMergeGroupsDialog = () => {
+    setIsMergeGroupsDialogOpen(!isMergeGroupsDialogOpen);
+  };
+
   useEffect(() => {
     fetchGroups(groupsQuery);
   }, []);
 
   return (
     <div className="content container-fluid">
+      <MergeGroupsDialog
+        isShowModal={isMergeGroupsDialogOpen}
+        showModalMethod={toggleMergeGroupsDialog}
+        selectedGroupIds={selectedRowKeys}
+        selectedRowNames={selectedRowNames}
+        handleReset={handleReset}
+      />
       {/* Page Header */}
       <PageHeader
         currentSection="All Groups"
@@ -165,13 +195,15 @@ const GroupsList = () => {
                     <h3 className="page-title">Groups</h3>
                   </div>
                   <div className="col-auto text-end float-end ms-auto download-grp">
-                    {/* {dataSource.students.length ? (
-                      <Link to="#" className="btn btn-outline-primary me-2">
-                        <i className="fas fa-download" /> Download
-                      </Link>
-                    ) : (
-                      <></>
-                    )} */}
+                    {selectedRowKeys.length === 2 && (
+                      <Button
+                        type="primary"
+                        size="large"
+                        className="me-2"
+                        onClick={toggleMergeGroupsDialog}>
+                        Merge Groups
+                      </Button>
+                    )}
                     <Tooltip title="Add group" placement="top">
                       <Link
                         to={PATH_DASHBOARD.groupAdd}
@@ -220,7 +252,7 @@ const GroupsList = () => {
                     columns={column}
                     dataSource={dataSource.groups}
                     rowSelection={rowSelection}
-                    rowKey={(record) => record.id}
+                    rowKey={getGroupRowKey}
                   />
                 </div>
               )}
