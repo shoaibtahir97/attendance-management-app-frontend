@@ -53,7 +53,7 @@ export const MergeGroupsDialog = (props) => {
 
   const closeModal = () => {
     reset(mergeGroupsDefaultValues);
-    showModalMethod();
+    handleReset();
   };
 
   useEffect(() => {

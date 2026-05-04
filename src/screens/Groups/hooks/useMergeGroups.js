@@ -7,8 +7,9 @@ export const useMergeGroups = (handleReset) => {
 
   const handleMergeGroups = async (data) => {
     await mergeGroups({
-      groupIds: data.selectedGroupIds,
-      name: data.name,
+      groupAId: data.selectedGroupIds[0],
+      groupBId: data.selectedGroupIds[1],
+      newGroupName: data.name,
     })
       .unwrap()
       .then((res) => {
