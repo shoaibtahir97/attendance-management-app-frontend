@@ -29,6 +29,15 @@ export const groupApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    mergeGroups: builder.mutation({
+      query: (payload) => ({
+        url: `${GROUPS_URL}/merge`,
+        body: payload,
+        method: 'POST',
+        credentials: 'include',
+      }),
+      invalidatesTags: ['Group'],
+    }),
     getGroupDetails: builder.query({
       query: (groupId) => ({
         url: `${GROUPS_URL}/${groupId}`,
@@ -57,10 +66,7 @@ export const {
   useLazyGetGroupsQuery,
   useGetGroupsListQuery,
   useCreateGroupMutation,
+  useMergeGroupsMutation,
   useGetGroupDetailsQuery,
   useUpdateGroupDetailsMutation,
-  // useLazyGetSubjectsListQuery,
-  // useGetStudentDetailsQuery,
-  // useRegisterStudentMutation,
-  // useUpdateStudentDetailsMutation,
 } = groupApiSlice;
