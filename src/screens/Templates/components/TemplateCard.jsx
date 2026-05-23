@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 import FeatherIcon from 'feather-icons-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import DeleteConfirmationDialog from '../../../components/DeleteConfirmationDialog';
+import { DeleteConfirmationDialog } from '../../../components/DeleteConfirmationDialog';
 import useNotification from '../../../hooks/useNotification';
 import { useDeleteTemplateMutation } from '../../../redux/slices/apiSlices/templateApiSlice';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 
-const TemplateCard = (props) => {
+export const TemplateCard = (props) => {
   const {
     template: { name, content, createdBy, updatedAt, isActive, _id },
     fetchTemplates,
@@ -44,27 +44,10 @@ const TemplateCard = (props) => {
         handleDelete={handleDeleteTemplate}
       />
       <div className="blog grid-blog flex-fill">
-        {/* <div className="blog-image">
-          <Link to={`${PATH_DASHBOARD.templateDetails}/${_id}`}>
-            <div style={{}}>
-              <img className="img-fluid" src={blog6} alt="Post Image" />
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                }}>
-                {content.replace(/<\/?[^>]+(>|$)/g, '')}
-              </div>
-            </div>
-          </Link>
-        </div> */}
         <div className="blog-content">
           <ul className="entry-meta meta-item">
             <li>
               <div className="post-author">
-                {/* <img src={avatar01} alt="Post Author" /> */}
                 <span>
                   <span className="post-title">
                     {`${createdBy.firstName} ${createdBy.lastName}`}
@@ -119,5 +102,3 @@ const TemplateCard = (props) => {
     </div>
   );
 };
-
-export default TemplateCard;

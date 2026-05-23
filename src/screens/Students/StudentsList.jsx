@@ -16,7 +16,7 @@ import { IoMdMore } from 'react-icons/io';
 import { PiExport } from 'react-icons/pi';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
+import { DeleteConfirmationDialog } from '../../components/DeleteConfirmationDialog';
 import {
   FormProvider,
   RHFAutocomplete,

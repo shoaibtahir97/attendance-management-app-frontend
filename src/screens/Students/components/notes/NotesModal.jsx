@@ -22,7 +22,7 @@ import {
   useUpdateNoteMutation,
 } from '../../../../redux/slices/apiSlices/notesApiSlice';
 
-const NotesModal = (props) => {
+export const NotesModal = (props) => {
   const {
     isShowModal,
     showModalMethod,
@@ -166,5 +166,3 @@ const NotesModal = (props) => {
     </Dialog>
   );
 };
-
-export default NotesModal;
