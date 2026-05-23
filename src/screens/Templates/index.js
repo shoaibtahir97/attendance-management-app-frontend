@@ -1,12 +1,12 @@
 import { Alert, Empty, Pagination } from 'antd';
 import FeatherIcon from 'feather-icons-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLazyGetTemplatesQuery } from '../../redux/slices/apiSlices/templateApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
-import TemplateCard from './components/TemplateCard';
+import { TemplateCard } from './components/TemplateCard';
 
-const Templates = () => {
+export const Templates = () => {
   const [getTemplates, { data, isLoading, error }] = useLazyGetTemplatesQuery();
 
   const [query, setQuery] = useState({
@@ -141,9 +141,6 @@ const Templates = () => {
           </div>
         </div>
       </div>
-      {/* /Modal */}
     </div>
   );
 };
-
-export default Templates;
