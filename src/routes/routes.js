@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   createHashRouter,
   createRoutesFromElements,
@@ -32,7 +31,7 @@ import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
 import WarningLetterReports from '../screens/Reports/WarningLetterReports';
 import AddStudent from '../screens/Students/AddStudent';
 import EditStudent from '../screens/Students/EditStudent';
-import StudentProfile from '../screens/Students/StudentProfile';
+import { StudentProfile } from '../screens/Students/StudentProfile';
 import Students from '../screens/Students/StudentsList';
 import AddSubject from '../screens/Subjects/AddSubject';
 import EditSubject from '../screens/Subjects/EditSubject';
@@ -40,7 +39,7 @@ import SubjectsList from '../screens/Subjects/SubjectList';
 import AddTeacher from '../screens/Teachers/AddTeacher';
 import EditTeacher from '../screens/Teachers/EditTeacher';
 import TeachersList from '../screens/Teachers/TeachersList';
-import Templates from '../screens/Templates';
+import { Templates } from '../screens/Templates';
 import AddTemplates from '../screens/Templates/AddTemplates';
 import EditTemplate from '../screens/Templates/EditTemplate';
 import ProtectedRoute from './ProtectedRoute';
