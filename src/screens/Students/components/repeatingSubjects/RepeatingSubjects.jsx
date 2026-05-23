@@ -1,12 +1,16 @@
 import { Button, Space, Table, Tag, Tooltip } from 'antd';
 import { useState } from 'react';
 import { FaRegCheckCircle, FaRegTimesCircle } from 'react-icons/fa';
-import { FiEdit } from 'react-icons/fi';
+import { FiEdit, FiTrash } from 'react-icons/fi';
+import { DeleteConfirmationDialog } from '../../../../components/DeleteConfirmationDialog';
 import useNotification from '../../../../hooks/useNotification';
-import { useToggleFailedSubjectStatusMutation } from '../../../../redux/slices/apiSlices/studentApiSlice';
+import {
+  useDeleteRepeatSubjectMutation,
+  useToggleFailedSubjectStatusMutation,
+} from '../../../../redux/slices/apiSlices/studentApiSlice';
 import RepeatSubjectDialog from './RepeatSubjectDialog';
 
-const RepeatingSubjects = (props) => {
+export const RepeatingSubjects = (props) => {
   const { studentData, studentId, handleFetchStudentDetails } = props;
 
   const columns = [
@@ -82,17 +86,45 @@ const RepeatingSubjects = (props) => {
                 }
               />
             </Tooltip>
+            <Tooltip title="Remove Subject">
+              <Button
+                size="small"
+                type="primary"
+                shape="circle"
+                color="danger"
+                onClick={() => {
+                  setDeleteRepeatSubjectId(record._id);
+                  setIsDeleteSubjectDialogVisible(true);
+                }}
+                icon={<FiTrash fontSize={'14px'} />}
+              />
+            </Tooltip>
           </Space>
         );
       },
     },
   ];
+
+  const [deleteRepeatSubjectId, setDeleteRepeatSubjectId] = useState(null);
+  const [isDeleteSubjectDialogVisible, setIsDeleteSubjectDialogVisible] =
+    useState(false);
   const [toggleFailedSubjectStatus] = useToggleFailedSubjectStatusMutation();
+  const [deleteRepeatingSubject, { isLoading: isDeleting }] =
+    useDeleteRepeatSubjectMutation();
   const { openNotification } = useNotification();
   const [selectedRepeatSubject, setSelectedRepeatSubject] = useState(null);
 
   const [isRepeatSubjectDialogVisible, setIsRepeatSubjectDialogVisible] =
     useState(false);
+
+  const handleOpenAndSetDeleteRepeatSubjectDialog = (repeatSubjectId) => {
+    setDeleteRepeatSubjectId(repeatSubjectId);
+    if (repeatSubjectId) {
+      setIsDeleteSubjectDialogVisible(true);
+    } else {
+      setIsDeleteSubjectDialogVisible(false);
+    }
+  };
 
   const handleOpenAddRepeatSubjectDialog = () => {
     setIsRepeatSubjectDialogVisible(!isRepeatSubjectDialogVisible);
@@ -103,6 +135,22 @@ const RepeatingSubjects = (props) => {
       .unwrap()
       .then((res) => {
         openNotification('success', res.message);
+        handleFetchStudentDetails();
+      })
+      .catch((err) => {
+        openNotification('error', err.data.message);
+      });
+  };
+
+  const handleDeleteSubject = () => {
+    deleteRepeatingSubject({
+      studentId,
+      repeatSubjectId: deleteRepeatSubjectId,
+    })
+      .unwrap()
+      .then((res) => {
+        openNotification('success', res.message);
+        handleOpenAndSetDeleteRepeatSubjectDialog(null);
         handleFetchStudentDetails();
       })
       .catch((err) => {
@@ -121,6 +169,16 @@ const RepeatingSubjects = (props) => {
           editRepeatSubject={selectedRepeatSubject}
         />
       )}
+      <DeleteConfirmationDialog
+        isShowModal={isDeleteSubjectDialogVisible}
+        showModalMethod={() => handleOpenAndSetDeleteRepeatSubjectDialog(null)}
+        dialogTitle="Remove subject"
+        deleteEntity="Subject"
+        deleteWarning="Are you sure you want to remove repeating subject?"
+        deleteLoader={isDeleting}
+        handleDelete={handleDeleteSubject}
+      />
+
       <div className="card mb-0">
         <div className="card-body">
           <div className="hello-park">
@@ -154,5 +212,3 @@ const RepeatingSubjects = (props) => {
     </div>
   );
 };
-
-export default RepeatingSubjects;
