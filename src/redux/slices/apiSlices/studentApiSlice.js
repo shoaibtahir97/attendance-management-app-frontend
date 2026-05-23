@@ -110,6 +110,17 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    deleteRepeatSubject: builder.mutation({
+      query: ({ studentId, repeatSubjectId }) => ({
+        url: `${STUDENTS_URL}/${studentId}/repeatsubjects/delete`,
+        method: 'DELETE',
+        body: {
+          repeatSubjectId,
+        },
+        transformResponse: (res) => res.data,
+        credentials: 'include',
+      }),
+    }),
   }),
 });
 
@@ -125,4 +136,5 @@ export const {
   useLazyGetStudentDetailsQuery,
   useStudentFailedSubjectsMutation,
   useToggleFailedSubjectStatusMutation,
+  useDeleteRepeatSubjectMutation,
 } = studentApiSlice;

@@ -4,12 +4,12 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import { MdOutlineDelete } from 'react-icons/md';
-import DeleteConfirmationDialog from '../../../../components/DeleteConfirmationDialog';
+import { DeleteConfirmationDialog } from '../../../../components/DeleteConfirmationDialog';
 import useNotification from '../../../../hooks/useNotification';
 import { useDeleteNoteMutation } from '../../../../redux/slices/apiSlices/notesApiSlice';
-import NotesModal from './NotesModal';
+import { NotesModal } from './NotesModal';
 
-const Notes = (props) => {
+export const Notes = (props) => {
   const { notes, studentId, handleFetchStudentDetails } = props;
   const [deleteNote, { isLoading }] = useDeleteNoteMutation();
   const { openNotification } = useNotification();
@@ -76,9 +76,7 @@ const Notes = (props) => {
               }}>
               <h5>Notes</h5>
               <Button
-                // loading={isIssuingWarningLetter}
                 onClick={() => handleToggleNotesModal(null)}
-                // disabled={data?.numOfWarningLettersIssued?.length === 3}
                 type="primary">
                 Add Note
               </Button>
@@ -156,5 +154,3 @@ const Notes = (props) => {
     </div>
   );
 };
-
-export default Notes;

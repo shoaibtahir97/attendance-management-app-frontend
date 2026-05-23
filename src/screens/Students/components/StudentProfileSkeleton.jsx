@@ -1,7 +1,7 @@
 import { Box, Skeleton, Stack } from '@mui/material';
 import React from 'react';
 
-const StudentProfileSkeleton = () => {
+export const StudentProfileSkeleton = () => {
   function generate(element) {
     return [0, 1, 2, 3, 4].map((value) =>
       React.cloneElement(element, {
@@ -62,5 +62,3 @@ const StudentProfileSkeleton = () => {
     </div>
   );
 };
-
-export default StudentProfileSkeleton;

@@ -8,10 +8,9 @@ import {
   Typography,
 } from '@mui/material';
 import { Button } from 'antd';
-import React from 'react';
 import { MdClose, MdDelete } from 'react-icons/md';
 
-const DeleteConfirmationDialog = (props) => {
+export const DeleteConfirmationDialog = (props) => {
   const {
     isShowModal,
     showModalMethod,
@@ -85,5 +84,3 @@ const DeleteConfirmationDialog = (props) => {
     </Dialog>
   );
 };
-
-export default DeleteConfirmationDialog;

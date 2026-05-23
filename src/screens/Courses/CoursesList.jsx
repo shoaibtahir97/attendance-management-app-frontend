@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
-import DeleteConfirmationDialog from '../../components/DeleteConfirmationDialog';
+import { DeleteConfirmationDialog } from '../../components/DeleteConfirmationDialog';
 import {
   FormProvider,
   RHFDatePicker,

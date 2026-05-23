@@ -10,11 +10,11 @@ import { useLazyGetStudentReportQuery } from '../../redux/slices/apiSlices/repor
 import { useLazyGetStudentDetailsQuery } from '../../redux/slices/apiSlices/studentApiSlice';
 import { useIssueWarningLetterMutation } from '../../redux/slices/apiSlices/warningLetterApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
-import Notes from './components/notes/Notes';
-import RepeatingSubjects from './components/repeatingSubjects/RepeatingSubjects';
-import StudentProfileSkeleton from './components/StudentProfileSkeleton';
+import { Notes } from './components/notes/Notes';
+import { RepeatingSubjects } from './components/repeatingSubjects/RepeatingSubjects';
+import { StudentProfileSkeleton } from './components/StudentProfileSkeleton';
 
-const StudentProfile = () => {
+export const StudentProfile = () => {
   const { id: studentId } = useParams();
   const { openNotification } = useNotification();
   const [getStudentDetails, { data, isLoading, error }] =
@@ -266,5 +266,3 @@ const StudentProfile = () => {
     </div>
   );
 };
-
-export default StudentProfile;
