@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 
 // Third-Party
-import randomColor from 'randomcolor';
 
 // Internal
 import useNotification from '../../../hooks/useNotification';
@@ -32,20 +31,11 @@ export const useGetTimetable = (userInfo) => {
     const updatedEvents = [];
     const courseColorMap = {};
 
-    let colorIndex = 0;
-
     await getTimetable()
       .unwrap()
       .then((res) => {
         res?.data?.forEach((item) => {
           const course = item?.group?.course;
-          // Assign color if not already mapped
-          if (!courseColorMap[course]) {
-            courseColorMap[course] = randomColor({
-              luminosity: 'dark',
-            });
-            colorIndex++;
-          }
           item?.entries?.forEach((entry) => {
             updatedEvents.push({
               title: `Group: ${item?.group?.name} \n Subject: ${entry?.subject?.name} \n Teacher: ${entry?.teacher?.firstName} ${entry?.teacher?.lastName}`,
@@ -57,10 +47,6 @@ export const useGetTimetable = (userInfo) => {
               daysOfWeek: [`${getDayOfWeek(entry?.dayOfWeek?.toLowerCase())}`],
               startRecur: item?.group?.cohortStartDate,
               endRecur: item?.group?.cohortEndDate,
-              backgroundColor: courseColorMap[course],
-              borderColor: courseColorMap[course],
-              textColor: '#fff',
-              color: courseColorMap[course],
             });
           });
         });
