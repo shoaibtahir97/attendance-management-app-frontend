@@ -5,7 +5,7 @@ import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Alert, Button } from 'antd';
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 // Internal
 import dayjs from 'dayjs';
@@ -31,18 +31,21 @@ const Calendar = () => {
 
     const [group, subject, teacher] = event.title.split('\n');
 
-    navigate(PATH_DASHBOARD.markattendance, {
-      state: {
-        group: group.split(':')[1],
-        groupId: event.groupId,
-        startTime: event._instance.range.start.toISOString(),
-        endTime: event._instance.range.end.toISOString(),
-        subject: subject.split(':')[1],
-        teacher: teacher.split(':')[1],
-        subjectId: event.extendedProps.subjectId,
-        course: event.extendedProps.course,
-      },
+    const params = createSearchParams({
+      group: group.split(':')[1].trim(),
+      groupId: event.groupId,
+      subject: subject.split(':')[1].trim(),
+      subjectId: event.extendedProps.subjectId,
+      teacher: teacher.split(':')[1].trim(),
+      startTime: event._instance.range.start.toISOString(),
+      endTime: event._instance.range.end.toISOString(),
+      course: event.extendedProps.course,
     });
+
+    window.open(
+      `#${PATH_DASHBOARD.markattendance}?${params.toString()}`,
+      '_blank'
+    );
   };
 
   const handleShowUploadTimetableModal = () =>
@@ -127,13 +130,9 @@ const Calendar = () => {
             views={['dayGridMonth', 'timeGridWeek', 'timeGridDay']}
             datesSet={handleDateSet}
             eventDidMount={(info) => {
-              console.log('groupId', info.event.groupId);
               const key = `${info.event.groupId}_${info.event.extendedProps.subjectId}_${dayjs(info.event.start).format('YYYY-MM-DD')}`;
-
               const isAttendanceMarked = attendanceMap?.has(key);
-              console.log({ key, isAttendanceMarked });
               const isPast = dayjs(info.event.start).isBefore(dayjs(), 'day');
-
               info.el.style.backgroundColor = isAttendanceMarked
                 ? '#16a34a'
                 : isPast
