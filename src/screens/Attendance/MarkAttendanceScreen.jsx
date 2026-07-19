@@ -7,7 +7,7 @@ import { GoClock } from 'react-icons/go';
 import { IoMdCheckmark } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import {
   FormProvider,
@@ -74,14 +74,16 @@ const attendanceReasons = [
 
 const MarkAttendanceScreen = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  // const { styles } = useStyle();
-  const [groupId] = useState(state?.groupId);
-  const [subjectId] = useState(state?.subjectId);
-  const [startTime] = useState(state?.startTime);
-  const [endTime] = useState(state?.endTime);
-  const [subject] = useState(state?.subject);
-  const [group] = useState(state?.group);
+  const [searchParams] = useSearchParams();
+
+  const groupId = searchParams.get('groupId');
+  const subjectId = searchParams.get('subjectId');
+  const startTime = searchParams.get('startTime');
+  const endTime = searchParams.get('endTime');
+  const subject = searchParams.get('subject');
+  const group = searchParams.get('group');
+  const teacher = searchParams.get('teacher');
+  const course = searchParams.get('course');
 
   const { openNotification } = useNotification();
   const dispatch = useDispatch();
@@ -95,7 +97,6 @@ const MarkAttendanceScreen = () => {
   const [getAttendance, { loading: loadingGetAttendance }] =
     useLazyGetAttendanceQuery();
   const { userInfo } = useSelector((state) => state.auth);
-
   const { attendanceRecords } = useSelector((state) => state.attendanceRecords);
   const [markStudentAttendance, { isLoading: loadingAttendance }] =
     useMarkAttendanceMutation();
@@ -530,7 +531,7 @@ const MarkAttendanceScreen = () => {
   }
 
   useEffect(() => {
-    if (state) {
+    if (searchParams.has('group')) {
       fetchAttendanceRecords();
     }
 
