@@ -3,6 +3,14 @@ import { apiSlice } from './apiSlice';
 
 export const attendanceApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getAllAttendance: builder.query({
+      query: (params) => ({
+        url: `${ATTENDANCE_URL}/all`,
+        params,
+        method: 'GET',
+        credentials: 'include',
+      }),
+    }),
     markAttendance: builder.mutation({
       query: (payload) => ({
         url: ATTENDANCE_URL,
@@ -38,4 +46,5 @@ export const {
   useMarkAttendanceMutation,
   useLazyGetAttendanceQuery,
   useResetAttendanceMutation,
+  useLazyGetAllAttendanceQuery,
 } = attendanceApiSlice;

@@ -19,7 +19,7 @@ import { RHFUploadSingleFile } from '../../../components/HookForm/RHFUpload';
 import useNotification from '../../../hooks/useNotification';
 import { useUploadTimetableMutation } from '../../../redux/slices/apiSlices/timetableApiSlice';
 
-const UploadTimetableModal = (props) => {
+export const UploadTimetableModal = (props) => {
   const { showModalMethod, isShowModal, fetchAllTimeTables } = props;
   const { openNotification } = useNotification();
   const [fileName, setFileName] = useState('');
@@ -205,5 +205,3 @@ const UploadTimetableModal = (props) => {
     </Dialog>
   );
 };
-
-export default UploadTimetableModal;
