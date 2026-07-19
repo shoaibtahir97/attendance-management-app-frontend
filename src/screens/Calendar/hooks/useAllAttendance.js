@@ -10,7 +10,6 @@ export const useGetAllAttendance = () => {
   const [attendanceMap, setAttendanceMap] = useState(null);
 
   async function handleFetchAttendance(params) {
-    console.log('params', params);
     const res = await getAllAttendance(params).unwrap();
 
     const map = new Map();
