@@ -4,7 +4,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Alert, Button } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
 // Internal
@@ -50,6 +50,10 @@ const Calendar = () => {
 
   const handleShowUploadTimetableModal = () =>
     setIsUploadTimetableModalVisible(!isUploadTimetableModalVisible);
+
+  useEffect(() => {
+    calendarRef.current?.getApi()?.render();
+  }, [attendanceMap]);
 
   return (
     <div className="content container-fluid">
@@ -129,15 +133,15 @@ const Calendar = () => {
             plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
             views={['dayGridMonth', 'timeGridWeek', 'timeGridDay']}
             datesSet={handleDateSet}
-            eventDidMount={(info) => {
+            eventClassNames={(info) => {
               const key = `${info.event.groupId}_${info.event.extendedProps.subjectId}_${dayjs(info.event.start).format('YYYY-MM-DD')}`;
               const isAttendanceMarked = attendanceMap?.has(key);
               const isPast = dayjs(info.event.start).isBefore(dayjs(), 'day');
-              info.el.style.backgroundColor = isAttendanceMarked
-                ? '#16a34a'
+              return isAttendanceMarked
+                ? 'event-attended'
                 : isPast
-                  ? '#ef4444'
-                  : '#f59e0b';
+                  ? 'event-missed'
+                  : 'event-upcoming';
             }}
           />
         )}

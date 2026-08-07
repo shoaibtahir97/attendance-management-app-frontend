@@ -7,6 +7,17 @@
   text-transform: capitalize;
 }
 
-/* .fc-daygrid-event-harness {
-  background-color: #79b3ed;
-} */
+.fc-event.event-attended {
+  background-color: #16a34a;
+  border-color: #16a34a;
+}
+
+.fc-event.event-missed {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+
+.fc-event.event-upcoming {
+  background-color: #f59e0b;
+  border-color: #f59e0b;
+}
