@@ -9,7 +9,7 @@ import {
   Typography,
   Zoom,
 } from '@mui/material';
-import { Button } from 'antd';
+import { Button, Dropdown } from 'antd';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { Checkmark } from 'react-checkmark';
@@ -39,6 +39,7 @@ import {
   studentGenders,
 } from './config/constants';
 import { intakes } from './config/generateIntakes';
+import { useDownloadFormOptions } from './hooks/useDownloadFormOptions';
 
 const defaultValues = {
   course: '',
@@ -97,13 +98,18 @@ const defaultValues = {
 const AdmissionForm = () => {
   const { openNotification } = useNotification();
   const [postAdmissionForm] = usePostAdmissionFormMutation();
+  const downloadFormOptions = useDownloadFormOptions();
   const [isFormSuccessfullySubmit, setIsFormSuccessfullySubmit] =
     useState(false);
 
   const admissionFormSchema = Yup.object().shape({
     course: Yup.string().required('Course Is required'),
     intake: Yup.string().required('Intake Is required'),
-    pointOfEntry: Yup.string().required('Point Of Entry Is required'),
+    pointOfEntry: Yup.string().when('course', {
+      is: 'BSc in Business Management with Foundation Year (4 Years)',
+      then: (schema) => schema.required('Point Of Entry Is required'),
+      otherwise: (schema) => schema.nullable().notRequired(),
+    }),
     firstName: Yup.string().required('First name is required'),
     lastName: Yup.string().required('Last name is required'),
     gender: Yup.string().required('Gender is required'),
@@ -262,22 +268,7 @@ const AdmissionForm = () => {
       });
   };
 
-  const downloadApplicationForm = async () => {
-    // window.open(
-    //   'documents/Stratford College London  Application Form NCC HND NCFE.pdf',
-    //   '_blank'
-    // );
-    const pdfBytes = await createPdfForm();
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'admission_form.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const genderField = watch('gender');
+  const { gender: genderField, course: courseField } = watch();
 
   return (
     <div className="main-wrapper login-body mt-4">
@@ -330,11 +321,11 @@ const AdmissionForm = () => {
                     <Typography variant="h6" sx={{ mt: 2 }}>
                       Course details
                     </Typography>
-                    <Button
-                      onClick={() => downloadApplicationForm()}
-                      type="primary">
-                      Download Application form
-                    </Button>
+                    <Dropdown
+                      menu={{ items: downloadFormOptions }}
+                      trigger={['click']}>
+                      <Button type="primary">Download Admission Form</Button>
+                    </Dropdown>
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6}>
@@ -357,13 +348,16 @@ const AdmissionForm = () => {
                     }))}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                  <RHFSelect
-                    name="pointOfEntry"
-                    label="Point of Entry"
-                    options={moduleYears}
-                  />
-                </Grid>
+                {courseField ===
+                  'BSc in Business Management with Foundation Year (4 Years)' && (
+                  <Grid item xs={12} sm={6} md={3}>
+                    <RHFSelect
+                      name="pointOfEntry"
+                      label="Point of Entry"
+                      options={moduleYears}
+                    />
+                  </Grid>
+                )}
               </Grid>
               <Grid container item spacing={1}>
                 <Grid item xs={12}>
