@@ -1,11 +1,15 @@
+// React
+import { useEffect } from 'react';
+// Third-Party
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 import { Button } from 'antd';
-import React, { useEffect } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import * as Yup from 'yup';
+
+// Internal
 import Alert from '../../components/Alert';
 import {
   FormProvider,
@@ -25,7 +29,7 @@ import {
 } from '../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { countries } from '../../utils/countries';
-import { studentGenders } from '../AdmissionForm';
+import { studentGenders } from '../AdmissionForm/config/constants';
 import { moduleYears } from '../Courses/AddCourse';
 import EditStudentSkeleton from './components/EditStudentSkeleton';
 

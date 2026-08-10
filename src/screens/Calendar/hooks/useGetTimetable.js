@@ -64,5 +64,12 @@ export const useGetTimetable = (userInfo) => {
     }
   }, []);
 
-  return { events, isLoading, error, handleDateSet, attendanceMap };
+  return {
+    events,
+    isLoading,
+    error,
+    handleDateSet,
+    attendanceMap,
+    fetchAllTimeTables,
+  };
 };

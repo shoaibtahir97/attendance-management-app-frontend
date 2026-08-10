@@ -1,11 +1,12 @@
-import React from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
-
+// Third-Party
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mui/material';
 import { Button } from 'antd';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
+
+// Internal
 import {
   FormProvider,
   RHFAutocomplete,
@@ -21,7 +22,7 @@ import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlic
 import { useRegisterStudentMutation } from '../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { countries } from '../../utils/countries';
-import { studentGenders } from '../AdmissionForm';
+import { studentGenders } from '../AdmissionForm/config/constants';
 import { moduleYears } from '../Courses/AddCourse';
 
 const AddStudent = () => {

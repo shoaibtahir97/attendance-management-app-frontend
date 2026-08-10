@@ -20,8 +20,16 @@ const Calendar = () => {
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
   const calendarRef = useRef();
-  const { error, events, isLoading, handleDateSet, attendanceMap } =
-    useGetTimetable(userInfo);
+  const timeTableAPI = useGetTimetable(userInfo);
+
+  const {
+    error,
+    events,
+    isLoading,
+    handleDateSet,
+    attendanceMap,
+    fetchAllTimeTables,
+  } = timeTableAPI;
 
   const [isUploadTimetableModalVisible, setIsUploadTimetableModalVisible] =
     useState(false);

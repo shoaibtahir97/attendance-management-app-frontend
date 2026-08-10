@@ -1,6 +1,9 @@
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, StandardFonts } from 'pdf-lib';
+import {
+  disabilities,
+  studentGenders,
+} from '../screens/AdmissionForm/config/constants';
 import { countries } from './countries';
-import { disabilities, studentGenders } from '../screens/AdmissionForm';
 
 async function createPdfForm() {
   const pdfDoc = await PDFDocument.create();
