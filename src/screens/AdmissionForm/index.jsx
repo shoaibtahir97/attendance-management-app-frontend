@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { Button } from 'antd';
 import dayjs from 'dayjs';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Checkmark } from 'react-checkmark';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { IoIosAddCircleOutline } from 'react-icons/io';
@@ -19,6 +19,7 @@ import { MdOutlineDelete } from 'react-icons/md';
 import * as Yup from 'yup';
 import {
   FormProvider,
+  RHFAutocomplete,
   RHFCheckbox,
   RHFCountries,
   RHFDatePicker,
@@ -29,67 +30,15 @@ import { UploadMultiFile } from '../../components/upload';
 import useNotification from '../../hooks/useNotification';
 import { usePostAdmissionFormMutation } from '../../redux/slices/apiSlices/admissionsApiSlice';
 import { countries } from '../../utils/countries';
-import createPdfForm from '../../utils/createPdfForm';
 import { moduleYears } from '../Courses/AddCourse';
-
-export const studentGenders = [
-  { value: '', label: 'Select Gender' },
-  { value: 'man', label: 'Man' },
-  { value: 'woman', label: 'Woman' },
-  { value: 'Non-binary', label: 'Non-binary' },
-  { value: 'Genderqueer', label: 'Genderqueer' },
-  { value: 'Genderfluid', label: 'Genderfluid' },
-  { value: 'Transgender Man', label: 'Transgender Man' },
-  { value: 'Transgender Woman', label: 'Transgender Woman' },
-  { value: 'Agender', label: 'Agender' },
-  { value: 'Two-Spirit', label: 'Two-Spirit' },
-  { value: 'Prefer another term', label: 'Prefer another term' },
-  { value: 'Prefer not to say', label: 'Prefer not to say' },
-];
-
-export const ethnicities = [
-  'White',
-  'Gypsy, Traveller or Irish Traveller',
-  'Black - Caribbean',
-  'Black - African',
-  'Black - Other',
-  'Asian - Indian',
-  'Asian - Pakistani',
-  'Asian - Bangladeshi',
-  'Asian - Chinese',
-  'Asian - Other',
-  'White/Black Caribbean',
-  'White/Black African',
-  'White and Asian',
-  'Other Mixed',
-  'Arab',
-  'Other',
-  'Not given',
-];
-
-export const feeStatuses = [
-  'Private finance',
-  'Student Loan Company',
-  'Training Agency',
-  'Other UK govt award',
-  'International agency',
-  'UK industry/commerce',
-  'Other source',
-  'Not known',
-];
-
-export const disabilities = [
-  'A - No disability',
-  'B - Autistic disorder',
-  'C - Blind/partial sight',
-  'D - Deaf/partial hearing',
-  'E - Long standing illness',
-  'F - Mental health',
-  'G - Learning difficulty',
-  'H - Wheelchair/mobility',
-  'I - Other disability',
-  'J - Multiple disabilities',
-];
+import {
+  courses,
+  disabilities,
+  ethnicities,
+  feeStatuses,
+  studentGenders,
+} from './config/constants';
+import { intakes } from './config/generateIntakes';
 
 const defaultValues = {
   course: '',
@@ -144,18 +93,6 @@ const defaultValues = {
   declaration: false,
   declarationDate: dayjs(),
 };
-
-const intakes = [
-  { value: 'JAN 25', label: 'JAN 25' },
-  { value: 'JUN 25', label: 'JUN 25' },
-  { value: 'SEP 25', label: 'SEP 25' },
-  { value: 'JAN 26', label: 'JAN 26' },
-  { value: 'JUN 26', label: 'JUN 26' },
-  { value: 'SEP 26', label: 'SEP 26' },
-  { value: 'JAN 27', label: 'JAN 27' },
-  { value: 'JUN 27', label: 'JUN 27' },
-  { value: 'SEP 27', label: 'SEP 27' },
-];
 
 const AdmissionForm = () => {
   const { openNotification } = useNotification();
@@ -326,6 +263,10 @@ const AdmissionForm = () => {
   };
 
   const downloadApplicationForm = async () => {
+    // window.open(
+    //   'documents/Stratford College London  Application Form NCC HND NCFE.pdf',
+    //   '_blank'
+    // );
     const pdfBytes = await createPdfForm();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const link = document.createElement('a');
@@ -396,11 +337,25 @@ const AdmissionForm = () => {
                     </Button>
                   </Stack>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                  <RHFTextField name="course" label={'Course Applied for'} />
+                <Grid item xs={12} sm={6} md={6}>
+                  <RHFAutocomplete
+                    name="course"
+                    label={'Course Applied for'}
+                    options={courses.map((course) => ({
+                      label: course,
+                      value: course,
+                    }))}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
-                  <RHFSelect name="intake" label={'Intake'} options={intakes} />
+                  <RHFSelect
+                    name="intake"
+                    label={'Intake'}
+                    options={intakes.map((intake) => ({
+                      label: intake,
+                      value: intake,
+                    }))}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
                   <RHFSelect
