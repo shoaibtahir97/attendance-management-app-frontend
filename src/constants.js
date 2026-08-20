@@ -1,7 +1,7 @@
-// const BASE_URL = 'https://attendance-management-app-backend-3kdw.onrender.com';
+const BASE_URL = 'https://attendance-management-app-backend-3kdw.onrender.com';
 const ADMISSIONS_URL = '/api/v1/admissions';
 const ATTENDANCE_URL = '/api/v1/attendance';
-const BASE_URL = 'http://localhost:5000';
+// const BASE_URL = 'http://localhost:5000';
 const COURSES_URL = '/api/v1/courses';
 const GROUPS_URL = '/api/v1/groups';
 const MAIL_URL = '/api/v1/mail';
