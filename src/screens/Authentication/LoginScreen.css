@@ -1,0 +1,379 @@
+/* =========================================
+   STRATFORD LOGIN PAGE
+========================================= */
+
+.stratford-login-page {
+    min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+
+    background:
+        radial-gradient(circle at 5% 30%,
+            rgba(185, 195, 255, 0.45),
+            transparent 35%),
+        radial-gradient(circle at 95% 75%,
+            rgba(165, 245, 220, 0.45),
+            transparent 35%),
+        #f8fbff;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   LEFT SIDE
+========================================= */
+
+.stratford-left-panel {
+    width: 55%;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 40px;
+}
+
+
+.stratford-image-card {
+    width: 360px;
+
+    height: 540px;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    border-radius: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px rgba(70, 90, 130, 0.08);
+}
+
+
+.stratford-login-image {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    padding: 20px;
+}
+
+
+
+/* =========================================
+   RIGHT SIDE
+========================================= */
+
+.stratford-right-panel {
+    width: 45%;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-start;
+
+    padding: 50px 80px 50px 20px;
+}
+
+
+.stratford-login-content {
+    width: 100%;
+
+    max-width: 450px;
+}
+
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.stratford-welcome-title {
+    font-size: 48px !important;
+
+    line-height: 1.15 !important;
+
+    font-weight: 800 !important;
+
+    color: #050505;
+
+    margin-bottom: 12px !important;
+}
+
+
+.stratford-welcome-subtitle {
+    font-size: 18px !important;
+
+    color: #5c6475;
+
+    margin-bottom: 58px !important;
+}
+
+
+
+/* =========================================
+   INPUT FIELDS
+========================================= */
+
+.stratford-field {
+    margin-bottom: 20px;
+}
+
+
+.stratford-field .MuiTextField-root {
+    width: 100%;
+}
+
+
+.stratford-field .MuiOutlinedInput-root {
+    height: 58px;
+
+    border-radius: 12px;
+
+    background: rgba(235, 242, 255, 0.75);
+}
+
+
+.stratford-field .MuiOutlinedInput-root fieldset {
+    border: 1px solid #b8c4d8;
+}
+
+
+.stratford-field .MuiOutlinedInput-root:hover fieldset {
+    border-color: #6d91ef;
+}
+
+
+.stratford-field .MuiOutlinedInput-root.Mui-focused fieldset {
+    border-color: #3578f6;
+
+    border-width: 1px;
+}
+
+
+.stratford-field input {
+    font-size: 17px;
+
+    padding: 16px;
+}
+
+
+.stratford-field input::placeholder {
+    color: #657085;
+
+    opacity: 1;
+}
+
+
+
+/* =========================================
+   REMEMBER ME
+========================================= */
+
+.stratford-options {
+    margin-top: 3px;
+}
+
+
+.stratford-options .MuiFormControlLabel-label {
+    font-size: 16px;
+
+    color: #59647a;
+}
+
+
+.stratford-options .MuiCheckbox-root {
+    padding: 8px;
+}
+
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+.stratford-forgot {
+    margin-top: 4px;
+
+    margin-bottom: 40px;
+}
+
+
+.stratford-forgot-link {
+    color: #3f4c61;
+
+    font-size: 16px;
+
+    font-weight: 500;
+
+    text-decoration: none;
+}
+
+
+.stratford-forgot-link:hover {
+    color: #1769e8;
+
+    text-decoration: underline;
+}
+
+
+
+/* =========================================
+   SIGN IN BUTTON
+========================================= */
+
+.stratford-signin-button {
+    width: 100%;
+
+    height: 56px !important;
+
+    border-radius: 12px !important;
+
+    background: #3478ed !important;
+
+    border: none !important;
+
+    color: white !important;
+
+    font-size: 18px !important;
+
+    font-weight: 700 !important;
+
+    box-shadow:
+        0 10px 25px rgba(52, 120, 237, 0.25);
+}
+
+
+.stratford-signin-button:hover {
+    background: #2869d8 !important;
+}
+
+
+
+/* =========================================
+   SIGN UP
+========================================= */
+
+.stratford-signup-text {
+    text-align: center;
+
+    margin-top: 80px !important;
+
+    font-size: 16px !important;
+
+    color: #59647a;
+}
+
+
+.stratford-signup-link {
+    color: #1769e8 !important;
+
+    font-weight: 700 !important;
+}
+
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.stratford-error {
+    margin-bottom: 20px;
+}
+
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .stratford-left-panel {
+        width: 48%;
+    }
+
+    .stratford-right-panel {
+        width: 52%;
+
+        padding-right: 40px;
+    }
+
+    .stratford-welcome-title {
+        font-size: 42px !important;
+    }
+
+    .stratford-welcome-subtitle {
+        font-size: 16px !important;
+    }
+
+}
+
+
+
+/* =========================================
+   TABLET / MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .stratford-login-page {
+        display: block;
+
+        overflow-y: auto;
+    }
+
+
+    .stratford-left-panel {
+        display: none;
+    }
+
+
+    .stratford-right-panel {
+        width: 100%;
+
+        min-height: 100vh;
+
+        padding: 40px 25px;
+
+        justify-content: center;
+    }
+
+
+    .stratford-login-content {
+        max-width: 500px;
+    }
+
+
+    .stratford-welcome-title {
+        font-size: 38px !important;
+    }
+
+
+    .stratford-welcome-subtitle {
+        margin-bottom: 40px !important;
+    }
+
+
+    .stratford-signup-text {
+        margin-top: 55px !important;
+    }
+
+}
