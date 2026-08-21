@@ -3,21 +3,25 @@
 ========================================= */
 
 .stratford-login-page {
-    min-height: 100vh;
-    width: 100%;
+  min-height: 100vh;
+  width: 100%;
 
-    display: flex;
+  display: flex;
 
-    background:
-        radial-gradient(circle at 5% 30%,
-            rgba(185, 195, 255, 0.45),
-            transparent 35%),
-        radial-gradient(circle at 95% 75%,
-            rgba(165, 245, 220, 0.45),
-            transparent 35%),
-        #f8fbff;
+  background:
+    radial-gradient(
+      circle at 5% 30%,
+      rgba(185, 195, 255, 0.45),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 95% 75%,
+      rgba(165, 245, 220, 0.45),
+      transparent 35%
+    ),
+    #f8fbff;
 
-    overflow: hidden;
+  overflow: hidden;
 }
 
 
@@ -26,50 +30,50 @@
 ========================================= */
 
 .stratford-left-panel {
-    width: 55%;
+  width: 55%;
 
-    min-height: 100vh;
+  min-height: 100vh;
 
-    display: flex;
+  display: flex;
 
-    align-items: center;
+  align-items: center;
 
-    justify-content: center;
+  justify-content: center;
 
-    padding: 40px;
+  padding: 27px;
 }
 
 
 .stratford-image-card {
-    width: 360px;
+  width: 241px;
 
-    height: 540px;
+  height: 362px;
 
-    background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.9);
 
-    border-radius: 28px;
+  border-radius: 19px;
 
-    display: flex;
+  display: flex;
 
-    align-items: center;
+  align-items: center;
 
-    justify-content: center;
+  justify-content: center;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    box-shadow:
-        0 20px 60px rgba(70, 90, 130, 0.08);
+  box-shadow:
+    0 13px 40px rgba(70, 90, 130, 0.08);
 }
 
 
 .stratford-login-image {
-    width: 100%;
+  width: 100%;
 
-    height: 100%;
+  height: 100%;
 
-    object-fit: contain;
+  object-fit: contain;
 
-    padding: 20px;
+  padding: 13px;
 }
 
 
@@ -79,24 +83,24 @@
 ========================================= */
 
 .stratford-right-panel {
-    width: 45%;
+  width: 45%;
 
-    min-height: 100vh;
+  min-height: 100vh;
 
-    display: flex;
+  display: flex;
 
-    align-items: center;
+  align-items: center;
 
-    justify-content: flex-start;
+  justify-content: flex-start;
 
-    padding: 50px 80px 50px 20px;
+  padding: 34px 54px 34px 13px;
 }
 
 
 .stratford-login-content {
-    width: 100%;
+  width: 100%;
 
-    max-width: 450px;
+  max-width: 302px;
 }
 
 
@@ -106,24 +110,24 @@
 ========================================= */
 
 .stratford-welcome-title {
-    font-size: 48px !important;
+  font-size: 32px !important;
 
-    line-height: 1.15 !important;
+  line-height: 1.15 !important;
 
-    font-weight: 800 !important;
+  font-weight: 800 !important;
 
-    color: #050505;
+  color: #050505;
 
-    margin-bottom: 12px !important;
+  margin-bottom: 8px !important;
 }
 
 
 .stratford-welcome-subtitle {
-    font-size: 18px !important;
+  font-size: 12px !important;
 
-    color: #5c6475;
+  color: #5c6475;
 
-    margin-bottom: 58px !important;
+  margin-bottom: 39px !important;
 }
 
 
@@ -133,52 +137,66 @@
 ========================================= */
 
 .stratford-field {
-    margin-bottom: 20px;
+  margin-bottom: 13px;
 }
 
 
 .stratford-field .MuiTextField-root {
-    width: 100%;
+  width: 100%;
 }
 
 
 .stratford-field .MuiOutlinedInput-root {
-    height: 58px;
+  height: 39px;
 
-    border-radius: 12px;
+  border-radius: 8px;
 
-    background: rgba(235, 242, 255, 0.75);
+  background: rgba(235, 242, 255, 0.75);
 }
 
 
 .stratford-field .MuiOutlinedInput-root fieldset {
-    border: 1px solid #b8c4d8;
+  border: 1px solid #b8c4d8;
 }
 
 
-.stratford-field .MuiOutlinedInput-root:hover fieldset {
-    border-color: #6d91ef;
+.stratford-field
+.MuiOutlinedInput-root:hover
+fieldset {
+  border-color: #6d91ef;
 }
 
 
-.stratford-field .MuiOutlinedInput-root.Mui-focused fieldset {
-    border-color: #3578f6;
+.stratford-field
+.MuiOutlinedInput-root.Mui-focused
+fieldset {
+  border-color: #3578f6;
 
-    border-width: 1px;
+  border-width: 1px;
 }
 
 
 .stratford-field input {
-    font-size: 17px;
+  font-size: 11px;
 
-    padding: 16px;
+  padding: 11px;
 }
 
 
 .stratford-field input::placeholder {
-    color: #657085;
+  color: #657085;
 
-    opacity: 1;
+  opacity: 1;
+}
+
+
+
+/* =========================================
+   PASSWORD EYE
+========================================= */
+
+.stratford-field .MuiIconButton-root {
+  padding: 5px;
 }
 
 
@@ -188,19 +206,21 @@
 ========================================= */
 
 .stratford-options {
-    margin-top: 3px;
+  margin-top: 2px;
 }
 
 
-.stratford-options .MuiFormControlLabel-label {
-    font-size: 16px;
+.stratford-options
+.MuiFormControlLabel-label {
+  font-size: 11px;
 
-    color: #59647a;
+  color: #59647a;
 }
 
 
-.stratford-options .MuiCheckbox-root {
-    padding: 8px;
+.stratford-options
+.MuiCheckbox-root {
+  padding: 5px;
 }
 
 
@@ -210,27 +230,27 @@
 ========================================= */
 
 .stratford-forgot {
-    margin-top: 4px;
+  margin-top: 3px;
 
-    margin-bottom: 40px;
+  margin-bottom: 27px;
 }
 
 
 .stratford-forgot-link {
-    color: #3f4c61;
+  color: #3f4c61;
 
-    font-size: 16px;
+  font-size: 11px;
 
-    font-weight: 500;
+  font-weight: 500;
 
-    text-decoration: none;
+  text-decoration: none;
 }
 
 
 .stratford-forgot-link:hover {
-    color: #1769e8;
+  color: #1769e8;
 
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 
@@ -240,29 +260,29 @@
 ========================================= */
 
 .stratford-signin-button {
-    width: 100%;
+  width: 100%;
 
-    height: 56px !important;
+  height: 38px !important;
 
-    border-radius: 12px !important;
+  border-radius: 8px !important;
 
-    background: #3478ed !important;
+  background: #3478ed !important;
 
-    border: none !important;
+  border: none !important;
 
-    color: white !important;
+  color: white !important;
 
-    font-size: 18px !important;
+  font-size: 12px !important;
 
-    font-weight: 700 !important;
+  font-weight: 700 !important;
 
-    box-shadow:
-        0 10px 25px rgba(52, 120, 237, 0.25);
+  box-shadow:
+    0 7px 17px rgba(52, 120, 237, 0.25);
 }
 
 
 .stratford-signin-button:hover {
-    background: #2869d8 !important;
+  background: #2869d8 !important;
 }
 
 
@@ -272,20 +292,20 @@
 ========================================= */
 
 .stratford-signup-text {
-    text-align: center;
+  text-align: center;
 
-    margin-top: 80px !important;
+  margin-top: 54px !important;
 
-    font-size: 16px !important;
+  font-size: 11px !important;
 
-    color: #59647a;
+  color: #59647a;
 }
 
 
 .stratford-signup-link {
-    color: #1769e8 !important;
+  color: #1769e8 !important;
 
-    font-weight: 700 !important;
+  font-weight: 700 !important;
 }
 
 
@@ -295,7 +315,7 @@
 ========================================= */
 
 .stratford-error {
-    margin-bottom: 20px;
+  margin-bottom: 13px;
 }
 
 
@@ -306,23 +326,23 @@
 
 @media (max-width: 1000px) {
 
-    .stratford-left-panel {
-        width: 48%;
-    }
+  .stratford-left-panel {
+    width: 48%;
+  }
 
-    .stratford-right-panel {
-        width: 52%;
+  .stratford-right-panel {
+    width: 52%;
 
-        padding-right: 40px;
-    }
+    padding-right: 27px;
+  }
 
-    .stratford-welcome-title {
-        font-size: 42px !important;
-    }
+  .stratford-welcome-title {
+    font-size: 28px !important;
+  }
 
-    .stratford-welcome-subtitle {
-        font-size: 16px !important;
-    }
+  .stratford-welcome-subtitle {
+    font-size: 11px !important;
+  }
 
 }
 
@@ -334,46 +354,46 @@
 
 @media (max-width: 768px) {
 
-    .stratford-login-page {
-        display: block;
+  .stratford-login-page {
+    display: block;
 
-        overflow-y: auto;
-    }
-
-
-    .stratford-left-panel {
-        display: none;
-    }
+    overflow-y: auto;
+  }
 
 
-    .stratford-right-panel {
-        width: 100%;
-
-        min-height: 100vh;
-
-        padding: 40px 25px;
-
-        justify-content: center;
-    }
+  .stratford-left-panel {
+    display: none;
+  }
 
 
-    .stratford-login-content {
-        max-width: 500px;
-    }
+  .stratford-right-panel {
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding: 27px 17px;
+
+    justify-content: center;
+  }
 
 
-    .stratford-welcome-title {
-        font-size: 38px !important;
-    }
+  .stratford-login-content {
+    max-width: 335px;
+  }
 
 
-    .stratford-welcome-subtitle {
-        margin-bottom: 40px !important;
-    }
+  .stratford-welcome-title {
+    font-size: 25px !important;
+  }
 
 
-    .stratford-signup-text {
-        margin-top: 55px !important;
-    }
+  .stratford-welcome-subtitle {
+    margin-bottom: 27px !important;
+  }
+
+
+  .stratford-signup-text {
+    margin-top: 37px !important;
+  }
 
 }
