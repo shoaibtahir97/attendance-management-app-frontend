@@ -35,7 +35,7 @@ export const MergeGroupsDialog = (props) => {
     isShowModal,
     showModalMethod,
     selectedGroupIds,
-    selectedRowNames,
+    selectedRowNames = [],
     handleReset,
   } = props;
   const { handleMergeGroups } = useMergeGroups(handleReset);
@@ -83,9 +83,9 @@ export const MergeGroupsDialog = (props) => {
             direction="row"
             spacing={1}
             sx={{ justifyContent: 'space-around', alignItems: 'center' }}>
-            <Typography>{selectedRowNames[0]}</Typography>
+            <Typography>{selectedRowNames[0] || ''}</Typography>
             <FaArrowRight />
-            <Typography>{selectedRowNames[1]}</Typography>
+            <Typography>{selectedRowNames[1] || ''}</Typography>
           </Stack>
           <RHFTextField name="name" label="New Group Name" />
         </DialogContent>
