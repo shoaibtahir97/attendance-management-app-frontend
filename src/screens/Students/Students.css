@@ -1,0 +1,614 @@
+/* =========================================
+   STUDENTS PAGE
+========================================= */
+
+.students-page {
+  background: #f8f9fc;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.students-page .page-header {
+  margin-bottom: 20px;
+}
+
+
+/* =========================================
+   SEARCH / FILTER AREA
+========================================= */
+
+.students-search-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.students-search-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  padding: 22px 24px 14px;
+}
+
+.students-search-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+  padding: 10px 24px 24px;
+}
+
+.students-search-fields .MuiFormControl-root,
+.students-search-fields .MuiTextField-root {
+  width: 100%;
+}
+
+.students-search-button {
+  height: 48px !important;
+  min-width: 110px;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+
+/* =========================================
+   MAIN STUDENTS CARD
+========================================= */
+
+.students-table-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+
+/* =========================================
+   TABLE HEADER
+========================================= */
+
+.students-table-header {
+  padding: 22px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.students-table-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.students-table-subtitle {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.students-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.students-header-action {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 8px !important;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: none !important;
+}
+
+
+/* =========================================
+   BULK ACTIONS
+========================================= */
+
+.students-table-wrapper {
+  padding: 20px 24px 24px;
+}
+
+.students-table-wrapper>.MuiBox-root {
+  min-height: 48px;
+}
+
+
+/* =========================================
+   ANT DESIGN TABLE
+========================================= */
+
+.students-ant-table {
+  width: 100%;
+}
+
+.students-ant-table .ant-table {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.students-ant-table .ant-table-thead>tr>th {
+  background: #f8fafc !important;
+  color: #374151 !important;
+  font-size: 13px;
+  font-weight: 600;
+  height: 58px;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.students-ant-table .ant-table-tbody>tr>td {
+  height: 72px;
+  padding: 12px 14px;
+  color: #374151;
+  font-size: 14px;
+  border-bottom: 1px solid #edf0f4 !important;
+}
+
+.students-ant-table .ant-table-tbody>tr:hover>td {
+  background: #fafbff !important;
+}
+
+
+/* =========================================
+   STUDENT NAME
+========================================= */
+
+.student-name {
+  margin: 0;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.student-id-text {
+  color: #374151;
+  font-weight: 500;
+}
+
+
+/* =========================================
+   COURSE
+========================================= */
+
+.student-course {
+  color: #4b5563;
+  line-height: 20px;
+  max-width: 320px;
+}
+
+
+/* =========================================
+   GROUP BADGE
+========================================= */
+
+.student-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 12px;
+  border-radius: 999px;
+
+  background: #eef2ff;
+  color: #3155d9;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+.student-status {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 11px;
+  border-radius: 6px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.student-status-active {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.student-status-inactive {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.student-status-suspended {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.student-status-graduated {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+
+/* =========================================
+   ACTION BUTTON
+========================================= */
+
+.student-action-button {
+  width: 36px !important;
+  height: 36px !important;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px !important;
+  color: #6b7280 !important;
+}
+
+.student-action-button:hover {
+  background: #f3f4f6 !important;
+  color: #111827 !important;
+}
+
+
+/* =========================================
+   CHECKBOX
+========================================= */
+
+.students-ant-table .ant-checkbox-wrapper {
+  transform: scale(0.95);
+}
+
+
+/* =========================================
+   PAGINATION
+========================================= */
+
+.students-ant-table .ant-pagination {
+  margin: 20px 0 4px !important;
+}
+
+.students-ant-table .ant-pagination-item {
+  border-radius: 6px;
+}
+
+.students-ant-table .ant-pagination-item-active {
+  font-weight: 600;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+  .students-search-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .students-search-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 650px) {
+  .students-search-fields {
+    grid-template-columns: 1fr;
+    padding: 15px;
+  }
+
+  .students-table-header {
+    padding: 18px;
+  }
+
+  .students-table-wrapper {
+    padding: 15px;
+  }
+
+  .students-header-actions {
+    margin-top: 15px;
+  }
+}
+
+/* =========================================
+   SUBFRAME STUDENTS HEADER
+========================================= */
+
+.students-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.students-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.student-count-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  background: #eaf4ff;
+  color: #1677ff;
+
+  border-radius: 6px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   STUDENT TABS
+========================================= */
+
+.students-tabs {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  padding: 0 24px;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  background: #ffffff;
+}
+
+.student-tab {
+  border: none;
+  background: transparent;
+
+  padding: 14px 2px 12px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  color: #6b7280;
+
+  cursor: pointer;
+
+  border-bottom: 2px solid transparent;
+}
+
+.student-tab:hover {
+  color: #1677ff;
+}
+
+.student-tab.active {
+  color: #1677ff;
+  font-weight: 600;
+  border-bottom: 2px solid #1677ff;
+}
+
+
+/* =========================================
+   SUBFRAME SEARCH
+========================================= */
+
+.subframe-search-section {
+  background: #ffffff;
+}
+
+.subframe-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.subframe-search .subframe-search-input {
+  width: 280px;
+}
+
+.subframe-search>.subframe-search-input {
+  margin-right: auto;
+}
+
+.clear-filters {
+  border: none;
+  background: transparent;
+
+  padding: 8px;
+
+  color: #4b5563;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.clear-filters:hover {
+  color: #111827;
+}
+
+/* =========================================
+   SELECTION TOOLBAR
+========================================= */
+
+/* =========================================
+   SELECTION TOOLBAR - SUBFRAME STYLE
+========================================= */
+
+/* Selected count */
+
+.students-selected-count {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #1677ff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  line-height: 1;
+}
+
+
+/* Blue checkbox */
+
+.students-selected-checkbox {
+  width: 18px;
+  height: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #1677ff;
+  color: #ffffff;
+
+  border-radius: 4px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  flex-shrink: 0;
+}
+
+
+/* Action buttons container */
+
+.students-selection-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+/* Export / Send Email / Delete buttons */
+
+.students-selection-button {
+  height: 34px !important;
+
+  min-height: 34px !important;
+
+  padding: 0 13px !important;
+
+  border-radius: 6px !important;
+
+  font-size: 13px !important;
+
+  font-weight: 500 !important;
+
+  box-shadow: none !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+
+/* Button hover */
+
+.students-selection-button:hover {
+  border-color: #1677ff !important;
+
+  color: #1677ff !important;
+
+  background: #ffffff !important;
+}
+
+
+/* Delete button */
+
+.students-delete-button {
+  color: #ff4d4f !important;
+
+  border-color: #ffccc7 !important;
+
+  background: #ffffff !important;
+}
+
+
+/* Delete hover */
+
+.students-delete-button:hover {
+  color: #ff4d4f !important;
+
+  border-color: #ff4d4f !important;
+
+  background: #fff2f0 !important;
+}
+
+
+/* =========================================
+   RESPONSIVE SELECTION TOOLBAR
+========================================= */
+
+@media (max-width: 650px) {
+
+  .students-selection-toolbar {
+    height: auto;
+
+    min-height: 46px;
+
+    margin: 0 -15px 14px -15px;
+
+    padding: 8px 15px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 8px;
+  }
+
+  .students-selection-actions {
+    width: 100%;
+
+    flex-wrap: wrap;
+  }
+
+}
+
+.students-selection-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 20px;
+  margin-bottom: 0;
+  background: #eaf4ff;
+  border-bottom: 1px solid #d6e9ff;
+}
+
+.students-selected-count {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.students-selection-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
