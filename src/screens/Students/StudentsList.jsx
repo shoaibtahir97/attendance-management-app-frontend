@@ -1,3 +1,4 @@
+import './Students.css';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -69,81 +70,96 @@ const Students = () => {
     {
       title: 'Student ID',
       dataIndex: 'studentId',
-      sorter: (a, b) => a.studentId.length - b.studentId.length,
+      render: (text) => <span className="student-id-text">{text}</span>,
     },
+
     {
       title: 'First Name',
       dataIndex: 'firstName',
-      sorter: (a, b) => a.firstName.length - b.firstName.length,
-      render: (text, record) => <h2 className="table-avatar">{text}</h2>,
+      render: (text) => <p className="student-name">{text}</p>,
     },
+
     {
       title: 'Last Name',
       dataIndex: 'lastName',
-      sorter: (a, b) => a.lastName.length - b.lastName.length,
-      render: (text, record) => <h2 className="table-avatar">{text}</h2>,
+      render: (text) => <p className="student-name">{text}</p>,
     },
+
     {
       title: 'Course',
       dataIndex: 'courseName',
-      sorter: (a, b) => a.courseName.length - b.courseName.length,
+      render: (text) => <div className="student-course">{text}</div>,
     },
+
     {
       title: 'Group',
       dataIndex: 'group',
-      sorter: (a, b) => a.group.length - b.group.length,
+      render: (text) => <span className="student-group">{text || '—'}</span>,
     },
+
     {
       title: 'Year',
       dataIndex: 'year',
-      sorter: (a, b) => a.year.length - b.year.length,
-      render: (text, record) => (
-        <p>
-          {moduleYears.map((module) => {
-            if (module.value == text) {
-              return module.label;
-            }
-          })}
+
+      render: (text) => (
+        <p style={{ margin: 0 }}>
+          {moduleYears.find((module) => module.value == text)?.label || text}
         </p>
       ),
     },
+
     {
       title: 'Status',
       dataIndex: 'status',
-      sorter: (a, b) => a.status.length - b.status.length,
+
       render: (text, record) => {
+        if (!text) return null;
+
+        const status = text.toLowerCase();
+
+        let statusClass = 'student-status-active';
+
+        if (status === 'inactive') {
+          statusClass = 'student-status-inactive';
+        }
+
+        if (status === 'suspended') {
+          statusClass = 'student-status-suspended';
+        }
+
+        if (status === 'graduated') {
+          statusClass = 'student-status-graduated';
+        }
+
         return (
-          <Box>
-            {text ? (
-              <Tooltip
-                title={
-                  <Box>
-                    {record?.updatedBy && (
-                      <Typography variant="subtitle2" color="white">
-                        Updated by: {record?.updatedBy}
-                      </Typography>
-                    )}
-                    {record?.updatedOn && (
-                      <Typography variant="subtitle2" color="white">
-                        Updated on: {format(record?.updatedOn, 'dd MMMM yyyy')}
-                      </Typography>
-                    )}
-                  </Box>
-                }>
-                <Tag color={setTagColor(text)}>{text}</Tag>
-              </Tooltip>
-            ) : (
-              <></>
-            )}
-          </Box>
+          <Tooltip
+            title={
+              <Box>
+                {record?.updatedBy && (
+                  <Typography variant="subtitle2" color="white">
+                    Updated by: {record.updatedBy}
+                  </Typography>
+                )}
+
+                {record?.updatedOn && (
+                  <Typography variant="subtitle2" color="white">
+                    Updated on: {format(record.updatedOn, 'dd MMMM yyyy')}
+                  </Typography>
+                )}
+              </Box>
+            }>
+            <span className={`student-status ${statusClass}`}>{text}</span>
+          </Tooltip>
         );
       },
     },
+
     {
       title: 'Action',
       dataIndex: 'Action',
       fixed: 'end',
-      width: 100,
+      width: 80,
+
       render: (text, record) => {
         const items = [
           {
@@ -154,6 +170,7 @@ const Students = () => {
               </Link>
             ),
           },
+
           {
             key: 1,
             label: (
@@ -162,6 +179,7 @@ const Students = () => {
               </Link>
             ),
           },
+
           {
             key: 2,
             label: (
@@ -178,7 +196,7 @@ const Students = () => {
 
         return (
           <Dropdown menu={{ items }} trigger={['click']}>
-            <IconButton>
+            <IconButton className="student-action-button">
               <IoMdMore />
             </IconButton>
           </Dropdown>
@@ -186,7 +204,6 @@ const Students = () => {
       },
     },
   ];
-
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
     recordsPerPage: 10,
@@ -196,9 +213,11 @@ const Students = () => {
     students: [],
     totalRecords: 0,
   });
-
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  // Currently selected student status tab
+  const [activeStatusTab, setActiveStatusTab] = useState('all');
   const [isBulkStudentUploadModalVisible, setIsBulkStudentUploadModalVisible] =
     useState(false);
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
@@ -207,56 +226,46 @@ const Students = () => {
     useState(false);
   const [isUpdateStatusDialogOpen, setIsUpdateStatusDialogOpen] =
     useState(false);
-
   const openDeleteConfirmationDialog = () => {
     setIsDeleteConfirmDialogOpen(!isDeleteConfirmDialogOpen);
   };
-
   const openUpdateStatusDialog = () => {
     setIsUpdateStatusDialogOpen(!isUpdateStatusDialogOpen);
   };
-
   const openSendWarningLetterDialog = () =>
     setIsWarningLetterDialogOpen(!isWarningLetterDialogOpen);
-
   const open = Boolean(anchorEl);
-
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
-
   const openAddStudentPopover = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const closeAddStudentPopover = (event) => {
     setAnchorEl(null);
   };
-
   const openUploadExcelModal = () =>
     setIsBulkStudentUploadModalVisible(!isBulkStudentUploadModalVisible);
-
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-
   const studentQuerySchema = Yup.object().shape({
     studentId: Yup.string().trim(),
     name: Yup.string().trim(),
     group: Yup.string().trim().nullable(),
+    status: Yup.string().trim().nullable(),
   });
-
   const methods = useForm({
     resolver: yupResolver(studentQuerySchema),
   });
-
   const {
     handleSubmit,
     getValues,
+    reset,
+    watch,
     formState: { isSubmitting },
   } = methods;
-
   const fetchStudents = async (query) => {
     await getStudents(query)
       .unwrap()
@@ -268,24 +277,40 @@ const Students = () => {
         });
       });
   };
-
   const fetchStudentsByQuery = (data) => {
     fetchStudents({ ...data });
   };
+  const handleStatusTabChange = (status) => {
+    setActiveStatusTab(status);
+    setSelectedRowKeys([]);
 
+    const query = {
+      page: 1,
+      recordsPerPage: studentsQuery.recordsPerPage,
+    };
+
+    // If "all" is selected, don't send status
+    if (status !== 'all') {
+      query.status = status;
+    }
+
+    setStudentsQuery(query);
+    fetchStudents(query);
+  };
   const handleDeleteStudents = async () => {
     await deleteStudents({ studentIds: [...selectedRowKeys] })
       .unwrap()
       .then(() => {
         openNotification('success', 'Student(s) deleted successfully');
+        setSelectedRowKeys([]);
         fetchStudents(studentsQuery);
         openDeleteConfirmationDialog();
       })
+
       .catch((err) => {
         openNotification('error', err?.data?.message || err?.error);
       });
   };
-
   const handleUpdateStatus = async (data) => {
     await updateStudentStatus({ ...data })
       .unwrap()
@@ -300,7 +325,6 @@ const Students = () => {
         openNotification('error', err?.data?.message ?? err?.error);
       });
   };
-
   const handleGenerateStudentResultReport = async () => {
     await getStudentResultReport({
       ...getValues(),
@@ -324,7 +348,6 @@ const Students = () => {
         openNotification('error', 'Failed to fetch data');
       });
   };
-
   const studentBulkOptions = [
     {
       label: (
@@ -366,8 +389,37 @@ const Students = () => {
   };
 
   useEffect(() => {
-    fetchStudents(studentsQuery);
-  }, []);
+    const timer = setTimeout(() => {
+      const name = watch('name');
+
+      const query = {
+        page: 1,
+        recordsPerPage: studentsQuery.recordsPerPage,
+      };
+
+      // Keep the currently selected status tab
+      if (activeStatusTab !== 'all') {
+        query.status = activeStatusTab;
+      }
+
+      // Add search text
+      if (name && name.trim()) {
+        const searchValue = name.trim();
+
+        // If the search value is a number, search by Student ID
+        if (/^[0-9\/-]+$/.test(searchValue)) {
+          query.studentId = searchValue;
+        } else {
+          query.name = searchValue;
+        }
+      }
+
+      setStudentsQuery(query);
+      fetchStudents(query);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [watch('name'), activeStatusTab]);
 
   return (
     <>
@@ -379,6 +431,7 @@ const Students = () => {
         deleteLoader={isDeleting}
         handleDelete={handleDeleteStudents}
       />
+
       {isWarningLetterDialogOpen && (
         <SendWarningLetterDialog
           isShowModal={isWarningLetterDialogOpen}
@@ -387,6 +440,7 @@ const Students = () => {
           setSelectedRowKeys={setSelectedRowKeys}
         />
       )}
+
       <UpdateStatusDialog
         isShowModal={isUpdateStatusDialogOpen}
         showModalMethod={setIsUpdateStatusDialogOpen}
@@ -394,14 +448,11 @@ const Students = () => {
         setSelectedRowKeys={setSelectedRowKeys}
         handleUpdateStatus={handleUpdateStatus}
       />
-      <div className="content container-fluid">
-        {/* Page Header  */}
-        <PageHeader
-          currentSection="All Students"
-          pageTitle="Students"
-          parentRoute={PATH_DASHBOARD.students}
-          parentSection="Student"
-        />
+
+      <div className="content container-fluid students-page">
+        {/* Page Header removed */}
+
+        {/* Bulk Upload Modal */}
         {isBulkStudentUploadModalVisible && (
           <BulkUploadStudent
             open={isBulkStudentUploadModalVisible}
@@ -409,101 +460,162 @@ const Students = () => {
             fetchStudents={fetchStudents}
           />
         )}
-        <FormProvider
-          methods={methods}
-          onSubmit={handleSubmit(fetchStudentsByQuery)}>
-          <Stack
-            direction="row"
-            alignItems="end"
-            justifyContent="space-between"
-            spacing={2}
-            sx={{ mb: 2 }}>
-            <Box sx={{ width: '100%' }}>
-              <RHFTextField name="studentId" label="Student ID" />
-            </Box>
-            <Box sx={{ width: '100%' }}>
-              <RHFTextField name="name" label="Name" />
-            </Box>
-            <Box sx={{ width: '100%' }}>
-              <RHFAutocomplete
-                name="group"
-                label="Group"
-                options={groupsList}
-              />
-            </Box>
 
-            <Box sx={{ width: '100%' }}>
-              <RHFAutocomplete
-                name="status"
-                label="Status"
-                options={studentStatusOptions}
-              />
-            </Box>
-            <Box sx={{ width: '100%', mt: 1 }}>
-              <Button
-                loading={isSubmitting}
-                type="primary"
-                htmlType="submit"
-                size="large">
-                Search
-              </Button>
-            </Box>
-          </Stack>
-        </FormProvider>
+        {/* Search Section */}
 
+        {/* Students Table */}
         <div className="row">
           <div className="col-sm-12">
-            <div className="card card-table comman-shadow">
-              <div className="card-body">
-                <div className="page-header">
-                  <div className="row align-items-center">
-                    <div className="col">
-                      <h3 className="page-title">Students</h3>
-                    </div>
-                    <div className="col-auto text-end float-end ms-auto download-grp ">
-                      <Tooltip title="Export Result Report">
-                        <Link
-                          onClick={handleGenerateStudentResultReport}
-                          className="btn btn-primary"
-                          style={{ marginRight: '10px' }}>
-                          <PiExport size={20} />
-                        </Link>
-                      </Tooltip>
-
-                      <Tooltip title="Register Student">
-                        <Link
-                          onClick={openAddStudentPopover}
-                          // to={PATH_DASHBOARD.studentAdd}
-                          className="btn btn-primary">
-                          <i className="fas fa-plus" />
-                        </Link>
-                      </Tooltip>
-                      <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={closeAddStudentPopover}
-                        MenuListProps={{
-                          'aria-labelledby': 'basic-button',
-                        }}>
-                        <MenuItem
-                          onClick={() => {
-                            closeAddStudentPopover();
-                            navigate(PATH_DASHBOARD.studentAdd);
-                          }}>
-                          Register Student
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() => {
-                            closeAddStudentPopover();
-                            openUploadExcelModal();
-                          }}>
-                          Bulk Student Registration
-                        </MenuItem>
-                      </Menu>
+            <div className="students-table-card">
+              {/* Table Header */}
+              {/* Students Header */}
+              <div className="students-table-header">
+                <div className="students-header-top">
+                  <div className="students-header-title-area">
+                    <div className="students-title-row">
+                      <h3 className="students-table-title">Students</h3>
                     </div>
                   </div>
+
+                  <div className="students-header-actions">
+                    {/* Add Student */}
+                    <Button
+                      type="primary"
+                      size="large"
+                      onClick={() => navigate(PATH_DASHBOARD.studentAdd)}>
+                      + Add Student
+                    </Button>
+                  </div>
                 </div>
+              </div>
+              {/* Student Tabs */}
+              <div className="students-tabs">
+                {/* All Students */}
+                <button
+                  type="button"
+                  className={`student-tab ${
+                    activeStatusTab === 'all' ? 'active' : ''
+                  }`}
+                  onClick={() => handleStatusTabChange('all')}>
+                  All Students
+                </button>
+
+                {/* Active */}
+                <button
+                  type="button"
+                  className={`student-tab ${
+                    activeStatusTab === 'active' ? 'active' : ''
+                  }`}
+                  onClick={() => handleStatusTabChange('active')}>
+                  Active
+                </button>
+
+                {/* Inactive */}
+                <button
+                  type="button"
+                  className={`student-tab ${
+                    activeStatusTab === 'inactive' ? 'active' : ''
+                  }`}
+                  onClick={() => handleStatusTabChange('inactive')}>
+                  Inactive
+                </button>
+
+                {/* Suspended */}
+                <button
+                  type="button"
+                  className={`student-tab ${
+                    activeStatusTab === 'suspended' ? 'active' : ''
+                  }`}
+                  onClick={() => handleStatusTabChange('suspended')}>
+                  Suspended
+                </button>
+
+                {/* Dropped */}
+                <button
+                  type="button"
+                  className={`student-tab ${
+                    activeStatusTab === 'dropped' ? 'active' : ''
+                  }`}
+                  onClick={() => handleStatusTabChange('dropped')}>
+                  Dropped
+                </button>
+
+                {/* Withdrawn */}
+                <button
+                  type="button"
+                  className={`student-tab ${
+                    activeStatusTab === 'withdrawn' ? 'active' : ''
+                  }`}
+                  onClick={() => handleStatusTabChange('withdrawn')}>
+                  Withdrawn
+                </button>
+
+                {/* Graduated */}
+                <button
+                  type="button"
+                  className={`student-tab ${
+                    activeStatusTab === 'graduated' ? 'active' : ''
+                  }`}
+                  onClick={() => handleStatusTabChange('graduated')}>
+                  Graduated
+                </button>
+              </div>
+
+              <div className="subframe-search-section">
+                <FormProvider
+                  methods={methods}
+                  onSubmit={handleSubmit(fetchStudentsByQuery)}>
+                  <div className="subframe-search">
+                    {/* Search by Name / ID */}
+                    <div className="subframe-search-input">
+                      <RHFTextField
+                        name="name"
+                        placeholder="Search by name or ID..."
+                      />
+                    </div>
+
+                    {/* Add Filter */}
+                    <Button type="default" size="large">
+                      + Add Filter
+                    </Button>
+
+                    {/* Clear Filters */}
+                    <button
+                      type="button"
+                      className="clear-filters"
+                      onClick={() => {
+                        methods.reset({
+                          name: '',
+                          studentId: '',
+                          group: '',
+                          status: '',
+                        });
+
+                        setStudentsQuery({
+                          page: 1,
+                          recordsPerPage: 10,
+                        });
+
+                        setActiveStatusTab('all');
+
+                        fetchStudents({
+                          page: 1,
+                          recordsPerPage: 10,
+                        });
+                      }}>
+                      Clear all
+                    </button>
+
+                    {/* Hidden Submit */}
+                    <button type="submit" style={{ display: 'none' }}>
+                      Search
+                    </button>
+                  </div>
+                </FormProvider>
+              </div>
+
+              {/* Table Content */}
+              <div className="students-table-wrapper">
                 {isLoading ? (
                   SKELETON.map((_, index) => (
                     <TableSkeleton key={index} columns={column} />
@@ -511,69 +623,116 @@ const Students = () => {
                 ) : error ? (
                   <Alert
                     message="Error"
-                    description={error?.data?.message || error.error}
+                    description={error?.data?.message || error?.error}
                     type="error"
                     showIcon
                   />
                 ) : (
-                  <div>
-                    <Box sx={{ display: 'flex', justifyContent: 'end', mb: 2 }}>
-                      <Space wrap>
-                        <Space.Compact>
+                  <>
+                    {/* Bulk Selection Actions */}
+                    {selectedRowKeys.length > 0 && (
+                      <div className="students-selection-toolbar">
+                        {/* Selected count */}
+                        <div className="students-selected-count">
+                          <span>
+                            {selectedRowKeys.length}{' '}
+                            {selectedRowKeys.length === 1
+                              ? 'student'
+                              : 'students'}{' '}
+                            selected
+                          </span>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="students-selection-actions">
+                          {/* Export */}
                           <Button
-                            type="primary"
-                            size="large"
-                            disabled={selectedRowKeys.length === 0}>
-                            Actions
+                            type="default"
+                            className="students-selection-button"
+                            icon={<PiExport />}
+                            onClick={handleGenerateStudentResultReport}>
+                            Export
                           </Button>
-                          <Dropdown
-                            menu={menuProps}
-                            placement="bottomRight"
-                            trigger={['click']}>
-                            <Button
-                              size="large"
-                              type="primary"
-                              disabled={selectedRowKeys.length === 0}
-                              icon={<EllipsisOutlined />}
-                            />
-                          </Dropdown>
-                        </Space.Compact>
-                      </Space>
-                    </Box>
+
+                          {/* Send Email */}
+                          <Button
+                            type="default"
+                            className="students-selection-button"
+                            onClick={openSendWarningLetterDialog}>
+                            Send Email
+                          </Button>
+
+                          {/* Delete */}
+                          <Button
+                            danger
+                            type="default"
+                            className="students-selection-button students-delete-button"
+                            onClick={openDeleteConfirmationDialog}>
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Students Table */}
                     <Table
+                      className="students-ant-table"
                       pagination={{
                         total: dataSource?.totalRecords,
+
                         showTotal: (total, range) =>
                           `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+
                         showSizeChanger: true,
+
                         onShowSizeChange: onShowSizeChange,
+
                         itemRender: itemRender,
+
                         onChange: (page, pageSize) => {
-                          setStudentsQuery({
-                            ...studentsQuery,
+                          setSelectedRowKeys([]);
+
+                          const query = {
                             page,
                             recordsPerPage: pageSize,
-                          });
-                          fetchStudents({
-                            page,
-                            recordsPerPage: pageSize,
-                            ...getValues(),
-                          });
+                          };
+
+                          // Keep the currently selected status when changing pages
+                          if (activeStatusTab !== 'all') {
+                            query.status = activeStatusTab;
+                          }
+
+                          // Keep search form values
+                          const formValues = getValues();
+
+                          if (formValues.name) {
+                            query.name = formValues.name;
+                          }
+
+                          if (formValues.studentId) {
+                            query.studentId = formValues.studentId;
+                          }
+
+                          if (formValues.group) {
+                            query.group = formValues.group;
+                          }
+
+                          setStudentsQuery(query);
+                          fetchStudents(query);
                         },
                       }}
                       columns={column}
-                      dataSource={dataSource.students}
+                      dataSource={dataSource?.students}
                       rowSelection={rowSelection}
                       rowKey={(record) => record._id}
                       scroll={{ x: 'max-content' }}
                     />
-                  </div>
+                  </>
                 )}
               </div>
             </div>
           </div>
         </div>
-        {/* // )} */}
       </div>
     </>
   );
