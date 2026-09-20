@@ -1,20 +1,5 @@
-<<<<<<< HEAD
-import './Students.css';
-import { EllipsisOutlined } from '@ant-design/icons';
-import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { Alert, Button, Dropdown, Space, Table, Tag, Tooltip } from 'antd';
-=======
 import { Box, IconButton, Typography } from '@mui/material';
 import { Alert, Button, Dropdown, Table, Tooltip } from 'antd';
->>>>>>> main
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { IoMdMore } from 'react-icons/io';
@@ -177,11 +162,7 @@ const Students = () => {
 
         return (
           <Dropdown menu={{ items }} trigger={['click']}>
-<<<<<<< HEAD
-            <IconButton className="student-action-button">
-=======
             <IconButton className="data-action-button">
->>>>>>> main
               <IoMdMore />
             </IconButton>
           </Dropdown>
@@ -201,12 +182,7 @@ const Students = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
 
-<<<<<<< HEAD
-  // Currently selected student status tab
-  const [activeStatusTab, setActiveStatusTab] = useState('all');
-=======
   const [isStudentFilterOpen, setIsStudentFilterOpen] = useState(false);
->>>>>>> main
   const [isBulkStudentUploadModalVisible, setIsBulkStudentUploadModalVisible] =
     useState(false);
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
@@ -239,25 +215,6 @@ const Students = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-<<<<<<< HEAD
-  const studentQuerySchema = Yup.object().shape({
-    studentId: Yup.string().trim(),
-    name: Yup.string().trim(),
-    group: Yup.string().trim().nullable(),
-    status: Yup.string().trim().nullable(),
-  });
-  const methods = useForm({
-    resolver: yupResolver(studentQuerySchema),
-  });
-  const {
-    handleSubmit,
-    getValues,
-    reset,
-    watch,
-    formState: { isSubmitting },
-  } = methods;
-=======
->>>>>>> main
   const fetchStudents = async (query) => {
     await getStudents(query)
       .unwrap()
@@ -289,26 +246,6 @@ const Students = () => {
     setStudentsQuery(query);
     fetchStudents(query);
   };
-<<<<<<< HEAD
-  const handleStatusTabChange = (status) => {
-    setActiveStatusTab(status);
-    setSelectedRowKeys([]);
-
-    const query = {
-      page: 1,
-      recordsPerPage: studentsQuery.recordsPerPage,
-    };
-
-    // If "all" is selected, don't send status
-    if (status !== 'all') {
-      query.status = status;
-    }
-
-    setStudentsQuery(query);
-    fetchStudents(query);
-  };
-=======
->>>>>>> main
   const handleDeleteStudents = async () => {
     await deleteStudents({ studentIds: [...selectedRowKeys] })
       .unwrap()
@@ -401,37 +338,8 @@ const Students = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const name = watch('name');
-
-      const query = {
-        page: 1,
-        recordsPerPage: studentsQuery.recordsPerPage,
-      };
-
-      // Keep the currently selected status tab
-      if (activeStatusTab !== 'all') {
-        query.status = activeStatusTab;
-      }
-
-      // Add search text
-      if (name && name.trim()) {
-        const searchValue = name.trim();
-
-        // If the search value is a number, search by Student ID
-        if (/^[0-9\/-]+$/.test(searchValue)) {
-          query.studentId = searchValue;
-        } else {
-          query.name = searchValue;
-        }
-      }
-
-      setStudentsQuery(query);
-      fetchStudents(query);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [watch('name'), activeStatusTab]);
+    fetchStudents(studentsQuery);
+  }, []);
 
   return (
     <>
@@ -461,11 +369,7 @@ const Students = () => {
         handleUpdateStatus={handleUpdateStatus}
       />
 
-<<<<<<< HEAD
-      <div className="content container-fluid students-page">
-=======
       <div className="content container-fluid data-page students-page">
->>>>>>> main
         {/* Page Header removed */}
 
         {/* Bulk Upload Modal */}
@@ -476,33 +380,10 @@ const Students = () => {
             fetchStudents={fetchStudents}
           />
         )}
-<<<<<<< HEAD
-
-        {/* Search Section */}
-=======
->>>>>>> main
 
         {/* Students Table */}
         <div className="row">
           <div className="col-sm-12">
-<<<<<<< HEAD
-            <div className="students-table-card">
-              {/* Table Header */}
-              {/* Students Header */}
-              <div className="students-table-header">
-                <div className="students-header-top">
-                  <div className="students-header-title-area">
-                    <div className="students-title-row">
-                      <h3 className="students-table-title">Students</h3>
-                    </div>
-                  </div>
-
-                  <div className="students-header-actions">
-                    {/* Add Student */}
-                    <Button
-                      type="primary"
-                      size="large"
-=======
             <div className="data-table-card">
               {/* Table Header */}
               {/* Students Header */}
@@ -518,143 +399,12 @@ const Students = () => {
                     {/* Add Student */}
                     <Button
                       type="primary"
->>>>>>> main
                       onClick={() => navigate(PATH_DASHBOARD.studentAdd)}>
                       + Add Student
                     </Button>
                   </div>
                 </div>
               </div>
-<<<<<<< HEAD
-              {/* Student Tabs */}
-              <div className="students-tabs">
-                {/* All Students */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'all' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('all')}>
-                  All Students
-                </button>
-
-                {/* Active */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'active' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('active')}>
-                  Active
-                </button>
-
-                {/* Inactive */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'inactive' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('inactive')}>
-                  Inactive
-                </button>
-
-                {/* Suspended */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'suspended' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('suspended')}>
-                  Suspended
-                </button>
-
-                {/* Dropped */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'dropped' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('dropped')}>
-                  Dropped
-                </button>
-
-                {/* Withdrawn */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'withdrawn' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('withdrawn')}>
-                  Withdrawn
-                </button>
-
-                {/* Graduated */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'graduated' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('graduated')}>
-                  Graduated
-                </button>
-              </div>
-
-              <div className="subframe-search-section">
-                <FormProvider
-                  methods={methods}
-                  onSubmit={handleSubmit(fetchStudentsByQuery)}>
-                  <div className="subframe-search">
-                    {/* Search by Name / ID */}
-                    <div className="subframe-search-input">
-                      <RHFTextField
-                        name="name"
-                        placeholder="Search by name or ID..."
-                      />
-                    </div>
-
-                    {/* Add Filter */}
-                    <Button type="default" size="large">
-                      + Add Filter
-                    </Button>
-
-                    {/* Clear Filters */}
-                    <button
-                      type="button"
-                      className="clear-filters"
-                      onClick={() => {
-                        methods.reset({
-                          name: '',
-                          studentId: '',
-                          group: '',
-                          status: '',
-                        });
-
-                        setStudentsQuery({
-                          page: 1,
-                          recordsPerPage: 10,
-                        });
-
-                        setActiveStatusTab('all');
-
-                        fetchStudents({
-                          page: 1,
-                          recordsPerPage: 10,
-                        });
-                      }}>
-                      Clear all
-                    </button>
-
-                    {/* Hidden Submit */}
-                    <button type="submit" style={{ display: 'none' }}>
-                      Search
-                    </button>
-                  </div>
-                </FormProvider>
-              </div>
-
-              {/* Table Content */}
-              <div className="students-table-wrapper">
-=======
               <StudentFilter
                 open={isStudentFilterOpen}
                 query={studentsQuery}
@@ -670,7 +420,6 @@ const Students = () => {
 
               {/* Table Content */}
               <div className="data-table-wrapper">
->>>>>>> main
                 {isLoading ? (
                   generateElem(<TableSkeleton columns={column} />)
                 ) : error ? (
@@ -684,15 +433,9 @@ const Students = () => {
                   <>
                     {/* Bulk Selection Actions */}
                     {selectedRowKeys.length > 0 && (
-<<<<<<< HEAD
-                      <div className="students-selection-toolbar">
-                        {/* Selected count */}
-                        <div className="students-selected-count">
-=======
                       <div className="data-selection-toolbar">
                         {/* Selected count */}
                         <div className="data-selected-count">
->>>>>>> main
                           <span>
                             {selectedRowKeys.length}{' '}
                             {selectedRowKeys.length === 1
@@ -703,19 +446,11 @@ const Students = () => {
                         </div>
 
                         {/* Actions */}
-<<<<<<< HEAD
-                        <div className="students-selection-actions">
-                          {/* Export */}
-                          <Button
-                            type="default"
-                            className="students-selection-button"
-=======
                         <div className="data-selection-actions">
                           {/* Export */}
                           <Button
                             type="default"
                             className="data-selection-button"
->>>>>>> main
                             icon={<PiExport />}
                             onClick={handleGenerateStudentResultReport}>
                             Export
@@ -724,11 +459,7 @@ const Students = () => {
                           {/* Send Email */}
                           <Button
                             type="default"
-<<<<<<< HEAD
-                            className="students-selection-button"
-=======
                             className="data-selection-button"
->>>>>>> main
                             onClick={openSendWarningLetterDialog}>
                             Send Email
                           </Button>
@@ -737,11 +468,7 @@ const Students = () => {
                           <Button
                             danger
                             type="default"
-<<<<<<< HEAD
-                            className="students-selection-button students-delete-button"
-=======
                             className="data-selection-button data-delete-button"
->>>>>>> main
                             onClick={openDeleteConfirmationDialog}>
                             Delete
                           </Button>
@@ -751,11 +478,7 @@ const Students = () => {
 
                     {/* Students Table */}
                     <Table
-<<<<<<< HEAD
-                      className="students-ant-table"
-=======
                       className="data-ant-table"
->>>>>>> main
                       pagination={{
                         total: dataSource?.totalRecords,
 
@@ -772,31 +495,6 @@ const Students = () => {
                           setSelectedRowKeys([]);
 
                           const query = {
-<<<<<<< HEAD
-                            page,
-                            recordsPerPage: pageSize,
-                          };
-
-                          // Keep the currently selected status when changing pages
-                          if (activeStatusTab !== 'all') {
-                            query.status = activeStatusTab;
-                          }
-
-                          // Keep search form values
-                          const formValues = getValues();
-
-                          if (formValues.name) {
-                            query.name = formValues.name;
-                          }
-
-                          if (formValues.studentId) {
-                            query.studentId = formValues.studentId;
-                          }
-
-                          if (formValues.group) {
-                            query.group = formValues.group;
-                          }
-=======
                             page,
                             recordsPerPage: pageSize,
                           };
@@ -806,7 +504,6 @@ const Students = () => {
                             page,
                             recordsPerPage: pageSize,
                           });
->>>>>>> main
 
                           setStudentsQuery(query);
                           fetchStudents(query);
