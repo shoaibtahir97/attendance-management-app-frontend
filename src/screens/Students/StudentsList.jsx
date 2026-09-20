@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import './Students.css';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,24 +11,19 @@ import {
   Typography,
 } from '@mui/material';
 import { Alert, Button, Dropdown, Space, Table, Tag, Tooltip } from 'antd';
+=======
+import { Box, IconButton, Typography } from '@mui/material';
+import { Alert, Button, Dropdown, Table, Tooltip } from 'antd';
+>>>>>>> main
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { IoMdMore } from 'react-icons/io';
 import { PiExport } from 'react-icons/pi';
 import { Link, useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
 import { DeleteConfirmationDialog } from '../../components/DeleteConfirmationDialog';
-import {
-  FormProvider,
-  RHFAutocomplete,
-  RHFTextField,
-} from '../../components/HookForm';
-import PageHeader from '../../components/PageHeader';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
 import useNotification from '../../hooks/useNotification';
-import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 import { useLazyGetStudentResultReportQuery } from '../../redux/slices/apiSlices/reportApiSlice';
 import {
   useDeleteStudentsMutation,
@@ -35,36 +31,21 @@ import {
   useUpdateStudentStatusMutation,
 } from '../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import { generateElem } from '../../utils/generateElements';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
 import SendWarningLetterDialog from './components/SendWarningLetterDialog';
-import { UpdateStatusDialog, studentStatusOptions } from './UpdateStatusDialog';
-
-export const SKELETON = ['', '', '', '', ''];
+import StudentFilter from './components/StudentFilter';
+import './Students.css';
+import { UpdateStatusDialog } from './UpdateStatusDialog';
 
 const Students = () => {
   const navigate = useNavigate();
   const { openNotification } = useNotification();
   const [getStudents, { isLoading, error }] = useLazyGetStudentsQuery();
   const [getStudentResultReport] = useLazyGetStudentResultReportQuery();
-  const { data: groupsList } = useGetGroupsListQuery();
   const [updateStudentStatus] = useUpdateStudentStatusMutation();
   const [deleteStudents, { loading: isDeleting }] = useDeleteStudentsMutation();
-
-  const setTagColor = (status) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return 'success';
-      case 'inactive':
-        return 'error';
-      case 'suspended':
-        return 'warning';
-      case 'graduated':
-        return 'blue';
-      default:
-        return 'default';
-    }
-  };
 
   const column = [
     {
@@ -196,7 +177,11 @@ const Students = () => {
 
         return (
           <Dropdown menu={{ items }} trigger={['click']}>
+<<<<<<< HEAD
             <IconButton className="student-action-button">
+=======
+            <IconButton className="data-action-button">
+>>>>>>> main
               <IoMdMore />
             </IconButton>
           </Dropdown>
@@ -216,8 +201,12 @@ const Students = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
 
+<<<<<<< HEAD
   // Currently selected student status tab
   const [activeStatusTab, setActiveStatusTab] = useState('all');
+=======
+  const [isStudentFilterOpen, setIsStudentFilterOpen] = useState(false);
+>>>>>>> main
   const [isBulkStudentUploadModalVisible, setIsBulkStudentUploadModalVisible] =
     useState(false);
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
@@ -250,6 +239,7 @@ const Students = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
+<<<<<<< HEAD
   const studentQuerySchema = Yup.object().shape({
     studentId: Yup.string().trim(),
     name: Yup.string().trim(),
@@ -266,6 +256,8 @@ const Students = () => {
     watch,
     formState: { isSubmitting },
   } = methods;
+=======
+>>>>>>> main
   const fetchStudents = async (query) => {
     await getStudents(query)
       .unwrap()
@@ -278,8 +270,26 @@ const Students = () => {
       });
   };
   const fetchStudentsByQuery = (data) => {
-    fetchStudents({ ...data });
+    const query = {
+      page: 1,
+      recordsPerPage: studentsQuery.recordsPerPage,
+      ...Object.fromEntries(
+        Object.entries(data).filter(
+          ([, value]) => value !== '' && value != null
+        )
+      ),
+    };
+    setStudentsQuery(query);
+    fetchStudents(query);
+    setIsStudentFilterOpen(false);
   };
+  const handleRemoveFilter = (key) => {
+    const query = { ...studentsQuery, page: 1 };
+    delete query[key];
+    setStudentsQuery(query);
+    fetchStudents(query);
+  };
+<<<<<<< HEAD
   const handleStatusTabChange = (status) => {
     setActiveStatusTab(status);
     setSelectedRowKeys([]);
@@ -297,6 +307,8 @@ const Students = () => {
     setStudentsQuery(query);
     fetchStudents(query);
   };
+=======
+>>>>>>> main
   const handleDeleteStudents = async () => {
     await deleteStudents({ studentIds: [...selectedRowKeys] })
       .unwrap()
@@ -327,7 +339,7 @@ const Students = () => {
   };
   const handleGenerateStudentResultReport = async () => {
     await getStudentResultReport({
-      ...getValues(),
+      ...studentsQuery,
     })
       .unwrap()
       .then((res) => {
@@ -449,7 +461,11 @@ const Students = () => {
         handleUpdateStatus={handleUpdateStatus}
       />
 
+<<<<<<< HEAD
       <div className="content container-fluid students-page">
+=======
+      <div className="content container-fluid data-page students-page">
+>>>>>>> main
         {/* Page Header removed */}
 
         {/* Bulk Upload Modal */}
@@ -460,12 +476,16 @@ const Students = () => {
             fetchStudents={fetchStudents}
           />
         )}
+<<<<<<< HEAD
 
         {/* Search Section */}
+=======
+>>>>>>> main
 
         {/* Students Table */}
         <div className="row">
           <div className="col-sm-12">
+<<<<<<< HEAD
             <div className="students-table-card">
               {/* Table Header */}
               {/* Students Header */}
@@ -482,12 +502,30 @@ const Students = () => {
                     <Button
                       type="primary"
                       size="large"
+=======
+            <div className="data-table-card">
+              {/* Table Header */}
+              {/* Students Header */}
+              <div className="data-table-header">
+                <div className="students-header-top">
+                  <div className="students-header-title-area">
+                    <div className="students-title-row">
+                      <h3 className="data-table-title">Students</h3>
+                    </div>
+                  </div>
+
+                  <div className="data-header-actions">
+                    {/* Add Student */}
+                    <Button
+                      type="primary"
+>>>>>>> main
                       onClick={() => navigate(PATH_DASHBOARD.studentAdd)}>
                       + Add Student
                     </Button>
                   </div>
                 </div>
               </div>
+<<<<<<< HEAD
               {/* Student Tabs */}
               <div className="students-tabs">
                 {/* All Students */}
@@ -616,10 +654,25 @@ const Students = () => {
 
               {/* Table Content */}
               <div className="students-table-wrapper">
+=======
+              <StudentFilter
+                open={isStudentFilterOpen}
+                query={studentsQuery}
+                onClose={() => setIsStudentFilterOpen(!isStudentFilterOpen)}
+                onSubmit={fetchStudentsByQuery}
+                onRemoveFilter={handleRemoveFilter}
+                clearFilters={() => {
+                  const query = { page: 1, recordsPerPage: 10 };
+                  setStudentsQuery(query);
+                  fetchStudents(query);
+                }}
+              />
+
+              {/* Table Content */}
+              <div className="data-table-wrapper">
+>>>>>>> main
                 {isLoading ? (
-                  SKELETON.map((_, index) => (
-                    <TableSkeleton key={index} columns={column} />
-                  ))
+                  generateElem(<TableSkeleton columns={column} />)
                 ) : error ? (
                   <Alert
                     message="Error"
@@ -631,9 +684,15 @@ const Students = () => {
                   <>
                     {/* Bulk Selection Actions */}
                     {selectedRowKeys.length > 0 && (
+<<<<<<< HEAD
                       <div className="students-selection-toolbar">
                         {/* Selected count */}
                         <div className="students-selected-count">
+=======
+                      <div className="data-selection-toolbar">
+                        {/* Selected count */}
+                        <div className="data-selected-count">
+>>>>>>> main
                           <span>
                             {selectedRowKeys.length}{' '}
                             {selectedRowKeys.length === 1
@@ -644,11 +703,19 @@ const Students = () => {
                         </div>
 
                         {/* Actions */}
+<<<<<<< HEAD
                         <div className="students-selection-actions">
                           {/* Export */}
                           <Button
                             type="default"
                             className="students-selection-button"
+=======
+                        <div className="data-selection-actions">
+                          {/* Export */}
+                          <Button
+                            type="default"
+                            className="data-selection-button"
+>>>>>>> main
                             icon={<PiExport />}
                             onClick={handleGenerateStudentResultReport}>
                             Export
@@ -657,7 +724,11 @@ const Students = () => {
                           {/* Send Email */}
                           <Button
                             type="default"
+<<<<<<< HEAD
                             className="students-selection-button"
+=======
+                            className="data-selection-button"
+>>>>>>> main
                             onClick={openSendWarningLetterDialog}>
                             Send Email
                           </Button>
@@ -666,7 +737,11 @@ const Students = () => {
                           <Button
                             danger
                             type="default"
+<<<<<<< HEAD
                             className="students-selection-button students-delete-button"
+=======
+                            className="data-selection-button data-delete-button"
+>>>>>>> main
                             onClick={openDeleteConfirmationDialog}>
                             Delete
                           </Button>
@@ -676,7 +751,11 @@ const Students = () => {
 
                     {/* Students Table */}
                     <Table
+<<<<<<< HEAD
                       className="students-ant-table"
+=======
+                      className="data-ant-table"
+>>>>>>> main
                       pagination={{
                         total: dataSource?.totalRecords,
 
@@ -693,6 +772,7 @@ const Students = () => {
                           setSelectedRowKeys([]);
 
                           const query = {
+<<<<<<< HEAD
                             page,
                             recordsPerPage: pageSize,
                           };
@@ -716,6 +796,17 @@ const Students = () => {
                           if (formValues.group) {
                             query.group = formValues.group;
                           }
+=======
+                            page,
+                            recordsPerPage: pageSize,
+                          };
+
+                          Object.assign(query, {
+                            ...studentsQuery,
+                            page,
+                            recordsPerPage: pageSize,
+                          });
+>>>>>>> main
 
                           setStudentsQuery(query);
                           fetchStudents(query);

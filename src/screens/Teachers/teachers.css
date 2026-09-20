@@ -1,0 +1,17 @@
+@import '../shared/TableUI.css';
+
+.teacher-name {
+  color: #111827;
+  font-weight: 600;
+}
+
+.teacher-email {
+  color: #374151;
+}
+
+.teacher-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}

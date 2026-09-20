@@ -1,0 +1,16 @@
+@import '../shared/TableUI.css';
+
+.subject-name {
+  color: #111827;
+  font-weight: 600;
+}
+
+.subject-code {
+  color: #374151;
+}
+
+.subject-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
