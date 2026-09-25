@@ -24,10 +24,7 @@ import StudentFilter from './components/StudentFilter';
 import './Students.css';
 import { FaChevronDown } from 'react-icons/fa';
 import { UpdateStatusDialog } from './UpdateStatusDialog';
-import {
-  StudentRegistrationDialog,
-  StudentRegistrationModal,
-} from './components/registerStudent/StudentRegistrationDialog';
+import { StudentRegistrationDialog } from './components/registerStudent/StudentRegistrationDialog';
 
 const Students = () => {
   const navigate = useNavigate();
@@ -145,9 +142,9 @@ const Students = () => {
           {
             key: 1,
             label: (
-              <Link to={`${PATH_DASHBOARD.studentEdit}/${record._id}`}>
+              <a onClick={() => openEditStudentDialog(record._id)}>
                 Edit Student
-              </Link>
+              </a>
             ),
           },
 
@@ -194,6 +191,7 @@ const Students = () => {
     isStudentRegistrationModalVisible,
     setIsStudentRegistrationModalVisible,
   ] = useState(false);
+  const [editingStudentId, setEditingStudentId] = useState(null);
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
     useState(false);
   const [isWarningLetterDialogOpen, setIsWarningLetterDialogOpen] =
@@ -202,7 +200,17 @@ const Students = () => {
     useState(false);
 
   const toggleStudentRegistrationModal = () => {
-    setIsStudentRegistrationModalVisible(!isStudentRegistrationModalVisible);
+    if (isStudentRegistrationModalVisible) {
+      setIsStudentRegistrationModalVisible(false);
+      setEditingStudentId(null);
+      return;
+    }
+    setEditingStudentId(null);
+    setIsStudentRegistrationModalVisible(true);
+  };
+  const openEditStudentDialog = (studentId) => {
+    setEditingStudentId(studentId);
+    setIsStudentRegistrationModalVisible(true);
   };
   const openDeleteConfirmationDialog = () => {
     setIsDeleteConfirmDialogOpen(!isDeleteConfirmDialogOpen);
@@ -362,6 +370,7 @@ const Students = () => {
         open={isStudentRegistrationModalVisible}
         onClose={toggleStudentRegistrationModal}
         fetchStudents={() => fetchStudents(studentsQuery)}
+        studentId={editingStudentId}
       />
 
       <DeleteConfirmationDialog
