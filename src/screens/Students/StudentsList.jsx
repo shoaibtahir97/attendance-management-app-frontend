@@ -1,5 +1,5 @@
 import { Box, IconButton, Typography } from '@mui/material';
-import { Alert, Button, Dropdown, Table, Tooltip } from 'antd';
+import { Alert, Button, Dropdown, Space, Table, Tooltip } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { IoMdMore } from 'react-icons/io';
@@ -22,7 +22,12 @@ import BulkUploadStudent from './components/BulkUploadStudent';
 import SendWarningLetterDialog from './components/SendWarningLetterDialog';
 import StudentFilter from './components/StudentFilter';
 import './Students.css';
+import { FaChevronDown } from 'react-icons/fa';
 import { UpdateStatusDialog } from './UpdateStatusDialog';
+import {
+  StudentRegistrationDialog,
+  StudentRegistrationModal,
+} from './components/registerStudent/StudentRegistrationDialog';
 
 const Students = () => {
   const navigate = useNavigate();
@@ -170,6 +175,7 @@ const Students = () => {
       },
     },
   ];
+
   const [studentsQuery, setStudentsQuery] = useState({
     page: 1,
     recordsPerPage: 10,
@@ -181,7 +187,6 @@ const Students = () => {
   });
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-
   const [isStudentFilterOpen, setIsStudentFilterOpen] = useState(false);
   const [isBulkStudentUploadModalVisible, setIsBulkStudentUploadModalVisible] =
     useState(false);
@@ -189,20 +194,16 @@ const Students = () => {
     isStudentRegistrationModalVisible,
     setIsStudentRegistrationModalVisible,
   ] = useState(false);
-  const openStudentRegistrationModal = () => {
-    setIsStudentRegistrationModalVisible(true);
-  };
-
-  const closeStudentRegistrationModal = () => {
-    setIsStudentRegistrationModalVisible(false);
-  };
-
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
     useState(false);
   const [isWarningLetterDialogOpen, setIsWarningLetterDialogOpen] =
     useState(false);
   const [isUpdateStatusDialogOpen, setIsUpdateStatusDialogOpen] =
     useState(false);
+
+  const toggleStudentRegistrationModal = () => {
+    setIsStudentRegistrationModalVisible(!isStudentRegistrationModalVisible);
+  };
   const openDeleteConfirmationDialog = () => {
     setIsDeleteConfirmDialogOpen(!isDeleteConfirmDialogOpen);
   };
@@ -211,10 +212,13 @@ const Students = () => {
   };
   const openSendWarningLetterDialog = () =>
     setIsWarningLetterDialogOpen(!isWarningLetterDialogOpen);
+
   const open = Boolean(anchorEl);
+
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
+
   const openAddStudentPopover = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -272,6 +276,7 @@ const Students = () => {
         openNotification('error', err?.data?.message || err?.error);
       });
   };
+
   const handleUpdateStatus = async (data) => {
     await updateStudentStatus({ ...data })
       .unwrap()
@@ -286,6 +291,7 @@ const Students = () => {
         openNotification('error', err?.data?.message ?? err?.error);
       });
   };
+
   const handleGenerateStudentResultReport = async () => {
     await getStudentResultReport({
       ...studentsQuery,
@@ -309,6 +315,7 @@ const Students = () => {
         openNotification('error', 'Failed to fetch data');
       });
   };
+
   const studentBulkOptions = [
     {
       label: (
@@ -345,16 +352,18 @@ const Students = () => {
     },
   ];
 
-  const menuProps = {
-    items: studentBulkOptions,
-  };
-
   useEffect(() => {
     fetchStudents(studentsQuery);
   }, []);
 
   return (
     <>
+      <StudentRegistrationDialog
+        open={isStudentRegistrationModalVisible}
+        onClose={toggleStudentRegistrationModal}
+        fetchStudents={() => fetchStudents(studentsQuery)}
+      />
+
       <DeleteConfirmationDialog
         isShowModal={isDeleteConfirmDialogOpen}
         showModalMethod={openDeleteConfirmationDialog}
@@ -409,11 +418,38 @@ const Students = () => {
 
                   <div className="data-header-actions">
                     {/* Add Student */}
-                    <Button
-                      type="primary"
-                      onClick={() => navigate(PATH_DASHBOARD.studentAdd)}>
-                      + Add Student
-                    </Button>
+                    <Space.Compact size="large">
+                      <Button
+                        type="primary"
+                        size="middle"
+                        onClick={() => navigate()}>
+                        + Add Student
+                      </Button>
+
+                      <Dropdown
+                        menu={{
+                          items: [
+                            {
+                              key: 'register',
+                              label: 'Register Student',
+                              onClick: toggleStudentRegistrationModal,
+                            },
+                            {
+                              key: 'bulk',
+                              label: 'Bulk Student Registration',
+                              onClick: openUploadExcelModal,
+                            },
+                          ],
+                        }}
+                        trigger={['click']}
+                        placement="bottomRight">
+                        <Button
+                          type="primary"
+                          size="middle"
+                          icon={<FaChevronDown />}
+                        />
+                      </Dropdown>
+                    </Space.Compact>
                   </div>
                 </div>
               </div>
