@@ -1,335 +1,240 @@
-/* =========================================================
-   GROUPS PAGE
-========================================================= */
-
 .groups-page {
-    background: #f8f9fc;
-    min-height: 100vh;
-    padding-bottom: 40px;
+  padding-bottom: 30px;
 }
 
-
-/* =========================================================
-   FILTER AREA
-========================================================= */
-
-.groups-filter-area {
-    display: flex;
-    align-items: flex-end;
-    gap: 24px;
-    margin-bottom: 24px;
-}
-
-.groups-filter-field {
-    width: 100%;
-}
-
-.groups-name-filter {
-    max-width: 440px;
-}
-
-.groups-course-filter {
-    max-width: 440px;
-}
-
-.groups-search-button-wrapper {
-    flex-shrink: 0;
-}
-
-.groups-search-button {
-    height: 60px !important;
-    min-width: 120px !important;
-    padding: 0 24px !important;
-    border-radius: 10px !important;
-    font-size: 16px !important;
-    font-weight: 500 !important;
-    box-shadow: none !important;
-}
-
-
-/* =========================================================
+/* =========================================
    GROUPS CARD
-========================================================= */
+========================================= */
 
 .groups-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  margin-top: 25px;
 }
 
-
-/* =========================================================
+/* =========================================
    CARD HEADER
-========================================================= */
+========================================= */
 
 .groups-card-header {
-    min-height: 120px;
-    padding: 30px 36px;
+  min-height: 125px;
+  padding: 30px 36px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .groups-card-title {
-    margin: 0;
-    font-size: 30px;
-    line-height: 38px;
-    font-weight: 700;
-    color: #111827;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  color: #172033;
 }
 
 .groups-card-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-
-/* =========================================================
+/* =========================================
    ADD GROUP BUTTON
-========================================================= */
+========================================= */
 
 .groups-add-button {
-    height: 56px;
-    padding: 0 24px;
+  height: 52px;
+  padding: 0 22px;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 
-    background: #1677ff;
-    color: #ffffff !important;
+  background: #1976d2;
+  color: #ffffff;
 
-    border-radius: 9px;
+  border-radius: 10px;
+  text-decoration: none;
 
-    font-size: 17px;
-    font-weight: 500;
+  font-size: 17px;
+  font-weight: 500;
 
-    text-decoration: none;
-
-    transition: all 0.2s ease;
+  transition: 0.2s ease;
 }
 
 .groups-add-button:hover {
-    background: #0958d9;
-    color: #ffffff !important;
+  background: #1565c0;
+  color: #ffffff;
 }
 
 .groups-add-icon {
-    font-size: 28px;
-    line-height: 1;
-    font-weight: 300;
+  font-size: 24px;
+  line-height: 1;
 }
 
+/* =========================================
+   FILTER SECTION
+========================================= */
 
-/* =========================================================
-   TABLE WRAPPER
-========================================================= */
+.groups-filter-section {
+  padding: 30px 36px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.groups-filter-area {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.groups-filter-field {
+  flex: 1;
+}
+
+.groups-name-filter {
+  max-width: 420px;
+}
+
+.groups-course-filter {
+  max-width: 420px;
+}
+
+.groups-search-button-wrapper {
+  padding-bottom: 0;
+}
+
+.groups-search-button {
+  min-width: 110px;
+  height: 52px;
+  font-size: 16px;
+}
+
+/* =========================================
+   TABLE
+========================================= */
 
 .groups-table-wrapper {
-    padding: 30px 36px 24px;
+  padding: 30px 36px;
 }
-
-
-/* =========================================================
-   ANT DESIGN TABLE
-========================================================= */
 
 .groups-ant-table {
-    width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
 }
 
-.groups-ant-table .ant-table {
-    border: 1px solid #edf0f4;
-    border-radius: 12px;
-    overflow: hidden;
+/* Table header */
+
+.groups-ant-table .ant-table-thead > tr > th {
+  background: #f8fafc;
+  color: #374151;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 18px 20px;
 }
 
+/* Table rows */
 
-/* =========================================================
-   TABLE HEADER
-========================================================= */
-
-.groups-ant-table .ant-table-thead>tr>th {
-    height: 62px;
-
-    background: #f8fafc !important;
-
-    color: #111827 !important;
-
-    font-size: 15px;
-    font-weight: 600;
-
-    padding: 0 14px;
-
-    border-bottom: 1px solid #e5e7eb !important;
+.groups-ant-table .ant-table-tbody > tr > td {
+  padding: 20px;
+  font-size: 16px;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-
-/* =========================================================
-   TABLE BODY
-========================================================= */
-
-.groups-ant-table .ant-table-tbody>tr>td {
-    height: 76px;
-
-    padding: 12px 14px;
-
-    color: #374151;
-
-    font-size: 15px;
-
-    border-bottom: 1px solid #edf0f4 !important;
+.groups-ant-table .ant-table-tbody > tr:hover > td {
+  background: #f8fafc !important;
 }
 
-.groups-ant-table .ant-table-tbody>tr:hover>td {
-    background: #fafbff !important;
-}
-
-
-/* =========================================================
-   GROUP NAME
-========================================================= */
+/* =========================================
+   TABLE CONTENT
+========================================= */
 
 .groups-name {
-    color: #111827;
-    font-size: 16px;
-    font-weight: 600;
+  font-weight: 600;
+  color: #172033;
 }
-
-
-/* =========================================================
-   COURSE
-========================================================= */
 
 .groups-course {
-    color: #374151;
-    font-size: 15px;
+  color: #596579;
 }
-
-
-/* =========================================================
-   STUDENTS
-========================================================= */
 
 .groups-students {
-    color: #111827;
-    font-size: 15px;
-    font-weight: 500;
+  font-weight: 500;
+  color: #374151;
 }
 
-
-/* =========================================================
-   ACTION
-========================================================= */
+/* =========================================
+   EDIT BUTTON
+========================================= */
 
 .groups-action {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .groups-edit-button {
-    width: 38px !important;
-    height: 38px !important;
-
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-
-    color: #6b7280 !important;
+  color: #1976d2 !important;
 }
 
 .groups-edit-button:hover {
-    background: #f3f4f6 !important;
-    color: #111827 !important;
+  background: #eef4ff !important;
 }
 
-
-/* =========================================================
-   CHECKBOX
-========================================================= */
-
-.groups-ant-table .ant-checkbox-wrapper {
-    transform: scale(0.95);
-}
-
-
-/* =========================================================
-   PAGINATION
-========================================================= */
-
-.groups-ant-table .ant-pagination {
-    margin: 24px 0 4px !important;
-}
-
-.groups-ant-table .ant-pagination-item {
-    border-radius: 7px;
-}
-
-.groups-ant-table .ant-pagination-item-active {
-    font-weight: 600;
-}
-
-
-/* =========================================================
+/* =========================================
    RESPONSIVE
-========================================================= */
+========================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 992px) {
+  .groups-filter-area {
+    flex-wrap: wrap;
+  }
 
-    .groups-filter-area {
-        flex-wrap: wrap;
-    }
+  .groups-filter-field {
+    max-width: none;
+    width: calc(50% - 12px);
+  }
 
-    .groups-name-filter,
-    .groups-course-filter {
-        max-width: calc(50% - 12px);
-    }
-
-    .groups-search-button-wrapper {
-        width: 100%;
-    }
-
-    .groups-search-button {
-        width: 100%;
-    }
-
+  .groups-search-button-wrapper {
+    width: 100%;
+  }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 768px) {
+  .groups-card-header {
+    padding: 24px;
+    align-items: flex-start;
+    gap: 20px;
+    flex-direction: column;
+  }
 
-    .groups-filter-area {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 16px;
-    }
+  .groups-filter-section {
+    padding: 24px;
+  }
 
-    .groups-name-filter,
-    .groups-course-filter {
-        max-width: 100%;
-    }
+  .groups-filter-area {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    .groups-card-header {
-        padding: 22px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 18px;
-    }
+  .groups-filter-field {
+    width: 100%;
+    max-width: none;
+  }
 
-    .groups-card-actions {
-        width: 100%;
-        justify-content: flex-end;
-    }
+  .groups-search-button {
+    width: 100%;
+  }
 
-    .groups-table-wrapper {
-        padding: 20px 15px;
-    }
-
+  .groups-table-wrapper {
+    padding: 24px;
+    overflow-x: auto;
+  }
 }

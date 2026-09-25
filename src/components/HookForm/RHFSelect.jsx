@@ -3,6 +3,7 @@ import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 // @mui
 import {
+  Box,
   FormHelperText,
   InputLabel,
   MenuItem,
@@ -34,14 +35,17 @@ export default function RHFSelect({
         };
 
         return (
-          <>
+          <Box className="stratford-field">
             <Stack
               direction="column"
               justifyContent="center"
               alignItems="flex-start"
               spacing={2}
               sx={{ width: '100%' }}>
-              <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+              <InputLabel
+                variant="outlined"
+                sx={{ fontSize: '14px' }}
+                htmlFor="uncontrolled-native">
                 {label}
               </InputLabel>
               <Select
@@ -59,12 +63,13 @@ export default function RHFSelect({
                 ))}
               </Select>
             </Stack>
+
             {error && (
               <FormHelperText error sx={{ textAlign: 'left', ml: 2 }}>
                 {error.message}
               </FormHelperText>
             )}
-          </>
+          </Box>
         );
       }}
       {...other}

@@ -1,4 +1,10 @@
-import { FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  FormHelperText,
+  InputLabel,
+  Stack,
+  TextField,
+} from '@mui/material';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -10,14 +16,18 @@ const RHFTextField = (props) => {
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <>
+        <Box className="stratford-field">
           <Stack
             direction="column"
             justifyContent="center"
             alignItems="flex-start"
             spacing={2}
             sx={{ width: '100%' }}>
-            <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+            <InputLabel
+              variant="outlined"
+              htmlFor="uncontrolled-native"
+              size="small"
+              sx={{ fontSize: '14px' }}>
               {label}
             </InputLabel>
             <TextField
@@ -33,7 +43,7 @@ const RHFTextField = (props) => {
               {error.message}
             </FormHelperText>
           )}
-        </>
+        </Box>
       )}
     />
   );

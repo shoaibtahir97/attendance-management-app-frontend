@@ -8,8 +8,7 @@
 
   display: flex;
 
-  background:
-    radial-gradient(
+  background: radial-gradient(
       circle at 5% 30%,
       rgba(185, 195, 255, 0.45),
       transparent 35%
@@ -23,7 +22,6 @@
 
   overflow: hidden;
 }
-
 
 /* =========================================
    LEFT SIDE
@@ -43,7 +41,6 @@
   padding: 27px;
 }
 
-
 .stratford-image-card {
   width: 241px;
 
@@ -61,10 +58,8 @@
 
   overflow: hidden;
 
-  box-shadow:
-    0 13px 40px rgba(70, 90, 130, 0.08);
+  box-shadow: 0 13px 40px rgba(70, 90, 130, 0.08);
 }
-
 
 .stratford-login-image {
   width: 100%;
@@ -75,8 +70,6 @@
 
   padding: 13px;
 }
-
-
 
 /* =========================================
    RIGHT SIDE
@@ -96,14 +89,11 @@
   padding: 34px 54px 34px 13px;
 }
 
-
 .stratford-login-content {
   width: 100%;
 
   max-width: 302px;
 }
-
-
 
 /* =========================================
    TITLE
@@ -121,7 +111,6 @@
   margin-bottom: 8px !important;
 }
 
-
 .stratford-welcome-subtitle {
   font-size: 12px !important;
 
@@ -129,8 +118,6 @@
 
   margin-bottom: 39px !important;
 }
-
-
 
 /* =========================================
    INPUT FIELDS
@@ -140,11 +127,9 @@
   margin-bottom: 13px;
 }
 
-
 .stratford-field .MuiTextField-root {
   width: 100%;
 }
-
 
 .stratford-field .MuiOutlinedInput-root {
   height: 39px;
@@ -154,27 +139,19 @@
   background: rgba(235, 242, 255, 0.75);
 }
 
-
 .stratford-field .MuiOutlinedInput-root fieldset {
   border: 1px solid #b8c4d8;
 }
 
-
-.stratford-field
-.MuiOutlinedInput-root:hover
-fieldset {
+.stratford-field .MuiOutlinedInput-root:hover fieldset {
   border-color: #6d91ef;
 }
 
-
-.stratford-field
-.MuiOutlinedInput-root.Mui-focused
-fieldset {
+.stratford-field .MuiOutlinedInput-root.Mui-focused fieldset {
   border-color: #3578f6;
 
   border-width: 1px;
 }
-
 
 .stratford-field input {
   font-size: 11px;
@@ -182,14 +159,11 @@ fieldset {
   padding: 11px;
 }
 
-
 .stratford-field input::placeholder {
   color: #657085;
 
   opacity: 1;
 }
-
-
 
 /* =========================================
    PASSWORD EYE
@@ -199,8 +173,6 @@ fieldset {
   padding: 5px;
 }
 
-
-
 /* =========================================
    REMEMBER ME
 ========================================= */
@@ -209,21 +181,15 @@ fieldset {
   margin-top: 2px;
 }
 
-
-.stratford-options
-.MuiFormControlLabel-label {
+.stratford-options .MuiFormControlLabel-label {
   font-size: 11px;
 
   color: #59647a;
 }
 
-
-.stratford-options
-.MuiCheckbox-root {
+.stratford-options .MuiCheckbox-root {
   padding: 5px;
 }
-
-
 
 /* =========================================
    FORGOT PASSWORD
@@ -235,7 +201,6 @@ fieldset {
   margin-bottom: 27px;
 }
 
-
 .stratford-forgot-link {
   color: #3f4c61;
 
@@ -246,14 +211,11 @@ fieldset {
   text-decoration: none;
 }
 
-
 .stratford-forgot-link:hover {
   color: #1769e8;
 
   text-decoration: underline;
 }
-
-
 
 /* =========================================
    SIGN IN BUTTON
@@ -276,16 +238,12 @@ fieldset {
 
   font-weight: 700 !important;
 
-  box-shadow:
-    0 7px 17px rgba(52, 120, 237, 0.25);
+  box-shadow: 0 7px 17px rgba(52, 120, 237, 0.25);
 }
-
 
 .stratford-signin-button:hover {
   background: #2869d8 !important;
 }
-
-
 
 /* =========================================
    SIGN UP
@@ -301,14 +259,11 @@ fieldset {
   color: #59647a;
 }
 
-
 .stratford-signup-link {
   color: #1769e8 !important;
 
   font-weight: 700 !important;
 }
-
-
 
 /* =========================================
    ERROR
@@ -318,14 +273,11 @@ fieldset {
   margin-bottom: 13px;
 }
 
-
-
 /* =========================================
    RESPONSIVE
 ========================================= */
 
 @media (max-width: 1000px) {
-
   .stratford-left-panel {
     width: 48%;
   }
@@ -343,28 +295,22 @@ fieldset {
   .stratford-welcome-subtitle {
     font-size: 11px !important;
   }
-
 }
-
-
 
 /* =========================================
    TABLET / MOBILE
 ========================================= */
 
 @media (max-width: 768px) {
-
   .stratford-login-page {
     display: block;
 
     overflow-y: auto;
   }
 
-
   .stratford-left-panel {
     display: none;
   }
-
 
   .stratford-right-panel {
     width: 100%;
@@ -376,24 +322,19 @@ fieldset {
     justify-content: center;
   }
 
-
   .stratford-login-content {
     max-width: 335px;
   }
-
 
   .stratford-welcome-title {
     font-size: 25px !important;
   }
 
-
   .stratford-welcome-subtitle {
     margin-bottom: 27px !important;
   }
 
-
   .stratford-signup-text {
     margin-top: 37px !important;
   }
-
 }

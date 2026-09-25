@@ -1,4 +1,5 @@
 import './Students.css';
+import StudentRegistrationModal from './components/StudentRegistrationModal';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -68,7 +69,7 @@ const Students = () => {
 
   const column = [
     {
-      title: 'Student ID',
+      title: 'ID',
       dataIndex: 'studentId',
       render: (text) => <span className="student-id-text">{text}</span>,
     },
@@ -220,6 +221,18 @@ const Students = () => {
   const [activeStatusTab, setActiveStatusTab] = useState('all');
   const [isBulkStudentUploadModalVisible, setIsBulkStudentUploadModalVisible] =
     useState(false);
+  const [
+    isStudentRegistrationModalVisible,
+    setIsStudentRegistrationModalVisible,
+  ] = useState(false);
+  const openStudentRegistrationModal = () => {
+    setIsStudentRegistrationModalVisible(true);
+  };
+
+  const closeStudentRegistrationModal = () => {
+    setIsStudentRegistrationModalVisible(false);
+  };
+
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
     useState(false);
   const [isWarningLetterDialogOpen, setIsWarningLetterDialogOpen] =
@@ -460,6 +473,12 @@ const Students = () => {
             fetchStudents={fetchStudents}
           />
         )}
+        {/* Register Student Modal */}
+        <StudentRegistrationModal
+          open={isStudentRegistrationModalVisible}
+          onClose={closeStudentRegistrationModal}
+          fetchStudents={() => fetchStudents(studentsQuery)}
+        />
 
         {/* Search Section */}
 
@@ -479,12 +498,80 @@ const Students = () => {
 
                   <div className="students-header-actions">
                     {/* Add Student */}
-                    <Button
-                      type="primary"
-                      size="large"
-                      onClick={() => navigate(PATH_DASHBOARD.studentAdd)}>
-                      + Add Student
-                    </Button>
+                    {/* Add Student Dropdown */}
+                    <Space.Compact size="large">
+                      <Button type="primary" onClick={() => navigate()}>
+                        + Add Student
+                      </Button>
+
+                      <Dropdown
+                        menu={{
+                          items: [
+                            {
+                              key: 'register',
+                              label: 'Register Student',
+                              onClick: openStudentRegistrationModal,
+                            },
+                            {
+                              key: 'bulk',
+                              label: 'Bulk Student Registration',
+                              onClick: openUploadExcelModal,
+                            },
+                          ],
+                        }}
+                        trigger={['click']}
+                        placement="bottomRight">
+                        <Button type="primary" icon={<EllipsisOutlined />} />
+                      </Dropdown>
+                    </Space.Compact>
+
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={closeAddStudentPopover}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                      slotProps={{
+                        paper: {
+                          sx: {
+                            mt: 1,
+                            minWidth: 280,
+                            borderRadius: '8px',
+                            boxShadow: '0px 8px 25px rgba(0, 0, 0, 0.15)',
+                            overflow: 'hidden',
+                          },
+                        },
+                      }}>
+                      <MenuItem
+                        onClick={() => {
+                          closeAddStudentPopover();
+                          navigate(PATH_DASHBOARD.studentAdd);
+                        }}
+                        sx={{
+                          fontSize: '18px',
+                          padding: '14px 24px',
+                        }}>
+                        Register Student
+                      </MenuItem>
+
+                      <MenuItem
+                        onClick={() => {
+                          closeAddStudentPopover();
+                          openUploadExcelModal();
+                        }}
+                        sx={{
+                          fontSize: '18px',
+                          padding: '14px 24px',
+                        }}>
+                        Bulk Student Registration
+                      </MenuItem>
+                    </Menu>
                   </div>
                 </div>
               </div>
@@ -497,7 +584,7 @@ const Students = () => {
                     activeStatusTab === 'all' ? 'active' : ''
                   }`}
                   onClick={() => handleStatusTabChange('all')}>
-                  All Students
+                  All
                 </button>
 
                 {/* Active */}
@@ -575,7 +662,7 @@ const Students = () => {
                     </div>
 
                     {/* Add Filter */}
-                    <Button type="default" size="large">
+                    <Button type="default" size="middle">
                       + Add Filter
                     </Button>
 

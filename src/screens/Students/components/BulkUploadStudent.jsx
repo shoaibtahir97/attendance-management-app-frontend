@@ -127,20 +127,33 @@ const BulkUploadStudent = (props) => {
 
   return (
     <Dialog fullWidth={true} maxWidth="md" open={open} scroll="body">
-      <DialogTitle id="scroll-dialog-title">
+      <DialogTitle
+        id="scroll-dialog-title"
+        sx={{
+          px: 3,
+          py: 2,
+          borderBottom: '1px solid #e5e7eb',
+        }}>
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'baseline',
+            alignItems: 'center',
             justifyContent: 'space-between',
-            mb: 1,
           }}>
-          <Typography variant="h6" sx={{ textAlign: 'left', my: 1 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              textAlign: 'left',
+              fontSize: '22px',
+              fontWeight: 600,
+              color: '#1f2937',
+            }}>
             Upload excel for bulk student registration
           </Typography>
           <IconButton
             onClick={handleClose}
-            disabled={loadingUploadBulkStudents}>
+            disabled={loadingUploadBulkStudents}
+            size="small">
             <MdClose />
           </IconButton>
         </Box>
@@ -184,16 +197,8 @@ const BulkUploadStudent = (props) => {
             direction="row"
             spacing={2}
             alignItems="center"
-            justifyContent="center"
-            sx={{ mt: 2 }}>
-            <Button
-              variant="contained"
-              htmlType="submit"
-              type="primary"
-              loading={loadingUploadBulkStudents}
-              size="large">
-              Upload
-            </Button>
+            justifyContent="flex-end"
+            sx={{ mt: 2, width: '100%' }}>
             <Button
               onClick={handleClose}
               type="default"
@@ -201,6 +206,14 @@ const BulkUploadStudent = (props) => {
               style={{ marginLeft: '5px' }}
               disabled={loadingUploadBulkStudents}>
               Cancel
+            </Button>
+            <Button
+              variant="contained"
+              htmlType="submit"
+              type="primary"
+              loading={loadingUploadBulkStudents}
+              size="large">
+              Upload
             </Button>
           </Stack>
         </FormProvider>
