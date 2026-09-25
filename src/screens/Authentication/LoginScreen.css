@@ -100,11 +100,11 @@
 ========================================= */
 
 .stratford-welcome-title {
-  font-size: 32px !important;
+  font-size: 24px !important;
 
   line-height: 1.15 !important;
 
-  font-weight: 800 !important;
+  font-weight: 700 !important;
 
   color: #050505;
 
@@ -112,7 +112,7 @@
 }
 
 .stratford-welcome-subtitle {
-  font-size: 12px !important;
+  font-size: 14px !important;
 
   color: #5c6475;
 

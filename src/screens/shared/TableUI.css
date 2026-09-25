@@ -1,0 +1,346 @@
+/* =========================================================
+   SHARED TABLE PAGE UI
+   Used by: Students, Groups (and any future list pages)
+========================================================= */
+
+.data-page {
+  background: #f8f9fc;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.data-table-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.data-table-header {
+  padding: 22px 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.data-table-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.data-table-subtitle {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.data-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.data-header-action {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 8px !important;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: none !important;
+}
+
+/* =========================================================
+   ADD BUTTON (link style)
+========================================================= */
+
+.data-add-button {
+  height: 42px;
+  padding: 0 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  background: #1677ff;
+  color: #ffffff !important;
+
+  border-radius: 9px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  transition: all 0.2s ease;
+}
+
+.data-add-button:hover {
+  background: #0958d9;
+  color: #ffffff !important;
+}
+
+.data-add-icon {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 300;
+}
+
+/* =========================================================
+   SUBFRAME SEARCH / FILTER BAR
+========================================================= */
+
+.subframe-search-section {
+  background: #ffffff;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.subframe-search {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.subframe-search .subframe-search-input {
+  width: 280px;
+}
+
+.subframe-search > .subframe-search-input {
+  margin-right: auto;
+}
+
+.clear-filters {
+  border: none;
+  background: transparent;
+
+  padding: 8px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.clear-filters:hover {
+  color: #1677ff;
+}
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.data-table-wrapper {
+  padding: 20px 24px 24px;
+}
+
+.data-table-wrapper > .MuiBox-root {
+  min-height: 48px;
+}
+
+/* =========================================================
+   ANT DESIGN TABLE
+========================================================= */
+
+.data-ant-table {
+  width: 100%;
+}
+
+.data-ant-table .ant-table {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.data-ant-table .ant-table-thead > tr > th {
+  background: #f8fafc !important;
+  color: #111827 !important;
+  font-size: 13px;
+  font-weight: 600;
+  height: 58px;
+  padding: 0 14px;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.data-ant-table .ant-table-tbody > tr > td {
+  height: 72px;
+  padding: 12px 14px;
+  color: #374151;
+  font-size: 14px;
+  border-bottom: 1px solid #edf0f4 !important;
+}
+
+.data-ant-table .ant-table-tbody > tr:hover > td {
+  background: #fafbff !important;
+}
+
+.data-ant-table .ant-checkbox-wrapper {
+  transform: scale(0.95);
+}
+
+.data-ant-table .ant-pagination {
+  margin: 20px 0 4px !important;
+}
+
+.data-ant-table .ant-pagination-item {
+  border-radius: 6px;
+}
+
+.data-ant-table .ant-pagination-item-active {
+  font-weight: 600;
+}
+
+/* =========================================================
+   ACTION BUTTON (row-level)
+========================================================= */
+
+.data-action-button {
+  width: 36px !important;
+  height: 36px !important;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px !important;
+  color: #6b7280 !important;
+}
+
+.data-action-button:hover {
+  background: #f3f4f6 !important;
+  color: #111827 !important;
+}
+
+/* =========================================================
+   SELECTION TOOLBAR
+========================================================= */
+
+.data-selection-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 20px;
+  margin-bottom: 0;
+  background: #eaf4ff;
+  border-bottom: 1px solid #d6e9ff;
+}
+
+.data-selected-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #1677ff;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.data-selection-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.data-selection-button {
+  height: 34px !important;
+  min-height: 34px !important;
+
+  padding: 0 13px !important;
+
+  border-radius: 6px !important;
+
+  font-size: 13px !important;
+  font-weight: 500 !important;
+
+  box-shadow: none !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.data-selection-button:hover {
+  border-color: #1677ff !important;
+  color: #1677ff !important;
+  background: #ffffff !important;
+}
+
+.data-delete-button {
+  color: #ff4d4f !important;
+  border-color: #ffccc7 !important;
+  background: #ffffff !important;
+}
+
+.data-delete-button:hover {
+  color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  background: #fff2f0 !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 650px) {
+  .data-table-header {
+    padding: 18px;
+  }
+
+  .data-table-wrapper {
+    padding: 15px;
+  }
+
+  .data-header-actions {
+    margin-top: 15px;
+  }
+
+  .subframe-search-section {
+    padding: 16px 15px;
+  }
+
+  .subframe-search {
+    flex-wrap: wrap;
+  }
+
+  .data-selection-toolbar {
+    height: auto;
+    min-height: 46px;
+
+    margin: 0 -15px 14px -15px;
+
+    padding: 8px 15px;
+
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 8px;
+  }
+
+  .data-selection-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}

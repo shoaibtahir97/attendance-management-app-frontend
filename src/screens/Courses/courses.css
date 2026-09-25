@@ -1,0 +1,22 @@
+@import '../shared/TableUI.css';
+
+.course-name {
+  color: #111827;
+  font-weight: 600;
+}
+
+.course-intake {
+  color: #374151;
+}
+
+.course-students {
+  color: #111827;
+  font-weight: 500;
+}
+
+.course-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}

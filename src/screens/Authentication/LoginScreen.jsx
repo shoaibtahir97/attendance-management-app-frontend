@@ -10,15 +10,14 @@ import {
   Typography,
 } from '@mui/material';
 import { Alert, Button } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Eye, EyeOff } from 'react-feather/dist';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { FormProvider, RHFTextField } from '../../components/HookForm';
-import { logo } from '../../components/imagepath';
 import loginLeftImage from '../../assets/img/login-left1.png';
+import { FormProvider, RHFTextField } from '../../components/HookForm';
 import { useAuthUserMutation } from '../../redux/slices/apiSlices/usersApiSlice';
 import { setCredentials } from '../../redux/slices/authSlice';
 import { PATH_AUTH, PATH_DASHBOARD } from '../../routes/paths';
@@ -45,9 +44,7 @@ const LoginScreen = () => {
     email: Yup.string()
       .email('Please enter a valid email address')
       .required('Email address is required'),
-
     password: Yup.string().required('Password is required'),
-
     afterSubmit: Yup.string(),
   });
 
@@ -64,14 +61,12 @@ const LoginScreen = () => {
   const handleLogin = async (data) => {
     await authUser(data)
       .unwrap()
-
       .then((res) => {
         dispatch(
           setCredentials({
             ...res?.data,
           })
         );
-
         if (res?.data?.role === 'admin') {
           navigate(PATH_DASHBOARD.adminDashboard, { replace: true });
         } else if (res?.data?.role === 'teacher') {
@@ -119,11 +114,11 @@ const LoginScreen = () => {
           {/* TITLE */}
 
           <Typography className="stratford-welcome-title">
-            Welcome Back
+            Sign in to Startford College
           </Typography>
 
           <Typography className="stratford-welcome-subtitle">
-            Hey, welcome back to your special place
+            Enter your details below
           </Typography>
 
           {/* ================= FORM ================= */}
@@ -145,34 +140,37 @@ const LoginScreen = () => {
 
             {/* EMAIL */}
 
-            <RHFTextField
-              name="email"
-              label="Email address"
-              placeholder="Email Address"
-              fullWidth
-            />
+            <Box className="stratford-field">
+              <RHFTextField
+                name="email"
+                placeholder="Email Address"
+                fullWidth
+              />
+            </Box>
 
             {/* PASSWORD */}
 
-            <RHFTextField
-              name="password"
-              placeholder="Password"
-              type={passwordVisible ? 'text' : 'password'}
-              fullWidth
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={togglePasswordVisibility} edge="end">
-                      {passwordVisible ? (
-                        <EyeOff size={20} />
-                      ) : (
-                        <Eye size={20} />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <Box className="stratford-field">
+              <RHFTextField
+                name="password"
+                placeholder="Password"
+                type={passwordVisible ? 'text' : 'password'}
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {passwordVisible ? (
+                          <EyeOff size={20} />
+                        ) : (
+                          <Eye size={20} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
 
             {/* REMEMBER ME */}
 

@@ -1,34 +1,14 @@
-import './Students.css';
-import StudentRegistrationModal from './components/StudentRegistrationModal';
-import { EllipsisOutlined } from '@ant-design/icons';
-import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { Alert, Button, Dropdown, Space, Table, Tag, Tooltip } from 'antd';
+import { Box, IconButton, Typography } from '@mui/material';
+import { Alert, Button, Dropdown, Table, Tooltip } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { IoMdMore } from 'react-icons/io';
 import { PiExport } from 'react-icons/pi';
 import { Link, useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
 import { DeleteConfirmationDialog } from '../../components/DeleteConfirmationDialog';
-import {
-  FormProvider,
-  RHFAutocomplete,
-  RHFTextField,
-} from '../../components/HookForm';
-import PageHeader from '../../components/PageHeader';
 import { itemRender, onShowSizeChange } from '../../components/Pagination';
 import TableSkeleton from '../../components/TableSkeleton';
 import useNotification from '../../hooks/useNotification';
-import { useGetGroupsListQuery } from '../../redux/slices/apiSlices/groupApiSlice';
 import { useLazyGetStudentResultReportQuery } from '../../redux/slices/apiSlices/reportApiSlice';
 import {
   useDeleteStudentsMutation,
@@ -36,36 +16,21 @@ import {
   useUpdateStudentStatusMutation,
 } from '../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
+import { generateElem } from '../../utils/generateElements';
 import { moduleYears } from '../Courses/AddCourse';
 import BulkUploadStudent from './components/BulkUploadStudent';
 import SendWarningLetterDialog from './components/SendWarningLetterDialog';
-import { UpdateStatusDialog, studentStatusOptions } from './UpdateStatusDialog';
-
-export const SKELETON = ['', '', '', '', ''];
+import StudentFilter from './components/StudentFilter';
+import './Students.css';
+import { UpdateStatusDialog } from './UpdateStatusDialog';
 
 const Students = () => {
   const navigate = useNavigate();
   const { openNotification } = useNotification();
   const [getStudents, { isLoading, error }] = useLazyGetStudentsQuery();
   const [getStudentResultReport] = useLazyGetStudentResultReportQuery();
-  const { data: groupsList } = useGetGroupsListQuery();
   const [updateStudentStatus] = useUpdateStudentStatusMutation();
   const [deleteStudents, { loading: isDeleting }] = useDeleteStudentsMutation();
-
-  const setTagColor = (status) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return 'success';
-      case 'inactive':
-        return 'error';
-      case 'suspended':
-        return 'warning';
-      case 'graduated':
-        return 'blue';
-      default:
-        return 'default';
-    }
-  };
 
   const column = [
     {
@@ -197,7 +162,7 @@ const Students = () => {
 
         return (
           <Dropdown menu={{ items }} trigger={['click']}>
-            <IconButton className="student-action-button">
+            <IconButton className="data-action-button">
               <IoMdMore />
             </IconButton>
           </Dropdown>
@@ -217,8 +182,7 @@ const Students = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // Currently selected student status tab
-  const [activeStatusTab, setActiveStatusTab] = useState('all');
+  const [isStudentFilterOpen, setIsStudentFilterOpen] = useState(false);
   const [isBulkStudentUploadModalVisible, setIsBulkStudentUploadModalVisible] =
     useState(false);
   const [
@@ -263,22 +227,6 @@ const Students = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  const studentQuerySchema = Yup.object().shape({
-    studentId: Yup.string().trim(),
-    name: Yup.string().trim(),
-    group: Yup.string().trim().nullable(),
-    status: Yup.string().trim().nullable(),
-  });
-  const methods = useForm({
-    resolver: yupResolver(studentQuerySchema),
-  });
-  const {
-    handleSubmit,
-    getValues,
-    reset,
-    watch,
-    formState: { isSubmitting },
-  } = methods;
   const fetchStudents = async (query) => {
     await getStudents(query)
       .unwrap()
@@ -291,22 +239,22 @@ const Students = () => {
       });
   };
   const fetchStudentsByQuery = (data) => {
-    fetchStudents({ ...data });
-  };
-  const handleStatusTabChange = (status) => {
-    setActiveStatusTab(status);
-    setSelectedRowKeys([]);
-
     const query = {
       page: 1,
       recordsPerPage: studentsQuery.recordsPerPage,
+      ...Object.fromEntries(
+        Object.entries(data).filter(
+          ([, value]) => value !== '' && value != null
+        )
+      ),
     };
-
-    // If "all" is selected, don't send status
-    if (status !== 'all') {
-      query.status = status;
-    }
-
+    setStudentsQuery(query);
+    fetchStudents(query);
+    setIsStudentFilterOpen(false);
+  };
+  const handleRemoveFilter = (key) => {
+    const query = { ...studentsQuery, page: 1 };
+    delete query[key];
     setStudentsQuery(query);
     fetchStudents(query);
   };
@@ -340,7 +288,7 @@ const Students = () => {
   };
   const handleGenerateStudentResultReport = async () => {
     await getStudentResultReport({
-      ...getValues(),
+      ...studentsQuery,
     })
       .unwrap()
       .then((res) => {
@@ -462,7 +410,7 @@ const Students = () => {
         handleUpdateStatus={handleUpdateStatus}
       />
 
-      <div className="content container-fluid students-page">
+      <div className="content container-fluid data-page students-page">
         {/* Page Header removed */}
 
         {/* Bulk Upload Modal */}
@@ -473,240 +421,48 @@ const Students = () => {
             fetchStudents={fetchStudents}
           />
         )}
-        {/* Register Student Modal */}
-        <StudentRegistrationModal
-          open={isStudentRegistrationModalVisible}
-          onClose={closeStudentRegistrationModal}
-          fetchStudents={() => fetchStudents(studentsQuery)}
-        />
-
-        {/* Search Section */}
 
         {/* Students Table */}
         <div className="row">
           <div className="col-sm-12">
-            <div className="students-table-card">
+            <div className="data-table-card">
               {/* Table Header */}
               {/* Students Header */}
-              <div className="students-table-header">
+              <div className="data-table-header">
                 <div className="students-header-top">
                   <div className="students-header-title-area">
                     <div className="students-title-row">
-                      <h3 className="students-table-title">Students</h3>
+                      <h3 className="data-table-title">Students</h3>
                     </div>
                   </div>
 
-                  <div className="students-header-actions">
+                  <div className="data-header-actions">
                     {/* Add Student */}
-                    {/* Add Student Dropdown */}
-                    <Space.Compact size="large">
-                      <Button type="primary" onClick={() => navigate()}>
-                        + Add Student
-                      </Button>
-
-                      <Dropdown
-                        menu={{
-                          items: [
-                            {
-                              key: 'register',
-                              label: 'Register Student',
-                              onClick: openStudentRegistrationModal,
-                            },
-                            {
-                              key: 'bulk',
-                              label: 'Bulk Student Registration',
-                              onClick: openUploadExcelModal,
-                            },
-                          ],
-                        }}
-                        trigger={['click']}
-                        placement="bottomRight">
-                        <Button type="primary" icon={<EllipsisOutlined />} />
-                      </Dropdown>
-                    </Space.Compact>
-
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={closeAddStudentPopover}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                      }}
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                      }}
-                      slotProps={{
-                        paper: {
-                          sx: {
-                            mt: 1,
-                            minWidth: 280,
-                            borderRadius: '8px',
-                            boxShadow: '0px 8px 25px rgba(0, 0, 0, 0.15)',
-                            overflow: 'hidden',
-                          },
-                        },
-                      }}>
-                      <MenuItem
-                        onClick={() => {
-                          closeAddStudentPopover();
-                          navigate(PATH_DASHBOARD.studentAdd);
-                        }}
-                        sx={{
-                          fontSize: '18px',
-                          padding: '14px 24px',
-                        }}>
-                        Register Student
-                      </MenuItem>
-
-                      <MenuItem
-                        onClick={() => {
-                          closeAddStudentPopover();
-                          openUploadExcelModal();
-                        }}
-                        sx={{
-                          fontSize: '18px',
-                          padding: '14px 24px',
-                        }}>
-                        Bulk Student Registration
-                      </MenuItem>
-                    </Menu>
+                    <Button
+                      type="primary"
+                      onClick={() => navigate(PATH_DASHBOARD.studentAdd)}>
+                      + Add Student
+                    </Button>
                   </div>
                 </div>
               </div>
-              {/* Student Tabs */}
-              <div className="students-tabs">
-                {/* All Students */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'all' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('all')}>
-                  All
-                </button>
-
-                {/* Active */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'active' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('active')}>
-                  Active
-                </button>
-
-                {/* Inactive */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'inactive' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('inactive')}>
-                  Inactive
-                </button>
-
-                {/* Suspended */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'suspended' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('suspended')}>
-                  Suspended
-                </button>
-
-                {/* Dropped */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'dropped' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('dropped')}>
-                  Dropped
-                </button>
-
-                {/* Withdrawn */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'withdrawn' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('withdrawn')}>
-                  Withdrawn
-                </button>
-
-                {/* Graduated */}
-                <button
-                  type="button"
-                  className={`student-tab ${
-                    activeStatusTab === 'graduated' ? 'active' : ''
-                  }`}
-                  onClick={() => handleStatusTabChange('graduated')}>
-                  Graduated
-                </button>
-              </div>
-
-              <div className="subframe-search-section">
-                <FormProvider
-                  methods={methods}
-                  onSubmit={handleSubmit(fetchStudentsByQuery)}>
-                  <div className="subframe-search">
-                    {/* Search by Name / ID */}
-                    <div className="subframe-search-input">
-                      <RHFTextField
-                        name="name"
-                        placeholder="Search by name or ID..."
-                      />
-                    </div>
-
-                    {/* Add Filter */}
-                    <Button type="default" size="middle">
-                      + Add Filter
-                    </Button>
-
-                    {/* Clear Filters */}
-                    <button
-                      type="button"
-                      className="clear-filters"
-                      onClick={() => {
-                        methods.reset({
-                          name: '',
-                          studentId: '',
-                          group: '',
-                          status: '',
-                        });
-
-                        setStudentsQuery({
-                          page: 1,
-                          recordsPerPage: 10,
-                        });
-
-                        setActiveStatusTab('all');
-
-                        fetchStudents({
-                          page: 1,
-                          recordsPerPage: 10,
-                        });
-                      }}>
-                      Clear all
-                    </button>
-
-                    {/* Hidden Submit */}
-                    <button type="submit" style={{ display: 'none' }}>
-                      Search
-                    </button>
-                  </div>
-                </FormProvider>
-              </div>
+              <StudentFilter
+                open={isStudentFilterOpen}
+                query={studentsQuery}
+                onClose={() => setIsStudentFilterOpen(!isStudentFilterOpen)}
+                onSubmit={fetchStudentsByQuery}
+                onRemoveFilter={handleRemoveFilter}
+                clearFilters={() => {
+                  const query = { page: 1, recordsPerPage: 10 };
+                  setStudentsQuery(query);
+                  fetchStudents(query);
+                }}
+              />
 
               {/* Table Content */}
-              <div className="students-table-wrapper">
+              <div className="data-table-wrapper">
                 {isLoading ? (
-                  SKELETON.map((_, index) => (
-                    <TableSkeleton key={index} columns={column} />
-                  ))
+                  generateElem(<TableSkeleton columns={column} />)
                 ) : error ? (
                   <Alert
                     message="Error"
@@ -718,9 +474,9 @@ const Students = () => {
                   <>
                     {/* Bulk Selection Actions */}
                     {selectedRowKeys.length > 0 && (
-                      <div className="students-selection-toolbar">
+                      <div className="data-selection-toolbar">
                         {/* Selected count */}
-                        <div className="students-selected-count">
+                        <div className="data-selected-count">
                           <span>
                             {selectedRowKeys.length}{' '}
                             {selectedRowKeys.length === 1
@@ -731,11 +487,11 @@ const Students = () => {
                         </div>
 
                         {/* Actions */}
-                        <div className="students-selection-actions">
+                        <div className="data-selection-actions">
                           {/* Export */}
                           <Button
                             type="default"
-                            className="students-selection-button"
+                            className="data-selection-button"
                             icon={<PiExport />}
                             onClick={handleGenerateStudentResultReport}>
                             Export
@@ -744,7 +500,7 @@ const Students = () => {
                           {/* Send Email */}
                           <Button
                             type="default"
-                            className="students-selection-button"
+                            className="data-selection-button"
                             onClick={openSendWarningLetterDialog}>
                             Send Email
                           </Button>
@@ -753,7 +509,7 @@ const Students = () => {
                           <Button
                             danger
                             type="default"
-                            className="students-selection-button students-delete-button"
+                            className="data-selection-button data-delete-button"
                             onClick={openDeleteConfirmationDialog}>
                             Delete
                           </Button>
@@ -763,7 +519,7 @@ const Students = () => {
 
                     {/* Students Table */}
                     <Table
-                      className="students-ant-table"
+                      className="data-ant-table"
                       pagination={{
                         total: dataSource?.totalRecords,
 
@@ -784,25 +540,11 @@ const Students = () => {
                             recordsPerPage: pageSize,
                           };
 
-                          // Keep the currently selected status when changing pages
-                          if (activeStatusTab !== 'all') {
-                            query.status = activeStatusTab;
-                          }
-
-                          // Keep search form values
-                          const formValues = getValues();
-
-                          if (formValues.name) {
-                            query.name = formValues.name;
-                          }
-
-                          if (formValues.studentId) {
-                            query.studentId = formValues.studentId;
-                          }
-
-                          if (formValues.group) {
-                            query.group = formValues.group;
-                          }
+                          Object.assign(query, {
+                            ...studentsQuery,
+                            page,
+                            recordsPerPage: pageSize,
+                          });
 
                           setStudentsQuery(query);
                           fetchStudents(query);
