@@ -350,37 +350,8 @@ const Students = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const name = watch('name');
-
-      const query = {
-        page: 1,
-        recordsPerPage: studentsQuery.recordsPerPage,
-      };
-
-      // Keep the currently selected status tab
-      if (activeStatusTab !== 'all') {
-        query.status = activeStatusTab;
-      }
-
-      // Add search text
-      if (name && name.trim()) {
-        const searchValue = name.trim();
-
-        // If the search value is a number, search by Student ID
-        if (/^[0-9\/-]+$/.test(searchValue)) {
-          query.studentId = searchValue;
-        } else {
-          query.name = searchValue;
-        }
-      }
-
-      setStudentsQuery(query);
-      fetchStudents(query);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [watch('name'), activeStatusTab]);
+    fetchStudents(studentsQuery);
+  }, []);
 
   return (
     <>
