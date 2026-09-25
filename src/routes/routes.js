@@ -29,8 +29,6 @@ import MailScreenv2 from '../screens/Mail/MailScreenv2';
 import Notices from '../screens/Notices';
 import AttendanceReportsV2 from '../screens/Reports/AttendanceReports';
 import WarningLetterReports from '../screens/Reports/WarningLetterReports';
-import AddStudent from '../screens/Students/AddStudent';
-import EditStudent from '../screens/Students/EditStudent';
 import { StudentProfile } from '../screens/Students/StudentProfile';
 import Students from '../screens/Students/StudentsList';
 import AddSubject from '../screens/Subjects/AddSubject';
@@ -83,12 +81,6 @@ const router = createHashRouter(
 
           {/* Students */}
           <Route path={PATH_DASHBOARD.students} element={<Students />} />
-
-          <Route path={PATH_DASHBOARD.studentAdd} element={<AddStudent />} />
-          <Route
-            path={`${PATH_DASHBOARD.studentEdit}/:id`}
-            element={<EditStudent />}
-          />
           <Route
             path={`${PATH_DASHBOARD.studentProfile}/:id`}
             element={<StudentProfile />}
