@@ -1,4 +1,4 @@
-import { FormHelperText, InputLabel, Stack } from '@mui/material';
+import { Box, FormHelperText, InputLabel, Stack } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -14,13 +14,16 @@ const RHFDatePicker = (props) => {
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <>
+        <Box className="stratford-field">
           <Stack
             direction="column"
             justifyContent="center"
             alignItems="flex-start"
             spacing={2}>
-            <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+            <InputLabel
+              variant="outlined"
+              htmlFor="uncontrolled-native"
+              sx={{ fontSize: '14px' }}>
               {label}
             </InputLabel>
             <DatePicker
@@ -42,7 +45,7 @@ const RHFDatePicker = (props) => {
               {error.message}
             </FormHelperText>
           )}
-        </>
+        </Box>
       )}
     />
   );

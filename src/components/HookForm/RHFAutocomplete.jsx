@@ -1,5 +1,6 @@
 import {
   Autocomplete,
+  Box,
   CircularProgress,
   InputLabel,
   Stack,
@@ -19,78 +20,83 @@ const RHFAutocomplete = (props) => {
         const { onChange, value } = field;
 
         return (
-          <Stack
-            direction="column"
-            justifyContent="center"
-            alignItems="flex-start"
-            spacing={2}
-            sx={{ width: '100%' }}>
-            <InputLabel variant="outlined" htmlFor="uncontrolled-native">
-              {label}
-            </InputLabel>
-            <Autocomplete
-              multiple={!!multiple}
-              freeSolo={!!freeSolo}
-              options={options || []}
-              value={
-                freeSolo
-                  ? value
-                  : multiple
-                    ? options?.filter((option) =>
-                        value?.includes(option.value)
-                      ) || []
-                    : options?.find((option) => option.value === value) ||
-                      value ||
-                      ''
-              }
-              onChange={(event, newValue) => {
-                if (multiple) {
-                  const selectedValues =
-                    newValue?.map((option) =>
-                      typeof option === 'string' ? option : option.value
-                    ) || [];
-                  onChange(selectedValues);
-                } else {
-                  onChange(
-                    typeof newValue === 'string'
-                      ? newValue
-                      : newValue?.value || ''
-                  );
+          <Box className="stratford-field">
+            <Stack
+              direction="column"
+              justifyContent="center"
+              alignItems="flex-start"
+              spacing={2}
+              sx={{ width: '100%' }}>
+              <InputLabel
+                variant="outlined"
+                htmlFor="uncontrolled-native"
+                sx={{ fontSize: '14px' }}>
+                {label}
+              </InputLabel>
+              <Autocomplete
+                multiple={!!multiple}
+                freeSolo={!!freeSolo}
+                options={options || []}
+                value={
+                  freeSolo
+                    ? value
+                    : multiple
+                      ? options?.filter((option) =>
+                          value?.includes(option.value)
+                        ) || []
+                      : options?.find((option) => option.value === value) ||
+                        value ||
+                        ''
                 }
-              }}
-              loading={loading}
-              isOptionEqualToValue={(option, value) =>
-                typeof value === 'string'
-                  ? option.value === value
-                  : option.value === value?.value
-              }
-              getOptionLabel={(option) =>
-                typeof option === 'string' ? option : option.label
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  error={!!error}
-                  helperText={error?.message}
-                  fullWidth
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <>
-                        {loading ? (
-                          <CircularProgress color="inherit" size={20} />
-                        ) : null}
-                        {params.InputProps.endAdornment}
-                      </>
-                    ),
-                  }}
-                />
-              )}
-              size="small"
-              sx={{ width: '100%' }}
-              {...other}
-            />
-          </Stack>
+                onChange={(event, newValue) => {
+                  if (multiple) {
+                    const selectedValues =
+                      newValue?.map((option) =>
+                        typeof option === 'string' ? option : option.value
+                      ) || [];
+                    onChange(selectedValues);
+                  } else {
+                    onChange(
+                      typeof newValue === 'string'
+                        ? newValue
+                        : newValue?.value || ''
+                    );
+                  }
+                }}
+                loading={loading}
+                isOptionEqualToValue={(option, value) =>
+                  typeof value === 'string'
+                    ? option.value === value
+                    : option.value === value?.value
+                }
+                getOptionLabel={(option) =>
+                  typeof option === 'string' ? option : option.label
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={!!error}
+                    helperText={error?.message}
+                    fullWidth
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <>
+                          {loading ? (
+                            <CircularProgress color="inherit" size={20} />
+                          ) : null}
+                          {params.InputProps.endAdornment}
+                        </>
+                      ),
+                    }}
+                  />
+                )}
+                size="small"
+                sx={{ width: '100%' }}
+                {...other}
+              />
+            </Stack>
+          </Box>
         );
       }}
     />

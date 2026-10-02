@@ -7,7 +7,7 @@ const PageHeader = (props) => {
     <div className="page-header">
       <div className="row align-items-center">
         <div className="col-sm-12">
-          <div className="page-sub-header">
+          {/* <div className="page-sub-header">
             <h3 className="page-title">{pageTitle}</h3>
             <ul className="breadcrumb">
               <li className="breadcrumb-item">
@@ -15,7 +15,7 @@ const PageHeader = (props) => {
               </li>
               <li className="breadcrumb-item active">{currentSection}</li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
