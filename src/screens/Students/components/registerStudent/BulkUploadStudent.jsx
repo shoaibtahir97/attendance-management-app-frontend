@@ -10,17 +10,17 @@ import {
   Typography,
 } from '@mui/material';
 import { Button } from 'antd';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdClose, MdDownload } from 'react-icons/md';
 import * as XLSX from 'xlsx';
 import * as Yup from 'yup';
-import { FormProvider } from '../../../components/HookForm';
-import { RHFUploadSingleFile } from '../../../components/HookForm/RHFUpload';
-import useNotification from '../../../hooks/useNotification';
-import { useUploadBulkStudentsMutation } from '../../../redux/slices/apiSlices/studentApiSlice';
+import { FormProvider } from '../../../../components/HookForm';
+import { RHFUploadSingleFile } from '../../../../components/HookForm/RHFUpload';
+import useNotification from '../../../../hooks/useNotification';
+import { useUploadBulkStudentsMutation } from '../../../../redux/slices/apiSlices/studentApiSlice';
 
-export const BulkRegisterStudent = (props) => {
+const BulkUploadStudent = (props) => {
   const { open, handleClose, fetchStudents } = props;
   const { openNotification } = useNotification();
   const [fileName, setFileName] = useState('');
@@ -222,3 +222,5 @@ export const BulkRegisterStudent = (props) => {
     </Dialog>
   );
 };
+
+export default BulkUploadStudent;
