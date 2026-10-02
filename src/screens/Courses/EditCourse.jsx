@@ -227,8 +227,7 @@ const EditCourse = () => {
                               ],
                               breaks: null,
                             })
-                          }
-                          disabled={SemestersFields.length < 4 ? false : true}>
+                          }>
                           <IoIosAddCircleOutline />
                         </IconButton>
                       </Tooltip>
