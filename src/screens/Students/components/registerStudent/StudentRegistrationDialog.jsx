@@ -1,20 +1,20 @@
 // Third-Party
 import { yupResolver } from '@hookform/resolvers/yup';
-import './StudentRegistrationDialog.css';
 import {
+  Box,
   Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
-  Box,
   Skeleton,
 } from '@mui/material';
 import { Button } from 'antd';
-import 'react-datepicker/dist/react-datepicker.css';
-import { MdClose } from 'react-icons/md';
 import { useEffect } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
+import { MdClose } from 'react-icons/md';
 import * as Yup from 'yup';
+import './StudentRegistrationDialog.css';
 
 // Internal
 import {
@@ -35,7 +35,7 @@ import {
 } from '../../../../redux/slices/apiSlices/studentApiSlice';
 import { countries } from '../../../../utils/countries';
 import { studentGenders } from '../../../AdmissionForm/config/constants';
-import { moduleYears } from '../../../Courses/AddCourse';
+import { moduleYears } from '../../../Courses/config/moduleYears';
 
 const StudentRegistrationSkeleton = () => (
   <Box
@@ -223,10 +223,7 @@ export const StudentRegistrationDialog = ({
             {isEditMode ? 'Edit Student' : 'Register Student'}
           </Box>
 
-          <IconButton
-            onClick={handleClose}
-            disabled={isSaving}
-            size="small">
+          <IconButton onClick={handleClose} disabled={isSaving} size="small">
             <MdClose />
           </IconButton>
         </Box>
@@ -252,103 +249,103 @@ export const StudentRegistrationDialog = ({
                     'Unable to load student details.'}
                 </div>
               )}
-            {/* Student Information */}
+              {/* Student Information */}
 
-            {/* First Name */}
-            <div className="form-field">
-              <RHFTextField name="firstName" label="First Name" />
-            </div>
+              {/* First Name */}
+              <div className="form-field">
+                <RHFTextField name="firstName" label="First Name" />
+              </div>
 
-            {/* Last Name */}
-            <div className="form-field">
-              <RHFTextField name="lastName" label="Last Name" />
-            </div>
+              {/* Last Name */}
+              <div className="form-field">
+                <RHFTextField name="lastName" label="Last Name" />
+              </div>
 
-            {/* Student ID */}
-            <div className="form-field">
-              <RHFTextField name="studentId" label="Student ID" />
-            </div>
+              {/* Student ID */}
+              <div className="form-field">
+                <RHFTextField name="studentId" label="Student ID" />
+              </div>
 
-            {/* Date of Birth */}
-            <div className="form-field">
-              <RHFDatePicker
-                name="DOB"
-                label="Date of Birth"
-                sx={{
-                  width: '100%',
-                }}
-              />
-            </div>
+              {/* Date of Birth */}
+              <div className="form-field">
+                <RHFDatePicker
+                  name="DOB"
+                  label="Date of Birth"
+                  sx={{
+                    width: '100%',
+                  }}
+                />
+              </div>
 
-            {/* Gender */}
-            <div className="form-field">
-              <RHFAutocomplete
-                name="gender"
-                label="Gender"
-                options={studentGenders}
-                freeSolo
-              />
-            </div>
+              {/* Gender */}
+              <div className="form-field">
+                <RHFAutocomplete
+                  name="gender"
+                  label="Gender"
+                  options={studentGenders}
+                  freeSolo
+                />
+              </div>
 
-            {/* Phone */}
-            <div className="form-field">
-              <RHFTextField name="phone" label="Phone" />
-            </div>
+              {/* Phone */}
+              <div className="form-field">
+                <RHFTextField name="phone" label="Phone" />
+              </div>
 
-            {/* Email */}
-            <div className="form-field">
-              <RHFTextField name="email" label="Email" />
-            </div>
+              {/* Email */}
+              <div className="form-field">
+                <RHFTextField name="email" label="Email" />
+              </div>
 
-            {/* Nationality */}
-            <div className="form-field">
-              <RHFCountries
-                name="nationality"
-                label="Nationality"
-                options={countries}
-              />
-            </div>
+              {/* Nationality */}
+              <div className="form-field">
+                <RHFCountries
+                  name="nationality"
+                  label="Nationality"
+                  options={countries}
+                />
+              </div>
 
-            {/* Course */}
-            <div className="form-field">
-              <RHFAutocomplete
-                name="courseName"
-                label="Course Name"
-                options={coursesList}
-              />
-            </div>
+              {/* Course */}
+              <div className="form-field">
+                <RHFAutocomplete
+                  name="courseName"
+                  label="Course Name"
+                  options={coursesList}
+                />
+              </div>
 
-            {/* Group */}
-            <div className="form-field">
-              <RHFAutocomplete
-                name="group"
-                label="Group"
-                options={groupsList}
-              />
-            </div>
+              {/* Group */}
+              <div className="form-field">
+                <RHFAutocomplete
+                  name="group"
+                  label="Group"
+                  options={groupsList}
+                />
+              </div>
 
-            {/* Year */}
-            <div className="form-field">
-              <RHFSelect name="year" label="Year" options={moduleYears} />
-            </div>
+              {/* Year */}
+              <div className="form-field">
+                <RHFSelect name="year" label="Year" options={moduleYears} />
+              </div>
 
-            {/* Buttons */}
-            <div className="form-actions">
-              <Button
-                type="default"
-                onClick={handleClose}
-                disabled={isSaving}>
-                Cancel
-              </Button>
+              {/* Buttons */}
+              <div className="form-actions">
+                <Button
+                  type="default"
+                  onClick={handleClose}
+                  disabled={isSaving}>
+                  Cancel
+                </Button>
 
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={isSaving}
-                disabled={loadingStudent || Boolean(studentError)}>
-                {isEditMode ? 'Update' : 'Save'}
-              </Button>
-            </div>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={isSaving}
+                  disabled={loadingStudent || Boolean(studentError)}>
+                  {isEditMode ? 'Update' : 'Save'}
+                </Button>
+              </div>
             </div>
           </FormProvider>
         )}

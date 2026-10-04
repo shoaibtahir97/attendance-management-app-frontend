@@ -30,7 +30,7 @@ import { UploadMultiFile } from '../../components/upload';
 import useNotification from '../../hooks/useNotification';
 import { usePostAdmissionFormMutation } from '../../redux/slices/apiSlices/admissionsApiSlice';
 import { countries } from '../../utils/countries';
-import { moduleYears } from '../Courses/AddCourse';
+import { moduleYears } from '../Courses/config/moduleYears';
 import {
   courses,
   disabilities,

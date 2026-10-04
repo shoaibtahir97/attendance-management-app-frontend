@@ -34,13 +34,7 @@ import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { formatDateToYearMonth } from '../../utils/formatDateTime';
 import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
-
-export const moduleYears = [
-  { label: 'Foundation', value: 0 },
-  { label: 'First Year', value: 1 },
-  { label: 'Second Year', value: 2 },
-  { label: 'Third Year', value: 3 },
-];
+import { moduleYears } from './config/moduleYears';
 
 const defaultValues = {
   name: '',
@@ -203,6 +197,10 @@ const AddCourse = () => {
                           options={[
                             { label: 'BSc', value: 'BSc' },
                             { label: 'HND', value: 'HND' },
+                            {
+                              label: 'NCC',
+                              value: 'NCC',
+                            },
                           ]}
                         />
                       </Grid>
@@ -237,8 +235,7 @@ const AddCourse = () => {
                                 ],
                                 breaks: [],
                               })
-                            }
-                            >
+                            }>
                             <IoIosAddCircleOutline />
                           </IconButton>
                         </Tooltip>

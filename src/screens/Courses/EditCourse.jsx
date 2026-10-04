@@ -35,7 +35,7 @@ import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { formatDateToYearMonth } from '../../utils/formatDateTime';
 import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
-import { moduleYears } from './AddCourse';
+import { moduleYears } from './config/moduleYears';
 
 const EditCourse = () => {
   const { openNotification } = useNotification();

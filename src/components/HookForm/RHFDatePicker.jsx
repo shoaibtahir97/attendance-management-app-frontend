@@ -28,8 +28,7 @@ const RHFDatePicker = (props) => {
             </InputLabel>
             <DatePicker
               value={dayjs(field.value) || dayjs(new Date())}
-              onChange={(date, event) => {
-                console.log('date', date);
+              onChange={(date) => {
                 field.onChange(date);
               }}
               error={!!error}
