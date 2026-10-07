@@ -1,39 +1,19 @@
-import React from 'react';
-import PageHeader from '../../components/PageHeader';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid } from '@mui/material';
+import { Button } from 'antd';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
 import {
   FormProvider,
   RHFAutocomplete,
-  RHFDatePicker,
-  RHFSelect,
   RHFTextField,
 } from '../../components/HookForm';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { Grid, IconButton, Tooltip, Typography } from '@mui/material';
-import {
-  useCreateGroupMutation,
-  useGetGroupsListQuery,
-} from '../../redux/slices/apiSlices/groupApiSlice';
-import { Alert, Button } from 'antd';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { MdOutlineDelete } from 'react-icons/md';
-import { useGetSubjectsListQuery } from '../../redux/slices/apiSlices/subjectApiSlice';
-import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice';
-import {
-  useCreateCourseMutation,
-  useGetCoursesListQuery,
-} from '../../redux/slices/apiSlices/courseApiSlice';
+import PageHeader from '../../components/PageHeader';
 import useNotification from '../../hooks/useNotification';
+import { useGetCoursesListQuery } from '../../redux/slices/apiSlices/courseApiSlice';
+import { useCreateGroupMutation } from '../../redux/slices/apiSlices/groupApiSlice';
+import { PATH_DASHBOARD } from '../../routes/paths';
 import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
-
-export const moduleYears = [
-  { label: 'Foundation', value: 0 },
-  { label: 'First Year', value: 1 },
-  { label: 'Second Year', value: 2 },
-  { label: 'Third Year', value: 3 },
-];
 
 const AddGroup = () => {
   const { data: coursesList, isLoading: loadingCourses } =

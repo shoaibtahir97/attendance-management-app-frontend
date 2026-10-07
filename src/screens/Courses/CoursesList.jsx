@@ -13,11 +13,10 @@ import {
   useDeleteCourseMutation,
   useLazyGetCoursesQuery,
 } from '../../redux/slices/apiSlices/courseApiSlice';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { generateElem } from '../../utils/generateElements';
+import { CourseDialog } from './components/CourseDialog';
 import CourseFilter from './components/CourseFilter';
 import './courses.css';
-
-const SKELETON = ['', '', '', '', ''];
 
 const CoursesList = () => {
   const [getCourses, { isLoading, error }] = useLazyGetCoursesQuery();
@@ -39,6 +38,13 @@ const CoursesList = () => {
   const [isCourseFilterOpen, setIsCourseFilterOpen] = useState(false);
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] =
     useState(false);
+  const [isCourseDialogVisible, setIsCourseDialogVisible] = useState(false);
+  const [courseId, setCourseId] = useState('');
+
+  const toggleCourseDialog = (courseId) => {
+    setCourseId(courseId);
+    setIsCourseDialogVisible(!isCourseDialogVisible);
+  };
 
   const toggleDeleteConfirmationDialog = () => {
     if (isDeleteConfirmDialogOpen) {
@@ -85,7 +91,7 @@ const CoursesList = () => {
       width: 90,
       render: (text, record) => {
         const onEditCourse = () => {
-          navigate(`${PATH_DASHBOARD.courseEdit}/${record._id}`);
+          toggleCourseDialog(record._id);
         };
 
         return (
@@ -187,6 +193,15 @@ const CoursesList = () => {
         handleDelete={handleDeleteCourse}
       />
 
+      {isCourseDialogVisible && (
+        <CourseDialog
+          onClose={() => toggleCourseDialog('')}
+          fetchCourses={() => fetchCourses(coursesQuery)}
+          open={isCourseDialogVisible}
+          courseId={courseId}
+        />
+      )}
+
       <div className="data-table-card">
         <div className="data-table-header">
           <h3 className="data-table-title">Courses</h3>
@@ -194,7 +209,7 @@ const CoursesList = () => {
           <div className="data-header-actions">
             <Button
               type="primary"
-              onClick={() => navigate(PATH_DASHBOARD.courseAdd)}>
+              onClick={() => toggleCourseDialog(undefined)}>
               + Add Course
             </Button>
           </div>
@@ -212,9 +227,7 @@ const CoursesList = () => {
 
         <div className="data-table-wrapper">
           {isLoading ? (
-            SKELETON.map((_, index) => (
-              <TableSkeleton key={index} columns={column} />
-            ))
+            generateElem(<TableSkeleton columns={column} />)
           ) : error ? (
             <Alert
               message="Error"

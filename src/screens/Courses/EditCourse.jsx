@@ -35,7 +35,7 @@ import { useGetUsersListQuery } from '../../redux/slices/apiSlices/usersApiSlice
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { formatDateToYearMonth } from '../../utils/formatDateTime';
 import EditStudentSkeleton from '../Students/components/EditStudentSkeleton';
-import { moduleYears } from './AddCourse';
+import { moduleYears } from './config/moduleYears';
 
 const EditCourse = () => {
   const { openNotification } = useNotification();
@@ -227,8 +227,7 @@ const EditCourse = () => {
                               ],
                               breaks: null,
                             })
-                          }
-                          disabled={SemestersFields.length < 4 ? false : true}>
+                          }>
                           <IoIosAddCircleOutline />
                         </IconButton>
                       </Tooltip>

@@ -18,7 +18,7 @@ import {
 } from '../../redux/slices/apiSlices/studentApiSlice';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import { generateElem } from '../../utils/generateElements';
-import { moduleYears } from '../Courses/AddCourse';
+import { moduleYears } from '../Courses/config/moduleYears';
 import BulkUploadStudent from './components/registerStudent/BulkUploadStudent';
 import { StudentRegistrationDialog } from './components/registerStudent/StudentRegistrationDialog';
 import SendWarningLetterDialog from './components/SendWarningLetterDialog';
